@@ -1,0 +1,287 @@
+%%
+%% This is file `novel-FontDefaults.sty', part of class `novel'.
+%% Copyright 2017 Robert Allgeyer.
+%%
+%% 
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%%
+\ProvidesFile{novel-FontDefaults.sty}%
+[2017/08/15 v1.38 LaTeX file (default fonts)]
+%%
+
+
+%%
+%% This file is loaded \AtEndPreamble.
+%%
+
+%% Novel Tracking messages in this file begin with 10.
+\NDB{10.0 in novel-FontDefaults.sty.}
+
+%% Most TeX installations will use Latin Modern or Computer Modern
+%%   as default fonts. These are unsuitable for commercial fiction.
+%% But `novel' class uses Libertinus as defaults.
+%% Change them using \SetParentFont and other fontspec commands, in Preamble.
+% Libertinus Serif has Regular, Italic, Bold, Bold Italic.
+% Here, Semibold over-rides Bold.
+%
+%% Now to activate the font definitions:
+%
+\defaultfontfeatures{} % reset
+%
+% The mono font:
+\defaultfontfeatures[\ttfamily]{% monofont has no kerning or common ligatures
+  SmallCapsFeatures={Renderer=Basic},Ligatures=TeX,%
+}%
+\NDB{10.1 in novel-FontDefaults.sty.}
+\ifthenelse{\equal{\ttdefault}{lmtt}\OR\equal{\ttdefault}{cmtt}}{% over-ride:
+  \IfFontExistsTF{Libertinus Mono}{
+    \setmonofont[%
+      ItalicFont={},% Doesn't have these.
+      BoldFont={},%
+      BoldItalicFont={},%
+    ]{Libertinus Mono}
+  }{
+    \IfFontExistsTF{Linux Libertine Mono O}{
+      \setmonofont{Linux Libertine Mono O}
+    }{
+      \setmonofont{Latin Modern Mono}% Eeek! Only because you have it!
+    }
+  }
+}{} % User \setmonofont, so leave alone.
+\NDB{10.2 in novel-FontDefaults.sty.}
+%%
+\defaultfontfeatures{} % reset
+% Main and sans fonts: kerning, ligatures, and OldStyle numbers if available:
+\defaultfontfeatures[\rmfamily,\sffamily]{%
+  SmallCapsFeatures={Renderer=Basic},Kerning=On,Numbers=OldStyle,%
+  Ligatures=Common,Ligatures=TeX,%
+}%
+% The sans font:
+\ifthenelse{\equal{\sfdefault}{lmss}\OR\equal{\sfdefault}{cmss}}{ % override:
+  \IfFontExistsTF{Libertinus Sans}{
+    \setsansfont{Libertinus Sans}
+  }{
+    \IfFontExistsTF{Linux Biolinum O}{
+      \setsansfont{Linux Biolinum O}
+    }{
+      \setsansfont{Latin Modern Sans}% Eeek! Only because you have it!
+    }
+  }
+}{} % User \setsansfont, so leave alone.
+\NDB{10.3 in novel-FontDefaults.sty.}
+%%
+% At this point, if \rmdefault is something other than lmr, it means
+%   that the user attempted to set the main font using ordinary TeX commands,
+%   or via fontspec's \setmainfont. But those are ineffective in this class,
+%   because without \SetParentFont the prior command will be over-written.
+\ifthenelse{\equal{\rmdefault}{\@noveloldrmdefault}}{}{%
+  \ClassWarning{novel}{^^JBIG BAD WARNING:^^J%
+  You attempted to define the main document font using a command such as^^J%
+  \string\renewcommand\string\rmdefault\space or \string\usepackage{font}^^J%
+  or \string\setmainfont. These are incorrect in `novel' class.^^J%
+  Use \string\SetParentFont\space instead. See `novel' documentation.^^J}%
+}%
+% The parentfont: (from v.1.1. Known as masterfont in prior versions)
+\if@parentfontset\else
+ \IfFontExistsTF{Libertinus Serif}{
+    \SetParentFont[%
+      BoldFont=libertinusserif-semibold.otf,%
+      BoldItalicFont=libertinusserif-semibolditalic.otf,%
+    ]{Libertinus Serif}
+ }{
+   \IfFontExistsTF{Linux Libertine O}{
+     \SetParentFont[%
+       BoldFont=LinLibertine_RZ.otf,%
+       BoldItalicFont=LinLibertine_RZI.otf,%
+     ]{Linux Libertine O}
+   }{
+     \SetParentFont[%
+      SmallCapsFont={Latin Modern Roman Caps}%
+     ]{Latin Modern Roman}% Eeek! Only because you have it!
+     \let\scshape\oldscshape % or small caps won't work
+     \let\smcp\oldscshape % ditto
+   }
+ }
+\fi
+\NDB{10.4 in novel-FontDefaults.sty.}
+% Now we are ready to set the main font:
+\setmainfont[\@parentfontfeatures]{\@parentfontname}
+\let\textfont\rmfamily\relax % compatibility
+\let\mainfont\rmfamily\relax % compatibility
+%
+\NDB{10.5 in novel-FontDefaults.sty.}
+%%
+\defaultfontfeatures{} % reset
+% New in version 1.38, \straightquote and \straightdblquote:
+\gdef\straightquote{{\addfontfeature{Ligatures=ResetAll}'}}
+\gdef\straightdblquote{{\addfontfeature{Ligatures=ResetAll}"}}
+%
+% The novel-specific display fonts use these defaults:
+\defaultfontfeatures{%
+  SmallCapsFeatures={Renderer=Basic},Kerning=On,%
+  Ligatures=TeX,Ligatures=CommonOff,Numbers=Lining,%
+}%
+\NDB{10.6 in novel-FontDefaults.sty.}
+%% The novel-specific fonts:
+\if@chapterfontset\else
+  \SetChapterFont[\@parentfontfeatures,Scale=1.6]{\@parentfontname}
+\fi
+\newfontfamily\chapterfont[\@chapterfontfeatures]{\@chapterfontname}
+%%
+\if@subchfontset\else
+  \SetSubchFont[\@parentfontfeatures,Scale=1.2]{\@parentfontname}
+\fi
+\newfontfamily\subchfont[\@subchfontfeatures]{\@subchfontname}
+%%
+\newif \if@headfontdefault
+\if@headfontset\else
+  \SetHeadFont[\@parentfontfeatures,Scale=0.92]{\@parentfontname}
+  \global\@headfontdefaulttrue
+\fi
+\newfontfamily\headfont[\@headfontfeatures]{\@headfontname}
+\NDB{10.7 in novel-FontDefaults.sty.}
+%%
+\defaultfontfeatures{} % reset
+\defaultfontfeatures{% for decofont
+  SmallCapsFeatures={Renderer=Basic},Kerning=On,Ligatures=TeX,%
+}%
+%% The decofont must be NovelDeco.otf or a user modification of that font:
+\if@decofontset\else
+  \IfFontExistsTF{NovelDeco.otf}{
+    \SetDecoFont{NovelDeco}
+  }{}
+\fi
+\NDB{10.8 in novel-FontDefaults.sty.}
+%%
+\gdef\acronym#1{#1}% Re-defined below, if decofont available.
+%%
+%% Now to get the decofont activated:
+% Decorative glyphs, only in this font. Should not be re-set by user:
+\gdef\decoglyph#1{~}% If NovelDeco not found, nonbreaking space in main text.
+%
+\if@gotdeco % NovelDeco or a user-defined alternative was found:
+  \newfontface\@decoglyph[%
+    \@decofontfeatures,%
+  ]{\@decofontname}
+  \newfontface\@decoglypha[%
+    \@decofontfeatures,RawFeature=+ss01,%
+  ]{\@decofontname}
+  \newfontface\@decoglyphb[%
+    \@decofontfeatures,RawFeature=+ss02,%
+  ]{\@decofontname}
+  \newfontface\@decoglyphc[%
+    \@decofontfeatures,RawFeature=+ss03,%
+  ]{\@decofontname}
+  %
+  \gdef\decoglyph#1{% Be sure to use % without preceding space:
+    \IfBeginWith{#1}{n}{% normal weight symbol (same as regular)
+     \StrBehind{#1}{n}[\@tempdecoglyph]{\@decoglyph\symbol{\@tempdecoglyph}}%
+    }{}%
+    \IfBeginWith{#1}{r}{% regular weight symbol
+     \StrBehind{#1}{r}[\@tempdecoglyph]{\@decoglyph\symbol{\@tempdecoglyph}}%
+    }{}%
+    \IfBeginWith{#1}{l}{% light weight symbol
+    \StrBehind{#1}{l}[\@tempdecoglyph]{\@decoglypha\symbol{\@tempdecoglyph}}%
+    }{}%
+    \IfBeginWith{#1}{e}{% extra light weight symbol
+    \StrBehind{#1}{e}[\@tempdecoglyph]{\@decoglyphb\symbol{\@tempdecoglyph}}%
+    }{}%
+    \IfBeginWith{#1}{t}{% thin weight symbol
+    \StrBehind{#1}{t}[\@tempdecoglyph]{\@decoglyphc\symbol{\@tempdecoglyph}}%
+    }{}%
+  }% end gdef decoglyph
+  %
+  % The trouble with acronyms is that they look too big in regular capitals,
+  % and too small in small caps. Command \acronym{} tries to provide an
+  % intermediate size. The letters were drawn from Linux Libertine, scaled,
+  % weights adjusted, the placed in NovelDeco.otf.
+  \gdef\acronym#1{{\decofont{#1}}}
+  %
+\fi% end \if@gotdeco
+%
+\NDB{10.9 in novel-FontDefaults.sty.}
+%
+%%
+% Any other fonts will use these defaults:
+\defaultfontfeatures{} % reset
+% The novel-specific display fonts use these defaults:
+\defaultfontfeatures{%
+  SmallCapsFeatures={Renderer=Basic},%
+  Ligatures=TeX,
+  Kerning=On,%
+}%
+%
+%%
+
+
+% Get rid of previously-defined fake polyglossia commands,
+% but you can still use \setkeys from that package:
+\let\SetMainLanguage\relax
+\let\SetDefaultLanguage\relax
+\let\SetOtherLanguage\relax
+\let\SetOtherLanguages\relax
+\let\setmainlanguage\relax
+\let\setdefaultlanguage\relax
+\let\setotherlanguage\relax
+\let\setotherlanguages\relax
+\NDB{10.10 in novel-FontDefaults.sty.}
+% Now that the basic fonts are defined, we can load these packages:
+\RequirePackage{polyglossia} % Instead of babel.
+\NDB{10.11 in novel-FontDefaults.sty.}
+%
+\ifthenelse{\equal{\@setmainlang}{}}{
+  \setmainlanguage{english}
+}{
+  \ifthenelse{\equal{\@setmainlangopt}{}}{
+    \setmainlanguage{\@setmainlang}
+  }{
+    \setmainlanguage[\@setmainlangopt]{\@setmainlang}
+  }
+}
+\ifthenelse{\equal{\@setotherlang}{}}{}{
+  \ifthenelse{\equal{\@setotherlangopt}{}}{
+    \setotherlanguage{\@setotherlang}
+  }{
+    \setotherlanguage[\@setotherlangopt]{\@setotherlang}
+  }
+}
+\ifthenelse{\equal{\@setotherlangs}{}}{}{
+  \ifthenelse{\equal{\@setotherlangsopt}{}}{
+    \setotherlanguages{\@setotherlangs}
+  }{
+    \setotherlanguages[\@setotherlangsopt]{\@setotherlangs}
+  }
+}
+\NDB{10.12 in novel-FontDefaults.sty.}
+%% This provides default microtype settings, allows the user to over-ride,
+%    and hopefully prevents the user from choosing inappropriate settings:
+\let\microtypesetup\relax % fake command no longer needed
+\if@setmicrotype % user wrote \microtypesetup{} in Preamble
+  \IfSubStr{\@mymicrotypesetup}{config}{% user specified own config file
+    \gdef\@mymicrotypeset{\@mymicrotypesetup}
+  }{ % default to novel's config file
+    \gdef\@mymicrotypeset{%
+      config=novel-microtype,\@mymicrotypesetup}
+  }
+\else % user did not write \microtypesetup{} in Preamble
+  \gdef\@mymicrotypeset{%
+    config=novel-microtype,stretch=20,shrink=20}
+\fi
+\RequirePackage[\@mymicrotypeset,final,tracking]{microtype}
+%
+%%
+
+\NDB{10.13 in novel-FontDefaults.sty.}
+
+
+%
+%% End of file `novel-FontDefaults.sty'
+
+

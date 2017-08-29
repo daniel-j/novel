@@ -1,0 +1,286 @@
+%%
+%% This is file `novel-Images.sty', part of class `novel'.
+%% Copyright 2017 Robert Allgeyer.
+%%
+%% 
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%%
+\ProvidesFile{novel-Images.sty}%
+[2017/08/15 v1.38 LaTeX file (image placement)]
+%%
+
+%% Novel Tracking messages in this file begin with 7.
+\NDB{7.0 in novel-Images.sty.}
+
+%%
+%% Be sure to read the separate documentation about how to prepare images.
+%% In general: (1) png or jpg only. (2) Flattened, no transparency.
+%% (3) 300dpi (grayscale) or 600dpi (black/white) are industry norms.
+%% (4) Image file must contain its resolution. (5) Exact size, without scaling.
+%% (6) No private metadata. (7) Be sure grayscale is 1-channel, not rgb gray.
+%%
+
+
+
+% \InlineImage[hoffset,voffset]{imagefile.png or jpg} and starred version.
+%
+% Use hoffset to displace the image horizontally. Positive is to the right.
+% Use voffset to displace the image vertically. Positive is upward.
+% Can use hoffset by itself, then voffset defaults to 0pt.
+%
+% The TOP of the image is placed at the baseline of text (unless offset).
+% To place image so that its BOTTOM (rather than top) is at the text baseline,
+%   use voffset b. Can also use b+2em or b-3.4pt etc. without spaces.
+% To place image so that its top is as text X height, voffset \heightof{X}.
+%
+% You can combine lengths, such as:
+%   voffset 0.2em+\heightof{X} or b-\heightof{Aring}+0.5em
+% However, do not begin the string with + or - followed directly by \heightof.
+%
+% Unstarred command: Image occupies its natural width, so that following text
+%   (if on same line) is after the image.
+% Starred command: Image occupies zero width, so that following text (if on
+%   the same line) overlays the image.
+% In all cases, the image occupies zero height, so that following text lines
+%   will overlay the image, unless you insert some \null lines.
+% In some case, having following text overlay the image is desirable. But talk
+%   with your print service about that. Not all like it.
+% If the image rises above its line of text, it may overlay text on the
+%   preceding line, which obscures that text. Don't do it.
+%
+% Clever use of hoffset, with narrowed textblock, can place text beside image.
+%
+% \imagewidth and \imageheight may be used for offsets, or for any other
+%   purpose once the image is placed. These lengths retain their values
+%   until a subsequent image is placed, not including anything in header/footer.
+%
+\def\Aring{Å} % has typical maximum accented character height in Latin-1.
+%
+\newlength\imagewidth
+\newlength\imageheight
+\newlength\imagehoffset
+\newlength\imagevoffset
+\newlength\@imagewidth
+\newlength\@imageheight
+\newlength\@imagehoffset
+\newlength\@imagevoffset
+\gdef\imagestarred{false}
+\gdef\imagefilename{unknown}
+% Neutralize \includegraphics, so it is no longer a user command:
+\let\@includegraphics\includegraphics\relax
+\let\includegraphics\relax
+\newcommand\includegraphics[2][]{
+  \ClassError{novel}{Cannot use \string\includegraphics\space on page \thepage}
+   {The `novel' class has its own commands for placing images. See docs.^^J%
+    You cannot use the \string\includegraphics\space command.}%
+}
+\NDB{7.1 in novel-Images.sty.}
+%
+% \InlineImage can be used in body, header, footer.
+% However, macros such as \imagefilename, \imagewidth, etc.
+%   are only set or re-set when the image in in the body.
+% That prevents an intervening header/footer image from over-writing
+%   values set by the most recent body image.
+% The unstarred command occupies the width of the image.
+% The starred command occupies zero width.
+%
+\ExplSyntaxOn
+\DeclareDocumentCommand \InlineImage { s O{0pt} m }{%
+  \newif\if@imgExtOK%
+  \IfEndWith{#3}{png}{\@imgExtOKtrue}{}%
+  \IfEndWith{#3}{PNG}{\@imgExtOKtrue}{}%
+  \IfEndWith{#3}{jpg}{\@imgExtOKtrue}{}%
+  \IfEndWith{#3}{JPG}{\@imgExtOKtrue}{}%
+  \IfEndWith{#3}{jpeg}{\@imgExtOKtrue}{}%
+  \IfEndWith{#3}{JPEG}{\@imgExtOKtrue}{}%
+  \if@imgExtOK\else%
+    \ClassError{novel}{^^JImage~`#3'~format~not~allowed}%
+    {^^JImage~`#3'~has~file~type~not~allowed~in~`novel'~class.^^J%
+     Must~have~file~extension~png,~jpg,~jpeg~(or~capitalized).^^J%
+     Others~such~as~pdf~bmp,~tiff,~eps,~pdf,~svg~are~not~allowed.^^J}%
+  \fi%
+  \StrDel{#2}{\space}[\@myila]%
+  \StrCut{\@myila}{,}{\@myilxa}{\@myilya}%
+  \ifthenelse{\equal{\@myilxa}{} \OR \equal{\@myilxa}{0}}{%
+    \def\@myilx{0pt}}{\def\@myilx{\@myilxa}%
+  }%
+  \ifthenelse{\equal{\@myilya}{} \OR \equal{\@myilya}{0}}{%
+    \def\@myily{0pt}}{\def\@myily{\@myilya}%
+  }%
+  \NDB{7.1.1 in novel-Images.sty.}%
+  \iftoggle{@inheadfoot}{}{\gdef\imagefilename{#3}}% for possible later use
+  \gdef\my@graphic{\@includegraphics[draft=false]{#3}}%
+  \setlength\@imagewidth{\widthof{\my@graphic}}%
+  \global\@imagewidth=\@imagewidth%
+  \iftoggle{@inheadfoot}{}{\setlength\imagewidth{\@imagewidth}}%
+  \setlength\@imageheight{\heightof{\my@graphic}}%
+  \global\@imageheight=\@imageheight%
+  \NDB{7.1.2 in novel-Images.sty.}%
+  \iftoggle{@inheadfoot}{}{%
+    \setlength\imageheight{\@imageheight}%
+    \global\imageheight=\imageheight%
+    \typeout{^^JClass~`novel'~Info:~An~image~was~placed~on~page~\thepage.^^J%
+      Review~layout~to~ensure~that~it~does~not~overflow~into~margins.^^J}%
+  }%
+  \NDB{7.1.3 in novel-Images.sty.}%
+  %
+  \setlength\@imagehoffset{\@myilx}%
+  \IfBeginWith{\@myily}{b}{%
+    \StrDel[1]{\@myily}{b}[\temp@adjVoffseta]%
+    \ifthenelse{\equal{\temp@adjVoffseta}{} \OR \equal{\temp@adjVoffseta}{0}}{%
+      \def\temp@adjVoffset{0pt}}{\def\temp@adjVoffset{\temp@adjVoffseta}%
+    }%
+    \setlength\@imagevoffset{\temp@adjVoffset}%
+  }{%
+    \setlength\@imagevoffset{-\@imageheight}%
+    \addtolength\@imagevoffset{\@myily}%
+  }%
+  \NDB{7.1.4 in novel-Images.sty.}%
+  %
+  \IfBooleanTF{#1}%
+  % starred:
+  {%
+    \iftoggle{@inheadfoot}{}{\gdef\imagestarred{true}}%
+    \makebox[0pt][l]{%
+      \hspace{\@imagehoffset}%
+      \stake\smash{\raisebox{\@imagevoffset}{\my@graphic}}%
+    }%
+  }%
+  % unstarred:
+  \NDB{7.1.5 in novel-Images.sty.}%
+  {%
+    \iftoggle{@inheadfoot}{}{\gdef\imagestarred{false}}%
+    \hspace{\@imagehoffset}%
+    \stake\smash{\raisebox{\@imagevoffset}{\my@graphic}}%
+  }% end IfBooleanTF{#1}
+  \iftoggle{@inheadfoot}{}{\setlength\imagehoffset{\@imagehoffset}}%
+  \iftoggle{@inheadfoot}{}{\setlength\imagevoffset{\@imagevoffset}}%
+} % end DeclareDocumentCommand \InlineImage
+\ExplSyntaxOff
+%
+%%
+
+\NDB{7.2 in novel-Images.sty.}
+
+
+%% \BlockImage[alignment]{image}[text]
+% Alignment may have up to 3 comma-separated values. Default is [c]
+% First alignment: l, c, r (left, center, right).
+% Second alignment: x-offset of image (not text). Default 0pt. May use 0.
+% Third alignment: y-offset of image (not text). Default 0pt. May use 0.
+% Offsets are positive right and up.
+% The optional text, if used, must have its opening bracket immediately
+% follow the image closing brace, without intervening space.
+% Text may have line break or more than one paragraph, and may be styled.
+% But any font family change must go outside this command, not within the text.
+% The text will begin in the same block of vertical space as the image.
+% If image is centered, the text will automatically be centered, so that
+% it necessarily overlies the image.
+% \forceindent or \backindent may be needed. Text may have several paragraphs.
+% Subsequent text (after all that) will clear the image bottom, and also
+% be at the baseline grid. Beware of using this command near bottom of page.
+\ExplSyntaxOn
+\DeclareDocumentCommand \BlockImage { O{c} m +O{} }{
+  \iftoggle{@inheadfoot}{%
+    \ClassError{novel}{Cannot~use~BlockImage~in~header~or~footer}%
+      {Header~footer~allow~InlineImage~but~not~BlockImage.}%
+  }{}%
+  % Allows empty or blank to be used, and still provide default values:
+  \ifthenelse{\equal{#1}{} \OR \equal{#1}{\space}}{%
+    \def\@myargs{c}}{\def\@myargs{#1}%
+  }
+  \StrDel{\@myargs}{\space}[\@myargsns] % needs {\space} not { }
+  \StrCut{\@myargsns}{,}{\@myalign}{\@mycoord}
+  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}
+  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{%
+    \def\@myx{0pt}}{\def\@myx{\@myxt}%
+  }
+  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{%
+    \def\@myy{0pt}}{\def\@myy{\@myyt}%
+  }
+  \NDB{7.2.1 in novel-Images.sty.}%
+  \newdimen\@sbsheight
+  \ifthenelse{\equal{\@myalign}{c}\OR\equal{\@myalign}{}}{%
+    {\centering\strut\InlineImage*[{\@myx-0.5\imagewidth},{\@myy}]{#2}\par}
+    \vspace*{-\nbs}
+    {\centering\strut #3\par}
+    \setbox0=\vbox{{\centering #3\par}}
+  }{}
+  \NDB{7.2.2 in novel-Images.sty.}%
+  \ifthenelse{\equal{\@myalign}{r}}{%
+    \noindent\InlineImage*[{\textwidth-\imagewidth+\@myx},{\@myy}]{#2}\par%
+    \vspace{-\nbs}
+    \begin{adjustwidth}{0pt}{\imagewidth+\parindent}%
+      #3\par%
+    \end{adjustwidth}%
+    \setbox0=\vbox{%
+      \begin{adjustwidth}{0pt}{\imagewidth+\parindent}%
+        #3\par%
+      \end{adjustwidth}%
+    }%
+  }{}
+  \NDB{7.2.3 in novel-Images.sty.}%
+  \ifthenelse{\equal{\@myalign}{l}}{%
+    \noindent\InlineImage*[{\@myx},{\@myy}]{#2}\par%
+    \vspace{-\nbs}
+    \begin{adjustwidth}{\imagewidth+\parindent}{0pt}%
+      #3\par%
+    \end{adjustwidth}%
+    \setbox0=\vbox{%
+      \begin{adjustwidth}{\imagewidth+\parindent}{0pt}%
+        #3\par%
+      \end{adjustwidth}%
+    }%
+  }{}
+  \NDB{7.2.4 in novel-Images.sty.}%
+  % portion here, inspired by post from user Killian Foth,
+  % at stackoverflow.com, license CC-by-sa-3.0.
+  \@sbsheight=\ht0 \advance\@sbsheight by \dp0
+  \def\@sbsheightnum{\strip@pt\@sbsheight}
+  \FPdiv{\@roughlines}{\@sbsheightnum}{\nbsnum}
+  \FPadd{\@roughlines}{\@roughlines}{0.5} % round up, not down
+  \FPround{\@roughlines}{\@roughlines}{0}
+
+  \gdef\@imageheightnum{\strip@pt\@imageheight}%
+  \FPdiv{\@imagelines}{\@imageheightnum}{\nbsnum}%
+  \FPadd{\@imagelines}{\@imagelines}{0.5}% round up to integer, not down
+  \FPround{\@imagelines}{\@imagelines}{0}%
+  \FPclip{\@imagelines}{\@imagelines}%
+  \gdef\imagelineskip{\@imagelines}%
+  \FPclip{\@roughlines}{\@roughlines}
+  \FPadd{\@adjimagelines}{\imagelineskip}{1} % \imagelineskip from \InlineImage*
+  \FPsub{\@skipme}{\@adjimagelines}{\@roughlines}
+  \FPmax{\@skipme}{\@skipme}{0}
+  \vspace{\@skipme\nbs}
+}
+\ExplSyntaxOff
+%%
+
+\NDB{7.3 in novel-Images.sty.}
+
+
+% Returns 1 for monochrome, 8 for grayscale (or rgb). EXPERIMENTAL.
+% Not documented. Not used as part of any other commands.
+\gdef\imagecolordepth{%
+  \ifthenelse{\equal{\imagefilename}{unknown}}{unknown}{%
+    \directlua{%
+    img1=img.scan{filename="\imagefilename"}%
+    tex.print(tostring(img1.colordepth))%
+    }%
+  }%
+}
+%
+\NDB{7.4 in novel-Images.sty.}
+
+
+%%
+%% End of file `novel-Images.sty'.
+
+

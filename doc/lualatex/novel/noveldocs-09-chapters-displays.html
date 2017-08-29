@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Novel class documentation - Display, Start, Continued Pages, Footnotes, Endnotes</title>
+<link rel="stylesheet" type="text/css" href="html-resources/novel-doc.css">
+</head>
+
+<body>
+<div id="master">
+
+
+<div id="toc">
+
+<p>Document class "novel"</p>
+
+<p><a href="#a9">Display, Start, and Continued Pages;<br>
+Footnotes and Endnotes</a></p>
+
+<ul>
+
+  <li><a href="#a9.1">9.1 Display Pages</a><br>
+  <span style="visibility:hidden">9.1 </span> including blank
+    <ul>
+      <li><a href="#a9.1.1">9.1.1 Half-Title</a></li>
+      <li><a href="#a9.1.2">9.1.2 Frontispiece</a></li>
+      <li><a href="#a9.1.3">9.1.3 Title Page</a></li>
+      <li><a href="#a9.1.4">9.1.4 Copyright Page</a></li>
+      <li><a href="#a9.1.5">9.1.5 Other Display Pages</a>
+        <ul>
+          <li><a href="#a9.1.5.1">9.1.5.1 Dedication</a></li>
+          <li><a href="#a9.1.5.2">9.1.5.2 Epigraph - OBSOLETE</a></li>
+          <li><a href="#a9.1.5.3">9.1.5.3 Table of Contents</a></li>
+          <li><a href="#a9.1.5.4">9.1.5.4 Part Separator</a></li>
+          <li><a href="#a9.1.5.5">9.1.5.5 Map or Illustration</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li><!-- end 9.1 -->
+
+  <li><a href="#a9.2">9.2 Start Pages: General</a>
+    <ul>
+      <li><a href="#a9.2.1">9.2.1 \thispagestyle{}</a></li>
+      <li><a href="#a9.2.2">9.2.2 \SetVersoHeadText{}<br>
+        <span style="visibility:hidden">9.2.2 </span>\SetRectoHeadText{}</a>
+      </li>
+    </ul>
+  </li><!-- end 9.2 -->
+
+  <li><a href="#a9.3">9.3 Start Pages in Front Matter</a><br>
+    <span style="visibility:hidden">9.3 </span>Foreword, Preface, etc.
+  </li><!-- end 9.3 -->
+
+  <li><a href="#a9.4">9.4 Start Pages in Main Matter</a><br>
+    <span style="visibility:hidden">9.3 </span>New Chapters
+    <ul>
+      <li><a href="#a9.4.1">9.4.1 \SetChapterStart{}</a></li>
+      <li><a href="#a9.4.2">9.4.2 Environment: ChapterStart</a></li>
+
+      <li><a href="#a9.4.3">9.4.3 Chapter Title Commands</a>
+        <ul>
+          <li><a href="#a9.4.3.1">9.4.3.1 \ChapterTitle{}</a></li>
+          <li><a href="#a9.4.3.2">9.4.3.2 \ChapterSubtitle{}</a></li>
+          <li><a href="#a9.4.3.3">9.4.3.3 \ChapterDeco[]{}</a></li>
+        </ul>
+      </li>
+      <li><a href="#a9.4.4">9.4.4 ChapterStart With Image</a>
+        <ul>
+          <li><a href="#a9.4.4.1">9.4.4.1 Text Over Image</a></li>
+          <li><a href="#a9.4.4.2">9.4.4.2 Image Includes Text</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li><!-- end 9.4 -->
+
+  <li><a href="#a9.5">9.5 Continued Pages</a><br>
+    <ul>
+      <li><a href="#a9.5.1">9.5.1 \QuickChapter[]{}</a></li>
+      <li><a href="#a9.5.2">9.5.2 Scene Breaks</a>
+        <ul>
+          <li><a href="#a9.5.2.1">9.5.2.1 \scenebreak</a></li>
+          <li><a href="#a9.5.2.2">9.5.2.2 \sceneline</a></li>
+          <li><a href="#a9.5.2.3">9.5.2.3 \scenestars</a></li>
+        </ul>
+      </li>
+      <li><a href="#a9.5.3">9.5.3 \IndentAfterScenebreak</a>
+    </ul>
+  </li><!-- end 9.5 -->
+
+  <li><a href="#a9.6">9.6 Footnotes</a>
+    <ul>
+      <li><a href="#a9.6.1">9.6.1 \SetMarkers[]{}</a></li>
+      <li><a href="#a9.6.2">9.6.2 \realmarker \fakemarker</a></li>
+      <li><a href="#a9.6.3">9.6.3 \footnote[]{}</a></li>
+    </ul>
+  </li><!-- end 9.6 -->
+
+  <li><a href="#a9.7">9.7 Endnotes</a>
+    <ul>
+      <li><a href="#a9.7.1">9.7.1 \endnote</a></li>
+      <li><a href="#a9.7.2">9.7.2 \endnotetext{}{}</a></li>
+    </ul>
+  </li><!-- end 9.7 -->
+
+</ul>
+
+<p>&nbsp;</p>
+</div><!-- end toc -->
+
+
+
+<div id="main">
+<a id="a9"></a>
+<h1>Documentation for <code>novel</code> document class</h1>
+<p>Documentation version: 1.38.</p>
+
+
+<div class="pagetopage">
+<p><b>User Guide</b></p>
+<p><a href="noveldocs-01-overview.html">1. Overview</a></p>
+<p><a href="noveldocs-02-class-options.html">2. Class Options</a></p>
+<p><a href="noveldocs-03-metadata-pdfx.html">3. Metadata, PDF/X</a></p>
+<p><a href="noveldocs-04-layout.html">4. Page Layout</a></p>
+<p><a href="noveldocs-05-fonts.html">5. Choosing Fonts</a></p>
+<p><a href="noveldocs-06-header-footer.html">6. Headers, Footers</a><br>
+<p><a href="noveldocs-07-text-size-style.html">7. Text Sizes, Styles</a></p>
+<p><a href="noveldocs-08-images.html">8. Using Images</a></p>
+<p>9. Display, Start Pages;<br>
+<span style="visibility:hidden">9. </span>Chapters; Continued Pages;<br>
+<span style="visibility:hidden">9. </span>Footnotes, Endnotes.</p>
+<p><a href="noveldocs-10-cover-art.html">10. Cover Artwork</a></p>
+<p><a href="noveldocs-11-debugging.html">11. Debugging</a></p>
+</div>
+
+
+
+<h2 style="clear:none">Display, Start, and Continued Pages;<br>
+Footnotes and Endnotes</h2>
+
+<p>A <em>display page</em> stands by itself, has a unique purpose, and is never continued to another page. A blank page is considered to be a display, even when there are several blanks.</p>
+
+<p>A <em>start page</em> is the first page of a continued section of related pages, with the same style and purpose. The important criterion is whether the section "might" continue to additional pages, not whether it actually does. Thus, a very brief Author's Note (essentially a one-page Preface) is considered to be a start page, because the author might have gone on for several pages.</p>
+
+<p>Anything other than a display page or a start page is a <em>continued page</em>.</p>
+
+
+
+<a id="a9.1"></a>
+<h3>9.1 Display Pages</h3>
+
+<p>In the book's front matter, many (perhaps all) of the pages are display pages. In fictional works, once the main matter begins, the only display pages (if any) will be part separators, maps, and blank pages.</p>
+
+<p>Display pages do not show a header or footer. At the top of the page, put this code:</p>
+
+<p class="code"><code>\thispagestyle{empty}</code></p>
+
+<p>Note that the header and/or footer is still there, and occupies its usual space. But it has no visible content. The page number does not appear in print, However, it is visible in the control panel of a PDF reader.</p>
+
+<p>Blank pages are considered to be display pages. Te create a blank page:</p>
+
+<p class="code"><code>\clearpage \thispagestyle{empty} \null \clearpage</code></p>
+
+<p>If the preceding material ended with <code>\clearpage</code> or the following material begins with it, no problem. TeX wisely assumes that consecutive <code>\clearpage</code> commands are a mistake, and does not automatically skip a page between them. The <code>\null</code> command is the most effective way to show that you really did mean to create a page there.</p>
+
+<p>A novel, or collection of stories, may contain these display pages: Half-Title, Frontispiece, Title, Copyright, Dedication, Epigraph, Map, Acknowledgements, Separator. Almost all of them, if used, are in front matter.</p>
+
+<p>Note that a book's front matter does not have to be complicated. Here is an imitation of the entire front matter, from a detective novel written by a very famous author of such things. In order: Half-Title, Blank, Title, Copyright, duplicate Half-Title, Blank. A very decorative font is used for the book's title and the author's name.</p>
+
+<p class="centerimg"><img src="html-resources/fmsimple.png" width="716" height="177" alt="simple front matter"></p>
+
+
+
+<a id="a9.1.1"></a>
+<h4>9.1.1 Half-Title Page</h4>
+
+<p>Historically, the purpose of a Half-Title was to protect the title page during transportation and storage. This purpose has been obsolete for a long time, bcause modern books are printed and bound at once. But the tradition lives on. Use a Half-Title unless you absolutely must reduce the page count of your book.</p>
+
+<p>The Half-Title is the first page of front matter. It is lowercase roman page <code>i</code>, even though the number is not printed. The only material on the page is the book's title (not author) and usually not even a subtitle. If the title is artistically designed, then the Half-Title may be designed the same way, but is usually at smaller size. Place the Half-Title wherever it looks good on the page (certainly not at top left). For example:</p>
+
+<p class="code"><code><img class="floatright" src="html-resources/htss.png" width="174" height="269" alt="sample half title">
+<small>\frontmatter <span class="ap">% Sets page numbers to lowercase roman.</span><br>
+\thispagestyle{empty} <span class="ap">% No header or footer.</span><br>
+\vspace*{6\nbs} <span class="ap">% Note asterisk. Skips 6 lines.</span><br>
+<span class="ap">% Right-aligns half-title at 2x normal font size:</span><br>
+ <span class="ap">% \orbitron is defined as the non-TeX font Orbitron-Medium.otf</span><br>
+\stake\hfill{\orbitron\charscale[2]{Star Smash}}\par
+\vspace{0.4\nbs}
+<span class="ap">% Decorative portion of half-title:</span><br>
+\noindent\hspace{12em}\charscale[1.6]{\decoglyph{r10059}}
+\bigemdash[2,2]\stake\par
+\clearpage <span class="ap">% Ends the page.</span>
+</small></code></p>
+
+<p>You can do better than that, perhaps by using a fancier font than you use for ordinary text, or even by placing the Half-Title in the form of an image.</p>
+
+
+<a id="a9.1.2"></a>
+<h4 style="clear:both">9.1.2 Frontispiece (usually blank)</h4>
+
+<p><img class="floatright" src="html-resources/blakemilt.png" width="200" height="309" alt="sample artwork frontispiece" title="Frontispiece to William Blake's poem about Milton. Public Domain in U.S.A. and artist's home nation. Source Library of Congress via Wikimedia Commons."> The verso of the Half-Title has page number <code>ii</code>, number not printed. Normally, this page is blank.</p>
+
+<p>In the good old days (looong ago), this page might show an illustration. Search the Internet for "frontispiece" to see examples. At right is the frontispiece by William Blake for his poetry regarding Milton. In the original, it was in color (spectacularly expensive, back then).</p>
+
+<p>If your Aunt Sally is a brilliant, internationally-known illustrator, and permits you (in writing, without royalties) to place one of her creations there, then that is a possibility. You might also use a photograph (reduced to grayscale), if your story is set in a real location. However, depending on location and jurisdiction, just because something is in plain public view does not necessary mean that you are free to take a photograph and use it commercially! That may even apply when it is a natural scene with no people in the picture. Here's a famous <a href="http://www.nytimes.com/1990/08/02/us/monterey-journal-trees-and-trademarks-the-disputes-run-deep.html" rel="external" target="new">example</a>, not too far from where I live.</p>
+
+<p>Something that is an integral part of the story, such as a map of its fictional locale, should not be placed as a frontispiece. Actually, with fiction you have a lot of wiggle room, so a map is possible <em>if</em> its artwork is good enough to face the title page, and you don't have a better place to put the map.</p>
+
+<p>The preparation and placement of images is described on another documentation page.</p>
+
+<p class="clear:both"><img class="floatright" style="margin-top:40px" src="html-resources/blfr.png" width="134" height="207" alt="sample blank frontispiece"> Some publishers put a centered list of &ldquo;Books by the Same Author&rdquo; here. Or, if the particular book is part of a set (&ldquo;Splork Chronicles, Volume VI&rdquo;) that can be mentioned. However, in the print-on-demand market, your printing and distribution service may not permit you to do that, unless they carry all of the books.</p>
+
+<p>So, it is best to leave this page blank:</p>
+
+<p class="code"><code><small>\clearpage<br>
+\thispagestyle{empty}<br>
+\null<br>
+\clearpage</small></code></p>
+
+
+<a id="a9.1.3"></a>
+<h4 style="clear:both">9.1.3 Title Page</h4>
+
+<p>The Title Page has page number <code>iii</code>, number not printed.</p>
+
+<p>With <code>novel</code>, there is no automatic construction of a Title Page, because its original artistic design is important. Nothing says &ldquo;this book was written by someone who normally writes term papers instead of fiction&rdquo; more than a Title Page that looks like it belongs on a term paper. Don't be afraid to use stylish fonts that differ from whatever you are using for the main text, or create the title as an image.</p>
+
+<p>If you wish to use gray text, you will need the <code>graytext</code> class option. Without it, text will always be black. But don't use the option unless you really need gray text somewhere in your book. Grayscale images will be grayscale, whether or not you choose this option:</p>
+
+<p class="code"><code>\documentclass[graytext]{novel} <span class="ap">% do not use graytext unless needed</span></code></p>
+
+<p>Here are some commands that may be helpful for building your Title Page:</p>
+
+<p class="code"><code>
+\thispagestyle{empty} <span class="ap">% no header or footer</span><br>
+\vspace*{<em>length</em>} <span class="ap">% puts space at top</span><br>
+\charscale[<em>scale, position</em>]{<em>text</em>} <span class="ap">% changes text size and position</span><br>
+{\centering <em>one line of text</em>\par} <span class="ap">% centers text</span><br>
+\stake\hfill <em>text</em>\par <span class="ap">% pushes text to right</span><br>
+\InlineImage[<em>options</em>]{<em>file</em>} <span class="ap">% see separate docs page</span><br>
+\BlockImage[<em>options</em>]{<em>file</em>} <span class="ap">% see separate docs page</span><br>
+\vfill <span class="ap">% pushes following text to bottom of textblock</span>
+</code></p>
+
+<p>Below is a sample Title Page. The <code>\orbitron</code> command calls for the font Orbitron-Medium.otf, which is not part of the TeX distribution. The <code>\decoglyph</code> command calls fo a decorative element from the NovelDeco.otf font, which comes with the <code>novel</code> class. The length <code>\nbs</code> is the normal baseline skip of the book's main font. The <code>\stake</code> commands place an invisible zero-width reference point, for the use of adjacent commands. Here is the code:</p>
+
+
+<p class="code"><img class="floatright" src="html-resources/starsmash.png" width="263" height="410" alt="sample title page">
+<code><small>
+\clearpage<br>
+\thispagestyle{empty}<br>
+\vspace*{6\nbs}<br>
+\stake\hfill{\orbitron\charscale[3]{Star Smash}}\par<br>
+\vspace{0.4\nbs}<br>
+\noindent\charscale[3]{\decoglyph{r10059}}<br>
+\bigemdash[3.4,3]\stake\par<br>
+\vspace{0.4\nbs}<br>
+\stake\hfill{\orbitron\charscale[1.42]{A Sci-Fi Murder Mystery}}\par<br>
+\vspace{9\nbs}<br>
+\begin{center}<br>
+\charscale[4]{Dirk Hardcase}<br>
+\vfill<br>
+Meaningless Press\par<br>
+Eschwege • Merthyr Tydfil • Lethbridge\par<br>
+\end{center}<br>
+\clearpage
+</small></code></p>
+
+<p style="clear:both">Remember that you can also use black-and-white line art, or a grayscale image. You may find it easier to design all or part of your Title Page in a graphics program, export as <code>png</code> or <code>jpg</code>, and place the image. Be sure to read how this must be done in <code>novel</code> class, as the image requirements and commands are different from those used in other document classes.</p>
+
+
+<a id="a9.1.4"></a>
+<h4>9.1.4 Copyright Page</h4>
+
+<p>The Copyright Page will be page <code>iv</code>, number not printed. It is always the verso if the Title Page.</p>
+
+<p>This page should be styled differently from the main text. Typically, the vertical alignment leaves space at top. The final line may be at the bottom of the textblock. The text may be centered throughout (often used nowadays) or be left-aligned with ragged alignment instead of justification. The text will have one or both side margins increased, so that it does not occupy the full width of the textblock. Lines will not break with hyphenated words. All-uppercase words will be presented in small caps.</p>
+
+<p>If you have a service prepare a Cataloging-in-Print data block for you, the file will show two hyphens to mean an em dash, because that's how word processors do it. In TeX, use three dashes instead.</p>
+
+<p>Some commands useful on a Copyright Page:</p>
+
+<p class="code"><code>
+\thispagestyle{empty} <span class="ap">% no header or footer</span><br>
+\vspace*{<em>length</em>} <span class="ap">% creates vertical space</span><br>
+<span class="ap">% legalese: ragged lines, no hyphenation, no indent.</span><br>
+\begin{legalese} ... \end{legalese}<br>
+\begin{adjustwidth}{<em>left</em>}{<em>right</em>} ... \end{adjustwidth} <span class="ap">% reduces width</span><br>
+\begin{center} ... \end{center} <span class="ap">% if desired</span><br>
+\begin{parascale} ... \end{parascale} <span class="ap">% shrinks text</span><br>
+\itshape{<em>text</em>} <span class="ap">% italics, and can span paragraphs</span><br>
+\textsc{<em>text</em>} <span class="ap">% lowercase to small caps (uppercase still uppercase)</span><br>
+\allsmcp{<em>text</em>} <span class="ap">% uppercase and lowercase to small caps</span><br>
+\acronym{<em>text</em>} <span class="ap">% uppercase to medium caps</span><br>
+\lnum{<em>number</em>} <span class="ap">% lining numbers instead of old style</span><br>
+\_ <span class="ap">% when underscore is in a URL</span><br>
+\% <span class="ap">% when % is in a URL</span><br>
+\&amp; <span class="ap">% when &amp; is in a URL</span><br>
+</code></p>
+
+<p>You normally do not need to write a lot of things on a Copyright Page. But if your novel has a lot of real-world material, some of it may require acknowledgements and permissions. They may be placed on the Copyright Page. If everything almost fits, but not quite, you can shrink it using the <code>parascale</code> environment. However, do not shrink it too much, and don't fill the whole page like it was ordinary story text. When you have a lot of acknowledgements and permissions, move them to a separate section. If your book has a Preface (uncommon in fiction), perhaps put them there. Or, create a separate Acknowledgements section (also uncommon in fiction).</p>
+
+<p>If your book is print-on-demand, then be sure to comply with requirements for stating, or not stating, the publisher and place of printing. In print-on-demend, the publisher is you, not the printer or distribution service. For books with an international market, there may be more than one nation where it is printed.</p>
+
+<p>Here is a sample abbreviated Copyright Page, centered style. Note that in the image, the text is displaced slightly to the left, because this is a verso page, and the right margin includes an allowance for gutter.</p>
+
+<p class="code"><img class="floatright" style="padding-top:2em" src="html-resources/coprcen.png" width="265" height="406" alt="sample copyright page">
+<code><small>
+\clearpage<br>
+\thispagestyle{empty}<br>
+\vspace*{5\nbs}<br>
+\begin{center}<br>
+\itshape{<br>
+Copyright ©2017 Dirk Hardcase.\\<br>
+All Rights Reserved.\par<br>
+\null<br>
+This is a work of fiction.\\<br>
+All persons and events are imaginary.\\<br>
+Resemblance to any real persons or events\\<br>
+is entirely coincidental.\par<br>
+\null<br>
+Printed in the United States of America\\<br>
+on acid-free paper.\par<br>
+\null<br>
+\allsmcp{FIRST EDITION}, March 2017.\par<br>
+\null<br>
+\allsmcp{ISBN} 9-876-54321-0\par<br>
+\null<br>
+Published by Dirk Hardcase,\\<br>
+Anytown, U.S.A.\par<br>
+\null<br>
+Inquiries for Cataloging-in-Publication data\\<br>
+should be directed to the author's web site:\par<br>
+\null<br>
+http://example.com/bigdealauthor.html\par<br>
+} % end \itshape<br>
+\end{center}<br>
+\clearpage
+</small></code></p>
+
+<p>&nbsp;</p>
+
+<p style="clear:both">Sample abbreviated Copyright Page, alternative style. This style is more effective when there are more details, particularly if there is a complete Cataloging-in-Publication data block:</p>
+
+<p class="code"><img class="floatright" style="padding-top:2em" src="html-resources/coprbot.png" width="266" height="411" alt="sample copyright page">
+<code><small>
+\clearpage<br>
+\thispagestyle{empty}<br>
+\null\vfill<br>
+\begin{adjustwidth}{0em}{8em}<br>
+\begin{legalese}<br>
+Copyright ©2017 Dirk Hardcase.\\<br>
+All Rights Reserved.\par<br>
+\null<br>
+This is a work of fiction.\\<br>
+All persons and events are imaginary.\\<br>
+Resemblance to any real persons or events\\<br>
+is entirely coincidental.\par<br>
+\null<br>
+Printed in the United States of America\\<br>
+on acid-free paper.\par<br>
+\null<br>
+\allsmcp{FIRST EDITION}, March 2017.\par<br>
+\null<br>
+\allsmcp{ISBN} 9-876-54321-0\par<br>
+\null<br>
+Published by Dirk Hardcase,\\<br>
+Anytown, U.S.A.\par<br>
+\null<br>
+Inquiries for Cataloging-in-Publication data\\<br>
+should be directed to the author's web site:\par<br>
+http://example.com/bigdealauthor.html\par<br>
+\end{legalese}<br>
+\end{adjustwidth}<br>
+\clearpage
+</small></code></p>
+
+
+
+<a id="a9.1.5"></a>
+<h4>9.1.5 Other Display Pages</h4>
+
+<p>Most fictional works do not need other display pages. However, it is bad practice to go directly from the Copyright Page (verso) to the start of your story (recto). If you do not know what else to do, have a look at the Epigraph, below.</p>
+
+<a id="a9.1.5.1"></a>
+<p class="h5"><b>9.1.5.1 Dedication:</b> A Dedication is not required. But sadly, nowadays many authors write a Dedication, which is often frivolous and detracts from the book. If you feel that you need a Dedication, why not put it on your web site? Then you can always edit or remove it, if the subject or your affection runs off with someone else.</p>
+
+<p>If used, a Dedication is normally on page <code>v</code>, immediately following the Copyright Page. An exception might be if your work is a reprint of someone else's work, in which case you do not want the original author's Dedication to be interpreted as being your own.</p>
+
+<p><img class="floatright" src="html-resources/dedic.png" width="133" height="205" alt="sample dedication page"> Keep it simple. If your book is combat fiction, it might be:</p>
+
+<p class="code"><code><small>
+\clearpage<br>
+\thispagestyle{empty}<br>
+\vspace*{12\nbs}<br>
+\begin{center}<br>
+\charscale[1.25]{\textsc{To Those Who Served}}\par<br>
+\end{center}<br>
+\clearpage
+</small></code></p>
+
+
+<a id="a9.1.5.2"></a>
+<p class="h5"><b>9.1.5.2 Epigraph: OBSOLETE</b>
+
+<p style="color:#cc0000">Sometime between March and May 2017, either I changed something in the underlying code, or TeX changed something, that caused the Epigraph command to stop functioning. I have not been able to hunt it down yet. Unless and until you have a code version 1.3 or greater (current is 1.2), do not use the Epigraph command, and remove it from any prior documents. You can emulate it using the adjustwidth environment, and some other easy code.</p>
+
+<p>Not every book has an Epigraph page, but it is a very useful way to separate the Copyright Page from the beginning of your story, when you have nothing else to put in front matter. In this case, the Epigraph appears as page <code>v</code> (recto), usually with a blank verso, and then your story begins as main matter on the following recto.</p>
+
+<p>You can also include an Epigraph, even if your front matter has more material. An Epigraph may go on a recto or verso page. So, if you have Dedication (page <code>v</code>) you may place an Epigraph on page <code>vi</code>, if you wish; but it does not have to go there. It may even go on the final front matter page, facing the beginning of your story, provided that it is particularly well-suited to setting the mood, and is not distracting.</p>
+
+<p>The purpose of an Epigraph is to set the mood for your own story. Perhaps it will give a hint of the genre, or of the theme. Or it may be pretentious, by implying that your own work can be compared to the famous work cited. Or, the Epigraph may quote from a fictional work. For example, if your story is sword-and-sorcery set in ancient China, you might quote from the imaginary <em>Grimoire of Wong Dung</em>. You may even quote from your own book: J.R.R. Tolkien's Epigraph for each book of his <em>Lord of the Rings</em> trilogy was the longer form of the ring's inscription.</p>
+
+<p>Use the <code>adjustwidth</code> environment to center the Epigraph on the page, as a block that does not occupy the full width. If you do not need the text to be justified, the <code>legalese</code> environment will provide ragged lines without hyphenation. After the text, place the source of the quotation, right-justified, and perhaps preceded by an em dash. Whether you place only the name of the person quoted, or the title of the book quoted, or something else, is a matter of formal style; see what others have done. But keep in mind that you should not use a work currently under copyright for your Epigraph. Translations of older works may be copyrighted, because the translation is sufficiently recent!</p>
+
+<p>Here is a sample Epigraph, in which the fictional speaker appears as a character in the book. A glance at this, and you know where the story is headed:</p>
+
+<p class="code"><img class="floatright" src="html-resources/dorfmcnorf.png" width="131" height="208" alt="sample epigraph">
+<code><small>
+\clearpage<br>
+\thispagestyle{empty}<br>
+\vspace*{10\nbs}<br>
+\begin{adjustwidth}{7em}{7em}<br>
+Let me tell you, there's nothing more exciting than the brouhaha at Mickey's Pub each Saturday night in April.\par<br>
+\stake\hfill---Dorf McNorf\par<br>
+\end{adjustwidth}<br>
+\clearpage
+</small></code></p>
+
+<p style="clear:both; margin-top:1em;">The <code>novel</code> class also provides its own <code>Epigraph</code> (not the capital E) command:</p>
+
+<p class="code"><code>\Epigraph[<em>alignment,scale,width</em>]{<em>text</em>}</code></p>
+
+<p>The optional <em>alignment</em> may be one of <code>l</code>, <code>c</code>, or <code>r</code>, which stand for left, center, right. Default is <code>c</code>. This is the horizontal alignment of the epigraph block <em>as a block</em>, not the alignment of the lines within the epigraph.<p>
+
+<p>Within the Epigraph block, alignments <code>l</code> and <code>c</code> produce left-alignment of the lines, with ragged right ends. Alignment <code>r</code> produces right-alignment of the lines, with ragged left ends.</p>
+
+<p>There is no particular width to the Epigraph block. If you write a line that is too long, it will not wrap, but will flow into the page margin. Use <code>\\</code> (not <code>\par</code>) to manually break lines.</p>
+
+<p>Exception: The final line, typically an attribution, should <em>not</em> end in <code>\\</code>. It may be without a closure. But if the final line does not end in punctuation, it may be very slightly to the right of its correct position. In this case, ending the line with <code>\par</code> tweaks it.</p>
+
+<p>In the unlikely event that you need to use the ampersand, be sure to write it as <code>\&amp;</code> rather than as mere <code>&amp;</code>.</p>
+
+<p>There is no provision for horizontal lines, or other styling used by academics.</p>
+
+<p>Here is an example, which will be horizontally centered on its page. For typical text size on 5.5"x8.5" Trim Size, the Epigraph will be slightly above the middle of the page, and occupy about 50% of the textblock width.</p>
+
+<p>Note that I subsequently added the black border during image editing; it is not part of the Epigraph.</p>
+
+<p class="code"><img class="floatright" src="html-resources/epigrcom.png" width="131" height="204" alt="Epigraph page">
+<code><small>
+\thispagestyle{empty} % no header or footer<br>
+\vspace*{10\nbs} % for vertical position<br>
+<img class="floatright" src="html-resources/epibjorn.png" width="265" height="91" alt="Epigraph text">
+\Epigraph[c]{<span class="ap">% percent prevents newline</span><br>
+When sacred swallows sound at dawn,\\<br>
+And eager eagles eye their prey,\\<br>
+Then shall Shan-Sun wreak revenge.\\<br>
+\hfill---Book of Bjorn\par<br>
+} % end of Epigraph
+</small></code></p>
+
+<p>An Epigraph like that tells you something about what to expect in the book. Actually, it tells you to expect about 350 pages of badly-written prose, interspersed with badly-written poetry. You can do better than that.</p>
+
+<p>Note that the Epigraph command may also be used inside the <code>ChapterStart</code> environment, as described farther down this page.</p>
+
+
+<a id="a9.1.5.3"></a>
+<p class="h5"><b>9.1.5.3 Table of Contents:</b> Do not place a table of contents just because you can. A table of contents is more useful when the story consists of discrete episodes with distinctive names, not just numbers. Or, if the book is a collection of short stories, a table of contents is mandatory. When a story is an &ldquo;action adventure,&rdquo; in which short chapters move along in rapid succession, a table of contents would be unusual.</p>
+
+<p>If you use a Table of Contents, it must be on a recto page. That would be page <code>v</code> if your book has no Dedication or Epigraph, or page <code>vii</code> if it has one or both of them.</p>
+
+<p>The Table of Contents does not include itself or anything preceding. If the front matter has textual sections such as Foreword, Preface, or Author's Intoduction, they are listed in the table (and will have lowercase roman numerals). In fiction, you might have at most one or two maps, which may be listed in the Table of Contents, rather than in a separate list of Illustrations.</p>
+
+<p>If your book has Part Separators (described lower on this page), then each Part Separator is listed in the table, but its page number is <em>not</em> provided unless the separator has a meaningful amount of text. So, <span class="apdk">&ldquo;PART I. IN THE CASTLE&rdquo;</span> would not have its page number listed in the table. However, <span class="apdk">&ldquo;PART I. IN THE CASTLE. We begin our story in Castle McNada, where there has been an altercation between Lord Withens and Sir Nadie regarding the disposition of the gnomes.&rdquo;</span> provides enough information to deserve its page number in the table. Use your discretion.</p>
+
+<p>In most fiction, the first entry in a Table of Contents will be the first chapter of the story, which will be on page 1, or in some cases, page 3.</p>
+
+<p><b>toc environment:</b> Avoid any of the table environments that come with TeX or its packages. These do not provide the most attractive presentation for fiction, without a lot of work on your part. With <code>novel</code> you have an environment defined specifically to meet the needs of fiction:</p>
+
+<p class="code"><code>\begin{toc}[<em>extra entry separation</em>]{<em>extra margins</em>} <em>...</em> \end{toc}</code></p>
+
+<p>The <code>toc</code> is not indented, and text within it is not indented.</p>
+
+<p>&bull; The optional argument is a number. It is the portion of normal baselineskip that will be added beneath each <code>\tocitem</code> entry (see next section). Default is <code>0</code>, meaning that there is no extra skip between items, and normal baselineskip is maintained. A value greater than <code>0</code> spreads the entries, which could be attractive if there are only a few chapters and you'd like to use more space on the page. For example, a value of <code>0.25</code> means that a gap of 0.25 normal baselineskip will be added beneath each entry. A small negative value will crowd the lines together, but there is a limit (approximately <code>-0.1</code>) before the lines cannot be squeezed any tighter.</p>
+
+<p>Note that the optional argument only applies to <code>\tocitem</code> entries, not to any other text within the environment.</p>
+
+<p>&bull; The required argument is a length, which will be the amount of extra margin added at left and right of the table (using <code>adjustwidth</code>). A value of <code>0pt</code> allows the table to occupy the full width of the textblock. A value of <code>2em</code> adds 2em to the margin on each side, so that the width of the table is 4em less than the width of the textblock.</p>
+<p>Note that it is best to specify horizontal lengths, within the textblock, in units of <code>em</code> or the proportional <code>\parindent</code> or <code>\textwidth</code>.</p>
+
+<p>Typically, the label for the <code>toc</code> will not be as bland as "Table of Contents" or even "Contents." One possibility is to use the book's title (and subtitle, if any). You can add a graphic element or a short remark, if you wish.</p>
+
+<p>In most cases, the table's title should not be placed where the first line of text would normally appear. This is because a fictional table of contents rarely fills the page, so it is more attractive to allow some space at top. Another reason is that if you use the <code>\charscale</code> command to increase the size of the topmost text, it will infringe the top margin, unless you provide at least one line of space above it. The <code>\vspace*{<em>length</em>}</code> command is best for this purpose.</p>
+
+<p><b>\tocitem:</b> The <code>\tocitem</code> command, and its starred version, are used for individual entries in the TOC environment. Do not use this command for general text that is not linked to a page number.</p>
+
+<p class="code"><code>\tocitem[<em>chapter number</em>]{<em>description</em>}{<em>page number</em>} and starred version</code></p>
+
+<p>&bull; The optional argument is the chapter number, at most two digits. The number will be left-aligned, with a period automatically added. Following the period will be the amount of space needed to keep the following description aligned.</p>
+<p>If the optional argument is omitted (or empty), then there is no space, and the following description will align to the left of the table.</p>
+<p>If the optional argument is the tilde character <code>~</code> then no number or period is printed, but the space is occupied, so that the following description aligns as if you had entered a chapter number.</p>
+<p>&bull; The description is usually the chapter title. If it cannot easily fit on one line, then use an additional <code>\tocitem</code>, because the text cannot be wrapped. The following example shows how this can be done.</p>
+<p>&bull; Without the asterisk, <code>\tocitem</code> fills the area between the description and the page number with empty space. The starred <code>\tocitem*</code> command fills with a dotted line, and is very attractive.</p>
+<p>You may use ordinary style commands, such as <code>\emph{}</code>, in the entries.</p>
+
+<p><b>Example of toc:</b> The use of the <code>toc</code> environment, and the <code>\tocitem</code> commands, are easily understood by looking at an example. The border of the image is where the normal page margins would be (the actual page is larger). The little explanation at top happens to exactly fit the table width, because I tweaked the text and the width until it fit!</p>
+
+<p class="code" style="text-indent:0px; font-size:small"><img class="floatright" src="html-resources/toc.png" width="317" height="490" alt="toc example">
+<code>
+\clearpage<br>
+\thispagestyle{empty}<br>
+\begin{toc}[0.25]{3em}<br>
+\vspace*{4\nbs}<br>
+{\centering\charscale[1.25]{The Withens Retaliation}\par}<br>
+\null<br>
+In which Lord Withens, fresh from a program in horticulture, unleashes secret desires on the garden.\par<br>
+\null\null<br>
+\tocitem*[1]{The Evil Weeds}{1}<br>
+\tocitem*[2]{A Plan of Attack}{14}<br>
+\tocitem*[3]{Lady Withens Objects}{35}<br>
+\tocitem*[4]{Back-Hoe to the Rescue}{48}<br>
+\tocitem[5]{Invasion of the Dandelions}{}<br>
+\tocitem*[~]{\emph{Interlude}}{63}<br>
+\tocitem*[6]{Army of the Gardeners}{94}<br>
+\tocitem*[7]{Too Much Rain}{113}<br>
+\tocitem*[8]{To Nuke, or Not to Nuke?}{145}<br>
+\tocitem*[9]{Revenge of the Zucchini}{162}<br>
+\tocitem*[10]{Lady Withens Sneezes}{180}<br>
+\tocitem*[11]{The Concrete Lawn}{206}<br>
+\end{toc}<br>
+\clearpage 
+</code>
+</p>
+
+
+
+<a id="a9.1.5.4"></a>
+<p class="h5"><b>9.1.5.4 Part Separator:</b> A <em>Part Separator</em> is a recto page marking an abrupt change between very different portions of the book. Ordinary new chapters are <em>not</em> Part Separators. Many books have no need of Part Separators.</p>
+
+<p>One kind of Part Separator is the &ldquo;Inner Half-Title&rdquo;. This is a recto duplicate of the Half-Title page. It may appear in these situations: (a) You need to put something between the Copyright Page and the start of the story, but you do not want to put anything else there. (b) The front matter has a Foreword or Preface, or other material that takes up a number of pages, and you wish to provide a visual separation between the front matter and the main matter.</p>
+
+<p>The other kind of Part Separator is, as you might guess, a means to separate parts of the book. For example, if your book consists of two novellas, then each novella would have its own Part Separator, being a simplified title page for the following story. Or, if you wish to suggest an interruption in the flow of a single story, you might divide it using Part Separators. An example is each book in J.R.R. Tolkien's <em>Lord of the Rings</em> trilogy, in which each bound book is partitioned into two sub-books.</p>
+
+<p>A Part Separator is part of main matter, and has an arabic page number. However, the page number is not printed (possible exception if the separator also contains substantial text, by way of introduction). Thus, the first Part Separator would be page <code>1</code>, and its story would begin on page <code>3</code>. Wihout a Part Separator, the story would begin on page <code>1</code>.
+
+<p class="code"><img class="floatright" src="html-resources/partsep.png" width="134" height="202" alt="part separator">
+<code><small>
+\clearpage<br>
+<span class="ap">% \mainmatter % if needed to begin at page 1</span><br>
+\thispagestyle{empty}<br>
+\vspace*{10\nbs}<br>
+% the tilde provides better separation:<br>
+{\centering\charscale[2]{PART~ I}\par}<br>
+\clearpage
+</small></code></p>
+
+<p>The verso of a Part Separator is usually blank. But you could put a map there, or an Epigraph. It's up to you.</p>
+
+
+<a id="a9.1.5.5"></a>
+<p class="h5"><b>9.1.5.5 Map or Other Illustration:</b> A map, or other illustration, is simply a large image. It must be prepared at 100% scale and actual resolution, according to the detailed requirements described on that documentation page.</p>
+
+<p>Since a (fictional) map is part of the story, it belongs in main matter rather than in front matter. But where you put is is up to you.</p>
+
+<p>A map or illustration may be verso or recto.</p>
+
+
+
+
+<a id="a9.2"></a>
+<h3>9.2 Start Pages: General</h3>
+
+<p>Start pages begin a section that may continue to additional pages. The key word is "may." A section may be so brief that its start page is its only page.</p>
+
+
+<a id="a9.2.1"></a>
+<h4>9.2.1 \thispagestyle{<em>choose</em>}</h4>
+
+<p>A start page does not have a header. But if the normal page layout has a footer, then a start page will also have the footer. Thus, the page number (folio) will be printed on a start page, or not, depending on whether or not the normal layout has a footer. This is controlled by the following command:</p>
+
+<p class="code"><code>\thispagestyle{footer}</code></p>
+
+<p>The above code actually means, &ldquo;footer, if normally available.&rdquo; It does not create a footer that would not otherwise be present in your general book layout.</p>
+
+<p>The <code>novel</code> document class has an additional capability. On a start page, you may create a temporary footer containing just the page number. There are two ways to do that:
+
+<p class="code"><code>\thispagestyle{dropfolioinside}</code></p>
+
+<p>When you drop the folio (page number) <em>inside</em>, you reduce the height of the text block by one line, just on that page. The line that would have been the last one there, is moved to the top of the following page. However, if this command is used on a <code>ChapterStart</code> page (see below), then instead of moving that line, the space occupied by the chapter title block is reduced, so that it is not necessary to flow the line to the following page.</p>
+
+<p>Then, the page number is centered where the last line of text would have been placed.</p>
+
+<p>The following image shows three pages of a Foreword, from a book that uses header but no footer. On its start page, the folio has been dropped inside. Color added for illustration.</p>
+
+<p class="centerimg"><img src="html-resources/dfi.png" width="534" height="267" alt="example of inside drop folio"></p>
+
+<p class="code"><code>\thispagestyle{dropfoliobeneath}</code></p>
+
+<p>When you drop the folio <em>beneath</em>, you do not change the height of the textblock. Instead, you place the page number centered where one additional line of text would be. Thus, the number sits within the bottom margin. This is allowable if the width of the bottom margin exceeds the minimum clearance required by the printer. However, if you do not have the excess margin, do not use this command.</p>
+
+<p>In <em>very rare cases</em>, which I have only seen in some non-fiction, the book has a header but no footer, and its start pages must show the page number (but not text) in the header. There is a command for that:</p>
+
+<p class="code"><code>\thispagestyle{forcenumber}</code></p>
+
+<p>With <em>forcenumber</em>, if a footer exists it will be used. Otherwise, the command assumes that the page number is at the outside margin of a header, and allows only that portion to print. Do not use the above command, unless you really need it.</p>
+
+
+<a id="a9.2.2"></a>
+<h4>\SetVersoHeadText{<em>new~verso~head</em>} &nbsp; \SetRectoHeadText{<em>new~recto~head</em>}</h4>
+
+<p>These commands only apply if you chose a header/footer style that includes text in the header. They will not throw an error if you use them with other header/footer styles; but they will have no effect.</p>
+
+<p>When your document begins, <code>novel</code> automatically places the author as verso header text, and the title as recto header text. They will appear on all pages that have a visible header (but not on pages where <code>\thispagestyle</code> blanks the header). This is the norm for many works o fiction.</p>
+
+<p>However, there are occasions when something else should appear in the header text. If your book has a Foreword, Preface, or similar section in its front matter, you do not use the author and title there. Instead, you simply place the section title (Foreword, Preface, or whatever) both verso and recto. The reasons are simple: (a) The front matter is not actually part of the story, and (b) It might have been written by someone other than the author.</p>
+
+<p>In the main matter, you might prefer that the chapter title (or story title, if short stories) appear instead of the author or book title. Or maybe something else. It is up to you, <em>but</em> be aware that some print services object to headers that change from place to place, as it creates the impression that portions of several different books are being assembled in error.</p>
+
+<p>Only use <code>\SetVersoHeadText</code> or <code>\SetRectoHeadText</code> following <code>\clearpage</code>. The effect will be applied immediately, and continue indefinitely, until the commands are re-issued.</p>
+
+<p>In the header text, use tilde rather than space to separate words. This improves the inter-word spacing. Perhaps at some future time this will not be necessary.</p>
+
+<p>The header text will appear in the font chosen as <code>headerfont</code>. You may over-ride that with a local font command. The text may be styled with commands such as <code>\textsc</code> or <code>\textls</code> or <code>\emph</code> if desired. Do not use underline or bold.</p>
+
+<p><img class="floatright" src="html-resources/preface.png" width="259" height="820" alt="example preface"> Here is an example, where the author wrote a Preface several pages long, and the book layout uses a header. The <code>ChapterStart</code> environment is used, but this is not a requirement. The <code>lipsum</code> package was used for text fill:</p>
+
+<p class="code"><code><small>
+\clearpage<br>
+\thispagestyle{footer} <span class="ap">% or dropfolioinside or dropfoliobeneath</span><br>
+\SetVersoHeadText{\textsc{Preface}}<br>
+\SetRectoHeadText{\textsc{Preface}}<br>
+\begin{ChapterStart}<br>
+\vspace*{2\nbs}<br>
+\ChapterTitle{Preface}<br>
+\end{ChapterStart}<br>
+The inspiration for this book...\par<br>
+\lipsum<br>
+But while I was held captive...\par<br>
+\lipsum<br>
+Clawing my way to the sunlight...\par<br>
+\lipsum<br>
+... And I hope you will enjoy it.\par<br>
+\null<br>
+\stake\hfill Dirk Hardcase.\par<br>
+\stake\hfill Springfield, March 14, 2017\par<br>
+\clearpage<br>
+<span class="ap">% Be sure to re-set the head texts now!</span>
+</small></code></p>
+
+
+
+<a id="a9.3"></a>
+<h4>9.3 Start Pages in Front Matter: Foreword, Preface, etc.</h4>
+
+<p>In most cases, a work of fiction will have no <em>start pages</em> in front matter. To put that another way, the front matter will consist entirely of <em>display pages</em>, as I have defined these terms. Example: Page i is the Half-Title; ii is blank; iii is the Title; iv is the Copyright; v is a Dedication, Epigraph, Table of Contents, Map, or duplicate Half-Title; vi is blank. That's all the front matter you need.</p>
+
+<p>However, if your book has a Foreword, Preface, Introduction, separate Acknowledgements, or similar section in front matter, then each begins with a recto start page. This is the case, even if the section is merely one page. If the section has an odd number of pages, then a blank page is inserted after it, so that the next section begins recto. Thus, if you have several sections like that, there will be several blank pages here and there, creating the impression that your book was padded. Solution: Edit!</p>
+
+<p>A potential problem arises when your book is of the &ldquo;discovered lost manuscript&rdquo; genre: The author pretends to be an archaeologist or professor who has discovered or translated a manuscript, or ancient inscriptions. In some cases, there may be more than one discoverer/translator involved. The author may even use his or her real name, in a fictional introduction. So, should the &ldquo;archaeologist's&rdquo; tale of discovery be in front matter, where it would be if it were a true academic work? Or should it belong in main matter, because it is fictional? Same with the &ldquo;translator's&rdquo; notes, and author's own introduction. My understanding of the <em>Chicago Manual of Style</em> (hardcover 16.ed., items 1.42, 1.46) is that it all belongs in main matter. But in established, printed fiction I have seen it both ways.</p>
+
+
+
+<a id="a9.4"></a>
+<h4>9.4 Start Pages in Main Matter: New Chapters</h4>
+
+<p>In the main matter of most books, the only start pages are new chapters. Actually, I cannot think of an exception to this. Remember that Part Separators are (usually) treated as display pages. Maps are always display pages, unless they are so small that they fit on a page with continued text.</p>
+
+<p>If your novel consists of chapters that begin on their own page, or if your book is a collection of stories, then you should use the <code>ChapterStart</code> environment to enclose the block of text (and possibly image) that starts each new chapter.</p>
+
+<p>You may place almost anything you like at the beginning of new chapters, but in reality there are only a limited number of useful things. The <code>novel</code> class has special commands for handling them, especially for the needs of fiction.</p>
+
+<p>If your book is actually a quick succession of many short chapters, then it might be better to treat them as scenes. See the scene commands, lower on this page.</p>
+
+
+<a id="a9.4.1"></a>
+<h4>9.4.1 \SetChapterStart{<em>pagestyle</em>}</h4>
+
+<p>When you use the <code>ChapterStart</code> environment, described below, it will use <code>\thispagestyle{footer}</code> by default. That is, no header will be printed on that page. If the book layout normally has a footer, it will be displayed (and thus the page number, which is in the footer, will be shown). But if there is normally no footer, no page number will be shown, so the default is equivalent to <code>\thispagestyle{empty}</code>.</p>
+
+<p>You can globally change the default behavior, with this Preamble command:</p>
+
+<p class="code"><code>\SetChapterStart{<em>some other choice of pagestyle</em>}</code></p>
+
+<p>Other choices of pagestyle are <code>dropfolioinside</code>, <code>dropfoliobeneath</code>, or very rarely <code>forcenumber</code>.</p>
+
+
+<a id="a9.4.2"></a>
+<h4>9.4.2 \begin{<em>ChapterStart</em>}[<em>lines</em>] <em>...</em> \end{<em>ChapterStart</em>}</h4>
+
+<p>The <code>ChapterStart</code> environment reserves a block of space at the top of the textblock. The same space is reserved, no matter how much or how little content you put inside. The optional argument sets the number of lines displaced by the block. Its default is 10, minimum 4.</p>
+
+<p>You will need to use <code>\clearpage</code> prior to each <code>ChapterStart</code>.</p>
+
+<p>If you put a lot of material inside <code>ChapterStart</code>, it will not push the story farther down the page. Instead, the material inside the <code>ChapterStart</code> will overflow the reserved area, and mingle with the text below. Normally this is very undesirable. However, it might be attractive, if your <code>ChapterStart</code> contains an image that you wish to dangle underneath the following text.</p>
+
+<p>For a particular chapter, if you wish to use a page style that differs from the one specified by <code>\SetChapterStart</code>, then you must put the <code>\thispageStyle</code> command <em>before</em> <code>\begin{ChapterStart}</code>.</p>
+
+<p>If you are using symbolic footnote markers, each <code>ChapterStart</code> re-sets the symbols.</p>
+
+<p>The first line of main text, following <code>ChapterStart</code>, will not be indented.</p>
+
+
+<a id="a9.4.3"></a>
+<h4>9.4.3 Pre-Styled Chapter Title Commands</h4>
+
+<p>Several commands are specifically designed for use inside the <code>ChapterStart</code> environment. If you use them anywhere else, then the text line grid will be disturbed. So, don't do that, with the possible exception of display pages where the line grid does not matter.</p>
+
+<p>Each of these commands may only be used for a single line of contents. If the contents cannot fit on a single line, then you must manually break and issue the command twice. The commands may be used in any order, may be used more than once, or not at all.</p>
+
+<a id="a9.4.3.1"></a>
+<p class="h5"><img class="floatright" style="margin-top:40px;" src="html-resources/chapst.png" width="263" height="409" alt="example chapter start">
+<b>9.4.3.1\ChapterTitle{<em>text</em>}</b> sets its text using <code>chapterfont</code>. The default is the main font scaled 1.6, with lining numbers.</p>
+
+<a id="a9.4.3.2"></a>
+<p class="h5" style="clear:none"><b>9.4.3.2\ChapterSubtitle{<em>text</em>}</b> sets its text using <code>subchfont</code>. The default is the main font scaled 1.2, with lining numbers.</p>
+
+<a id="a9.4.3.3"></a>
+<p class="h5" style="clear:none"><b>9.4.3.3\ChapterDeco[<em>scale</em>]{<em>text</em>}</b> does not commit to its contents. Typically a decoration will be used, perhaps from <code>decofont</code>. The optional argument is a scale factor to be applied to the required argument. Many horizontal decorations need to be magnified.</p>
+
+<p style="margin-top:20px">Example, where <code>\clearpage</code> and <code>\mainmatter</code> were already issued:</p>
+
+<p class="code"><code><small>
+\thispagestyle{dropfolioinside}<br>
+\begin{ChapterStart} <span class="ap">% default 10 lines</span><br>
+  \null <span class="ap">% for positioning title</span><br>
+  \ChapterTitle{Prologue}<br>
+  \ChapterDeco[4]{\decoglyph{r9548}}<br>
+  \ChapterSubtitle{The Finding of the Manuscript}<br>
+\end{ChapterStart}<br>
+<span class="ap">% then the main text</span>
+</small></code></p>
+
+
+<a id="a9.4.4"></a>
+<h4>9.4.4 ChapterStart With Image</h4>
+
+<p>You can use an image in chapter titles. If you place an image, use one of the image commands defined by <code>novel</code> elsewhere in the documentation. Any other method is likely to push the following text off-grid.</p>
+
+<p>Be sure that you are licensed to use the image. Many clipart catalogs "for personal use only," prohibit usage in commercial books. One possible source is <a href="http://openclipart.org" rel="external" target="new">openclipart.org</a> (note the <em>.org</em>).</p>
+
+
+<a id="a9.4.4.1"></a>
+<p class="h5"><img class="floatright" src="html-resources/ctimg35.png" width="79" height="196" alt="example of chapter title image, text over"><b>9.4.4.1 Text Over Image:</b> You may position text over an image. Be aware that overlapping text and graphics may be interpreted as a mistake, by human reviewers. It is best to use black text, or grayscale text that is much darker than the underlying image. Results are uncertain if you try to place light text over a dark image.</p>
+
+<p>Example, where the command <code>\unifrac</code> calls for the font UnifrakturMaguntia.ttf. Note that the font command is <em>outside</em> <code>\charscale</code>:</p>
+
+<p class="code"><code><small>\begin{ChapterStart}<br>
+\BlockImage{sword.png} <span class="ap">% centered by default</span><br>
+{\unifrak\centering\charscale[3,0pt,4\nbs]{35}\par}<br>
+</small>\end{ChapterStart}</code></p>
+
+
+<a id="a9.4.4.2"></a>
+<p class="h5"><b>9.4.4.2 Text as Part of Image:</b> If the text is not ordinary black, or not much darker than the background image, then it is better to include the text as part of the raster image. The reason is that there is no "white ink." Although light text over a dark image will appear correctly in PDF, and print that way on most printers, there are exceptions. If in doubt, ask your print service. In this example, the number is built into the image itself:</p>
+
+<p class="code"><img class="floatright" src="html-resources/smfingerprint8.png" width="86" height="70" alt="example of chapter title image, raster text"><code><small>\begin{ChapterStart}<br>
+\BlockImage[l]{smfingerprint8.png}<br>
+\end{ChapterStart}</small></code></p>
+
+
+
+<a id="a9.5"></a>
+<h3>9.5 Continued Pages</h3>
+
+<p>I define <em>continued page</em> to mean a page that has a noticeable break, but without necessarily starting another page. Thus, the <code>\clearpage</code> and <code>\thispagestyle</code> commands are not used, and it is uncommon to change header text.</p>
+
+
+<a id="a9.5.1"></a>
+<h4>9.5.1 \QuickChapter[<em>linelength</em>]{<em>chapter title</em>}</h4>
+
+<p>If your novel is the kind of story that consists of numerous short chapters in rapid succession, then you probably do not wish to begin each chapter on its own page, with a block of whitespace at the top. The <code>\QuickChapter</code> command provides an alternative to <code>ChapterStart</code>.</p>
+
+<p>The <code>\QuickChapter</code> command inserts two blank lines. In the gap, the chapter title is left-justified using <code>subchfont</code> (not <code>chapterfont</code>). It is slightly raised from the normal baseline, because this looks better; but the following text is back on-grid. The start of the following text will be un-indented.</p>
+
+<p>If the optional <code>linelength</code> is provided, then a dash will be written after the title, at the position and thickness typical of the em dash in <code>subchfont</code>. If <code>linelength</code> is specified in units of length, then that will be the length of the line. But if <code>linelength</code> is an asterisk, then the line will fill to the right margin.</p>
+
+<p>Note that this command is too obstrusive for mere scene changes within a chapter.</p>
+
+<p>Example:</p>
+
+<p class="code"><code><small>Then he looked at me with a sneer, and barked, ``You better haul your can over to Vinny's joint, before the Boss finds out.''\par<br>
+\QuickChapter[3em]{16. At Vinny's}<br>
+So I took his advice, and hauled my can over to Vinny's. It was everything I had expected, and worse.\par<br>
+The bouncer wasn't the biggest one I'd ever seen, but he was the ugliest. ...</small></code></p>
+
+<p class="centerimg"><img src="html-resources/quickchapter.png" width="629" height="240" alt="quick chapter"></p>
+
+
+<a id="a9.5.2"></a>
+<h4>9.5.2 Scene Breaks</h4>
+
+<p>There are several commands dedicated to the purpose of scene breaks.</p>
+
+<a id="a9.5.2.1"></a>
+<p class="h5"><b>9.5.2.1 \scenebreak</b> inserts a one-line blank skip. The following line of text is not indented.</p>
+
+<a id="a9.5.2.2"></a>
+<p class="h5"><b>9.5.2.2 \sceneline</b> inserts a one-line skip, containing a short centered line. The following line of text is not indented.</p>
+
+<a id="a9.5.2.3"></a>
+<p class="h5"><b>9.5.2.3 \scenestars</b> inserts a one-line skip, containing three spaced, centered asterisks. The following line of text is not indented.</p>
+
+<p style="margin-top:20px">Examples:</p>
+
+<p class="code"><img style="float:right; margin-left:16px;" src="html-resources/scenebreaks.png" width="331" height="236" alt="scene breaks" >
+<code><small>
+\noindent It was a dark and stormy night.\par<br>
+Lord Withens, the last of his line, hurried through the gloom to Castle McWhistle, where Lady McWhistle awaited.\par<br>
+\scenebreak<br>
+Well, maybe it was not very dark.\par<br>
+But to Lord Withens, it seemed dark enough. Or rather, he hoped it was dark enough. Lord McWhistle was suspicious.\par<br>
+\sceneline<br>
+Actually, it was not all that stormy, either. But the Withens clan never tolerated drizzle, much less a storm.\par<br>
+Who could blame them? It's not like they lived in Italy.\par<br>
+\scenestars<br>
+Ah, such ill fortune haunted the Withens!\par<br>
+Unfortunately, novelists of that era had so little to write about, or they would have chosen another family to pursue.\par
+</small></code></p>
+
+
+
+<a id="a9.5.3"></a>
+<h4>9.5.3 \IndentAfterScenebreak</h4>
+
+<p>This global command may only be used in the Preamble.</p>
+<p>Normally, text begins without a paragraph indent, at each new scene. This is standard in fiction. If you prefer that each new scene begins indented, use this command. It works with <code>\scenebreak</code>, <code>\sceneline</code>, and <code>\scenestars</code>.</p>
+
+
+
+<a id="a9.6"></a>
+<h3>9.6 Footnotes</h3>
+
+<p>This document class has <em>limited</em> support for footnotes, because footnotes are hardly ever used in original fiction. Nevertheless, they do appear on occasion.</p>
+<p>Footnotes appear at the bottom of the page where they are placed. There is no option to accumulate them to another location. Very long footnotes might straddle pages, but that situation is uncommon in fiction.</p>
+<p>If you have a lot of footnotes, consider endnotes instead. Both may be used.</p>
+
+
+<a id="a9.6.1"></a>
+<h4>9.6.1 \SetMarkers[<em>real,fake</em>]{<em>asterisk, dagger, number</em>}</h4>
+
+<p>This command is used only in the Preamble.</p>
+<p>A "marker" is a superscript or subscript, however used. Thus, a footnote or endnote is indicated by a marker in the main text (but not in the footnote or endnote itself).</p>
+<p>Most book-quality Open Type fonts have markers in style sets (sups, sinf, subs). In professional fonts, the marker glyph weights are adjusted for consisent appearance compared to ordinary glyphs. However, many free fonts do not adjust marker glyph weights, so the markers may appear too small, or too light.</p>
+<p>The option <code>real</code> (default) attempts to use the Open Type feature <em>sups</em> for superscripts, and the feature <em>sinf</em> (preferred) or <em>subs</em> (alternate) for subscripts. If the requested feature is not available, then it will be faked, by scaling/raising/lowering ordinary characters from the basefont (lining numerals will be used).</p>
+<p>Option <code>fake</code> ignores whether the Open Type features are available, and simply fakes them.</p>
+<p>Thus, you may choose whether real or fake markers look better, depending on the font you are using. What looks better in one font may not look better in another.</p>
+<p>The required argument applies only to markers created by the <code>\footnote</code> command. It does not apply to endnotes, or to manually placed superscripts and subscripts.</p>
+<p><code>asterisk</code> (default) uses symbolic footnote markers. The symbols rotate in order * † ‡ § ** †† ‡‡ §§ until reset.</p>
+<p><code>dagger</code> uses symbolic footnote markers, but without asterisks. The symbols rotate in order † ‡ § †† ‡‡ §§ until reset.</p>
+<p><code>number</code> uses numerical markers. Due to possible conflict, the log file will have a "Big Bad Warning" if you use a numerical footnote marker in a document that also has endnotes, since endnotes alays have numerical markers.</p>
+
+
+<a id="a9.6.2"></a>
+<h4>9.6.2 \realmarker &nbsp; \fakemarker</h4>
+
+<p>Within the body of the document, you may use <code>\realmarker</code> and <code>\fakemarker</code> to change your preference. The choice remains in effect until you change it again.</p>
+<p>The option real/fake applies wherever superscripts or subscripts are used, not just for footnotes or endnotes.</p>
+
+
+<a id="a9.6.3"></a>
+<h4>9.6.3 \footnote[<em>option</em>]{<em>text</em>}</h4>
+<p>The <code>\footnote{<em>text</em>}</code> command places a "marker" at the place where the command is written. The included text is written at the bottom of the page, beneath a short line that separates it from the main text. The footnote text is at smaller size and line skip, and has the same marker placed before it. All of this is automatic.</p>
+<p>You may, if necessary, apply some style to the footnote text. For example, if you are referring to another work, its title might be in italics.</p>
+<p>Normally, no option is used. If you use option <code>0</code> (zero) then no marker will appear in the main text, and the footnote text will appear without a marker. The count of markers is not incremented. This applies whether the markers are numbers or symbols.</p>
+<p>&bull; Trick: If you are using footnote numbers, but wish to place a special footnote using a symbol, you can do it manually. For example:</p>
+<p class="code"><code>He blinked.*\footnote[0]{* No, he didn't.}</code></p>
+<p>&bull; Avoid use of underlining, as it is considered bad style, due to visual distraction.</p>
+
+
+
+<a id="a9.7"></a>
+<h3>9.7 Endnotes</h3>
+
+<p>Endnotes are sometimes used in fiction, particularly for the kind of novel that pretends to be a lost manuscript, or the translation of an ancient text.  The endnotes, by the fictional discoverer or translator, pretend to be an academic discussion of items in the main story. Unlike footnotes, which show quick points that must be immediately known by the reader during the story, endnotes are often a disguised chapter in themselves.</p>
+
+<p>You may use both footnotes and endnotes, if you wish. However, if endnotes are used, then footnotes must be marked by symbols, rather than by numbers, to avoid confusion. The counts for endnotes and footnotes are independent.</p>
+
+
+<a id="a9.7.1"></a>
+<h4>9.7.1 \endnote</h4>
+<p>The <code>\endnote</code> command inserts a superior number in the text. A running count of the numbers is automatically updated.</p>
+<p>The endnote numbers run continuously through the text, without reset. If you wish to reset the count (perhaps at new chapters), you have to do it manually, using <code>\ResetEndnote</code>.
+<p>When you use <code>\endnote</code> there is no provision for the actual note. If you wish to write a reminder to yourself, about why you put an endnote marker there, use <code>\memo{}</code>. The argument of <code>\memo</code> will not be printed, and will not be remembered for later use.</p>
+
+
+<a id="a9.7.2"></a>
+<h4>9.7.2 \endnotetext{<em>number</em>}{<em>text</em>}</h4>
+
+<p>The <code>\endnotetext</code> command is a simple way of styling endnotes. You do not have to use it, if you have your own method.</p>
+<p>The first argument is usually the endnote number. A period and following space will automatically be added, so that the text of the note is block-indented. You may use <code>\emph{<em>number</em>}</code> if you prefer the number to be in italics.</p>
+<p>The text must be one paragraph. Be sure to end with <code>\par</code> or equivalent.</p>
+<p>If the note needs more than one paragraph, then continue like this, with an empty note number:</p>
+<p class="code"><code>\endnotetext{}{\indent <em>text</em>}</code></p>
+<p>&bull; In <code>novel</code>, you must create and style the page(s) with endnotes yourself! There is no provision for bibliography, and no provision for any other kind of automated styling. This is because the endnotes, being fictional, are more like the main text than any academic style. Think of the endnotes as just another chapter, but starting with something that identifies them as being endnotes.</p>
+<p>&bull; Although <code>novel</code> provides several ways of partitioning backmatter, this is discouraged in fictional works. Normally, endnotes continue as mainmatter, with arabic page numbers.</p>
+
+
+<p>Example:</p>
+
+<p class="code">
+<code><small>
+\endnotetext{9}{Yang Sho-Nuff was the twelfth son of the elder god of the ancient Who-Zit Clan, with power over the forces of rust.\par}<br>
+\endnotetext{}{\indent However, since this was not yet the Iron Age, the terrible might of Yang Sho-Nuff was largely unrecognized.\par}<br>
+\endnotetext{10}{As Professor Withens notes in his treatise, \emph{When Sho-Nuff Was Not Enough}, the ceremony of daily human sacrifice had a devastating effect on the tribal population.\par}
+</small></code></p>
+
+<p class="centerimg"><img src="html-resources/endnotetext.png" width="447" height="151" alt="using endnotetext"></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div><!-- end main -->
+
+<div id="finish"></div>
+
+</div><!-- end master -->
+
+</body>
+</html>
+

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Class novel - 5 - Fonts</title>
+<link rel="stylesheet" type="text/css" href="html-resources/novel-doc.css">
+</head>
+
+<body>
+<div id="master">
+
+
+<div id="toc">
+
+<p>Document class "novel"</p>
+
+<p><a href="#a5">5. Fonts</a></p>
+
+
+<ul>
+
+<li><a href="#a5.1">5.1 Parent Font and Descendants</a>
+  <ul>
+    <li><a href="#a5.1.1">5.1.1 Map of Font Positions</a></li>
+    <li><a href="#a5.1.2">5.1.2 Text Font</a></li>
+    <li><a href="#a5.1.3">5.1.3 Chapter Font</a></li>
+    <li><a href="#a5.1.4">5.1.4 Subch Font</a></li>
+    <li><a href="#a5.1.5">5.1.5 Head Font</a></li>
+  </ul>
+</li><!-- end 5.1 -->
+
+<li><a href="#a5.2">5.2 Other Pre-Defined Fonts</a>
+  <ul>
+    <li><a href="#a5.2.1">5.2.1 Sans and Mono Fonts</a></li>
+    <li><a href="#a5.2.2">5.2.2 Math Font: Forget It</a></li>
+    <li><a href="#a5.2.3">5.2.3 Deco Font</a></li>
+  </ul>
+</li><!-- end 5.1 -->
+
+<li><a href="#a5.3">5.3 Defining New Fonts</a></li>
+
+<li><a href="#a5.4">5.4 Font Customization Syntax</a>
+  <ul>
+    <li><a href="#a5.4.1">5.4.1 Font Family vs. File Name</a></li>
+    <li><a href="#a5.4.2">5.4.2 Set/New by Family/Filename</a></li>
+    <li><a href="#a5.4.3">5.4.3 Open Type Features</a><br>
+      <span style="visibility:hidden">5.4.3 </span>kerning, ligatures, numbers,<br>
+      <span style="visibility:hidden">5.4.3 </span>letters, and many others</li>
+    <li><a href="#a5.4.4">5.4.4 Scale Pseudo-Feature</a></li>
+    <li><a href="#a5.4.5">5.4.5 Color and Opacity</a></li>
+    <li><a href="#a5.4.6">5.4.6 \CreateFeature{}{}</a></li>
+    <li><a href="#a5.4.7">5.4.7 Local Feature Changes</a></li>
+  </ul>
+</li><!-- end 5.4 -->
+
+<li><a href="#a5.5">5.5 Shopping for Fonts</a>
+  <ul>
+    <li><a href="#a5.5.1">5.5.1 Licensing Issues</a></li>
+    <li><a href="#a5.5.2">5.5.2 Technical Issues</a></li>
+    <li><a href="#a5.5.3">5.5.3 Appearance Issues</a></li>
+  </ul>
+</li><!-- end 5.5 -->
+
+</ul>
+
+
+
+
+<p>&nbsp;</p>
+
+
+</div><!-- end toc -->
+
+
+
+<div id="main">
+<a id="a5"></a>
+
+
+<h1>Documentation for <code>novel</code> document class</h1>
+<p>Documentation version: 1.38.</p>
+
+<div class="pagetopage">
+<p><b>User Guide</b></p>
+<p><a href="noveldocs-01-overview.html">1. Overview</a></p>
+<p><a href="noveldocs-02-class-options.html">2. Class Options</a></p>
+<p><a href="noveldocs-03-metadata-pdfx.html">3. Metadata, PDF/X</a></p>
+<p><a href="noveldocs-04-layout.html">4. Page Layout</a></p>
+<p>5. Choosing Fonts</p>
+<p><a href="noveldocs-06-header-footer.html">6. Headers, Footers</a><br>
+<p><a href="noveldocs-07-text-size-style.html">7. Text Sizes, Styles</a></p>
+<p><a href="noveldocs-08-images.html">8. Using Images</a></p>
+<p><a href="noveldocs-09-chapters-displays.html">9. Display, Start Pages;<br>
+<span style="visibility:hidden">9. </span>Chapters; Continued Pages;<br>
+<span style="visibility:hidden">9. </span>Footnotes, Endnotes.</a></p>
+<p><a href="noveldocs-10-cover-art.html">10. Cover Artwork</a></p>
+<p><a href="noveldocs-11-debugging.html">11. Debugging</a></p>
+</div>
+
+
+<h2 style="clear:none">5. Fonts</h2>
+
+<p>This page describes how to choose fonts and font features, and how to apply fonts within your document.</p>
+
+<p>If you are looking for information about how to specify the main text point size, see <a href="noveldocs-04-layout.html#a4.2.3">Page 4</a>.</p>
+
+<p>If you are looking for information about how to change the size of text within the body of your document, or about how to style text (such as italics), then see <a href="noveldocs-07-text-size-style.html">Page 7</a>.</p>
+
+<p><b>EEEK!</b> If you are like me, you <em>first</em> try to do something the way you did it before, then when it fails, you <em>finally</em> read the instructions. So, before you came to this page, you tried these things, and none of them worked:</p>
+
+<p class="code"><code>
+\usepackage{somefont} % FAILS!<br>
+\renewcommand\rmdefault{smf} \normalfont % FAILS!<br>
+\setmainfont{Some Font} % FAILS!
+</code></p>
+
+<p><b>DON'T PANIC.</b> In <code>novel</code>, the essential fonts are specified with different code. Fortunately, they are all pre-configured. If you accept the carefully-chosen defaults, then you do not need to worry about fonts. You do not even need to specify the font families. Sit back and relax.</p>
+
+<p>Or, you can do something like this, if you have the font license. Then let <code>novel</code> do the rest:</p>
+
+<p class="code"><code>\SetParentFont{Adobe Garamond Pro} % WORKS!</code></p>
+
+<p><b>It's that simple.</b> But TeX being what it is, there are complicated ways to customize things. The rest of this page shows you how to do it. You will be using Open Type fonts, or perhaps TrueType fonts. Forget the old Type 1 fonts.</p> 
+
+
+<a id="a5.1"></a>
+<h3>5.1 The Parent Font and Descendants</h3>
+
+<p>In <code>novel</code>, you do not directly set the default font, or the main font, or the roman font, or whatever. Instead, you set the parent font. The command:</p>
+
+<p class="code"><code>\SetParentFont[optional,features]{Font Family}</code></p>
+
+<p>The parent font, or <em>parentfont</em>, is the ancestor of several other fonts, wich will use the same font family unless you manually set them to something else:</p>
+
+<p class="centerimg"><img src="html-resources/font-tree.png" width="600" height="150" alt="parent and descendant fonts"></p>
+
+<p>The <em>parentfont</em> has TeX ligatures and kerning, applied by default. All of the descendant fonts will also have TeX ligatures and kerning. (Note: TeX ligatures allow you to type <code>``</code> to get &ldquo; and so forth.)</p>
+
+<p>If you specify any optional features for the <em>parentfont</em>, they will automatically be applied to descendants: <em>textfont</em>, <em>chapterfont</em>, <em>subchfont</em>, and <em>headfont</em>.</p>
+
+<p>If you do not set the <em>parentfont</em> yourself, then the following will be used as default, in order of priority: <em>Libertinus Serif</em>, <em>Linux Libertine O</em>, <em>Latin Modern Roman</em>.
+
+<p>The <em>Libertinus Serif</em> fonts are well-suited to fiction. If in doubt, use them. They can be downloaded as TeX <code>libertinus</code> package, but do not write <code>\usepackage{libertinus}</code> in your Preamble. Those fonts are a more up-to-date fork of the <em>Linux Libertine O</em> fonts, which are in the <code>libertine</code> package. Alas, even though <em>Latin Modern Roman</em> is a fine font, its style and weight are not well-suited to fiction; the only reason they are a last-choice default, is because just about every TeX system has them.</p>
+
+<p style="font-size:small">Note: In class version 1.0.10 and earlier, the <em>parentfont</em> was known as the <em>masterfont</em>, and the <em>textfont</em> was known as the <em>mainfont</em>. For backwards compatibility, both will work.</p>
+
+
+
+<a id="a5.1.1"></a>
+<h4>5.1.1 Map of Font Positions</h4>
+
+<p>The <em>parentfont</em> is not directly used, anywhere in your document. Instead, its descendants are specialized for use in different situations. Here is a typical page spread, using some of the pre-configured choices for chapters and headings:</p>
+
+<p class="centerimg"><img src="html-resources/fonts-in-use.png" width="532" height="408" alt="fonts in use"></p>
+
+<p>If you use the <code>novel</code> pre-configured style commands, then the correct font will automatically be applied. That is the recommended, no-brainer method. If instead you choose to write your own custom styles, then you will also need to specify the fonts; but this allows you more TeX coding flexibility.</p>
+
+
+
+<a id="a5.1.2"></a>
+<h4>5.1.2 The Text Font</h4>
+
+<p>The text font, or <em>textfont</em>, is the default main font used used for ordinary, flowing text. It uses the <em>parentfont</em>, with added features: common ligatures, and oldstyle numbers.</p>
+
+<p>Common ligatures (the Open Type <em>liga</em> feature) are such things as replacing f<span style="position:relative; left:2px">f</span> with the single character ff. Oldstyle numbers are designed to blend with surrounding text. Not every font has these features; if they are missing, then whatever the font actually has, is used instead.</p>
+
+<p>Normally, you do not need to call the <em>textfont</em> explicity, because it is the default for ordinary text. But in the event that you have a small passage in <em>textfont</em>, within a passage in some other font, you can do this:</p>
+
+<p class="code"><code>{\textfont <em>text</em>}</code></p>
+
+<p>Note that <code>{\textfont <em>text</em>}</code> and <code>{\rmfamily <em>text</em>}</code> mean the same thing.</p>
+
+<p>You do not set the <em>textfont</em> itself. It inherits from the <em>parentfont</em>.</p>
+
+
+
+
+<a id="a5.1.3"></a>
+<h4>5.1.3 The Chapter Title Font</h4>
+
+<p>The <code>novel</code> command <code>\ChapterTitle{<em>text</em>}</code> automatically styles its text in the <em>chapterfont</em>.</p>
+
+<p>If you write custom code for chapter titles, then whether or not you use this font is your choice. It is not automatic. If you wish to use it:</p>
+
+<p class="code"><code>{\chapterfont <em>text</em>}</code></p>
+
+<p>You may customize the <em>chapterfont</em>:</p>
+
+<p class="code"><code>\SetChapterFont[optional,features]{Font Family} % Note command case!</code></p>
+
+<p>If you do not use the above command to customize the <em>chapterfont</em>, then by default it will be the <em>parentfont</em> with added features: Lining numbers, and 1.6 scale.</p>
+
+
+
+<a id="a5.1.4"></a>
+<h4>5.1.4 The Chapter Subtitle Font</h4>
+
+<p>The <code>novel</code> commands <code>\ChapterSubtitle{<em>text</em>}</code> and <code>\QuickChapter{<em>text</em>}</code> automatically style their text in the <em>subchfont</em>.</p>
+
+<p>If you write custom code for chapter subtitles or quick chapters, then whether or not you use this font is your choice. It is not automatic. If you wish to use it:</p>
+
+<p class="code"><code>{\subchfont <em>text</em>}</code></p>
+
+<p>You may customize the subchfont:</p>
+
+<p class="code"><code>\SetSubchFont[optional,features]{Font Family} % Note command case!</code></p>
+
+<p>If you do not use the above command to customize the <em>subchfont</em>, then by default it will be the <em>parentfont</em> with added features: Lining numbers, and 1.2 scale.</p>
+
+
+
+<a id="a5.1.5"></a>
+<h4>5.1.5 The Header/Footer Font</h4>
+
+<p>The <code>novel</code> pre-configured header/footer layouts automatically style their text in the <em>headfont</em>.
+
+<p>If you write a customer header/footer layout (using <code>fancyhdr</code> syntax), then whether or not you use this font is your choice. It is not automatic. If you wish to use it:</p>
+
+<p class="code"><code>{\headfont <em>text</em>}</code></p>
+
+<p>You may customize the headfont:</p>
+
+<p class="code"><code>\SetHeadFont[optional,features]{Font Family} % Note command case!</code></p>
+
+<p>If you do not use the above command to customize the <em>headfont</em>, then by default it will be the <em>parentfont</em> with added features: Lining numbers, and 0.92 scale.</p>
+
+
+
+
+
+<a id="a5.2"></a>
+<h3>5.2 Other Pre-Defined Fonts</h3>
+
+<p>There are also a few pre-defined font commands that are "unrelated to" the <em>parentfont</em>.</p>
+
+
+<a id="a5.2.1"></a>
+<h4>5.2.1 Sans and Mono Fonts</h4>
+
+<p>You probably do not need a sans-serif or monospaced font in a work of fiction. The most prominent exception might be headers/footers, where the use of a light sans-serif font is fashionable. But in that case, set the <em>headfont</em> to the desired sans-serif font, instead of inheriting from <em>parentfont</em>.</p>
+
+<p>The <code>novel</code> class does not have its own commands for setting or using sans-serif or monospaced fonts. If you wish, you may use ordinary <code>fontspec</code> syntax to set them:</p>
+
+<p class="code"><code>
+\setsansfont[optional,features]{Font Family}<br>
+\setmonofont[optional,features]{Font Family}
+</code></p>
+
+<p>Then, you may use them with ordinary LaTeX commands:</p>
+
+<p class="code"><code>
+{\sffamily <em>sans-serif text</em>}<br>
+{\ttfamily <em>monospaced text</em>}
+</code></p>
+
+<p>If you do not set these fonts, then the defaults are: <em>Libertinus Sans</em>, or <em>Linux Biolinum O</em>, or <em>Latin Modern Sans</em> for the sans-serif font; <em>Libertinus Mono</em>, or <em>Linux Libertine Mono O</em>, or <em>Latin Modern Mono</em> for the monospaced font.</p>
+
+
+
+<a id="a5.2.2"></a>
+<h4>5.2.2 Math Font: Forget It!</h4>
+
+<p>The <code>novel</code> class is not set up to do math. Seriously.</p>
+
+<p>Nevertheless, TeX being what it is, there is a behind-the-secene choice of a math font, which (hopefully) your document will never use. The code automatically looks for <em>Libertinus Math,</em> or <em>Asana-Math</em>, or <em>Latin Modern Math</em>.</p>
+
+<p>Otherwise, there is no special command for choosing a math font, and no special command for using it. Proof left to student.</p>
+
+
+
+<a id="a5.2.3"></a>
+<h4>5.2.3 The Deco Font</h4>
+
+<p>The <code>novel</code> class ships with its own custom font, <em>NovelDeco.otf</em>. This Open Type font is specifically designed to provide a number of decorative glyphs, and some other characters. It is <em>not</em> a general-purpose font, and can <em>not</em> be replaced by any other font, except by a modified version of <em>NovelDeco</em>.</p>
+
+<p>The <em>decofont</em> is automatically configured. You do not need to set it. However, if you use a font editor to create a modified version, then your modification must have a different font name (to avoid confusion with the original). In such a rare case, you may point to your modified font like this:</p>
+
+<p class="code"><code>\SetDecoFont[optional,features]{YourDecoFont}</code></p>
+
+<p>The <em>decofont</em> is automatically called by other commands, such as <code>\decoglyph{}</code> and <code>\acronym{}</code>. Normally you do not request <em>decofont</em> directly. But if you wish to do so:</p>
+
+<p class="code"><code>{\decofont <em>text</em>}</code></p>
+
+<p>The decorative glyphs in this font (not including its ordinary characters) are shown in file <code>NovelDeco-glyphs.pdf</code>, which can be found in these docs in the <code>extras</code> folder.</p>
+
+
+
+
+<a id="a5.3"></a>
+<h3>5.3 Defining New Fonts</h3>
+
+<p>You can define new font commands. The syntax depends on whether the new font is part of a family (where you might have bold and italic variants), or just a single file (no variants). If part of a family, use <code>\NewFontFamily</code>. If alone, use <code>\NewFontFace</code>.</p>
+
+<p>Note that if you define a font <em>family</em> when you should have just defined a font <em>face</em>, there will be complaints in the log file, because the font loaded cannot find the (nonexistent) other members of the family. But the document will compile. On the other hand, if you define a font <em>face</em> when you should have defined a font <em>family</em>, then commands for bold or italic will have no effect, since the other family members were not loaded. Again, the document will compile.</p>
+
+<p>The <code>\NewFontFamily</code> command (or <code>\NewFontFace</code>) takes three arguments: First, the name of the new font command is required. Second, font features are optional. Third, the font name is required.</p>
+
+<p style="margin-top:16px"><b>Example:</b> Suppose your work is science fiction, and one if its characters is a talking robot. You wish to depict its utterances in a robotic-looking font, which will be called using a new <code>\robovoice</code> command. You shop around, and find that the <em>Orbitron</em> font suits your purpose, except that it is too large compared to your <em>textfont</em>. So, you scale it.</p>
+
+<p>In the Preamble, you define the new font command:</p>
+
+<p class="code"><code>\NewFontFace\robovoice[Scale=0.8]{Orbitron} % not part of a family</code></p>
+
+<p>After some experimentation, you realize that the <code>\robovoice</code> letters need to be spread apart a bit. This is accomplished using the standard LaTeX <code>\textls</code> command.</p>
+
+<p>In the document body:</p>
+
+<p class="code"><code>
+``Want some oil?'' asked Captain Withens.\par<br>
+\textls{\robovoice ``Is it Gamma-42 Special oil?''} asked the robot.\par<br>
+``No, I got it on sale at Cosmo-Mart.''\par<br>
+\textls{\robovoice ``Forget it. I'm an oil gourmet.''}\par
+</code></p>
+
+<p>The result:</p>
+
+<p class="centerimg"><img src="html-resources/human-robot-talk.png" width="483" height="127" alt="conversation, human-robot"></p>
+
+<p>Caution: If you are using a new font within body text (as above), then it is a bad idea to use Scale greater than 1.0. Reason: An excessively tall font will cause lines to spread apart.</p>
+
+
+<p style="margin-top:16px"><img class="floatright" src="html-resources/fluffy-conspiracy.png" width="265" height="409" alt="the fluffy conspiracy"> <b>Example:</b> Suppose that you wish to style the title of your book, in a font that is not used for other things such as chapter titles. You purchase a license for the <em>Bernhard Modern Std</em> fonts, in Regular and Italic.</p>
+
+<p>In the Preamble:</p>
+
+<p class="code"><code>\NewFontFamily\booktitlefont{Bernhard Modern Std}</code></p>
+
+<p>The title page, using <code>\charscale</code> for size:</p>
+
+<p class="code"><code>
+\thispagestyle{empty}<br>
+\vspace*{7\nbs}<br>
+\begin{center}<br>
+\charscale[3]{\booktitlefont The \textit{Fluffy} Conspiracy}\par<br>
+\vspace{6\nbs}<br>
+\charscale[2]{Priscilla Milde}\par<br>
+\vfill<br>
+Nonexistent Publications • Portland, Oregon\par<br>
+\end{center}
+</code></p>
+
+<p style="clear:both; margin-top:16px; font-size:small">Note: Command \NewFontFamily is identical to \newfontfamily, and command \NewFontFace is identical to \newfontface.</p>
+
+
+
+
+<a id="a5.4"></a>
+<h3>5.4 Font Customization Syntax</h3>
+
+<p>You will be using <code>fontspec</code> syntax to select your own fonts. Much of what follows is a digested portion of the full <code>fontspec</code> documentation. There are many more features, and ways to use them, than will be described below.</p>
+
+
+
+<a id="a5.4.1"></a>
+<h4>5.4.1 Font (Family) Name vs. Font File Name</h4>
+
+<p>A <em>font file</em> is an individual file, with its own <em>file name</em>, including file extension. For example, libertinusserif-regular.otf and libertinusserif-italic.otf are two different font files. This much is obvious.</p>
+
+<p>A <em>font family name</em>, often merely called <em>font name</em>, refers to one or more font files that are variations of the same basic font. Some fonts are so unique that the family consists of just one file. For example, the NovelDeco font family consists of the one file NovelDeco.otf. Typically, a font family has four files, consisting of Regular, Italic, Bold, and BoldItalic variants. Even though there are four font files, there is a single font family name. Many font families have more than four files, including Semibold and Light weights, and Condensed tracking. It is up to the font designer to decide whether a Condensed variation of the "Bubble Turble" font should be treated as a member of the "Burble Turble" family, or as a separate "Burble Turble Condensed" family.</p>
+
+<p>The font (family) name can be learned by opening font files in your system font viewer. Currently, the Windows 10 font viewer uses "Font name" and the Ubuntu font viewer puts the font name in more prominent type. A font (family) name may contain more than one word, with or without spaces, and may contain a general classification such as <em>serif</em>, <em>sans</em>, or <em>mono</em>, because those are actually different families. But it will not contain words such as <em>regular</em>, <em>medium</em>, <em>semibold</em>, <em>bold</em>, or <em>italic</em>; those are for individual members of the same family. Within TeX, some of the older PostScript fonts have been re-worked as newer TrueType and Open Type fonts. The family names are slightly different, so pay attention.</p>
+
+
+<p class="centerimg">
+<img src="html-resources/win10libser.png" width="268" height="184" alt="Windows 10 font viewer"> &nbsp;
+<img src="html-resources/ublibser.png" width="431" height="176" alt="Ubuntu font viewer">
+</p>
+
+
+
+<a id="a5.4.2"></a>
+<h4>5.4.2 Set/New by Font Name vs. File Name</h4>
+
+<p>When you set an existing font, or create a new font command, you can use either the font (family) name, or the specific font file name. However, there may be a big difference in results!</p>
+
+<p style="margin-top:10px"><b>By family name:</b></p>
+<p><img class="floatright" style="padding-top:12px" src="html-resources/fontbyfamily.png" width="338" height="42" alt="font family defined"> When you use the <em>font family name</em>, you configure all of the Regular, Italic, Bold, and BoldItalic variants. The usual TeX commands will be applied:</p>
+<p>Preamble:</p>
+<p class="code" style="clear:both"><code>\NewFontFamily\rway{Raleway}</code></p>
+<p>Document Body:</p>
+<p class="code"><code>{\rway I came, \textbf{I saw}, \emph{I conquered}, \textsc{I left}.}</code></p>
+
+
+<p style="margin-top:10px"><b>By file names:</b></p>
+<p><img class="floatright" style="padding-top:12px" src="html-resources/fontbyfilenamei.png" width="335" height="44" alt="font file defined"> However, if you specify the <em>font file name</em>, then <em>only</em> that font file will be used, regardless of requests for bold or italic. Small caps will be honored, if the specific file has them:</p>
+<p>Preamble:</p>
+<p class="code" style="clear:both"><code>\NewFontFamily\rwayi{Raleway-Regular-Italic.otf}</code></p>
+<p>Document Body:</p>
+<p class="code"><code>{\rwayi I came, \textbf{I saw}, \emph{I conquered}, \textsc{I left}.}</code></p>
+
+
+<p style="margin-top:10px"><b>File Name Combinations:</b></p>
+<p><img class="floatright" style="padding-top:12px" src="html-resources/frankenfont.png" width="312" height="41" alt="frankenfont"> What you write is what you get. You can customize a font family by individually selecting its members. Here is the syntax.</p>
+
+<p>Preamble:</p>
+<p class="code" style="clear:both"><code>\NewFontFamily\frankenfont[% note the % at linebreaks<br>
+&nbsp; ItalicFont=BaskervilleF-Italic.otf,%<br>
+&nbsp; BoldFont=libertinusserif-semibold.otf,%<br>
+&nbsp; BoldItalicFont=texgyrepagella-bolditalic.otf,%<br>
+]{Raleway-Medium.otf}</code></p>
+
+<p>Document Body:</p>
+<p class="code"><code>{\frankenfont I came, \textbf{I saw}, \emph{I conquered}, \textsc{I left}.}</code></p>
+
+
+<p style="margin-top:10px"><b>Semibold, Light, etc.:</b> The above syntax is especially useful when you wish to specify semibold (if available), rather than bold. It is also a way to select something such as light versions:</p>
+
+<p class="code"><code>\NewFontFamily\rwlight[% note the % at linebreaks<br>
+&nbsp; ItalicFont=Raleway-Light-Italic.otf,%<br>
+&nbsp; BoldFont=Raleway-Medium.otf,%<br>
+&nbsp; BoldItalicFont=Raleway-Medium-Italic.otf,%<br>
+]{Raleway-Light.otf}</code></p>
+
+<p>Note that the font file in braces is the one used as the "regular" font, in this definition.</p>
+
+
+<a id="a5.4.3"></a>
+<h4>5.4.3 Open Type Features</h4>
+
+<p>Features are variations, contained within a single font file. In the bad old days, when you wanted true small caps, you had to load a separate font file that had them (and did not have ordinary lowercase letters). Now, if an Open Type font file has the "smcp" feature, you obtain the small caps from within the same file, by asking for them. Requests for the feature may be made on-the-fly, or pre-loaded for global use.</p>
+
+<p>Here are several of the most frequently-used features, relevant to fiction writing. There are many more, and most fonts have only a few of them. Even when a font has a feature, it may be limited to some portion of the characters. For example, it is common for small caps to be available only for Latin-1 letters, even though the font also contains Greek and Cyrillic. To put this another way: The availability of a feature does not tell you its breadth of coverage. Unless the font has documentation showing coverage of its features, the only way to find out is to create and print a test page.</p>
+
+
+<table class="preconf">
+<caption>
+Some Frequently-Used Open Type Features
+</caption>
+<thead>
+<tr>
+<th>Description</th>
+<th>Open Type code &nbsp;</th>
+<th>fontspec code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p>kerning</p></td>
+<td><p>kern</p></td>
+<td><p>Kerning=On<br><em>enabled by default</em></p></td>
+</tr>
+<tr>
+<td><p>common ligatures</p></td>
+<td><p>liga</p></td>
+<td><p>Ligatures=Common<br><em>enabled: textfont, sansfont</em></p></td>
+</tr>
+<tr>
+<td><p>Tex ligatures</p></td>
+<td><p>tlig</p></td>
+<td><p>Ligatures=TeX<br><em>enabled by default</em></p></td>
+</tr>
+<tr>
+<td><p>lowercase letters to small caps</p></td>
+<td><p>smcp</p></td>
+<td><p>Letters=SmallCaps</p></td>
+</tr>
+<tr>
+<td><p>uppercase letters to small caps</p></td>
+<td><p>c2sc</p></td>
+<td><p>Letters=UppercaseSmallCaps</p></td>
+</tr>
+<tr>
+<td><p>lining numerals</p></td>
+<td><p>lnum</p></td>
+<td><p>Numbers=Lining</p></td>
+</tr>
+<tr>
+<td><p>oldstyle numerals</p></td>
+<td><p>onum</p></td>
+<td><p>Numbers=OldStyle<br><em>enabled: textfont, sansfont</em></p></td>
+</tr>
+</tbody>
+</table>
+
+<p>&bull; Kerning is the automatic adjustment of spacing between letters, so that they fit together nicely. Common ligatures are substitutions, such as a combined <code>ff</code> character for two consecutive <code>f</code> characters. It is up to the font designer to determine which ligatures, if any, are common.</p>
+
+<p>&bull; TeX ligatures (such as replacing <code>``</code> with <code>“</code> and <code>---</code> with <code>&mdash;</code>) are not actually an Open Type feature, but they are treated that way by the software. All of these are enabled by default. The <code>fontspec</code> manual explains how to disable them, if necessary.</p>
+
+<p>&bull; The SmallCaps feature applies only to lowercase letters; ordinary capitals remain ordinary capitals. UppercaseSmallCaps deals only with converting ordinary capitals to small caps. If you want both, use both. In most fonts that have them, small caps are slightly taller than lowercase, and slightly more widely spaced. What distinguishes real small caps from fake ones (obtained by scaling ordinary capitals) is that the weight and spacing are more compatible with surrounding text.</p>
+
+<p class="centerimg"><img src="html-resources/smallcapsrealfake.png" width="478" height="43" alt="real vs fake small caps"></p>
+
+<p>&bull; Lining numerals are the ones most familiar to you, from math or accounting. They sit on the baseline and have the height of capital letters. That's just right for doing calculations, and doesn't look bad for things such as page numbers and chapter numbers.</p>
+<p>&bull; When lining numerals are mingled with flowing text, they may stand out too much. OldStyle numerals are more like flowing text: Most of the numerals are at lowercase height, with ascenders and descenders. Compare the first number as OldStyle, the second as Lining:</p>
+
+<p class="centerimg"><img src="html-resources/jollybeers.png" width="499" height="52" alt="oldstyle vs lining numerals"></p>
+
+<p>Most fonts use Lining numerals as their default. A few default to OldStyle numerals. Thus, you should explicitly call for the kind of numerals you wish to use.</p>
+
+<p>&bull; True OldStyle numerals have a flat top on <em>one</em>, and a very round <em>zero</em>: <img src="html-resources/10trueold.png" width="37" height="13" alt="true oldstyle 10"> This may be a bit distracting. Some fonts use a transitional form, where the one has a tilted top (like big 1) and the zero is not so round: <img src="html-resources/10transold.png" width="37" height="13" alt="transitional oldstyle 10"> Others offer you a choice, via an Open Type "style set." See the <code>fontspec</code> manual for how to code style sets.</p>
+
+<p>&bull; There are many more Open Type features, most of which are not useful in ordinary fiction writing. Fonts rarely have more than a few features. Some features (such as the ones shown above) have a specific meaning. Other features, such as "style sets", have whatever meaning the font designer assigns them; Thus the "ss03" feature of one font may do something very different from "ss03" in a different font.</p>
+
+
+<a id="a5.4.4"></a>
+<h4>5.4.4 Scale as Pseudo-Feature</h4>
+
+<p>Although it is not an Open Type feature, <code>Scale=<em>number</em></code> may be written like a feature. <code>Scale</code> globally adjusts the size of the font, relative to what it would otherwise be. If a local font size command is also applied, then the result is the compounded value.</p>
+<p>If the font will be mingled with other fonts in the same place, Scale can tweak a font so that it does not stand out. If Scale does not exceed 1, then the baselineskip will not be affected. Over 1 risks spreading lines to accomodate the extra size; this should not be done for fonts that will appear in the flowing main text. But over 1 is acceptable for display fonts that do not wrap lines and do not mingle with main text.</p>
+<p>Example: <em>Orbitron</em> is a special-purpose font with a mechanical or futuristic look. Its characters are much larger and heavier than would be found in book fonts. If I wish to mingle Orbitron with ordinary text, I might load the font like this:</p>
+
+<p class="code"><code>\NewFontFace\orbitron[Scale=0.6]{Orbitron} % Preamble</code></p>
+
+<p>Then in the document body, I could use it like this, where I have added <code>\textls</code> to spread the letters by a tiny bit:</p>
+
+<p class="code"><code>The message was brief: \textls{\orbitron DIE, EARTHLING.} Captain Withens smiled as he oiled his ray-gun. But ray-guns don't use oil.\par</code></p>
+
+<p class="centerimg"><img src="html-resources/charscaletext.png" width="522" height="63" alt="charscale text">
+
+<p>Scale is more often used for fonts that are pre-defined to have a special meaning and location, such as chapter titles or page headers. There, the font is not mingled with ordinary text, and it is OK to use a larger Scale. Then, it is not necessary to use local font scaling commands each time the font is used.</p>
+
+
+<a id="a5.4.5"></a>
+<h4>5.4.5 Color and Opacity</h4>
+
+<p>Even though the <code>fontspec</code> syntax allows you to set <code>Color</code> and <code>Opacity</code> as pseudo-features when you define a font, <em>the novel class blocks these features.</em> If you attempt to set them as features in a font definition, an error will result. The same applies if you attempt to add them, using <code>\addfontfeature</code>. However, you can still make use of grayscale using ordinary, local color commands.</p>
+<p>When you use the <code>graytext</code> class option, you may write text in grayscale, using commands from the included <code>xcolor</code> package. You should only do this for text that is in special locations. For example, if you begin each chapter with a number that is very large, you might wish to make that number gray, so that it does not overpower the main text.</p>
+<p>To avoid possible conflicts, the color specification should be chosen from a limited list of names. In order from dark to light: black, blue, violet, darkgray, purple, red, teal, olive, magenta, gray, brown, green, orange, cyan, lightgray, lime, pink, yellow, white. They will all be rendered in <em>shades of gray</em> (of course, black and white will be themselves). You may also choose from this more convenient list: black, gray1, gray2, gray3, gray4, gray5, gray6, gray7, gray8, gray9, white.</p>
+<p>If <code>graytext</code> is not chosen as class option, then any color (even white) will be rendered as black.</p>
+
+
+
+<a id="a5.4.6"></a>
+<h4>5.4.6 \CreateFeature{<em>code</em>}{<em>substitutions</em>}</h4>
+
+<p>Once in a while, a font has a glyph that you would like to use, but it is not included in any of the font's Open Type feature sets. So, how to you grab that particular glyph? For example: One well-known font has a glyph named <em>emdash.alt</em>, which is not as long as the font's ordinary <em>emdash</em> glyph, and looks better in text. Unfortunately, <em>emdash.alt</em> is not in any of the font's style sets. Without some trickery, only a program such as InDesign can grab that glyph.</p>
+<p>Thanks to the included <code>fontspec</code> 2016 update, <code>novel</code> has the necessary trickery. Command <code>\CreateFeature</code> creates a fake Open Type feature code, and assigns your list of substitutions to that code. Use comma-separated entries if there are multiple substitutions. For the case in question:</p>
+
+<p class="code"><code>\CreateFeature{myem}{emdash=emdash.alt}</code></p>
+
+<p>The code <code>myem</code> was randomly chosen as something that is not already defined among Open Type feature codes. Once specified, the fake feature may be used in any font definition, such as this:</p>
+
+<p class="code"><code>\SetMasterFont[RawFeature=+myem]{Adobe Garamond Pro}</code></p>
+
+<p>Of course, the fake feature has no effect if the font does not have the substitution character.</p>
+
+<p>This technique may be used for more complicated features, but that is beyond the scope of this documentation. See the <code>fontspec</code> manual if you need to do more.</p>
+
+
+<a id="a5.4.7"></a>
+<h4>5.4.7 Local Modifications to Open Type Features</h4>
+
+<p>If you specify a particular Open Type feature, it will be generally used for that font command. So if you define a new font command with <code>Letters=SmallCaps</code> as a feature (and if the font actually has them), then small caps will be used for that font, whether or not you locally request them with a command such as <code>\textsc</code>.</p>
+
+<p>Often, you can add (or sometimes remove) features on a local basis. For example, suppose that you defined the font without using is <code>ss03</code> style set. You can locally add that feature to some text, using a command that looks like this:</p>
+
+<p class="code"><code>{\addfontfeature{<em>which feature</em>} <em>applied to this text</em>}</code></p>
+
+<p>The above code assumes that you are already using the font in that location. You cannot apply <code>ss03</code> from one font to an entirely different font!</p>
+
+<p>See the <code>fontspec</code> documentation for details of <code>\addfontfeature</code>.</p>
+
+<p>As an alternative to changing features locally, you can define different font commands to call the same underlying font, but with different features.</p>
+
+<p>Two ways to accomplish the same thing:</p>
+
+<p class="code"><code>
+\NewFontFamily\baskf{BaskervilleF}<br>
+\NewFontFamily\baskftab[Numbers=Monospaced]{BaskervilleF} % tnum feature<br>
+\begin{document}<br>
+Some text {\baskftab hello 123} is here.<br>
+Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
+</code></p>
+
+
+
+
+<a id="a5.5"></a>
+<h3>5.5 Shopping for Fonts</h3>
+
+<p>Many TeX fonts are only available in older Type 1 format (PostScript) or even as bitmap metafonts. Do not use them.</p>
+
+<p>In some other cases, a TeX font package provides both the older format, and a newer Open Type (*.otf or *.ttf) format. The different formats will have different font names. Sometimes the difference is very slight. Carefully look at the font name for the Open Type format. Remember that most on-line discussions will refer to the older fonts, simply because they have been around longer.</p>
+
+<p>Do not attempt to load a font by the <code>\RequirePackage</code> or <code>\usepackage</code> commands. Instead, if you choose to use fonts other than the defaults, load them via the font setting commands described on this page.</p>
+
+<p>Update: Now, if you attempt to load a font the wrong way, you will get an error message.</p>
+
+
+<a id="a5.5.1"></a>
+<h4>5.5.1 Licensing Issues</h4>
+
+<p>Presumably, you are writing your novel for commercial value, and do not intend to give anything away for free. For that reason, avoid fonts licensed under the GPL (GNU Public License) unless it has the <em>font exception</em> clause. Some TeX fonts are licensed under GPL, so watch out.</p>
+
+<p>Beware of fonts "free for personal use" from download sites. Your commercial application is not "personal use." Of course, if you like the font, you may purchase its commercial license.</p>
+
+<p>Also beware of fonts generically labeled as "freeware" with no particular designer name. If you don't know who created the font, then how do you know that it can be given away for free? Even if there is a designer name, some of them had second thoughts about "freeware." They intended the fonts to be free only if you give your own work away for free. But they didn't mention it. Maybe they have no legal recourse, but you don't want them making anonymous negative reviews of your book.</p>
+
+<p>You have numerous fonts already installed in your operating system, and perhaps others that came bundled with a particular application. If you intend to use those fonts, carefully read their licenses. It is often the case that fonts bundled with an application may <em>only</em> be used for documents created within, or processed by, that application.</p>
+
+<p>Always look for a Copyright notice, which can be identified with a particular person or organization. Copyright is good! It means that someone is claiming authorship of the font software. Only the Copyright owner has the right to give the font away for free, or license it to you after payment (often through an intermediary).</p>
+
+<p>If you prefer free fonts, the most widely accepted license is the <em>SIL Open Font License</em>. This allows you to use the font for commercial purposes, embed it in PDF, modify it to suit your needs (if you change the font name), and even re-distribute the modifications.</p>
+
+
+<a id="a5.5.2"></a>
+<h4>5.5.2 Technical Issues</h4>
+
+<p>Many fonts have technical errors, even among professional fonts. Some of the errors are so minor that they are not worth fixing. This is particularly true for glyphs that are missing extrema.</p>
+
+<p>However, beware of fonts that are based on traced artwork. The late 1990s had an explosion of amateur dingbat and decorative fonts produced this way, by scanning images from old books and digitizing the scan. The resulting vector glyphs rarely meet standards, and often are quite awful. The problem is that when a commercial printer renders your PDF to print, the printer's software is very different from what you have on your home computer. A technically erroneous glyph might look OK at home, but be rejected commercially.</p>
+
+<p>If you have the knowledge, you can open a font in font editor software (such as FontForge) and ask it for validation. Missing extrema are rarely a problem, even if a lot of them are missing. Self-intersecting glyphs are not a problem if the the glyph is composed of two elements stuck together, such as Ç composed of C with separate cedilla. However, a self-intersecting glyph may be a problem if its lines criss-cross each other. Open paths, and outer paths drawn the wrong way, are often a problem. If the errors are confined to glyphs that you will not be using, then it can pass.</p>
+
+
+<a id="a5.5.3"></a>
+<h4>5.5.3 Appearance Issues</h4>
+
+<p>There are general expectations for book fonts, in terms of character sizes and shapes, and weights. Many of the widely-used TeX fonts, including Latin Modern, are unacceptable in fiction for this reason. The most commonly-used font in word processors, Times New Roman, is only marginally acceptable for fiction, and only because it is so often used by amateur writers who don't know how to change the font (but write books advising you to change your lifestyle).</p>
+
+<p>The best way to assess a font is to print it to paper. Computer screens rarely show details, except at large magnification. Depending on whom you ask for an opinion, fiction is most easily read when there are about 60 to 66 characters (including spaces) per line. To evaluate a font for the main text, print out some paragraphs about 4" to 4.25" wide, and scale the font's point size so that you get an average number of characters per line in that range. Be sure to do that: Adobe Garamond Pro at 12pt, Libertinus Serif at 11.4pt, and Libre Caslon Text at 9.6pt (!) provide about the same number of characters per line of text. At the proper point size, some fonts will look too dark, and others will look too light.</p>
+
+<p>Things to look for: Are the lowercase letters too tall? If they are, then it is hard for readers in many Western languages to find where sentences start, by looking for capital letters. Also, there is less white space between lines, which makes the text appear dense and harder to read. Is the shape of the characters so natural that you don't notice them? That's good! It is your writing, not the font, that is to be noticed. Remember that some fonts are designed for use at large size, in posters; such fonts tend to look mechanical in fiction. Other fonts are designed for computer screens; the letters will be too widely-spaced in fiction. Nearly all modern fonts have decent kerning and important ligatures, so that's not usually a decisive factor.</p>
+
+<p>The prevailing rule: If you notice the font, it's wrong.</p>
+
+
+
+
+
+
+
+</div><!-- end main -->
+
+<div id="finish"></div>
+
+</div><!-- end master -->
+
+</body>
+</html>
+

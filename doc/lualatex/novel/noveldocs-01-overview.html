@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Class novel - 1 - Overview</title>
+<link rel="stylesheet" type="text/css" href="html-resources/novel-doc.css">
+</head>
+
+<body>
+<div id="master">
+
+
+<div id="toc">
+
+<p>Document class "novel"</p>
+
+<p><a href="#a1">1. Overview</a></p>
+
+<ul>
+<li><a href="#a1.1">1.1 Description</a>
+  <ul>
+    <li><a href="#a1.1.1">1.1.1 Licensing</a></li>
+    <li><a href="#a1.1.2">1.1.2 Installation</a></li>
+    <li><a href="#a1.1.3">1.1.3 Credits</a></li>
+    <li><a href="#a1.1.4">1.1.4 Useful Tools</a></li>
+  </ul></li><!-- end 1.1 -->
+<li><a href="#a1.2">1.2 Differences. Important!</a>
+  <ul>
+    <li><a href="#a1.2.1">1.2.1 LuaLaTeX, fontspec,<br><span style="visibility:hidden">1.2.1 </span>utf-8, Open Type</a></li>
+    <li><a href="#a1.2.2">1.2.2 Beware of $, %, and Others</a></li>
+    <li><a href="#a1.2.3">1.2.3 TeX Size Commands<br><span style="visibility:hidden">1.2.3 </span>Are Disabled</a></li>
+    <li><a href="#a1.2.4">1.2.4 Raster Images Only</a></li>
+    <li><a href="#a1.2.5">1.2.5 Academic Structure Disabled</a></li>
+    <li><a href="#a1.2.6">1.2.6 Think for Yourself</a></li>
+  </ul></li><!-- end 1.2 -->
+<li><a href="#a1.3">1.3 Book Design Terminology</a>
+  <ul>
+    <li><a href="#a1.3.1">1.3.1 Sheet, Page, Leaf, Folio</a></li>
+    <li><a href="#a1.3.2">1.3.2 Page Spread, Recto, Verso, Line Grid</a></li>
+    <li><a href="#a1.3.3">1.3.3 Perfect Binding, Spine Signature</a></li>
+    <li><a href="#a1.3.4">1.3.4 Gutter</a></li>
+    <li><a href="#a1.3.5">1.3.5 Trim Size</a></li>
+    <li><a href="#a1.3.6">1.3.6 Media Size, TrimBox</a></li>
+    <li><a href="#a1.3.7">1.3.7 Setting Layout Dimensions</a></li>
+  </ul></li><!-- end 1.3 -->
+<li><a href="#a1.4">1.4 Interior Organization</a>
+  <ul>
+    <li><a href="#a1.4.1">1.4.1 Front Matter</a></li>
+    <li><a href="#a1.4.2">1.4.2 Main Matter</a></li>
+    <li><a href="#a1.4.3">1.4.3 Back Matter</a></li>
+  </ul></li><!-- end 1.4 -->
+<li><hr></li>
+<li><a href="#a1.5">1.5 Command Summary: Preamble</a>
+  <ul>
+    <li><a href="#a1.5.1">1.5.1 Class Options</a><br>
+      <ul>
+        <li>draft, graytext, shademargins, cropmarks, cropview, closecrop, xml</li>
+      </ul>
+    </li>
+    <li><a href="#a1.5.2">1.5.2 Metadata (File Data)</a>
+      <ul>
+        <li>\SetTitle, \SetAuthor, \SetSubtitle, \SetApplication, \SetProducer, \SetPDFX</li>
+      </ul>
+    </li>
+    <li><a href="#a1.5.3">1.5.3 Page Layout</a>
+      <ul>
+        <li>\SetTrimSize, \SetMargins, \SetFontSize, \SetLinesPerPage, \SetHeadFootStyle, \SetHeadJump, \SetFootJump, \SetMediaSize, \SetCropmarkGap, \ReworkTrimSize, \ReworkMargins</li>
+      </ul>
+    </li>
+    <li><a href="#a1.5.4">1.5.4 Font Setup</a>
+      <ul>
+        <li>\SetParentFont, \SetHeadFont, \SetChapterFont, \SetSubchFont, \SetDecoFont, \SetSansFont, \SetMonoFont, \NewFontFamily, \NewFontFace</li>
+      </ul>
+    </li>
+    <li><a href="#a1.5.5">1.5.5 Other Configuration</a>
+      <ul>
+        <li>\SetRectoheadText, \SetVersoHeadText, \SetEmblems, \SetPageNumberStyle, \SetLooseHead, \SetChapterStart, \SetIndentAfterScenebreak, \SetMarkerStyle, \microtypesetup, \setmainlanguage</li>
+      </ul>
+    </li>
+  </ul>
+</li>
+<li><a href="#a1.6">1.6 Command Summary: Document Body</a>
+  <ul>
+    <li><a href="#a1.6.1">1.6.1 Book Divisions</a>
+      <ul>
+        <li>\frontmatter, \mainmatter, \backmatter</li>
+      </ul>
+    </li>
+    <li><a href="#a1.6.2">1.6.2 Special Pages</a>
+      <ul>
+        <li>\begin{legalese}, \begin{toc}, \tocitem, \begin{ChapterStart}, \ChapterTitle, \ChapterSubtitle, \ChapterDeco, \thispagestyle, \FirstLine, \clearpage</li>
+      </ul>
+    </li>
+    <li><a href="#a1.6.3">1.6.3 Block-Level Breaks and Styling</a>
+      <ul>
+        <li> \QuickChapter, \scenebreak, \sceneline, \scenestars, \begin{parascale}, \begin{adjustwidth}</li>
+      </ul>
+    </li>
+    <li><a href="#a1.6.4">1.6.4 Footnotes and Endnotes</a>
+      <ul>
+        <li>\footnote, \endnote, \endnotetext, \realmarker, \fakemarker</li>
+      </ul>
+    </li>
+    <li><a href="#a1.6.5">1.6.5 Images</a>
+      <ul>
+        <li>\InlineImage, \BlockImage</li>
+      </ul>
+    </li>
+    <li><a href="#a1.6.6">1.6.6 General Text Styling</a>
+      <ul>
+        <li>\charscale, {\somefont...}, \forceindent, \backindent, \hangindent, \acronym, \decoglyph, \squeeze, \crush, \color, \textcolor, \memo, \nfs, \nbs</li>
+      </ul>
+    </li>
+    <li><a href="#a1.6.7">1.6.7 Some other LaTeX Commands</a>
+      <ul>
+        <li>A list of selected commands, not specific to this document class, that might be useful. Not comprehensive.</li>
+      </ul>
+    </li>
+    <li><a href="#a1.6.8">1.6.8 Disabled LaTeX Commands</a>
+      <ul>
+        <li>In general, commands and environments pertaining to math, font sizes, theses, floats, tables, and images (other than novel's own commands) are entirely disabled.</li>
+      </ul>
+    </li>
+    <li><a href="#a1.6.9">1.6.9 Discouraged LaTeX Commands</a>
+      <ul>
+        <li>A short list of commands that you should not use, because of undesired side effects in this document class.</li>
+      </ul>
+    </li>
+  </ul>
+</li>
+</ul>
+
+<p>&nbsp;</p>
+</div><!-- end toc -->
+
+
+
+
+<div id="main">
+<a id="thetop"></a>
+<h1>Documentation for <code>novel</code> document class</h1>
+<p>Documentation version: 1.38.</p>
+
+<div class="pagetopage">
+<p><b>User Guide</b></p>
+<p>1. Overview</p>
+<p><a href="noveldocs-02-class-options.html">2. Class Options</a></p>
+<p><a href="noveldocs-03-metadata-pdfx.html">3. Metadata, PDF/X</a></p>
+<p><a href="noveldocs-04-layout.html">4. Page Layout</a></p>
+<p><a href="noveldocs-05-fonts.html">5. Choosing Fonts</a></p>
+<p><a href="noveldocs-06-header-footer.html">6. Headers, Footers</a><br>
+<p><a href="noveldocs-07-text-size-style.html">7. Text Sizes, Styles</a></p>
+<p><a href="noveldocs-08-images.html">8. Using Images</a></p>
+<p><a href="noveldocs-09-chapters-displays.html">9. Display, Start Pages;<br>
+<span style="visibility:hidden">9. </span>Chapters; Continued Pages;<br>
+<span style="visibility:hidden">9. </span>Footnotes, Endnotes.</a></p>
+<p><a href="noveldocs-10-cover-art.html">10. Cover Artwork</a></p>
+<p><a href="noveldocs-11-debugging.html">11. Debugging</a></p>
+</div>
+
+
+<a id="a1"></a>
+<h2 style="clear:none">1. Overview</h2>
+
+<p><b>Read This:</b> The novel class has a lot of possible settings, and a command structure that differs from other document classes in many ways. So, there is a lot of documentation. But you probably do not have to read most of it.</p>
+<p>Before you panic, look at the <code>novel-example.tex</code> demonstration file. It uses mostly default settings. See how easy that can be?</p>
+
+
+<a id="a1.1"></a>
+<h3 style="clear:none">1.1 Description</h3>
+
+<p>The <code>novel</code> document class is intended for writers of original fiction, such as novels and collections of short stories. For this purpose, it provides easy-to-use settings that are pre-configured for the most common book Trim Sizes, according to publishing standards. The class uses the advanced typographic features of LuaTeX, fontspec, and microtype, and has the built-in capability to produce files compliant with PDF/X. All these capabilities are accessed via simple front-end commands that do the work for you, thereby reducing the learning curve.</p>
+
+<p>PDF/A and other formats pertaining to digital publication (e-books) are not supported, and never will be. If that is what you need, then this is the wrong document class for you.</p>
+
+<p>Bibliography, Floats, Tables, Math Mode, automatic generation of title page and table of contents... Forget them! Many of the TeX features used for academic work have reduced functionality, or are entirely disabled, in <code>novel</code> class. There is a reason for this. If you need them, find another document class. There is minimal support for page-bottom footnotes, but good support for raster (not vector) images.</p>
+
+<p>The class makes typographic choices that are best suited to <em>original</em> fiction, where you can easily resolve problematic typesetting by re-writing your own work. In particular, there is no effort to control widows and orphans.</p>
+
+<p>If you are ready to typeset your great detective novel, or your collection of sci-fi short stories, then <code>novel</code> is for you.</p>
+
+<a id="a1.1.1"></a>
+<h4>1.1.1 Licensing</h4>
+
+<p>The <code>novel</code> document class, including software, examples, documentation and supporting images, is distributed under the terms of the LaTeX Project Publc License, either version 1.3c of this license or (at your option) any later version. The exception is the included font NovelDeco.otf, which is distributed under terms of the SIL Open Font License, v.1.1. Small portions of the software use code placed on the Internet under terms of Creative Commons 3.0-by-sa license; attributions are provided at the places where such code is used.</p>
+<p>To ensure that your book may be sold commercially, be careful to use only fonts that allow commercial usage. That may exclude some of the fonts in the LaTeX font catalog.</p>
+
+<a id="a1.1.2"></a>
+<h4>1.1.2 Installation</h4>
+
+<p>Your TeX installation must be based on TeXLive 2016 or later. This is the case if you have manually installed TeXLive directly from its site, or if you are using MiKTeX. However, if you are on Linux and your distro is not the latest and greatest, the distribution may be based on TeXLive 2015 or earlier. Then, you will not be able to use <code>novel</code>.
+
+<p>The TeX code will be placed in (texroot)/tex/lualatex/novel/, the custom font will be placed in (texroot)/fonts/opentype/novel/, and the documentation will be placed in (texroot)/doc/lualatex/novel/.</p>
+
+<p>The <code>novel</code> class can now be installed like any other TeX package, through your distribution's package manager. The installation will provide the code, documentation, and a custom font.</p>
+
+<p>Fonts from the <code>libertinus</code> package are required, and may be installed via your TeX package manager. Note that a <code>novel</code> document does not request the package! Instead, if you have not manually specified which fonts to use, it will automatically look for pre-installed libertinus fonts (or Linux Libertine O) as defaults.</p>
+
+<p>Since you will be using LuaTeX, the font cache will be updated to include the newly-installed fonts, the next time you run this software. However, I recommend that you force a full cache refresh, by locating the <code>luatex-cache</code> directory, and discard its contents. The cache may be anywhere (sadly), so you will have to hunt for it. If you have never used LuaTeX before, it may not exist. If there are any updates to the fonts, then a manual cache refresh is necessary.</p>
+
+<a id="a1.1.3"></a>
+<h4>1.1.3 Credits</h4>
+
+<p>My method of "programming" (note the scare quotes) largely involves looking for solutions on the Internet, then using or modifying code provided by others with allowable license terms. Thus, within the TeX code files, you will find places where small or large pieces of code are the work of someone else, released by them for LaTeX purposes. Names or organizations are credited where the code is used.</p>
+<p>Various clipart graphics were obtained from openclipart.org. The NovelDeco.otf font is partly derived from [Linux] Libertine O, using FontForge.</p>
+
+<a id="a1.1.4"></a>
+<h4>1.1.4 Useful Tools</h4>
+
+<p><b>Word Processor:</b> I use LibreOffice for this (version 5.3 or later preferred), but you can use most other word processors.</p>
+
+<p>Write your wonderful novel using the word processor, with the same page layout that you will eventually use for TeX, and with the same font and point size. However, don't use italics or any other font effect that requires TeX code. This will give you a rough idea of how things look, and how many pages are used. You will still need to do final editing within TeX, where you will add codes for italics and other effects, and perhaps re-write paragraphs so that they look better.</p>
+
+<p>A good word processor will have a high-end spelling checker, and perhaps some grammatical checks. It can apply &ldquo;smart quotes&rdquo; and other character substitutions on-the-fly. If you save the result as plain text <em>with utf-8 encoding</em> then it can be used with the <code>novel</code> document class. Beware of saving plain text in Windows native encoding.</p>
+
+<p>Note that some word processors interpret two hyphens as an em-dash. In TeX, it's three hyphens. As long as the substitution is made, things will be OK.</p>
+
+<p><b>Adobe Reader:</b> Before sending your PDF file anywhere, you should always open it in Adobe Reader, and inspect it. If you are on a system that does not have that software, then find a friend who has it (different platform OK).</p>
+
+<p>The reason is that some other PDF readers will not object to problem files, but Adobe Reader will complain. Almost certainly, the recipient of your PDF will open it in a commercial program (perhaps Adobe Acrobat Pro), inspect it, and add manufacturing information at the bottom of the last blank page. It is that revised PDF file that will go to the printing machine.</p>
+
+<p>How to inspect your finished PDF: (1) In Adobe Reader, go to Edit, Preferences, Documents. Check "Save As optimizes for fast web view." Then go to Edit, Preferences, Page Display. Check "Show art, trim, and bleed boxes." Then OK. (2) Open your PDF. If its Trim Size is smaller than the full PDF page size (Media Size) you should see a light green box. This shows the Trim Size. This box does not print; it is only for visualization. However, if your Trim Size is the same as the Media Size (the normal situation) then the green box, if visible, will be all the way to the page edges. (3) Go to File, Properties, Fonts. Any font must be (subset) embedded. (4) "Save As" the same file name (or another one, if you prefer). This will optimize the file. You probably do not need to do that, but it does not hurt, and a few services expect it.</p>
+
+<p><b>ImageMagick or GraphicsMagick;</b> If your document has any images, whether grayscale interior or color cover art, then you will need more advanced image processing than most image editors (such as GIMP) can provide. See page 10 of this documentation, for detailed instructions.</p>
+
+<p><b>Text Extraction:</b> Did you lose your TeX source document after preparing the PDF? If so, you can extract its unformatted plain text (not TeX code). Your PDF cannot be encrypted or password-protected for commercial printing. Only you and the printer are supposed to see it. So, it is always possible to extract the text.</p>
+
+<p>Adobe Reader probably will not do what you expect. Adobe Acrobat Pro does a good job, if you first "add tags" via its accessibility features. Otherwise, the free <code>Okular</code> PDF reader does a reasonable job, as does the <code>pdftotext</code> command-line program (part of <code>xpdf</code>). Be sure to request that layout be preserved. You may need to review the exported text for words that were broken by hyphenation, and re-assemble the words.</p>
+
+
+<a id="a1.2"></a>
+<h3>1.2 Differences. Important! Read This!</h3>
+
+<p>There are several ways that <code>novel</code> is very different from other TeX document classes. Before you wonder why your document doesn't work, you need to understand the differences. All of these are features, not bugs. They are done with the intent of making <code>novel</code> best for its intended purpose.</p>
+
+<p><b>About TeX editors:</b> If you usually use a TeX editor GUI, such as Lyx or TeXstudio, avoid using it with the <code>novel</code> class. Those editors are capable of inserting standard LaTeX code from menus. However, <code>novel</code> does not necessarily use that standard LaTeX code. The result may be unexpected. Instead, create your document in an ordinary ut-8 plain text editor, and compile with <code>lualatex</code> from the command line. Or, you can use the TeXWorks editor, as long as you turn off features such as automatic smart quotes.</p>
+
+
+<a id="a1.2.1"></a>
+<h4>1.2.1 LuaLaTeX, fontspec, utf-8, and Open Type fonts</h4>
+
+<p><img class="floatright" src="html-resources/doordie.png" width="279" height="300" alt="Thou Shalt"> With <code>novel</code>, you will be using the LuaLaTeX engine, whether you like it or not. No pdfTeX, no XeTeX, no dvips. You do not have to understand Lua code, since the heavy lifting is already done for you.</p>
+<p>Forget about <code>fontenc</code> and <code>OT1</code> and other TeX exotica that go so far back in time, most folks did not have a cell phone. The built-in <code>fontspec</code> package handles modern Open Type fonts, and is able to access their internal features. The syntax is easy to learn, and very powerful. And, you can directly include text with diacritical marks, Greek, Cyrillic, and most other utf-8 encoded characters in your document. All you need are the fonts. You will wonder why you never did this before. The method for loading fonts is described on Page 5. Be sure you read that! For example, you cannot load a font with <code>\usepackage{fontname}</code> in this document class.</p>
+<p>You must use utf-8 (Unicode) encoding in all parts of your code and document. No choice. Only utf-8, without BOM. Instead of typing TeX codes such as <code>\`{e}</code> you can simply paste <code>&egrave;</code> from a Unicode character map. Other alphabets such as Greek and Cyrillic are directly supported, if your fonts support those character sets.</p>
+<p>Be sure that your editor uses utf-8 encoding without BOM. If you are on Linux (and presumably OS/X) then this is the default for your system. If you are on Windows, do not use Notepad! The free Notepad++ program (also Portable version) does the job. Configure it as specified.</p>
+
+
+<a id="a1.2.2"></a>
+<h4 style="clear:both">1.2.2 Beware of $, %, and Other TeX Special Characters</h4>
+
+<p><b>Alert:</b> This was not correctly explained in earlier documentation.</p>
+
+<p><img class="floatright" src="html-resources/trdol.png" width="238" height="67" alt="dollar is math mode"> TeX has a number of special characters. If you type them in a document, they will not appear as an ordinary printed character, but will do something else. These are:</p>
+
+<p class="code"><code>$ % # _ ^ & ~ \ { }</code> and sometimes <code>[ ]</code></p>
+
+<p>In most cases, an incorrect usage will provide an error message that can be easily deciphered. However, the dollar sign and percent symbol are tricky. Incorrect use of the dollar sign may either place your text in math mode (not your intent) or produce a baffling error message that points to an innocent package. The percent symbol normally produces no error, since it is a comment character. But then, whatever text follows on that line will be missing from your PDF.</p>
+
+<p>Special characters, other than the backslash, are escaped by placing a backslash in front, thus: <code>\$</code> for the dollar sign, <code>\%</code> for percent. If you must print a backslash, <code>\string\</code> does it.</p>
+
+<p>To avoid unforeseen problems, you should review your document in a text editor, prior to compiling. Search for any instances of special characters, particularly dollar and percent. Backslash them as needed.</p>
+
+
+<a id="a1.2.3"></a>
+<h4>1.2.3 Standard text size commands are disabled</h4>
+
+<p>Would you like to size text, using command such as <code>\small</code> or <code>\LARGE</code>? Bah! They will be ignored. Write these commands, and the text will appear at its usual size, just as if the commands did not exist.</p>
+<p>There is a reason for this behavior, related to the need for constant line spacing. Thus, <code>novel</code> provides its own capability to size text, using different commands. Read about it, on <a href="noveldocs-07-text-size-style.html">Page 7</a>.</p>
+
+
+<a id="a1.2.4"></a>
+<h4>1.2.4 Images must be raster png or jpg</h4>
+
+<p>You read that correctly. Sometimes fiction uses images, especially for the title page and chapter titles. With <code>novel</code>, do not use vector formats such as <code>eps</code>, <code>svg</code>, or <code>pdf</code> images. Use raster images in <code>png</code> or <code>jpg</code> format.</p>
+<p>There is a reason for this, explained on Page 9, where the use of images is discussed in detail. Be sure to read it, as <code>novel</code> has its own way to place images, in a way that is most likely to work well with fiction.</p>
+
+
+<a id="a1.2.5"></a>
+<h4>1.2.5 Numerous academic-purpose commands are disabled</h4>
+
+<p><img class="floatright" src="html-resources/fpaper.png" width="134" height="215" alt="flunked math"> Commands such as <code>\section</code>, <code>\chapter</code>, <code>\abstract</code>, <code>\index</code>, <code>\tableofcontents</code>, <code>\maketitle</code>, and many other structural commands will not work with <code>novel</code>. Those are for academic papers. The results they would produce (if enabled) would be inappropriate for fiction. If you attempt to use them, you will either get an error message, or they will simply be ignored.</p>
+<p>Novelists do not need many ways to distinguish chapters. With <code>novel</code> there are commands specifically created for the needs of fictional works. They are described on <a href="noveldocs-09-chapters-displays.html#a9.5">Page 9</a>.</p>
+<p>Also, the <code>float</code> and <code>table</code> environments are ineffective.</p>
+
+
+<a id="a1.2.6"></a>
+<h4>1.2.6 Think for yourself</h4>
+
+<p>When LaTeX processes a document on a paragraph-by-paragraph basis, it chooses the layout that has the least total "penalty." Penalties are assessed based on factors such as word spacing, inter-line spacing, hyphenation, widows, and orphans. You may choose the value of each penalty.</p>
+
+<p>With <code>novel</code>, inter-line spacing is fixed. No plus-or-minus. Hyphens are allowed, but strongly penalized. A reasonable amount of altered word spacing is allowed, and the built-in <code>microtype</code> package allows reasonable changes to letter spacing and the letters themselves. These choices achieve a high level of visual appeal and readability for flowing text.</p>
+
+<p>However, there is little penalty for widows or orphans. When you process a document with <code>novel</code> you are likely to find widows and orphans on many pages. This choice was made for several reasons. First, attention to widows and orphans would reduce the effectiveness of the other, more imprtant, layout penalties. Second, fiction often has numerous short paragraphs (especially with dialogue), and it is very difficult for software to deal with all of them. Third, it's your book... Rewrite it!</p>
+
+<p>If TeX isn't formatting paragraphs in an attractive manner, then rewrite your work. It's that simple.</p>
+
+
+<a id="a1.3"></a>
+<h3>1.3 Book Design and Terminology</h3>
+
+<p>If you are preparing a PDF for the print-on-demand (P.O.D.) market, and I assume you are, then you need to understand how terms are used in the <code>novel</code> document class (and LaTeX in general). The reason is that most authors in P.O.D. use an ordinary word processor, particularly MS Word. For that reason, many print services, and most online user forums, refer to the terminology and settings of MS Word, rather than to the meanings in traditional book publishing. In the case of images, Photoshop settings are often described. And, the more advanced authors may be using InDesign. Yes, there are authors using LaTeX and GIMP (I am among them), but they are not the ones who make the most noise. And, if you visit web sites and forums devoted to LaTeX, they primarily address the concerns of academic writers, particularly mathematicians, because that is the target user base for LaTeX.</p>
+
+<p>Here, I will present a brief overview of what key terms mean. In some cases, I will also describe how the same terms mean different things, to those who use other software. Pay attention!</p>
+
+
+<a id="a1.3.1"></a>
+<h4>1.3.1 Sheet, Page, Leaf, Folio</h4>
+
+<p>A <b>sheet</b> of paper is a single, physical piece of paper, regardless of whether anything is printed on it, or where. Often, paper starts out as a large sheet that will subsequently be cut into smaller sheets. The size doesn't matter. A sheet of paper is, in ordinary understanding, a piece of paper.</p>
+
+<p><img class="floatright" src="html-resources/page-leaf.png" width="490" height="155" alt="page, leaf"> In a finished book, a <b>page</b> is one side of a <b>leaf</b>. Thus, there are always exacttly twice as many pages are there are leaves. From the manufacturer's point of view, a 240-page (double-sided printing) book has 120 leaves, regardless of whether or not anything is printed on the pages, or how they are numbered.</p>
+
+<p>If you take a sheet of 8.5" x 11" paper, and fold it in half across its width, you create a <b>folio</b>, consisting of one sheet of paper (as before), two leaves (previously one), and four pages (previously two), sized 5.5" x 8.5". Now, think about how those four pages must be numbered. Page 1 and page 4 are printed on the same side of the sheet, with pages 2 and 3 on the opposite side of the sheet. This is not the order they would be printed, if you were merely shrinking the text so that twice as much fit on one side of the sheet. The process of re-arranging the pages, and placing them in the correct positions (often involving rotation) is called <b>imposition</b>. Your home printer can do it, for the simple example described. But in the case of commercial book preparation, the imposition process is much more involved, and uses advanced software.</p>
+
+<p>Caution, The term "folio" has several different meanings, even in the narrow field of book publishing. It may refer to folded paper, as mentioned above. Or it may refer to a particular sheet size of paper ("foolscap"). Or, it may simply refer to the number printed on a page. This last use of "folio" will be discussed in the context of headers and footers.</p>
+
+
+<a id="a1.3.2"></a>
+<h4>1.3.2 Page Spread, Recto, Verso, Line Grid</h4>
+
+<p><img class="floatright" src="html-resources/linegrid.png" width="303" height="234" alt="line grid"> When a book is opened somewhere in its middle, you see a <b>page spread</b>. At right is the <b>recto</b> odd-numbered page, and at left is the <b>verso</b> even-numbered page. With continuous text, the lines of text on the verso must be in the same vertical position as the lines of text on the recto, and each line must be equally spaced. This is the <b>line grid</b>. Maintaining a proper line grid is essential to the <code>novel</code> class, and is why some <code>novel</code> commands differ from how they are used in academic works with other document classes.</p>
+
+
+<a id="a1.3.3"></a>
+<h4>1.3.3 Perfect Binding, Spine, Signature</h4>
+
+<p><img class="floatright" src="html-resources/perfectbinding.png" width="160" height="290" alt="perfect binding"> Most modern softcover books (and some inexpensive hardcovers) are manufactured using a process named <b>Perfect Binding</b>. The finished book has individual foils, glued together at the <b>spine</b>. There are several stages to the process. First, the books is subdivided into a number of <b>signatures</b>, each of which is a group of folios (typically 6). The imposition software calculates which page goes at which position on each folio, and also tweaks the positions to allow for the slight displacement of each folio, due to paper thickness. In each signature, the folios are like nested V. The signatures are clamped together in a block. Then the folded area is removed by a machine, so that there are no longer any signatures or folios, just individual leaves. Finally they are glued together, possibly with a reinforcement, and the cover is attached.</p>
+
+<p>If you order your book in hardcover, it is likely to use the same production method, but with harder covers. So, don't think that your hadcover book will be like the expensive reference books you see in the library. Those books use a different, and much more expensive, binding method.</p>
+
+
+<a id="a1.3.4"></a>
+<h4>1.3.4 Gutter</h4>
+
+<p><img class="floatright" src="html-resources/whichgutter.png" width="276" height="219" alt="perfect binding"> To allow for the fact that most binding cannot be opened flat, the spine edge of each page must have an allowance for the loss of visible area there. The word <b>gutter</b> is used in this context.</p>
+<p>Alas, some folks use <em>gutter</em> to mean the extra allowance for each page; others use it to mean the combined allowance for a two-page spread; and others use it to mean the full spine-side margin from the text, which is a larger value. So if you read about the gutter from different sources, the numbers may not make sense, because the word is being used with different meanings. It could be any of A, B, C, or D in the accompanying diagram. I won't be using the term, except indirectly.</p>
+
+
+<a id="a1.3.5"></a>
+<h4>1.3.5 Trim Size</h4>
+
+<p><img class="floatright" src="html-resources/tbrectomar.png" width="144" height="223" alt="trim size recto"> <b>Trim Size</b> is the finished size of your book, width and height (but not thickness). In the case of hardcover books, where the cover is larger than the contents, it is (usually) the cover size that is measured, with the internal trim size being slightly smaller than nominal</p>
+
+<p>In the USA, 5.5" x 8.5" is often used for softcover fiction. This is the default setting in <code>novel</code>. It seems to be the case that nonfiction prefers the slightly larger 6" x 9" trim size. Both of these are known as "trade" sizes.</p>
+
+<p><b>Margins</b> are required on all four edges of the page. They do not have to be the same width. Generally the margin at the spine edge (inside margin) is wider. The above illustration shows a typical recto page on a layout with header and footer. The margins have been shaded gray in the picture (but, not in the book).</p>
+
+<p>Normally, your TeX document will be compiled to a PDF that is electronically at the exact Trim Size. And normally, print services want it to be that way. When you view your PDF, the text will shift from side to side as you move through the pages, due to the slightly increased margin at the spine edge. Note that in the above image, the spine margin (at its left) is a little larger than the outside margin (at its right).</p>
+
+
+<a id="a1.3.6"></a>
+<h4>1.3.6 Media Size, TrimBox</h4>
+
+<p style="clear:both"><img class="floatright" src="html-resources/mbcrectomar.png" width="202" height="264" alt="media size recto"> In a few cases, the commercial printer will request that the PDF page size be something larger than the Trim Size of your book. In PDF terminology, the larger dimensions are the <b>Media Size</b>. Typically, the Media Size will be U.S. Letter, or A4, and the Trim Size must be floated in the center, horizontally and vertically. As an alternative, the Trim Size will be at the edge. Something of the sort happens when you print a copy of your PDF at home, where your printer's paper tray has letter or A4, not the Trim Size.</p>
+<p>Do not use a Media Size larger than the Trim Size, unless the commercial printer requests it.</p>
+<p>Since your PDF is being prepared for commercial print production, it will have an invisible <code>TrimBox</code> automatically encoded. This information tell the printer where the Trim Size is located. If (as usual) the Trim Size and Media Size are identical, then the TrimBox is the full size of the PDF page. But when the Trim Size is smaller than the Media Size, the TrimBox defines where the paper will be trimmed. Although it is not normally marked on the PDF page and never appears in print, some PDF viewers allow you make the TrimBox visible.</p>
+<p>In the accompanying diagram, the TrimBox is shown as a green line. The margins, shaded gray, are measured relative to the Trim Size, not relative to the Media Size. The excess area beyond the Trim Size is "wasted paper" that will not become part of the book.</p>
+<p>Caution: If you are following someone else's instructions about setting margins, the odds are that the instructions apply to MS Word or maybe InDesign, not to TeX. In those other programs, the margin settings may include the wasted area beyond the Trim Size, because they are referring to margins <em>within the program</em> rather than the physical margins <em>of your book</em>.</p>
+
+
+<a id="a1.3.7"></a>
+<h4>1.3.7 Setting Layout Dimensions</h4>
+
+<p>Now that you know what the terms mean, how do you set them? This is described in detail on Page 4.</p>
+<p>In <code>novel</code> class, everything is pre-configured according to "likely" layout, for the specified book Trim Size. And, if you don't choose the Trim Size, the popular 5.5"W x 8.5"H size will be chosen for you.</p>
+
+
+
+<a id="a1.4"></a>
+<h3>1.4 Interior Organization</h3>
+
+<p>Now let us examine how a book is structured from front to back, in terms of internal organization of its content.</p>
+
+
+<a id="a1.4.1"></a>
+<h4>1.4.1 Front Matter</h4>
+
+<p>Roughly speaking, front matter identifies and describes the book, but is not the story itself.</p>
+<p>There is some wiggle room regarding what constitutes the story. In a genre where the book is supposed to be a lost manuscript written by someone else, or the translation of a (nonexistent) ancient book, the author may have introductory material describing how the book was discovered or translated. Of course, that is also a fictional part of the story. But the author may choose to place such an introduction in front matter, pretending that it is a factual description. Or, in any genre, a real or imaginary map of the locale may be in front matter, if it improves the book's overall appearance.</p>
+<p>Front matter begins with the <code>\frontmatter</code> command, which should be the first thing in the body of your document. This command sets the page numbering to lowercase roman. Most or all of the front matter page numbers will not appear in print, but they will appear in lowercase roman when viewed with most PDF readers.</p>
+<p>Front matter often contains only blank pages and "display" pages that stand by themselves. For each such page, use <code>\thispagestyle{empty}</code> to ensure that the page has no heading or printed page number.</p>
+<p>If you ever need to "drop folio," commands for that purpose are described on <a href="noveldocs-06-header-footer.html#a6.2.2">Page 6</a>. If you need a Table of Contents, see <a href="noveldocs-09-chapters-displays.html#a9.3">Page 9</a>. Note that the standard TeX methods do not work in <code>novel</code>.</p>
+<p><b>Page i.</b> As a matter of tradition, the very first page (i) recto, is the Half Title. This page contains only the book's title (not even subtitle). It may be stylized or in the form of an image, but is less prominent than the subsequent full title.</p>
+<p><b>Page ii.</b> The following page (ii) verso, is most often blank. Sometimes, a list of books by the same author can be placed here. Or, if the book is part of a series of related books, that can be mentioned. However, be aware that your print and distribution service may not allow such a list, unless they also carry all of the works listed. Another possibility is an illustration (professional artwork, not clip art). If your story has a map, and you don't know where else to put it, then the map can go here.</p>
+<p><b>Page iii.</b> The next page (iii) recto, is the Full Title Page. This contains the title (preferably decorative image), subtitle if any, author's name, and publisher's imprint (if any). Note that in the self-pbulishing market, your print and distribution service is not the publisher, <em>you are</em>. Some authors take the trouble to establish a publishing business name and logo. If so, put it at the bottom of this page. Your service <em>might</em> permit you to write something such as "Available from CremateSparks and Other Booksellers," as long as it does not imply that they are the publisher or sole distributor. The contract you have with them will say what you may or may not do.</p>
+<p><b>Page iv.</b> Next (iv) verso is the Copyright Page. It contains a number of elements. Look at other books for models. Special note: Do not use a "copyleft" notice, even if you are feeling generous.</p>
+
+<p><b>Page v.</b> If your book has a Dedication, it must appear on page (v) recto. Not all books have one. Nowadays, dedications are best put on a web site, where you can delete or change them with circumstances. Although there are some famous authors who write silly dedications, you are not famous, so don't do it.<p>
+<p>Consider using a generic dedication, if you feel that one is necessary. For example, if your book is combat fiction, you might write "To our Armed Forces." If it is a murder mystery, "To all those who wish that crimes could be solved so easily."
+
+<p>If you do not have a Dedication, then place a Table of Contents on Page (v), if your book has one. Not all books do. In fiction, a Table of Contents is most often used when chapters are distinctive, with their own chapter titles.</p>
+
+<p>Proceed to whatever else ought to go in front matter. But what if there is nothing else? This is quite possible in fiction. You don't always need a Dedication or Table of Contents, and you probably do not need a Preface or Introduction. It is bad practice to go directly from the Copyright page to the beginning of the story, because the page spread (legalese at left, story at right) looks awkward and unprofessional. So, what can you put on page (v) as a filler?</p>
+<p>Epigraph to the rescue! A book doesn't need one, but they look good. An epigraph is a short quotation from someone else's book or sayings, which sets the tone or theme of your own book. It can also imply that your book is in that genre. Copyright law applies, so be sure that the quotation is Public Domain. Permission from an author may not be good enough, since many authors transferred copyright to someone else. You can also use a fictional epigraph, from a book that does not exist. For example, if your book is sword-and-sorcery, you might provide an "Incantation from the Grimoire of Doh-Beer." In desperation, you can pick something from your own book. Keep it short.</p>
+
+<p><b>Page vi.</b> If you have nothing else in front matter, then page (vi) verso is blank. Then the following recto is page (1), the beginning of your story.</p>
+
+<p>When there is more to front matter, consult references on book design, to see what goes where.</p>
+
+
+
+
+
+<a id="a1.4.2"></a>
+<h4>1.4.2 Main Matter</h4>
+
+<p>The <code>\mainmatter</code> command marks the beginning of your story. It goes at the top of a recto page, immediately following the <code>\clearpage</code> commands that ends the front matter.</p>
+<p><code>\mainmatter</code> changes page numbering to arabic, and sets its count to 1. It also remembers the past-used page number in front matter, for possible later use.</p>
+<p>The question is: Where does main matter actually begin?</p>
+<p>Traditionally, main matter is the beginning of the story text. Non-text items, such as maps, are placed in front matter unless they are introduced later in the story.</p>
+<p>If the front matter is long (no particular length), then it is customary to place another Half Title recto page separating front matter from the story. Then, this second Half Title is page 1, its verso 2 is blank, and the text of the story actually starts on page 3. Or, if the story is broken into distinct Parts (not just chapters), then the cover for Part One would be page 1, its verso 2 blank, and again the story would begin on page 3.</p>
+<p>One genre is the "recently discovered manuscript" or "translation from ancient writings" tale. There is usually an introduction to the story from the fictional archaeologist, discoverer, or translator. Even though the introduction is fiction by a fictional person, it is customary to include it in front matter, just as if it were real. But it could be placed as the start of the story in main matter, instead.</p>
+<p>If you need footnotes and/or endnotes, they can be done. See <a href="noveldocs-09-chapters-displays.html#a9.7">Page 9</a>. But be aware that <code>novel</code> has only minimal provisions for such things, and will not automatically compile them as an addendum.</p>
+<p>In <code>novel</code>, you do not mark new chapters using a <code>\chapter</code> command. Instead you use special commands, specifically created to meet the needs of fiction. These are described on <a href="noveldocs-09-chapters-displays.html#a9.5">Page 9</a>.</p>
+<p>If your book has distinct parts (say, it is two novelettes in one), you should separate them with their own internal "cover" pages (recto), followed by a verso that is often blank, then the start of the part-story on the next recto. There is no particular <code>novel</code> command for this purpose. You have to design those pages yourself.</p>
+
+
+<a id="a1.4.3"></a>
+<h4>1.4.3 Back Matter</h4>
+
+<p>Fiction almost never needs back matter. Closing remarks by the author, or by a fictional character who introduced the story, can be treated as just another form of chapter. Even endnotes (which are themselves fictional) are treated as a continuation of main matter.</p>
+<p>If you wish to provide a separator, you can use one of four commands, immediately following <code>\clearpage</code>:</p>
+
+<p><code>\backmatter</code> is a do-nothing command. It merely informs you that what follows is considered back matter, in case someone is looking into your TeX code. Page numbers continue as arabic.</p>
+
+<p><code>\backmatter*</code> (with asterisk) puts page numbers in lowercase roman, continued from where the front matter left off.</p>
+
+<p><code>\Backmatter</code> (capital B) uses uppercase Roman, beginning at I.</p>
+
+<p><code>\Backmatter*</code> (capital B, asterisk) uses uppercase Roman, continued from where the front matter left off.</p>
+
+<p>In <code>novel</code>, you cannot automatically construct a bibliography or index, they way you can do it with other TeX document classes.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a id="a1.5"></a>
+<h3>1.5 Command Summary: Preamble</h3>
+
+<p style="clear:none;">Here is a list of commands created by <code>novel</code> class, plus a few of the many <code>LaTeX</code> commands that are likely to be most useful in fiction. Commands are sorted according to where they would be used.</p>
+
+<p style="clear:none;">Do not let the many Preamble settings intimidate you. All of them are pre-configured with default values that were carefully chosen for use in fiction. You may not need to write many settings.</p>
+
+<p style="clear:none;">Since <code>novel</code> is specifically intended for fiction, such as novels and collections of short stories, it does not implement many of the commands familiar to academic writers. In some cases, where such commands would interfere with <code>novel</code> commands, the academic commands have been entirely disabled.</p>
+
+
+<a id="a1.5.1"></a>
+<h4>1.5.1 Preamble: Class Options</h4>
+
+<p>These commands are further explained on <a href="noveldocs-02-class-options.html">Page 2</a>.</p>
+
+<p>Unlike other document classes, <code>novel</code> does not use class options to set layout dimensions or font point size.</p>
+
+<pre class="noindentcmd">draft</pre>
+<p>Sets draft mode. Marks horizontal overflow. Enables some other options.</p>
+
+<pre class="noindentcmd">graytext</pre>
+<p>Allows text in gray, not just pure K black.</p>
+
+<pre class="noindentcmd">shademargins</pre>
+<p>Only in draft mode. Applies gray background in page margins.</p>
+
+<pre class="noindentcmd">cropmarks</pre>
+<p>Adds basic cropmarks. Do not use unless required!</p>
+
+<pre class="noindentcmd">cropview</pre>
+<p>Only in draft mode. Removes excess area surrounding TrimBox.</p>
+
+<pre class="noindentcmd">closecrop</pre>
+<p>Only in draft mode. Crops to just clear the live text area.</p>
+
+<pre class="noindentcmd">xml</pre>
+<p>Exports XMP Metadata as an xml file.</p>
+
+
+<a id="a1.5.2"></a>
+<h4>1.5.2 Preamble: Metadata (File Data)</h4>
+
+<p>These commands are further explained on <a href="noveldocs-03-metadata-pdfx.html">Page 3</a>.</p> 
+
+<p>Metadata can be seen by PDF viewers. Some of it can only be seen by professional software. The data identifies your file and describes some of its properties. In the case of PDF/X, choosing a compliance standard will also affect how LaTeX compiles your document.</p>
+<p>You may <em>not</em> apply styling to metadata!</p>
+
+<pre class="noindentcmd">\SetTitle{<em>title of your book</em>}</pre>
+<p>Default: empty</p>
+<p>The value of this setting is available as <code>\thetitle</code> everywhere.</p>
+
+<pre class="noindentcmd">\SetSubtitle{<em>subtitle of your book, if any</em>}</pre>
+<p>Default: empty</p>
+<p>The value of this setting is available as <code>\thesubtitle</code> everywhere.</p>
+
+<pre class="noindentcmd">\SetAuthor{<em>author of your book</em>}</pre>
+<p>Default: empty</p>
+<p>The value of this setting is available as <code>\theauthor</code> everywhere.</p>
+
+<pre class="noindentcmd">\SetPDFX[<em>embed-icc or no-embed</em>]{<em>compliance standard</em>}{<em>output intent</em>}</pre>
+<p>Default: off (no compliance set)</p>
+<p>PDF/X describes a set of industry standards for print-ready PDF files. Your print service will probably require you to use it.</p>
+
+<pre class="noindentcmd">Advanced:<br>\SetApplication{<em>software that created the source document</em>}</pre>
+<p>Default: an identifying string, automatically inserted by TeX.</p>
+
+<pre class="noindentcmd">Advanced:<br>\SetProducer{<em>software that compiled the PDF</em>}</pre>
+<p>Default: an identifying string, automatically inserted by TeX.</p>
+
+
+<a id="a1.5.3"></a>
+<h4>1.5.3 Preamble: Layout</h4>
+
+<p>These commands are further explained on <a href="noveldocs-04-layout.html">Page 4</a>.</p> 
+
+<p>The <code>novel</code> class provides improved alternatives to papersize, offset, and other layout commands used by other document classes. These commands have been carefully chosen to do what you need to do.<p>
+
+<pre class="noindentcmd">\SetTrimSize{width}{height}</pre>
+<p>Default: <code>{5.5in}{8.5in}</code></p>
+<p>Fundamental! This is the finished size of your book.</p>
+
+<pre class="noindentcmd">\SetMargins{top}{outside}{bottom}{inside}</pre>
+<p>Default: <code>{0.5in}{0.5in}{0.5in}{0.75in}</code></p>
+<p>Relative to Trim Size. Inside means the spine edge.</p>
+
+<pre class="noindentcmd">\SetHeadFootStyle{number}</pre>
+<p>Default: <code>1</code> (header, but no footer)</p>
+<p>Chooses whether header, footer, or both. Also chooses the general content of headers/footers. Available choices are pre-defined styles, labeled by number.</p>
+
+<pre class="noindentcmd">\SetHeadJump{number}</pre>
+<p>Default: <code>1.5</code> (corresponds to 1.5 baseline skip)</p>
+<p>Controls gap between header and main text, if style uses header.</p>
+
+<pre class="noindentcmd">\SetFootJump{number}</pre>
+<p>Default: <code>1.5</code> (corresponds to 1.5 baseline skip)</p>
+<p>Controls gap between main text and footer, if style uses footer.</p>
+
+<pre class="noindentcmd">\SetFontSize{<em>size</em>}</pre>
+<p>Default: <code>11.4pt</code></p>
+<p>Sets the normal font size. May be measured in <code>pt</code> or <code>bp</code>, decimals allowed.</p>
+
+<pre class="noindentcmd">\SetLinesPerPage{<em>integer</em>}</pre>
+<p>Default: Calculated automatically from other layout settings.</p>
+<p>Main text, not including header/footer. Note than baseline skip (leading) is always calculated, not set by user.</p>
+
+<pre class="noindentcmd">Advanced:<br>\SetMediaSize[alignment]{width}{height}</pre> 
+<p>Default: Identical to Trim Size.</p>
+<p>When Trim Size is on larger Media Size.</p>
+
+<pre class="noindentcmd">Advanced:<br>\SetCropmarkGap{<em>size of gap</em>}</pre>
+<p>Default: <code>0.125in</code> (only effective with cropmarks class option)</p>
+<p>Sets gap between TrimBox and cropmarks, when cropmarks are used.</p>
+
+<pre class="noindentcmd">Advanced:<br>\ReworkTrimSize{width}{height}</pre>
+<p>For emergency use only.</p>
+<p>Re-sizes an already-finished layout.</p>
+
+<pre class="noindentcmd">Advanced:<br>\ReworkMargins{top}{outside}{bottom}{inside}</pre>
+<p>For emergency use only.</p>
+<p>Re-sizes an already-finished layout.</p>
+
+
+<a id="a1.5.4"></a>
+<h4>1.5.4 Preamble: Choosing Fonts</h4>
+
+<p>These commands are further explained on <a href="noveldocs-05-fonts.html">Page 5</a>.</p> 
+
+<p>In <code>novel</code>, you will be using Open Type fonts loaded with features by the <code>fontspec</code> package. This permits much more flexibility than can be achieved using ancient <code>TeX</code> font methods. In particular, you never need <code>\usepackage{<em>fontname</em>}</code>, because available Open Type fonts can be loaded without LaTeX support files. If you are not already familiar with <code>LuaLaTeX</code> and <code>fontspec</code> with Open Type fonts, then forget <em>everything</em> you ever learned about <code>TeX</code> fonts, and start fresh.</p>
+<p><code>TeX</code> ligatures, such as subtituting <code>&ldquo;</code> for <code>``</code>, are always enabled. Kerning (Open Type feature <code>kern</code>) is always enabled. Standard ligatures (Open Type feature <code>liga</code>) is enabled for fonts described in this section, including new fonts that you define. However, <code>liga</code> is <em>not</em> enabled by default for specialty fonts that will be described in later sections.</p>
+
+<pre class="noindentcmd">\SetParentFont[features]{font family}</pre>
+<p>Default: <code>Libertinus Serif</code></p>
+<p>Alternate: <code>Linux Libertine O</code></p>
+<p>Emergency Last Choice: <code>Latin Modern Roman</code></p>
+<p>If you permit the default or alternate font family to be chosen automatically, then the Semibold weights will be used in place of Bold. This is not automatically done for any others, becuase most font families do not have Semibold.</p>
+
+<pre class="noindentcmd">\SetHeadFont[features]{font family}</pre>
+<p>Default: <code>[Numbers=Lining, Scale=0.92]{<em>based on parent font</em>}</code></p>
+<p>Used in each element of headers and footers, unless overridden by other font commands.</p>
+
+<pre class="noindentcmd">\SetChapterFont[features]{font family}</pre>
+<p>Default: <code>[Numbers=Lining, Scale=1.6]{<em>based on parent font</em>}</code></p>
+<p>Used in <code>\ChapterTitle{}</code> command</p>
+
+<pre class="noindentcmd">\SetSubchFont[features]{font family}</pre>
+<p>Default: <code>[Numbers=Lining, Scale=1.2]{<em>based on parent font</em>}</code></p>
+<p>Used in <code>\ChapterSubtitle{}</code> command.</p>
+
+<pre class="noindentcmd">Advanced:<br>\SetDecoFont[features]{font}</pre>
+<p>Default: <code>NovelDeco</code> (any setting must used a derivative of NovelDeco)</p>
+<p>Automatically applied as <code>{\decofont...}</code> by certain other commands.</p>
+
+<pre class="noindentcmd">Advanced:<br>\SetSansFont[features]{font family}</pre>
+<p>Default: <code>Libertinus Sans</code></p>
+<p>Alternate: <code>Linux Biolinum O</code></p>
+<p>Emergency Last Choice: <code>Latin Modern Sans</code></p>
+<p>Rarely used in fiction.</p>
+
+<pre class="noindentcmd">Advanced:<br>\SetMonoFont[features]{font family}</pre>
+<p>Default: <code>Libertinus Mono</code></p>
+<p>Alternate: <code>Linux Libertine Mono O</code></p>
+<p>Emergency Last Choice: <code>Latin Modern Mono</code></p>
+<p>Rarely used in fiction.</p>
+
+<pre class="noindentcmd">Advanced:<br>\NewFontFamily\<i>yourfontcommand</i>[features]{font family}</pre>
+<pre class="noindentcmd2">\NewFontFace\<i>yourfontcommand</i>[features]{font}</pre>
+<p>These use <em>fontspec</em> to define your own font commands.</p>
+
+
+<a id="a1.5.5"></a>
+<h4>1.5.5 Preamble: Other Configuration</h4>
+
+<p>These commands are further explained in file <a href="noveldocs-06-otherconfiguration.html">noveldocs-06-otherconfiguration.html</a>.</p> 
+
+<pre class="noindentcmd">\SetRectoHeadText{<em>text</em>}</pre>
+<p>Default: Adjusted title, in small caps</p>
+<p>The text appears in recto headers, if the page style has headers. This command may also be used from time to time in the document body.</p>
+
+<pre class="noindentcmd">\SetVersoHeadText{<em>text</em>}</pre>
+<p>Default: Adjusted author, in small caps</p>
+<p>The text appears in verso headers, if the page style has headers. This command may also be used from time to time in the document body.</p>
+
+<pre class="noindentcmd">Advanced:<br>\SetEmblems{<em>verso</em>}{<em>recto</em>}</pre>
+<p>Default: both empty</p>
+<p>Applies a decoration (emblem) near the page number. Only for selected header/footer styles.</p>
+
+<pre class="noindentcmd">Advanced:<br>\SetPageNumberStyle{<em>code using \thepage</em>}</pre>
+<p>Default: <code>\thepage</code></p>
+<p>Allows page number to be styled (such as italics).</p>
+
+<pre class="noindentcmd">Advanced:<br>\SetLooseHead{number}</pre>
+<p>Default: <code>50</code></p>
+<p>Tweaks tracking of header text, 0 to 200.</p>
+
+<pre class="noindentcmd">\SetChapterStart{<em>choice</em>}</pre>
+<p>Default: <code>footer</code> (no header, footer only if used)</p>
+<p>Sets the default page style for the start of new chapters. May be locally changed.</p>
+
+<pre class="noindentcmd">Advanced:<br>\SetIndentAfterScenebreak</pre>
+<p>Default: unset (new scenes do not begin with indent)</p>
+<p>If set, new scenes start with paragraph indent.</p>
+
+<pre class="noindentcmd">Advanced:<br>\SetMarkerStyle[real/fake]{asterisk/dagger/number}</pre>
+<p>Default: <code>[real]{asterisk}</code>
+<p>Used for superscripts, subscripts, footnote markers.</p>
+
+<pre class="noindentcmd">Advanced:<br>\microtypesetup{<em>see microtype package docs</em>}</pre>
+<p>Default: <code>config=novel-microtype,stretch=20,shrink=20,final,tracking</code></p>
+<p>Defaults are set for moderate typography suited to fiction. Options <code>final,tracking</code> will always be in effect.</p>
+
+<pre class="noindentcmd">Advanced:<br>\setmainlanguage{<em>language</em>} and related commands</pre>
+<p>Default: <code>english</code></p>
+<p>Several commands from the <code>polyglossia</code> package may be used for language choices.</p>
+
+
+
+<a id="a1.6"></a>
+<h3>1.6 Document Body</h3>
+
+<p>These commands are further explained in file <a href="noveldocs-07-documentbody.html">noveldocs-07-documentbody.html</a>.</p> 
+
+<p>Note that standard font size commands, such as \small and \Large, are disabled.</p>
+
+
+<a id="a1.6.1"></a>
+<h4>1.6.1 Book Divisions</h4>
+
+<pre class="noindentcmd">\frontmatter</pre>
+<p>Page numbering (if shown) is lowercase roman. This division contains title page, copyright page, and usually several other pages that are not the story itself.</p>
+
+<pre class="noindentcmd2">\mainmatter</pre>
+<p>Page numbering re-starts at 1, and is arabic. This division contains the story itself.</p>
+
+<pre class="noindentcmd2">\backmatter, \backmatter*, \Backmatter, \Backmatter*</pre>
+<p>Backmatter typically contains things such as critical notes, bibliography, and appendix. Its use is very rare in fiction, because "fictional backmatter" (fake commentary, for example) is generally regarded as mainmatter. If you need to use backmatter, these commands provide a variety of options regarding page numbering.</p>
+
+
+<a id="a1.6.2"></a>
+<h4>1.6.2 Special Pages</h4>
+
+
+<pre class="noindentcmd">\begin{legalese} <em>...</em> \end{legalese}</pre>
+<p>Changes text alignment to left (ragged right), and disables hyphenation. Useful for copyright page. See also <code>parascale</code> environment.</p>
+
+<pre class="noindentcmd">\begin{toc} <em>...</em> \end{toc}</pre>
+<p>Specifically designed for a Table of Contents in fiction.</p>
+
+<pre class="noindentcmd">\tocitem[<em>number</em>]{<em>title</em>}{<em>page</em>}</pre>
+<p>Item, such as chapter, in the toc environment.</p>
+
+<pre class="noindentcmd">\begin{ChapterStart}[<em>line count</em>] <em>...</em> \end{ChapterStart}</pre>
+<p>Creates an area of fixed height, into which items such as <code>\ChapterTitle</code> may be placed.</p>
+
+<pre class="noindentcmd">\ChapterTitle{<em>text</em>}</pre>
+<p>Used for chapter titles. One line only. May be used more than once.</p>
+
+<pre class="noindentcmd">\ChapterSubtitle{<em>text</em>}</pre>
+<p>Used for chapter subtitles. One line only. May be used more than once.</p>
+
+<pre class="noindentcmd">\ChapterDeco[]{<em>deco code</em>}</pre>
+<p>Used for chapter decorations. One line only. May be used more than once.</p>
+
+<pre class="noindentcmd">\QuickChapter[<em>dash size</em>]{<em>chapter title</em>}</pre>
+<p>Insertwo two blank lines, places the chapter title in the gap using subch font, followed on the same line with an optional, variable-length em dash.</p>
+
+<pre class="noindentcmd">\thispagestyle{<em>choose</em>}</pre>
+<p>Changes whether header/footer appears, for just the current page. This <code>fancyhdr</code> command is re-defined to accept a greater variety of pre-defined styles.</p>
+
+<pre class="noindentcmd">\FirstLine{<em>text</em>}</pre>
+<p>From the <code>magaz</code> package. Places first line of text in small caps. See also <code>\charscale \hangindent</code> commands.</p>
+
+<pre class="noindentcmd">\clearpage</pre>
+<p>Standard LaTeX command for a new full page. In <code>novel</code> you must do it yourself. For a blank page, use <code>\clearpage\thispagestyle{empty}\null</code>.</p>
+
+
+<a id="a1.6.3"></a>
+<h4>1.6.3 Block-Level Breaks and Styling</h4>
+
+<pre class="noindentcmd">\scenebreak</pre>
+<pre class="noindentcmd2">\sceneline</pre>
+<pre class="noindentcmd2">\scenestars</pre>
+<p>Skips a line. The gap will include nothing, a short line, or some asterisks.</p>
+
+<pre class="noindentcmd">\begin{parascale}[<em>scale</em>]...\end{parascale}</pre>
+<p>For an entire paragraph of scaled text. Will disobey line grid. See also <code>\charscale</code> command.</p>
+
+<pre class="noindentcmd">\begin{adjustwidth}{<em>left</em>}{<em>right</em>} <em>...</em> \end{adjustwidth}</pre>
+<p>General-purpose environment for block indenting text, at left and/or right.</p>
+
+
+<a id="a1.6.4"></a>
+<h4>1.6.4 Footnotes and Endnotes</h4>
+
+<pre class="noindentcmd">\footnote[<em>option</em>]{<em>note text</em>}</pre>
+<p>Creates a footnote at the bottom of the page.</p>
+
+<pre class="noindentcmd">\endnote</pre>
+<p>Places an endnote marker. See also <code>\memo</code> command.</p>
+
+<pre class="noindentcmd">\endnotetext{<em>number</em>}{<em>note text</em>}</pre>
+<p>Write the endnote text.</p>
+
+<pre class="noindentcmd">\realmarker<br>\fakemarker</pre>
+<p>Changes whether marker style is real or fake.</p>
+
+
+<a id="a1.6.5"></a>
+<h4>1.6.5 Images</h4>
+
+<pre class="noindentcmd">\InlineImage[<em>hoffset</em>][<em>voffset</em>]{<em>filename.ext</em>}<br>\InlineImage*[<em>hoffset</em>][<em>voffset</em>]{<em>filename.ext</em>}</pre>
+<p>Places an image that may be mingled in-line with text.</p>
+
+<pre class="noindentcmd">\BlockImage[<em>alignment,hoffset,voffset</em>]{<em>filename.ext</em>}[<em>accompanying text</em>]</pre>
+<p>Places an image as a block element, in its own space. May share the space with accompanying text.</p>
+
+
+<a id="a1.6.6"></a>
+<h4>1.6.6 General Text Styling</h4>
+
+<p>Note that standard LaTeX font size commands, such as <code>\small</code> and <code>\Large</code>, have no effect in <code>novel</code> class. This is because those commands would conflict with the emphasis on maintaining a constant baseline grid.</p>
+
+<pre class="noindentcmd">\charscale[<em>scale,x,y</em>]{<em>text</em>}</pre>
+<p>Versatile. Scales the text (at most one line), and moves it anywhere, even overlying. See also <code>parascale</code> environment.</p>
+
+<pre class="noindentcmd">{\somefontcommand <em>text</em>}</pre>
+<p>Applies the font defined as <code>\somefontcommand</code> to the included text.</p>
+<p>Example: <code>{\headfont <em>text</em>}</code> is automatically used for headers/footers.</p>
+
+<pre class="noindentcmd">\forceindent<br>\backindent</pre>
+<p>May be used in situations where ordinary <code>\indent</code> or <code>\noindent</code> fail.</p>
+
+<pre class="noindentcmd">\hangindent{<em>text</em>}</pre>
+<p>Place the text to the left of the command insertion point. Sometimes used to move an opening quoation mark, at the start of chapter or lines of poetry.</p>
+
+<pre class="noindentcmd">\acronym{<em>text</em>}</pre>
+<p>Requires NovelDeco font. Caps become "medium" caps, between regular and small.<p>
+
+<pre class="noindentcmd">\decoglyph{}</pre>
+<p>Selects a decorative glyph from the decofont. Glyphs are chosen from a code table. The decorative glyphs in this font (not including its ordinary characters) are shown in file <code>NovelDeco-glyphs.pdf</code>, which can be found in these docs in the <code>extras</code> folder.</p>
+
+<pre class="noindentcmd">\squeeze{<em>text</em>}<br>\crush{<em>text</em>}</pre>
+<p>Horizontally shrinks text by 1% or 2%, respectively.</p>
+
+<pre class="noindentcmd">\color[<em>gray</em>]{<em>name or code</em>} <em>... until group ends</em><br>\textcolor[<em>gray</em>]{<em>name or code</em>}{<em>text</em>}</pre>
+<p>These commands from package <code>xcolor</code> have been modified so that they will only accept grayscale, and only when the <code>graytext</code> class option is used. Otherwise, K black is produced. Images are unaffected.</p>
+
+<pre class="noindentcmd">\memo{<em>text</em>}</pre>
+<p>Ignores its argument, which does not print.</p>
+
+<pre class="noindentcmd">\nfs<br>\nbs</pre>
+<p>These are abbreviations for the lengths <em>normal font size</em> and <em>normal baseline skip</em>.</p>
+
+
+<a id="a1.6.7"></a>
+<h4>1.6.7 Some Other LaTeX Commands</h4>
+
+<p>These commands are defined by LaTeX or by a package that is automatically loaded with <code>novel</code>, or are standard commands given an alias for convenience. There are many other LaTeX commands that may be used, but these are most likely to be useful. Most of these are not documented by <code>novel</code>, since their usage is well-known.</p>
+
+<pre class="noindentcmd">\textit{<em>text</em>}, \emph{<em>text</em>}, \itshape{<em>text</em>}</pre>
+<p>Various ways to implement italics.</p>
+
+<pre class="noindentcmd">\textsc{<em>text</em>}, \smcp{<em>text</em>}</pre>
+<p>Lowercase to small caps. Novel uses the <code>smcp</code> Open Type feature, and does not fake small caps.</p>
+
+<pre class="noindentcmd">\allsmcp{<em>text</em>}</pre>
+<p>Both uppercase and lowercase to small caps.</p>
+
+<pre class="noindentcmd">\sups{<em>text</em>}</pre>
+<p>Superscripts. Result depends on whether marker style is real or fake.</p>
+
+<pre class="noindentcmd">\subs{<em>text</em>}</pre>
+<p>Subscripts (scientific inferiors). Result depends on whether marker style is real or fake.</p>
+
+<pre class="noindentcmd">\null</pre>
+<p>Inserts a blank line. Use <code>\clearpage\thispagestyle{empty}\null</code> to create a blank page.</p>
+
+<pre class="noindentcmd">\mbox{<em>text</em>}</pre>
+<p>Puts its contents in a box. Useful for preventing hyphenation.</p>
+
+<pre class="noindentcmd">\makebox[<em>width</em>][<em>alignment</em>]{<em>text</em>}</pre>
+<p>Boxes its contents at defined width and alignment. Useful for horizontal control of contents.</p>
+
+<pre class="noindentcmd">\hspace{<em>length</em>}</pre>
+<p>Creates a horizontal space. Sometimes requires <code>\strut</code> in front.</p>
+
+<pre class="noindentcmd">\vspace{<em>length</em>}</pre>
+<p>Creates a vertical space. Use only with caution, to avoid disturbing baseline grid.</p>
+
+<pre class="noindentcmd">\kern<em>length</em></pre>
+<p>Tweaks the kerning between characters.</p>
+
+<pre class="noindentcmd">\strut</pre>
+<p>Sometimes used to ensure that a line of text maintains its proper height.</p>
+
+<pre class="noindentcmd">\smash{<em>text</em>}</pre>
+<p>The smashed text may overlie other text.</p>
+
+<pre class="noindentcmd">{\centering <em>text</em>\par}</pre>
+<p>Use instead of <code>center</code> environment.</p>
+
+<pre class="noindentcmd">\hfill</pre>
+<p>Inserts as much horizontal space as needed (generally, preceding right-aligned text).</p>
+
+<pre class="noindentcmd">\vfill</pre>
+<p>Inserts as much vertical space as needed (generally, to force text downward on page).</p>
+
+<pre class="noindentcmd">\linebreak</pre>
+<p>Maintains justification of line break. Use with caution.</p>
+
+<pre class="noindentcmd">\enlargethispage{<em>usually -\nbs</em>}</pre>
+<p>Changes height of textblock for one page. Use with caution. Argument typically <code>-\nbs</code>.</p>
+
+<pre class="noindentcmd">\bigemdash[<em>voffset,thickness</em>]</pre>
+<p>Fills a a box with a simulated emdash of variable width.</p>
+
+
+<a id="a1.6.8"></a>
+<h4>1.6.8 Disabled LaTeX Commands</h4>
+
+<p>These commands are disabled or ineffective. Depending on the command, it may silently do nothing, or simply echo its argument, or generate a Warning or Error. Some of these commands are part of standard LaTeX document classes, but others are part of widely-used packages.</p>
+<p>There are other commands that <em>should</em> be disabled, but it is difficult to keep track of all of them. This list only includes some popular commands.</p>
+
+<pre class="noindentcmd">\small \LARGE and other font sizes</pre>
+<p>You may use <code>\charscale</code> or the <code>parascale</code> environment.</p>
+
+<pre class="noindentcmd">\textls</pre>
+<p>For loose tracking, use <code>{\addfontfeature{LetterSpace=<em>number</em>}text}</code> instead.</p>
+
+<pre class="noindentcmd">\includegraphics</pre>
+<p>Use <code>\InsertImage</code> or <code>\BlockImage</code> instead.</p>
+
+<pre class="noindentcmd">\maketitle</pre>
+<p>Sorry, but you have to do it yourself.</p>
+
+<pre class="noindentcmd">bibliography, index, etc.<br>part, chapter, section, etc.<br>floats, captions, tables</pre>
+<p>This ain't no stinking thesis. LaTeX "academic layout" commands don't work.</p>
+
+
+<a id="a1.6.9"></a>
+<h4>1.6.9 Discouraged LaTeX Commands</h4>
+
+<p>These commands may be used, but are likely to interfere with other commands defined by <code>novel</code>, or are likely to disturb the constant baseline grid. Only use them when you are willing to carefully inspect the output at magnification. These are less likely to be problematic when used on a display-only page, such as the book's title page.</p>
+<p>This is not a comprehensive list. It includes only popular commands.</p>
+
+<pre class="noindentcmd">\parbox<br>\minipage</pre>
+<p>Perhaps the <code>adjustwidth</code> environment will sui your needs.</p>
+
+<pre class="noindentcmd">center environment</pre>
+<p>You may use <code>{\centering...\par}</code>. In many cases, you can use the center environment, but you must pay attention regarding possible stray space above or below it.</p>
+
+<pre class="noindentcmd">\raisebox</pre>
+<p>You may use <code>\charscale</code> instead.</p>
+
+
+
+</div><!-- end main -->
+
+<div id="finish"></div>
+
+</div><!-- end master -->
+
+</body>
+</html>
+

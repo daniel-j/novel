@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Novel class documentation - Debugging</title>
+<link rel="stylesheet" type="text/css" href="html-resources/novel-doc.css">
+</head>
+
+<body>
+<div id="master">
+
+
+<div id="toc">
+
+<p>Document class "novel"</p>
+
+<p><a href="#a11">11. Debugging</a></p>
+
+<ul>
+  <li><a href="#a11.1">11.1 Ordinary Novel Tracking</a></li>
+  <li><a href="#a11.2">11.2 Debug Novel Tracking</a></li>
+  <li><a href="#a11.3">11.3 Your Own Debug Tracking</a></li>
+</ul>
+
+<p>&nbsp;</p>
+</div><!-- end toc -->
+
+
+
+<div id="main">
+<a id="thetop"></a>
+<h1>Documentation for <code>novel</code> document class</h1>
+<p>Documentation version: 1.38.</p>
+
+
+<div class="pagetopage">
+<p><b>User Guide</b></p>
+<p><a href="noveldocs-01-overview.html">1. Overview</a></p>
+<p><a href="noveldocs-02-class-options.html">2. Class Options</a></p>
+<p><a href="noveldocs-03-metadata-pdfx.html">3. Metadata, PDF/X</a></p>
+<p><a href="noveldocs-04-layout.html">4. Page Layout</a></p>
+<p><a href="noveldocs-05-fonts.html">5. Choosing Fonts</a></p>
+<p><a href="noveldocs-06-header-footer.html">6. Headers, Footers</a><br>
+<p><a href="noveldocs-07-text-size-style.html">7. Text Sizes, Styles</a></p>
+<p><a href="noveldocs-08-images.html">8. Using Images</a></p>
+<p><a href="noveldocs-09-chapters-displays.html">9. Display, Start Pages;<br>
+<span style="visibility:hidden">9. </span>Chapters; Continued Pages;<br>
+<span style="visibility:hidden">9. </span>Footnotes, Endnotes.</a></p>
+<p><a href="noveldocs-10-cover-art.html">10. Cover Artwork</a></p>
+<p>11. Debugging</p>
+</div>
+
+
+<a id="a11"></a>
+<h2 style="clear:none">11. Debugging</h2>
+
+<p>New in version 1.34.</p>
+
+<p>The <code>debug</code> class option is primarily for developers. However, ordinary users may sometimes find it helpful. Do not use this option with a document that compiles successfully, even if it does not look the way you wanted it to look. Debuggin code does not change the PDF, but writes many additional messages to the log file, which are not necessary when the run is successful.</p>
+
+<p>The debugging information is also written to your console (terminal window or GUI application).</p>
+
+
+
+<a id="a11.1"></a>
+<h3>11.1 Ordinary Novel Tracking</h3>
+
+<p>If you look at the log file for a successful run, you will see several messages that look something like this:</p>
+
+<p class="code"><code>Novel Tracking 0.2: novel-FileData.sty loaded.</code></p>
+
+<p>That message was written to the log file at the time the compiler encountered code this code:</p>
+
+<p class="code"><code>\typeout{Novel Tracking 0.2: novel-FileData.sty loaded.}</code></p>
+
+<p>Then, you know that the compiler successfully reached that point in execution. Tracking numbers beginning with <code>0.</code> are in the <code>novel.cls</code> main file, and are written to the log whether or not you use the <code>debug</code> option. If a tracking number is missing, or out of numerical order, it merely means that your document setup has followed a particular fork in the code.</p>
+
+<p>What if the run is unsuccessful? You know it succeeded up to the point where the last tracking number (in log order, not numerical order) was written, and must have failed at some point after that.</p>
+
+
+<a id="a11.2"></a>
+<h3>11.2 Debug Novel Tracking</h3>
+
+<p>When the <code>debug</code> option is used, additional tracking codes appear in the log file. These are generated from the various subsidiary files that are part of the <code>novel</p> package. For example:</p>
+
+<p class="code"><code>Novel Tracking 3.4.1 in novel-LayoutSettings.sty.</code></p>
+
+<p>is written to the log file, when the following line of code is encountered, located in file <code>novel-LayoutSettings.sty</code>:</p>
+
+<p class="code"><code>\NDB{3.4.1 in novel-LayoutSettings.sty.}</code></p>
+
+<p>The <code>\NDB</code> macro detects whether or not you are using the <code>debug</code> option.</p>
+
+<p>So, when you see that log message, you know that the code leading to it was successfully executed.</p>
+
+<p>Keep in mind that due to forks in the logic, successive Novel Tracking messages may have code numbers all over the place, and some of them may be skipped or repeated. But more likely than not, if your document fails to compile, the error was triggered by code that soon follows the last successful Novel Tracking message, in that same file.</p>
+
+<p>The cause of an error may be any of these things:<br>
+&nbsp; &nbsp; (1) An error in novel's own code.<br>
+&nbsp; &nbsp; (2) Error in another package used by novel.<br>
+&nbsp; &nbsp; (3) Your own document code.</p>
+
+<p>The first instance is possible, but unlikely, because each update of <code>novel</code> is tested before release.</p>
+
+<p>In the second case, the offending package hopefully provides its own error message. If that package has recently been updated, then perhaps an error crept in, and will be quickly resolved when others report it.
+
+<p>The third case is up to you. Note that bad code is often not detected until the point where it is used. For example, suppose you define the following macro in your Preamble, where <code>\BADCODE</code> is undefined:</p>
+
+<p class="code"><code>\newcommand\mymonkeywrench{\BADCODE}</code></p>
+
+<p>That will not throw an error when it is parsed. If you do not use <code>\mymonkeywrench</code> anywhere, then it will not throw an error. But if you use <code>\mymonkeywrench</code> on page 214 of your novel, that's where the error will finally appear.</p>
+
+
+<a id="a11.3"></a>
+<h3>11.3 Your Own Debug Tracking</h3>
+
+<p>You can add Novel Tracking messages to your own code. You can put the messages inside macros, or simply insert them somewhere in the text.</p>
+
+<p>For example, you could do something like this, where the <code>22.5</code> is arbitrary:</p>
+
+<p class="code"><code>\newcommand\mymonkeywrench{\NDB{User 22.5 page \thepage.}\BADCODE}</code></p>
+
+<p>Then, if that macro is invoked on page 214, it will write this to the log file:</p>
+
+<p class="code"><code>Novel Tracking User 22.5 page 214.</code></p>
+
+<p>For a complicated macro, you could put Novel Tracking at its start and at its end. Then you will know whether the macro was accessed, and if it successfully completed.</p>
+
+<p>Remember that when you insert the <code>\NDB{}</code> code, you have to pay attention to white space. In some cases, you must avoid space before or after it. And, if the code is on its own line, you might need to terminate the line with a percent <code>%</code> so that the line return is not read into your document.</p>
+
+
+
+</div><!-- end main -->
+
+<div id="finish"></div>
+
+</div><!-- end master -->
+
+</body>
+</html>
+

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Class novel - 6 - Headers and Footers</title>
+<link rel="stylesheet" type="text/css" href="html-resources/novel-doc.css">
+</head>
+
+<body>
+<div id="master">
+
+
+<div id="toc">
+
+<p>Document class "novel"</p>
+
+<p><a href="#a6">6. Headers and Footers</a></p>
+
+<ul>
+  <li><a href="#a6.1">6.1 Global Header/Footer Settings</a>
+    <ul>
+      <li><a href="#a6.1.1">6.1.1 \SetHeadJump{}<br><span style="visibility:hidden">6.1.1 </span>\SetFootJump{}</a></li>
+      <li><a href="#a6.1.2">6.1.2 \SetHeadFootStyle{}</a>
+      <li><a href="#a6.1.3">6.1.3 \SetEmblems{}{}</a></li>
+      <li><a href="#a6.1.4">6.1.4 \SetPageNumberStyle{}</a></li>
+      <li><a href="#a6.1.5">6.1.5 \SetHeadFont[]{}</a></li>
+      <li><a href="#a6.1.6">6.1.6 \SetLooseHead{}</a></li>
+      <li><a href="#a6.1.7">6.1.7 \SetChapterDisplay{}</a></li>
+    </ul>
+  </li><!-- end 6.1 -->
+  <li><a href="#a6.2">6.2 Local Header/Footer Settings</a>
+    <ul>
+      <li><a href="#a6.2.1">6.2.1 \SetVersoHeadText{}<br><span style="visibility:hidden">6.2.1 </span>\SetRectoHeadText{}</a></li>
+      <li><a href="#a6.2.2">6.2.2 \thispagestyle{}</a>
+    </ul>
+  </li><!-- end 6.2 -->
+
+</ul>
+
+<p>&nbsp;</p>
+
+</div><!-- end toc -->
+
+
+
+<div id="main">
+
+<a id="a6"></a>
+<h1>Documentation for <code>novel</code> document class</h1>
+<p>Documentation version: 1.38.</p>
+
+
+<div class="pagetopage">
+<p><b>User Guide</b></p>
+<p><a href="noveldocs-01-overview.html">1. Overview</a></p>
+<p><a href="noveldocs-02-class-options.html">2. Class Options</a></p>
+<p><a href="noveldocs-03-metadata-pdfx.html">3. Metadata, PDF/X</a></p>
+<p><a href="noveldocs-04-layout.html">4. Page Layout</a></p>
+<p><a href="noveldocs-05-fonts.html">5. Choosing Fonts</a></p>
+<p>6. Headers, Footers<br>
+<p><a href="noveldocs-07-text-size-style.html">7. Text Sizes, Styles</a></p>
+<p><a href="noveldocs-08-images.html">8. Using Images</a></p>
+<p><a href="noveldocs-09-chapters-displays.html">9. Display, Start Pages;<br>
+<span style="visibility:hidden">9. </span>Chapters; Continued Pages;<br>
+<span style="visibility:hidden">9. </span>Footnotes, Endnotes.</a></p>
+<p><a href="noveldocs-10-cover-art.html">10. Cover Artwork</a></p>
+<p><a href="noveldocs-11-debugging.html">11. Debugging</a></p>
+</div>
+
+
+<h2 style="clear:none;">6. Headers and Footers</h2>
+
+<p><b>Overview:</b> The <code>novel</code> class has a default header style. If you like it, then you do not have to use any of the configuration commands. So, before studying these commands, do a test document that uses the defaults.</p>
+
+<p>You may choose among several pre-configured header/footer styles. Then, you may change the appearance, content, and position. If none of it works for you, then you may define your own headers/footers using <code>fancyhdr</code> syntax. However, just about every style used in fictional works can be obtained using the pre-configured styles and adjustments.</p>
+
+<p>Individual pages, such as title, copyright, and new chapters, can have the header/footer style changed locally, on a per-page basis.</p>
+
+
+
+
+<a id="a6.1"></a>
+<h3 style="clear:none;">6.1 Global Header/Footer Settings, only in Preamble.</h3>
+
+<p>These commands determine whether your book will have headers and/or footers, and set the default style that is used for nearly all pages of the text. Per-page exceptions, such as for blank pages, title, copyright, and new chapters, are performed using the local settings commands.</p>
+
+
+
+<a id="a6.1.1"></a>
+<h4>6.1.1 <code>\SetHeadJump{<em>number</em>}</code>, <code>\SetFootJump{<em>number</em>}</code></h4>
+<p>These two commands control the separation between the header/footer and the main text. Since they pertain to page layout, rather than style, their usage is described on <a href="noveldocs-04-layout.html#a4.2.6">Page 4</a>.</p>
+
+
+
+
+<a id="a6.1.2"></a>
+<h4>6.1.2 <code>\SetHeadFootStyle{<em>number</em>}</code></h4>
+<p>Command <code>\SetHeadFootStyle{<em>number</em>}</code> chooses among several pre-configured header/footer styles, numbered 1 through 6. The default is style 1. The internals of the configuration can then be changed using a variety of commands.</p>
+<p>Some styles support an optional "emblem", which applies a decoration near the page number.</p>
+<p>Style 0 means neither header nor footer. Not practical for fiction, but it exists.</p>
+
+<p>&nbsp;</p>
+
+<img class="floatright" src="html-resources/headfoot1.png" width="276" height="219" alt="style 1" title="style 1">
+<pre style="padding-left:16px">
+<b>\SetHeadFootStyle{1}</b></pre>
+<p>Only Header.<br>
+Page number at outside (left verso, right recto).<br>
+Optional emblem adjacent to page number.<br>
+Text centered. Default author verso, title recto.<br>
+<em>This is the default for the novel document class.</em></p>
+
+<div style="clear:both"></div>
+
+<img class="floatright" src="html-resources/headfoot2.png" width="276" height="219" alt="style 2" title="style 2">
+<pre style="padding-left:16px">
+<b>\SetHeadFootStyle{2}</b></pre>
+<p>Only Footer.<br>
+Page number at outside (left verso, right recto).<br>
+Optional emblem adjacent to page number.</p>
+
+<div style="clear:both"></div>
+
+<img class="floatright" src="html-resources/headfoot3.png" width="276" height="219" alt="style 3" title="style 3">
+<pre style="padding-left:16px">
+<b>\SetHeadFootStyle{3}</b></pre>
+<p>Only Footer.<br>
+Page number centered.<br>
+Disregards emblem, if coded.</p>
+
+<div style="clear:both"></div>
+
+<img class="floatright" src="html-resources/headfoot4.png" width="276" height="219" alt="style 4" title="style 4">
+<pre style="padding-left:16px">
+<b>\SetHeadFootStyle{4}</b></pre>
+<p>Only Header.<br>
+Page number at outside (left verso, right recto).<br>
+Optional emblem adjacent to page number.<br>
+Text towards outside, instead of centered.<br>
+Text begins or ends 1em from the emblem.<br>
+Default author verso, title recto.</p>
+
+<div style="clear:both"></div>
+
+<img class="floatright" src="html-resources/headfoot5.png" width="276" height="219" alt="style 5" title="style 5">
+<pre style="padding-left:16px">
+<b>\SetHeadFootStyle{5}</b></pre>
+<p>Header and Footer.<br>
+Page number centered in footer.<br>
+Disregards emblem, if coded.<br>
+Text centered in header.<br>
+Default author verso, title recto.</p>
+
+<div style="clear:both"></div>
+
+<img class="floatright" src="html-resources/headfoot6.png" width="276" height="219" alt="style 6" title="style 6">
+<pre style="padding-left:16px">
+<b>\SetHeadFootStyle{6}</b></pre>
+<p>Only Header.<br>
+Page number at outside (left verso, right recto).<br>
+Optional emblem adjacent to page number.<br>
+Text towards inside, instead of centered.<br>
+Default author verso, title recto.</p>
+
+
+<div style="clear:both"></div>
+
+<h5>Custom Style</h5>
+<p>Before you think about writing custom header/footer styles, be sure to try the pre-configured choices. I have looked through a lot of fiction of all kinds. The pre-configured choices include every style I have seen, with the exception of the most highly decorative.</p>
+<p>If none of the above are satisfactory, then you can write your own headers and footers using the syntax of the <code>fancyhdr</code> package.</p>
+<p>&bull; In the Preamble, use one of the above <code>\SetHeadFootStyle{<em>integer</em>}</code> to pick a starting point, in terms of whether or not there is a header and/or footer. <em>This is required, so that the layout engine knows how to calculate space.</em> After that, write the <code>fancyhdr</code> code for your custom header/footer in the Preamble. It will over-ride the numerical style in terms of appearance, but occupy the same space.</p>
+<p>&bull; You cannot use a header or footer with more than one line. No exceptions.</p>
+<p>&bull; See the file <code>novel-HeadFootStyles.sty</code> for how it is done in the pre-configured styles. In the file, the relevant portion follows <em>Look here for the pre-defined styles, for use as models.</em></p>
+<p>&bull; Particularly note that your own style will not automatically use the headfont, or loose tracking, unless you include the necessary code in your own definition. Do not use the <code>\textls</code> command.</p>
+<p>&bull; No cheating! If you choose a numerical style that does not have a header, then do not attempt to write a custom style that includes a header. Same with footer. Also, if you you choose a numerical style with both header and footer, then you cannot only customize one of them; you must customize both.</p>
+
+
+
+<a id="a6.1.3"></a>
+<h4>6.1.3 <code>\SetEmblems{<em>verso</em>}{<em>recto</em>}</code></h4>
+<p>If the style supports it, you may place an "emblem" that appears at a fixed distance (2.5em} from the outer margin. Thus, it will appear to the right of the page number on verso pages, and to the left of the page number on recto pages. In the case of style <code>4</code>, there will be a clearance of 1em between the emblem and the header text.</p>
+<p>The font used for emblems will be the same as the headfont, unless you code the emblem to use a different font (perhaps one you specified with the <code>\NewFontFace</code> command), or unless you use one of the built-in <code>\decoglyph</code> codes.</p>
+<p>An emblem is a minor decoration that should not distract the eye from the main text.</p>
+<p><img class="floatright" src="html-resources/emblembar.png" width="380" height="104" alt="simple emblems using vertical bar">&bull; Most books do not use emblems. When they do, it is typically a vertical bar, or a bullet, like this:</p>
+<p class="code"><code>\SetHeadFootStyle{4}</code></p>
+<p class="code"><code>\SetEmblems{|}{|}</code></p>
+<p>The verso and recto emblems may be different. Whether they are the same or not, you must set them both, if you use emblems. Blanks are allowed.</p>
+<p><img class="floatright" src="html-resources/emblemdingbats.png" width="380" height="104" alt="dingbat emblems">&bull; Emblems may be styled. For example:</p>
+<p>The header emblems shown at right were produced using the code below. Dingbats from the NovelDeco font were specified, adjusted for size and position.</p>
+<p style="clear:both" class="code"><code>\SetEmblems{\charscale{1.1}{\raisebox{-0.05em}{\decoglyph{l9825}}}}%</code></p>
+<p class="code"><code>{\charscale{1.1}{\raisebox{-0.05em}{\decoglyph{l9826}}}}</code></p>
+
+<p>&bull; You may also use images, or combined images and text. If you use images, they must be at the exact resolution required by your print service (usually 300dpi for gray, 600dpi for b/w), and at exact size without scaling. The <code>\InlineImage</code> command must be used. See novel's image documentation details. You may find that a vertical offset of <code>\nfs</code> (normal font size) is useful, as this will place the top of the emblem image at the top margin.</p>
+
+<p class="code" style="text-indent:0px"><img class="floatright" src="html-resources/emblemimg.png" width="295" height="77" alt="emblem image">
+<code>\SetHeadFootStyle{4}<br>
+\SetEmblems{\InlineImage[0pt,b]{spy.png}}%<br>
+{\InlineImage[0pt,b]{spy.png}}
+</code></p>
+
+<p>&bull; At the small size of an emblem, it is difficult to use detailed artwork. A black/white image at 600dpi will print similarly to a font dingbat. Grayscale at 300dpi will probably not be satisfactory unless the emblem is a single shade of gray. For the above example, a character from the "Fontawesome" font was converted to a png image at mid-gray. It is less distracting than a black character from the font, but hard to discern. Note that there is no "gray ink" for directly writing text in gray.</p>
+<p>&bull; Ask your print service whether the presence of a small image in each page header will affect production costs. Probably not, but if there is a different per-page charge when pages have an image... Oops!</p>
+<p>&bull; The layout calculation does not care whether emblems intrude into the margins. You will have to inspect your PDF to determine whether a header emblem is too tall, or a footer emblem too deep, for the allowed top and bottm margin clearance. Class option <code>shademargins</code> (in draft mode only) is helpful.</p>
+
+
+<a id="a6.1.4"></a>
+<h4>6.1.4 <code>\SetPageNumberStyle{<em>code using \thepage</em>}</code></h4>
+
+<p>By default, the page number is simply <code>\thepage</code>. In most cases, leave it that way. But if you wish to change how the page number is displayed, you can use this command to style how <code>\thepage</code> is displayed. Examples:</p>
+<p class="code" style="text-indent:0px"><code>\SetPageNumberStyle{\emph{thepage}} % Page number in italics.<br>
+\SetPageNumberStyle{-- \thepage --} % En-dash on each side of number, for headstyle 3 or 5.</code></p>
+<p>The headfont is applied automatically, unless you over-ride it in your code.</p>
+<p>You could also get more involved, using a different font or size. Avoid over-doing it. If you are tempted to use a macro that counts page numbers backwards, be aware that your print service will likely reject it. Anyway, it has already been done in fiction.</p>
+
+
+<a id="a6.1.5"></a>
+<h4>6.1.5 <code>\SetHeadFont[<em>features</em>]{<em>font</em>}</code></h4>
+
+<p>This setting is described on <a href="noveldocs-05-fonts.html#a5.3.2">Page 5</a>, among other fonts.</p>
+
+
+<a id="a6.1.6"></a>
+<h4>6.1.6 <code>\SetLooseHead{<em>number</em>}</code></h4>
+<p>This command applies to both headers and footers.</p>
+<p>If you are using a style that has header text, then for best appearance the characters should appear with a little extra space between them, so that they are more easily distinguished from the main text. This is especially true if you are using small caps. The name for such adjustment is "tracking."</p>
+<p>Note: Do not use the <code>\textls</code> command. It is disabled in this class.</p>
+<p class="centerimg"><img src="html-resources/looseheads.png" width="400" height="76" alt="loosehead 50 and 100"></p>
+<p>The argument of <code>\SetLooseHead</code> is a number from 0 to 1000. At <code>0</code> there is no extra space between the letters. Values from <code>50</code> (default) to <code>200</code> are most useful. Higher values are unusual.</p>
+<p>Page number tracking will be clamped at a maximum of 50, even when a larger (looser) tracking is applied to text.</p>
+<p>The looseness applies to inter-letter spacing, but not to inter-word spacing. To increase inter-word spacing, use extra code such as <code>\,</code> (which is a LaTeX thin space) as needed.</p>
+
+
+<a id="a6.1.7"></a>
+<h4>6.1.7 <code>\SetChapterDisplay{<em>choice</em>}</code></h4>
+<p>This command is only applied if you begin new chapters with the <code>ChapterDisplay</code> environment. You may pick one of the <code>thispagestyle</code> choices, described in the next section. For example:</p>
+<p class="code"><code>\SetChapterDisplay{dropfolioinside}</code></p>
+<p>Then, that choice will be applied to each page using <code>ChapterDisplay</code>, without you having to write <code>\thispagestyle</code> each time.</p>
+<p>The default is <code>footer</code>. This allows a ChapterDisplay page to show its footer (only if it has one), but not header.</p>
+<p>If you use this command, you may still over-ride it on a particular page, by using <code>\thispagestyle{<em>choice</em>}</code> <em>before</em> <code>\begin{ChapterDisplay}</code>.</p>
+
+
+
+<a id="a6.2"></a>
+<h3>6.2 Local Header/Footer Settings, in Document Body</h3>
+
+<p>These commands are used when a page header/footer style is an exception to the general rule. Examples are blank pages, titles, copyright, and new chapters. You can also dynamically change the header text.</p>
+
+<a id="a6.2.1"></a>
+<h4>6.2.1 <code>\SetVersoHeadText{<em>text</em>}</code><code>\SetRectoHeadText{<em>text</em>}</code></h4>
+<p>If you are using style <code>1</code>, <code>4</code>, <code>5</code>, or <code>6</code>, the header text can be dynamically changed from page to page. This feature is useful if your wish to include chapter titles in the header. It is also useful if your work is a collection of stories with different titles, perhaps by different authors. But before you use this feature, speak with your print service! Many print-on-demand services will insist that the content of headers must not vary from place to place, because different headers may be confused with portions of different books, during the assembly process.</p>
+<p class="code"><code>\SetVersoHeadText{New Verso Head}</code><br><code>\SetRectoHeadText{New Recto Head}</code></p>
+<p>These two commands may be used at any time, in the Preamble or document body. When a command is used, it stores its argument in <code>\versoheadtext</code> or <code>\rectoheadtext</code>. In turn, the current value of <code>\versoheadtext</code> or <code>\rectoheadtext</code> is immediately used for the header, and will remain in effect until changed again by <code>\SetVersoHeadText</code> or <code>\SetRectoHeadText</code>.<p>
+<p>If you do not use these commands in the Preamble, then at the beginning of the document body they will be automatically set to the author (verso) and the title (recto). However, you may find that the inter-word space is closer than you would like.<p>
+<p>For improved inter-word space, use <code>\,</code> (the LaTeX thin space) in addition to ordinary space. You may use as many as you need.</p>
+<p>You may use ordinary LaTeX styling commands for the text:</p>
+<p class="code"><code>\SetRectoHeadText{The \,\emph{Bad \,Boy} \,Chronicles}</code></p>
+<p>The most popular styling uses lowercase to small caps:</p>
+<p class="code"><code>\SetRectoHeadText{\smcp{The \,Danton \,Code}}</code></p>
+<p>&bull; Avoid bold. Avoid underline. Really. Don't do it. No, no, no!</p>
+<p>&bull; With novel version 1.32, you are no longer required to use tilde instead of space.</p>
+
+
+<a id="a6.2.2"></a>
+<h4>6.2.2 <code>\thispagestyle{<em>choice</em>}</code></h4>
+<p>When you choose a style with header, then space is allocated above the text block, where the header will be placed. That space will be allocated whether or not the header is full or empty. The same applies to the footer. This allocation is global, and cannot be changed in your document body. All standard books work this way, not just with TeX.</p>
+<p>However, on a per-page basis you can change whether or not a header or footer has visible content. This is routinely done for blank pages, title page, copyright page, and some others. It is also the norm for pages that begin a new chapter.</p>
+<p>&bull; The word "folio" has several meanings: It may refer to a particular paper size, or to a folded piece of paper at any size, or simply to a page number. Below, "folio" means page number.</p>
+<p>&bull; When you use the <code>\thispagestyle</code> command, your choice is applied only to the one page on which the command is written. It is best to use this command at or towards the top of the affected page. If the page uses the <code>ChapterDisplay</code> environment, and you use <code>\thispagestyle</code>, then you <em>must</em> place <code>\thispagestyle</code> before <code>\begin{ChapterDisplay}</code>.</p>
+<p>&bull; The following choices are allowed: <code>fancy</code>, <code>empty</code>, <code>footer</code>, <code>forcenumber</code>, <code>dropfoliobeneath</code>, and <code>dropfolioinside</code>.</p>
+<p>For compatibility reasons, <code>plain</code> and <code>fancyplain</code> are also allowed, and have the same effect as <code>footer</code>.</p>
+
+
+<pre>&nbsp;
+<b>\thispagestyle{fancy}</b></pre>
+<p>This applies the default (fancy) page style, so it is not normally needed. Only use this command to over-ride some other <code>\thispagestyle</code> command, or to over-ride the <code>\SetChapterDisplay</code> setting.</p>
+
+
+<pre>&nbsp;
+<b>\thispagestyle{empty}</b></pre>
+<p>Header and footer are both blank.</p>
+
+
+<pre>&nbsp;
+<b>\thispagestyle{footer}</b></pre>
+<p>Ignored if the style has no footer. If it does, then the usual footer appears. Header, if any, is blank.</p>
+<p>This command is an alias for <code>fancyplain</code>. It is like the <code>plain</code> style, except that the footer (which is presumed to contain the page number) is fully styled. But unlike <code>plain</code>, the <code>footer</code> style does <em>not</em> cause a page number to appear when no footer exists. If that is what you need, then use either style <code>dropfoliobeneath</code> or <code>dropfolioinside</code>, depending on whether you have extra room in the bottom margin.</p>
+
+
+<pre>&nbsp;
+<b>\thispagestyle{forcenumber}</b></pre>
+<p>If the style has a footer, then it appears as usual, and the header (if any) is blank. If the style has a header but no footer, then the outside portion of the header (which is presumed to contain the page number and emblem) appears, but the text portion of the header is blank.</p>
+<p>The <code>forcenumber</code> choice is non-standard. Use it only if you must have a page number, and no other choice is suitable.</p>
+
+
+<pre>&nbsp;
+<b>\thispagestyle{dropfoliobeneath}</b></pre>
+<p>The header (if any) is blank. If there is a footer, then it appears as usual. But if there is no footer, this command creates a one-page fake footer, which contains the centered page number. The fake footer is located where the next line of text would be, if the textblock were one line longer than its actual value.</p>
+<p>&bull; For the fake footer to be acceptable in print, the bottom margin must be wider than the minimum amount required by your print service. For example, suppose that the minimum bottom margin is 0.5in, but you set the bottom margin to 0.75in. That gives you 0.25in wiggle room, into which the fake footer will probably fit, because typical baselineskip is 0.2in to 0.25in.</p>
+<p>&bull; The document class does not know whether or not you have extra space available in the bottom margin. It is your responsibility to know.</p>
+
+
+<pre>&nbsp;
+<b>\thispagestyle{dropfolioinside}</b></pre>
+<p>The header (if any) is blank. If there is a footer, then it appears as usual. But if there is no footer, this commands temporarily reduces the number of lines per page by one line. At the bottom, where the last line of text would normally be, the page number is centered. Thus, there is no intrusion into the bottom margin.</p>
+<p>This command may only be used following the <code>\clearpage</code> command. Thus, it may be used at the start of new chapters, or on pages (such as copyright page) that do not flow from a previous page. If you use it elsewhere, the print will have incorrect layout, but there will be no error or warning, since the compiler is not sure what you are trying to do.</p>
+<p>If used on a page with <code>ChapterDisplay</code> environment, you must place <code>\thispagestyle{dropfolioinside}</code> <em>before</em> you begin <code>ChapterDisplay</code>. The display block has a disposable blank line at its top, which is removed when <code>dropfolioinside</code> is used (instead of removing a line from the following text block).</p>
+
+
+
+
+</div><!-- end main -->
+
+<div id="finish"></div>
+
+</div><!-- end master -->
+
+</body>
+</html>
+

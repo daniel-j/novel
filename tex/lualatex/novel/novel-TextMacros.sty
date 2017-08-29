@@ -1,0 +1,544 @@
+%%
+%% This is file `novel-TextMacros.sty', part of class `novel'.
+%% Copyright 2017 Robert Allgeyer.
+%%
+%% 
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%%
+\ProvidesFile{novel-TextMacros.sty}%
+[2017/08/15 v1.38 LaTeX file (text macros usable within document body)]
+%%
+
+%% Novel Tracking messages in this file begin with 4.
+\NDB{4.0 in novel-TextMacros.sty.}
+
+%% This file contains commands that are usable within the document body,
+%% for styling and otherwise manipulating text.
+%% These are not commands used in Preamble for setup, although a few of them
+%% can be used in Preamble for setup, then again in body for change.
+
+
+
+%% The following commands were defined in other files of `novel' class:
+%% -----------------------------------------------------------------------------
+% \thetitle or \theTitle returns string set by \title{} or \SetTitle{} -- See novel-LayoutSettings.sty.
+% \theauthor or \theAuthor returns string set by \author or \SetAuthor{} -- See novel-LayoutSettings.sty.
+% \normalFontSize length of main font setting. May be tweaked during rework. -- See novel-CalculateLayout.sty.
+% \normalBaselineSkip and \nbs (calculated) length of main baselineskip. -- See novel-CalculateLayout.sty.
+% \thesubtitle or \theSubtitle returns string set by \subtitle{} or \SetSubtitle{} -- See novel-LayoutSettings.sty.
+% \InlineImage, \BlockImage, \ClearImage -- See novel-Images.sty.
+% \scenebreak, \sceneline, \scenestars -- See novel-ChapterScene.sty.
+% ChapterStart, \ChapterTitle{}, \ChapterSubtitle{}, \ChapterDeco{} -- See novel-ChapterScene.sty.
+% \DecoChapterTitle{}{}, \SideDecoChapterTitle{}, ModernChapterTitle[]{}{} -- See novel-ChapterScene.sty.
+% {\chapterfont text} and other pre-defined font selection commands -- See novel-LayoutSettings.sty.
+% \decoglyph{} and \acronym{} -- See novel-FontDefaults.sty.
+% \frontmatter, \mainmatter, \backmatter and variations -- See novel-LayoutSettings.sty.
+% \footnote[]{}, \endnote, \endnotetext[]{} -- See novel-Footnotes.sty.
+% \thispagestyle{choice} and \dropfolio -- See novel-HeadFootStyles.sty.
+% \NewVersoHeadText{}, \NewRectoHeadText{}  Also \Set and \Renew forms. -- See novel-HeadFootStyles.sty.
+% \CreateFeature{substitutions}{feature code} fakes an Open Type feature -- See novel-LayoutSettings.sty.
+% \Epigraph[align,scale,width]{text} creates an Epigraph -- See novel-ChapterScene.sty.
+
+
+
+%% The following commands are defined on this page:
+%% -----------------------------------------------------------------------------
+% \memo{text} is a memo to yourself. Does not print, is not saved.
+% \forceindent and \backindent when \indent and \noindent fail.
+% \smcp{text} or \textsc{text} for lowercase to small caps.
+% \allsmcp{text} puts both caps and lowercase into small caps.
+% \charscale[scale,x,y]{text} for brief change of text size/position. No line wrap.
+% parascale environment for long change in text size. Will go off-grid.
+% toc environment for table of contents.
+% \tocitem[]{}{} and \tocitem*[]{}{} for one-line entries in toc.
+% legalese environment uses ragged right, disables hyphenation, and reduces microtype tweaks.
+% \showlength[round]{length}{units} returns the length, re-calculated in units, rounded.
+% \supersub{raise}{scale}{text} alternative to superscript and subscript commands.
+% \sups{text}, \subs{text}, and \sinf{text} other alternatives to super/subscripts.
+% \bigemdash[raise,thickness] provides a raised rule of flexible length, a "big em dash."
+% \stake inserts zero-width rule, 1pt thick, as placeholder.
+% \color and \textcolor (from package xcolor) have been modified to ensure black, or grayscale when permitted.
+% \squeeze{} and \crush{} for emergency text adjustment.
+
+
+%% The following useful commands are from core code, or other pre-loaded packages.
+%% -----------------------------------------------------------------------------
+%% They are listed here as a reminder of their existence. Not a complete list.
+%% A description is only provided here, when it is brief and simple.
+%
+% {\centering text\par} centers text. Needs the \par to finish. May also use internal \\ or \par. Avoid center environment.
+% \makebox[length][alignment]{text}
+% \hspace{length}
+% \vspace{length}  Caution: may disrupt text line grid!
+% \kern
+% \hfill and \dotfill
+% \vfill (use only with discretion)
+% \linebreak (use only with discretion)
+% \null inserts an empty line. See also the scene break commands.
+% \clearpage begins a new page. Two consecutive \clearpage does not make 2 pages (use \null if blank page desired).
+% \strut is useful for occupying the full line height.
+% \smash{text} allows its included text to overlay other content. Sometimes useful when text is too tall to fit the line grid.
+% \textwidth (length) is the width of the textblock.
+% adjustwidth environment (package: changepage) for block indents, etc.
+% \FirstLine{} (package: magaz) may be useful for first line of new chapter. Patched by me.
+% \textsuperscript{} and \textsubscript{} are re-defined.
+
+
+
+%% The following commands are available, but STRONGLY DISCOURAGED.
+%% -----------------------------------------------------------------------------
+%% Beware: Their usage is likely to disturb the line grid.
+%% That is less of an issue on pages where the line grid does not matter.
+%
+% Environments: center, minipage, sloppypar
+% \parbox
+% \framebox or \fbox
+% \raisebox BUT can be used inside \smash or \charscale.
+% \linespread
+% Anything involving math mode.
+
+
+%% The following commands are BANNED.
+%% -----------------------------------------------------------------------------
+% The `novel' class disallows these commands, or neutralizes them by simply
+% repeating their arguments. In some cases, they request functionality that is
+% not implemented in `novel'. In other cases, the functionality is part of core,
+% but would interfere with the `novel' emphasis on constant line skip.
+% You may re-define the commands using your own code in Preamble (discouraged).
+%
+%% Standard LaTeX font sizes are ineffective. Use novel's own methods.
+% If you write one of these size commands, it will silently be ignored:
+% \small, \footnotesize, \scriptsize, \tiny,
+% \large, \Large, \LARGE, \huge, \Huge, \HUGE.
+%
+%% Internal subdivisions are ineffective.
+% The command will merely echo its argument, without any functionality:
+% \part{}, \chapter{}, \section{}, \subsection{}, \subsubsection{}, \paragraph{}, \subparagraph{}
+%
+%% Certain commands will generate an error, so that you know they cannot be used:
+% \maketitle, \makeindex, \tableofcontents, \listoftables, \listoffigures, \textls
+%
+%% You cannot use \includepdf (package: pdfpages).
+%
+%% You cannot use \includegraphics. Instead use novel's own image commands.
+%
+%% Commands normally provided in other classes, pertaining to floats, figures, and tables,
+%% are not defined in `novel' class. If you attempt to use them, an error will result.
+
+
+
+%% AND NOW TO THE GOOD STUFF
+%% -----------------------------------------------------------------------------
+%
+%% \memo{} does not print or save its argument.
+% Useful when you wish to put a note to yourself in the *.tex document.
+% Not the same as % comment, because anything after the braces will print.
+\long\gdef\memo#1{}
+\NDB{4.1 in novel-TextMacros.sty.}
+%
+\gdef\stake{\rule{0pt}{1pt}} % placeholder
+%
+% \forceindent and \backindent perform or remove indent, using \hspace{}.
+% Rationale: Sometimes \indent and \noindent are neutralized by another command.
+\newlength\forceparlength % holds default value, even when \parindent changed
+\NDB{4.2 in novel-TextMacros.sty.}
+
+% See novel.cls for accompanying AtBeginDocument routine.
+
+%%
+% \smcp{} and \textsc{} small caps (Open Type) and \allsmcp{}:
+%
+\ExplSyntaxOn
+%
+\DeclareDocumentCommand \smcp { +m }
+ {%
+  {\AddFontFeature{Letters=SmallCaps}#1}%
+ }
+%
+\DeclareDocumentCommand \allsmcp { +m }
+ {%
+  \fontspec_if_feature:nTF {c2sc}{%
+   {\AddFontFeatures{Letters=UppercaseSmallCaps, Letters=SmallCaps}#1}%
+  }{%
+   {\AddFontFeature{Letters=SmallCaps}\MakeLowercase{#1}}%
+  }%
+ }
+%
+\ExplSyntaxOff
+\NDB{4.4 in novel-TextMacros.sty.}
+%
+\let\textsc\smcp\relax % unified
+\let\oldscshape\scshape\relax % in case needed later
+\let\scshape\smcp\relax % unified
+%
+\providecommand\FirstLineFont{\smcp} % package `magaz'
+\renewcommand\FirstLineFont{\smcp}
+%%
+
+%% The `novel' class normally allows only black text on white paper.
+%% In draft mode, option `shademargins` provides light gray margins,
+%%   but still black text on white paper.
+%% However, with option `graytext' (in any mode) then grayscale text
+%%   is allowed. Images are always allowed grayscale.
+%% Just in case `xcolor' re-defines its internals, to prevent code bomb:
+\ProvideDocumentCommand\@declaredcolor { m } {}
+\ProvideDocumentCommand\@undeclaredcolor { o m } {}
+\NDB{4.5 in novel-TextMacros.sty.}
+%%
+\if@graytext % and the usual colors, including black and white.
+  \definecolor[named]{gray1}{gray}{0.15} % ten percent gray, etc.
+  \definecolor[named]{gray2}{gray}{0.25}
+  \definecolor[named]{gray3}{gray}{0.33}
+  \definecolor[named]{gray4}{gray}{0.4}
+  \definecolor[named]{gray5}{gray}{0.5}
+  \definecolor[named]{gray6}{gray}{0.6}
+  \definecolor[named]{gray7}{gray}{0.68}
+  \definecolor[named]{gray8}{gray}{0.75}
+  \definecolor[named]{gray9}{gray}{0.87}
+\else
+  \let\my@color\color\relax
+  \let\color\relax
+  \DeclareDocumentCommand \color { o m }
+   {%
+   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.903215}}{\@undeclaredcolor[gray]{0.903215}}{}% shademargins
+   \ifthenelse{\equal{#2}{hingledingle}}{\@declaredcolor{white}}{}% hingledingle is internal alias for white
+   }
+\fi
+\NDB{4.6 in novel-TextMacros.sty.}
+%%
+
+
+% This code is slightly modified from package `etextools' by Florent Chervet.
+% Its license: "This work may be distributed and/or modified under the 
+%   conditions of the LaTeX Project Public License, either version 1.3 of this 
+%   license or (at your option) any later version."
+% My rationale for not simply loading the package: Other parts of the package
+% generate warning messages, but the warnings do not apply. Also, I might
+% wish to hack the code at some point.
+\newcount\nov@ettl@fter
+\newrobustcmd\nov@AfterGroup{%
+  \@ifstar{\nov@ettl@AfterGroup\@firstofone}{\nov@ettl@AfterGroup\unexpanded}%
+}
+\newrobustcmd\nov@ettl@AfterGroup[2]{%
+ \csxdef{nov@ettl@fterGroup\number\numexpr\the\nov@ettl@fter+1}%
+ {\global\csundef{nov@ettl@fterGroup\number\numexpr\the\nov@ettl@fter+1}#1{#2}}%
+ \global\advance\nov@ettl@fter\@ne%
+ \expandafter\aftergroup\csname nov@ettl@fterGroup\the\nov@ettl@fter\endcsname%
+}
+% End code from `etextools`.
+\NDB{4.7 in novel-TextMacros.sty.}
+
+
+
+
+%% \flexbox based on code by Werner at tex.stackexchange.com, CC-by-sa-3.0:
+% Optional first argument is minimum width of box.
+% Second argument is contents of box.
+% Box width will be the greater of #1 or the width of #2.
+\newlength\@mylen
+\newcommand{\flexbox}[2][\parindent]{%
+  \settowidth{\@mylen}{#2}%
+  \ifdim\@mylen < #1%
+    \makebox[#1][l]{#2}%
+  \else%
+    #2%
+  \fi%
+}
+\NDB{4.8 in novel-TextMacros.sty.}
+%% \bigemdash inspired by code by RTBarnard at stackoverflow.com, CC-by-sa-3.0:
+% Allows a rule of variable length to fill available space at its right.
+% There must be a "right-hand limit" imposed by something, such as by enclosing
+%   the rule in a \makebox of known width, or by an immediate \par.
+%   Without this limit, rule will be missing (zero width) or excessively long,
+%   or an error will result (referring to \leaders).
+% Takes a single optional argument: Comma-separated raise, line thickness.
+%   If no argument or empty, defaults to [1,1].
+%   Without comma, argument defaults to [argument,1].
+%   First number: Scales the raise up or down. 1 = raise of emdash in typical fonts.
+%   Second number: Scales the line thickness. 1 = thickness of emdash in typical fonts.
+% NOTE: Built-in TeX PDF viewer might show the line at slightly incorrect
+%   width and height. Best seen in a "real" PDF viewer.
+\DeclareDocumentCommand \bigemdash { O{1,1} }
+ {%
+  \ifthenelse{\equal{#1}{}\OR\equal{#1}{\space}}{\def\@myargsi{1,1}}{\def\@myargsi{#1}}%
+  \StrDel{\@myargsi}{\space}[\@myargs]%
+  \StrCut{\@myargs}{,}{\@myraisei}{\@mythicki}%
+  \ifthenelse{\equal{\@myraisei}{}\OR\equal{\@myraisei}{\space}}{\def\@myraise{1}}{\def\@myraise{\@myraisei}}%
+  \ifthenelse{\equal{\@mythicki}{}\OR\equal{\@mythicki}{\space}}{\def\@mythick{1}}{\def\@mythick{\@mythicki}}%
+  \FPmul{\@myraise}{\@myraise}{0.56}% ex, typical font emdash raise
+  \FPmul{\@mythick}{\@mythick}{0.049}% em, typical font emdash thickness
+  {\leaders\hbox{\rule[\@myraise ex]{1pt}{\@mythick em}}\hfill\stake}%
+ }
+%%
+\NDB{4.9 in novel-TextMacros.sty.}
+
+%%
+% \charscale[scale,x,y]{text} and starred version
+% This is an "in-line" means of adjusting font size
+%   and position, without changing the baselineskip.
+% If the optional argument is unused or empty, then the text is not scaled
+%   or moved, but equivalent to \stake\smash{text}.
+% Up to 3 arguments may be used in the single optional argument.
+% They are separated by commas. Spaces ignored.
+% First argument is scale. Number>=0.5. Default 1. Relative to what the size
+%   would otherwise be. May multiply with an already-scaled font.
+% Second and third arguments are x-offset and y-offset, respectively.
+% Offsets are lengths, best measured in em or \nfs for x,
+%   and em or \nfs or \nbs for y. Default 0pt. Can abbreviate as 0.
+% Posiive offsets are x right, y up.
+% Text is "smashed" and may go anywhere, even overlying other text or image.
+% The unstarred command occupies width equal to the scaled text,
+%   thus leaving a "hole" where the text would have been.
+% The starred command occupies zero width, thus no hole. Consecutive starred
+%   commands, without intervening space, displace from same origin.
+% The text must be on a single line, without break or wrap.
+% Do not use \\ or \par inside \charscale, but you sometimes need \par after it.
+% If the text is in a font other than usual, place the font command
+%   outside \charscale, not inside.
+\ExplSyntaxOn
+\DeclareDocumentCommand \charscale { s O{1} m }
+ {
+  % Allows empty or blank to be used, and still provide default values:
+  \ifthenelse{\equal{#2}{}\OR\equal{#2}{\space}}{\def\@myargs{1}}{\def\@myargs{#2}}
+  \StrDel{\@myargs}{\space}[\@myargsns] % needs {\space} not { }
+  \StrCut{\@myargsns}{,}{\@myscalet}{\@mycoord}
+  \ifthenelse{\equal{\@myscalet}{}}{\def\@myscale{1}}{\def\@myscale{\@myscalet}}
+  \FPmax{\@myscale}{\@myscale}{0.5}% not permitted below this scale
+  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}
+  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{\def\@myx{0pt}}{\def\@myx{\@myxt}}
+  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{\def\@myy{0pt}}{\def\@myy{\@myyt}}
+  \IfBooleanTF{#1}
+  {% starred
+    \ifvmode\else\unskip\fi%
+    \stake\makebox[0pt][l]{\smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}}%
+  }{% unstarred
+    \stake\makebox[0pt][l]{\smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}}%
+    \smash{\phantom{\scalebox{\@myscale}{#3}}}%
+  }
+ }
+\ExplSyntaxOff
+%%
+\NDB{4.10 in novel-TextMacros.sty.}
+
+
+
+%%
+% If you really must change the font size and baselineskip on a paragraph basis,
+%   then use an environment. For example, the text on your Copyright page might
+%   be smaller (and less baselineskip) than normal.
+% The following environment takes an optional argument, which is the scale
+%   of font size and baselineskip, relative to normal. Note that both size
+%   and skip are scaled together. The default is 1, meaning no change.
+% To get the rough equivalent of traditional \footnotesize, use 0.83 scale.
+% Example:
+%    \begin{parascale}[0.83]
+%    This text is like old footnotesize. It can go on for many lines.\par
+%    Be sure to end with the paragraph ending.\par
+%    You may need to manipulate whether anything indents.\par
+%    \end{parascale}
+% Normally you should NOT use this environment within the main text,
+%   as it will upset the baselineskip there. If you have to do that for
+%   a special effect, then use \vspace{} before and after the environment,
+%   so that the following normalsize text is re-aligned. You'll have to
+%   do the calculations yourself.
+\newenvironment{parascale}[1][1]
+{\begingroup%
+\FPmax{\my@tempDetailsNum}{#1}{0.5}% must be at least half normal.
+\FPmul{\my@tempDetailsFontNum}{\my@tempDetailsNum}{\Current@FontSizeNum}%
+\FPround{\my@tempDetailsFontNum}{\my@tempDetailsFontNum}{2}%
+\FPmul{\my@tempDetailsSkipNum}{\my@tempDetailsNum}{\Current@BaselineSkipNum}%
+\FPround{\my@tempDetailsSkipNum}{\my@tempDetailsSkipNum}{2}%
+\fontsize{\my@tempDetailsFontNum pt}{\my@tempDetailsSkipNum pt}\selectfont}%
+{\endgroup}
+\NDB{4.11 in novel-TextMacros.sty.}
+%
+%%
+% Environment toc (alternative table of contents):
+% optional argument: additional vspace (\nbs) after each \tocitem entry.
+% required: LR margin increase, to narrow the table (0pt = full textwidth).
+\newlength\@tocnumwid
+\newlength\@tocskip
+\newenvironment{toc}[2][0]%
+{%
+  \begin{adjustwidth}{#2}{#2}\begingroup%
+  \setlength\parindent{0pt}%
+  \setlength\@tocnumwid{\widthof{00.~}}%
+  \global\@tocnumwid=\@tocnumwid%
+  \setlength\@tocskip{#1\nbs}%
+  \global\@tocskip=\@tocskip%
+}{%
+  \endgroup\end{adjustwidth}\par%
+}%
+\NDB{4.12 in novel-TextMacros.sty.}
+%% \tocitem[number]{description}{page} provides a one-line table entry in toc.
+% optional number might be chapter number. Can use ~ to offset.
+% unstarred: distance between description and page is not decorated.
+% starred (better): distance between description and page has dotted line.
+\newcommand\tocitem{\@ifstar\@tocitemst\@tocitemns}
+\newcommand\@tocitemst[3][]{%
+  \ifthenelse{\equal{#1}{}}{}{%
+    \ifthenelse{\equal{#1}{~}}{%
+      \makebox[\@tocnumwid][l]{~}%
+    }{%
+      \makebox[\@tocnumwid][l]{#1.}%
+    }%
+  }%
+  #2\,%
+  \dotfill%
+  \,#3\par\vspace{\@tocskip}%
+}%
+\NDB{4.13 in novel-TextMacros.sty.}
+%
+\newcommand\@tocitemns[3][]{%
+  \ifthenelse{\equal{#1}{}}{}{%
+    \ifthenelse{\equal{#1}{~}}{%
+      \makebox[\@tocnumwid][l]{~}%
+    }{%
+      \makebox[\@tocnumwid][l]{#1.}%
+    }%
+  }%
+  #2%
+  \hfill%
+  #3\par\vspace{\@tocskip}%
+}%
+\NDB{4.14 in novel-TextMacros.sty.}
+%% end toc and \tocitem.
+%%
+%% legalese environment. Certain info, such as Copyright page, customarily is
+% neither justified nor hyphenated. Can be used wherever desired, of course.
+\newenvironment{legalese}
+{\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000}
+{}
+%% poem environment. Optional argument is left margin.
+\newenvironment{poem}[1][0pt]
+{\begin{adjustwidth}{#1}{0pt}%
+\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000}
+{\end{adjustwidth}\par}
+%%
+\gdef\hangleft#1{% places content to left of usual position.
+  \newlength\@temphangl%
+  \setlength\@temphangl{\widthof{#1}}%
+  \stake\hspace{-\@temphangl}#1%
+}
+\NDB{4.15 in novel-TextMacros.sty.}
+%%
+% \showlength[decimal places]{length}{units}
+% Returns the length as a string with the units, but does not change the length.
+% length is any existing length
+% units may be pt, bp, mm, cm, in
+% decimal places for rounding (0=integer, 1=one decimal point, etc.)
+% Example: \showlength[3]{17bp}{in}  returns  0.236in
+\newlength{\temp@showlength}
+\newcommand\showlength[3][]{%
+  \setlength\temp@showlength{#2}%
+  \def\temp@lengthnum{\strip@pt\temp@showlength}%
+  \ifthenelse{\equal{#3}{bp}}{%
+    \FPmul{\temp@lengthnum}{\temp@lengthnum}{0.99626401}%
+  }{}%
+  \ifthenelse{\equal{#3}{mm}}{%
+    \FPmul{\temp@lengthnum}{\temp@lengthnum}{0.351459804}%
+  }{}%
+  \ifthenelse{\equal{#3}{cm}}{%
+    \FPmul{\temp@lengthnum}{\temp@lengthnum}{0.0351459804}%
+  }{}%
+  \ifthenelse{\equal{#3}{in}}{%
+    \FPmul{\temp@lengthnum}{\temp@lengthnum}{0.013837}%
+  }{}%
+  \ifthenelse{\equal{#1}{}}{}{\FPround{\temp@lengthnum}{\temp@lengthnum}{#1}}%
+  \temp@lengthnum#3%
+}
+%% end \showlength
+\NDB{4.16 in novel-TextMacros.sty.}
+
+
+%% \squeeze{} and \crush{} slightly shrink the horizonal dimension of the
+% enclosed text. May span paragraphs. Emergency only! No compounding.
+\long\gdef\squeeze#1{{\AddFontFeature{FakeStretch=0.99}#1}}
+\long\gdef\crush#1{{\AddFontFeature{FakeStretch=0.98}#1}}
+%%
+
+
+%% \lnum for lining numbers.
+\gdef\lnum#1{{\AddFontFeature{Numbers=Lining}#1}}
+%%
+
+
+%% superscripts and subscripts
+\let\subs\relax
+\let\sups\relax
+\let\textsuperscript\relax
+\let\textsubscript\relax
+\newlength\@hoAhl % Measures the height of these characters in the current font.
+% Perhaps superscripts and subscripts (scientific) are in the font, or not.
+% Problem: The best fonts have these characters at size/weight designed
+%   to mingle with normal size. But many fonts merely scaled characters,
+%   which will be too light at the small size.
+% The unstarred version of these commands use the Open Type features when
+%   they are present, then faking (auto scale/raise) if features not present. 
+% The starred version just fakes, without regard for features.
+% 
+
+% Note that the effect of these commands continues, not just one-shot:
+\gdef\realmarker{\toggletrue{@realmarker}} % anywhere in text
+\gdef\fakemarker{\togglefalse{@realmarker}} % anywhere in text
+%%
+\NDB{4.17 in novel-TextMacros.sty.}
+\ExplSyntaxOn
+%
+\DeclareDocumentCommand \sups { m }
+ {%
+  \iftoggle{@realmarker}{%
+    \fontspec_if_feature:nTF {sups}{%
+      \ifvmode\else\unskip\fi{\AddFontFeature{VerticalPosition=Superior}\smash{#1}}%
+    }{%
+      \setlength\@hoAhl{\heightof{Ahl}}%
+      \ifvmode\else\unskip\fi\charscale[0.7,0pt,0.5\@hoAhl]{#1}%
+    }%
+  }{%
+    \setlength\@hoAhl{\heightof{Ahl}}%
+    \ifvmode\else\unskip\fi{\basefont\AddFontFeature{Numbers=Lining}\charscale[0.7,0pt,0.5\@hoAhl]{#1}}%
+  }%
+ }% end \sups
+%
+\NDB{4.18 in novel-TextMacros.sty.}
+\DeclareDocumentCommand \subs { m }
+ {%
+  \iftoggle{@realmarker}{%
+    \fontspec_if_feature:nTF {sinf}{%
+      \ifvmode\else\unskip\fi{\AddFontFeature{VerticalPosition=ScientificInferior}\smash{#1}}%
+    }{%
+      \fontspec_if_feature:nTF {subs}{%
+        \ifvmode\else\unskip\fi{\AddFontFeature{VerticalPosition=Inferior}\smash{#1}}%
+      }{%
+        \setlength\@hoAhl{\heightof{Ahl}}%
+        \ifvmode\else\unskip\fi\charscale[0.7,0pt,-0.2\@hoAhl]{#1}%
+      }%
+    }%
+  }{%
+    \setlength\@hoAhl{\heightof{Ahl}}%
+    \ifvmode\else\unskip\fi{\basefont\AddFontFeature{Numbers=Lining}\charscale[0.7,0pt,-0.2\@hoAhl]{#1}}%
+  }%
+ }% end \subs
+%
+\ExplSyntaxOff
+%%
+\let\textsuperscipt\sups\relax
+\let\textsubscript\subs\relax
+%%
+\gdef\specialblankline{\null} % deprecated
+%%
+
+\NDB{4.19 in novel-TextMacros.sty.}
+
+
+%%
+%% End of file `novel-TextMacros.sty'.
+
+

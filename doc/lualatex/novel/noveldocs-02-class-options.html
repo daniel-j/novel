@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Class novel - 2 - Class Options</title>
+<link rel="stylesheet" type="text/css" href="html-resources/novel-doc.css">
+</head>
+
+<body>
+<div id="master">
+
+
+<div id="toc">
+
+<p>Document class "novel"</p>
+
+<p><a href="#a2">2. Document Class Options</a></p>
+
+<ul>
+  <li><a href="#a2.1">2.1 draft</a></li>
+  <li><a href="#a2.2">2.2 graytext</a></li>
+  <li><a href="#a2.3">2.3 shademargins</a></li>
+  <li><a href="#a2.4">2.4 cropmarks</a></li>
+  <li><a href="#a2.5">2.5 cropview</a></li>
+  <li><a href="#a2.6">2.6 closecrop</a></li>
+  <li><a href="#a2.7">2.7 xml</a></li>
+  <li><a href="#a2.8">2.8 debug</a></li>
+  <li><a href="#a2.9">2.9 unblock</a></li>
+</ul>
+
+<p>&nbsp;</p>
+
+</div><!-- end toc -->
+
+
+
+<div id="main">
+<a id="thetop"></a>
+
+<h1>Documentation for <code>novel</code> document class</h1>
+<p>Documentation version: 1.38.</p>
+
+
+<div class="pagetopage">
+<p><b>User Guide</b></p>
+<p><a href="noveldocs-01-overview.html">1. Overview</a></p>
+<p>2. Class Options</p>
+<p><a href="noveldocs-03-metadata-pdfx.html">3. Metadata, PDF/X</a></p>
+<p><a href="noveldocs-04-layout.html">4. Page Layout</a></p>
+<p><a href="noveldocs-05-fonts.html">5. Choosing Fonts</a></p>
+<p><a href="noveldocs-06-header-footer.html">6. Headers, Footers</a><br>
+<p><a href="noveldocs-07-text-size-style.html">7. Text Sizes, Styles</a></p>
+<p><a href="noveldocs-08-images.html">8. Using Images</a></p>
+<p><a href="noveldocs-09-chapters-displays.html">9. Display, Start Pages;<br>
+<span style="visibility:hidden">9. </span>Chapters; Continued Pages;<br>
+<span style="visibility:hidden">9. </span>Footnotes, Endnotes.</a></p>
+<p><a href="noveldocs-10-cover-art.html">10. Cover Artwork</a></p>
+<p><a href="noveldocs-11-debugging.html">11. Debugging</a></p>
+</div>
+
+
+<a id="a2"></a>
+<h2 style="clear:none">2. Document Class Options</h2>
+
+
+<p>As with other LaTeX classes, <code>novel</code> is called this way:</p>
+<p><code>\documentclass[options]{novel}</code></p>
+
+<p>As with other document classes, <code>novel</code> chooses a default paper size, and font size, if you do not make the choice. But there, the similarity ends. The default paper size in <code>novel</code> is 5.5" wide by 8.5" high, which is a popular book Trim Size for softcover fiction in the US, and close to the Demy Octavo (C novel) British size. And, the default font size is not an integer point size!</p>
+
+<p>In fact, you <em>cannot</em> set either the paper size or font size in the class options. You set them via other commands, in the Preamble. The commands are explained on other pages of this documentation.</p>
+
+<p>Still, there are a number of class options. As usual, options must be enclosed in braces and be separated by commas.</p>
+
+
+
+<a id="a2.1"></a>
+<h4>2.1 draft</h4>
+
+<p>The word DRAFT will appear at the upper left of each page.</p>
+
+<p>In draft mode, a little black bar will be placed at the right side of text that didn't quite fit on the line. These locations are reported in the log file as "overfull hbox" warnings. The black bar is called an "overflow rule".</p>
+
+<p class="centerimg"><img src="html-resources/overflowrule.png" width="525" height="115" title="draft mode, overflow rule" alt="overflow rule"></p>
+
+<p>Some packages take note of whether or not the document is in draft mode, and change their behavior accordingly. However, the included <code>microtype</code> package will always be in final mode, and the included <code>hyperref</code> package will always be in draft mode.</p>
+
+<p>In draft mode, PDF/X compliance is turned off, no matter what you specify.</p>
+
+
+<a id="a2.2"></a>
+<h4>2.2 graytext</h4>
+
+<p>The <code>novel</code> document class is intended for black/white book interiors. Normally, any color command, even gray, will be ignored, and the text will be rendered black. This does not affect images.</p>
+
+<p>The <code>graytext</code> option over-rides this restriction, and obeys grayscale color commands from the <code>xcolor</code> package, which is already loaded with the class. Non-grayscale colors will be converted to shades of gray. The color commands are discussed on <a href="noveldocs-07-text-size-style.html#a7.2.8">Page 7</a>.</p>
+
+<p class="centerimg"><img src="html-resources/graytext.png" width="512" height="54" title="graytext" alt="graytext"></p>
+
+<p>Your book will not be printed with "gray ink." Instead, anything other than pure black will be emulated by a pattern of black dots. This is known as "halftone." It causes a reduction in resolution, so your gray text will appear somewhat fuzzy. In addition, the halftone operation may extend to nearby text that is not gray. So: Unlike the example shown above, it is a bad idea to mingle gray with the ordinary flow of black text. The most appropriate use of gray text is for special items such as chapter titles.</p>
+
+<p>With this option enabled, you may place light-shaded text (even white) over a darker background, but this is not recommended. Even though the resulting PDF meets standards, it may not produce an acceptable result when printed, particularly if the text is small. It is better to place dark over light.</p>
+
+
+<a id="a2.3"></a>
+<h4>2.3 shademargins</h4>
+
+<p>This option is ignored unless using draft mode. It is not necessary to use the <code>graytext</code> option.</p>
+<p><img class="floatright" style="margin-top:6px" src="html-resources/shademargins.png" width="132" height="205" title="shademargins" alt="shademargins"> The <code>shademargins</code> option is simple: The margins will have a light gray background. Note that <em>margins</em> refers to the area between the live text area (including head/foot, if any) and the TrimBox, which is the finished size of your book. If you are using <code>\SetMediaSize</code> to request paper larger than your book's Trim Size, the excess area is <em>not</em> considered to be margins; it is discarded paper, so it is not gray.</p>
+<p>Some commands (in particular, images) allow their content to overflow the textblock area. With <code>shademargins</code> you can see where such object intrude into the margins.</p>
+<p>Sometimes it is hard to see whether a centered object is really centered, because the left-right margins are not the same width. With <code>shademargins</code> you can more easily see centering.</p>
+<p>Note that headers and footers are not part of the margins.</p>
+
+
+
+
+
+
+<a id="a2.4"></a>
+<h4>2.4 cropmarks</h4>
+
+<p><img class="floatright" style="margin-top:6px" src="html-resources/cropmarks.png" width="205" height="265" title="cropmarks" alt="cropmarks"> This option is ignored if the TrimSize is the same as the MediaSize (the usual situation). It works whether or not in draft mode.</p>
+
+<p>If the PDF Media Size is larger than its finished TrimSize, you can place crop marks (also known as trim marks) to indicate where the paper will be cut. The <code>cropmarks</code> option makes the marks visible. If this option is not used, then no marks are placed, regardless of any other commands.</p>
+
+<p>Note that most print-on-demand book printers <em>do not want crop marks</em>. The process flow is automated, and trim data is read from within the PDF. Crop marks may actually interfere with proper layout, if your PDF is re-formatted to share a large sheet of paper along with other pages. So, do not use <code>cropmarks</code> unless you must. For this reason, the built-in capability for cropmarks is very basic.</p>
+
+<p><img class="floatright" style="margin-top:6px" src="html-resources/cropmarkgap.png" width="140" height="141" title="cropmark gap" alt="cropmark gap"> There is only one configurable setting, which may be used in the Preamble:</p>
+
+<p class="code"><code>\SetCropmarkGap{<em>length</em>}</code></p>
+
+<p>The cropmark gap is the distance between the Trim Box and where the crop lines begin. The purpose of the gap is so that the marks do not show on the trimmed paper, if the cut is a little bit off. In all cases, the far end of the cropmarks is 0.5in from the Trim Area. The gap is marked G in this diagram. The length must be least 0pt, and is more typically 0.125in or 0.250in. The default is 0.125in. </p>
+
+<p>If your Trim is placed off-center in the Media, then only one pair of cropmarks will be visible.</p>
+
+
+<a id="a2.5"></a>
+<h4>2.5 cropview</h4>
+
+<p><img class="floatright" style="margin-top:6px" src="html-resources/cropview.png" width="132" height="203" title="cropview" alt="cropview"> This option is ignored if the TrimSize is the same as the MediaSize (the usual situation), because it is unnecessary. Also, it is ignored unless using draft mode.</p>
+
+<p>With <code>cropview</code>, there is an internal instruction to PDF viewers, requesting that only the Trim Size be displayed on the screen, rather than the whole Media Size. This is useful during the layout phase, because it is hard to visualize layout when you have a small finished size floating in a much larger paper size. Nothing else is changed.</p>
+
+<p>The accompanying image is the <code>cropview</code> display of the same page that was used to illustrate the <code>cropmarks</code> command. However, you do not need to have cropmarks.</p>
+
+
+<a id="a2.6"></a>
+<h4>2.6 closecrop</h4>
+
+<p><img class="floatright" style="margin-top:6px" src="html-resources/closecrop.png" width="110" height="186" title="closecrop" alt="closecrop"> This option is only effective in draft mode. When used, the layout of your text is unchanged, but the surrounding margins are shrunk so that they just clear the live text area (which includes header and footer, if present). Also, the TrimSize is shrunk accordingly. Left and right margins are the same. The resulting PDF will be easier to read on a handheld device.</p>
+
+<p>This does <em>not</em> produce an E-book, since the file will be missing some things that an E-book ought to have. The sole purpose of this option is to create a conveniently-sized file that you can carry around while you are thinking about edits and revisions.</p>
+
+
+<a id="a2.7"></a>
+<h4>2.7 xml</h4>
+
+<p>If you request your PDF to comply with PDF/X standards, it will automatically include XMP Metadata that can be seen as document properties in some (mostly professional) PDF reader software. The <code>xml</code> option exports this data with an xml header added, so that it can be independently viewed in software such as a browser.</p>
+
+<p>This option is only for your information; the exported xml file is not necessary. Whether or not you choose this option will not affect the structure or content of your PDF. If you set PDF/X compliance to <code>off</code>, then there will be no exported xml file.</p>
+
+<p>The exported file will be named <code>jobname-XMPasXML.xml</code>, where <code>jobname</code> is the file name of your *.tex document. If you wish to obtain the XMP packet, without the xml header, you can easily do that with a Unicode-compatible text editor. The necessary editing is obvious.</p>
+
+
+<a id="a2.8"></a>
+<h4>2.8 debug  (primarily for developer use)</h4>
+
+<p>The <code>novel</code> class has an additional debugging feature. It is primarily intended for developers, but may be helpful to some ordinary users. Do not use this option if your document compiles, because it will clutter the log file with many messages that you do not need.</p>
+
+<p>The use of the <code>debug</code> option is described on documentation page 11.</p>
+
+
+<a id="a2.9"></a>
+<h4>2.9 unblock  (primarily for developer use)</h4>
+
+<p>A number of LaTeX packages are known to be incompatible with <code>novel</code>, because "the way those packages do things" conflicts with "the way novel does things." If you attempt to load one of those packages, then the results you get may not be in agreement with the formats and styles described in this documentation, because the other package over-rides some of novel's own macros.</p>
+
+<p>Therefore, at the end of your Preamble, <code>novel</code> reviews the loaded packages, and throws an error message if you included any of them via <code>\usepackage</code> or <code>\RequirePackage</code>. That also applies if you call some other package that chain-loads one of the forbidden packages.</p>
+
+<p>The odds that you will need a forbidden package are small, because they generally pertain to layout for mathematical and academic papers (tables, floats, equations, diagrams, etc.).</p>
+
+<p>If you specify document class option <code>unblock</code> then the list of forbidden packages will be disregarded by <code>novel</code>. Use at your own risk! This option is really intended for the convenience of developers, rather than ordinary users.</p>
+
+
+
+</div><!-- end main -->
+
+<div id="finish"></div>
+
+</div><!-- end master -->
+
+</body>
+</html>
+

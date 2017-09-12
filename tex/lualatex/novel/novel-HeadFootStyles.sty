@@ -13,11 +13,9 @@
 %% 
 %%
 \ProvidesFile{novel-HeadFootStyles.sty}%
-[2017/08/15 v1.38 LaTeX file (header and footer styles)]
+[2017/09/12 v1.39 LaTeX file (header and footer styles)]
 %% 
 
-%% Novel Tracking messages in this file begin with 5.
-\NDB{5.0 in novel-HeadFootStyles.sty.}
 
 
 %% File `novel-LayoutSettings.sty' reserved space for header/footer,
@@ -42,7 +40,6 @@
 %
 \newtoggle{@inheadfoot} % true in header or footer
 %%
-\NDB{5.1 in novel-HeadFootStyles.sty.}
 
 
 %% INITIALIZE FANCYHDR
@@ -60,9 +57,7 @@
   \FPdiv{\@loosehead}{\@@loosehead}{10} % change in method of using fontspec with microtype
   \FPmin{\@looseheadnum}{\@loosehead}{50} % Don't want numbers too loose.
 }
-\NDB{5.2 in novel-HeadFootStyles.sty.}
 \SetLooseHead{50}
-\NDB{5.3 in novel-HeadFootStyles.sty.}
 % Create flags to know if \fancyhead and \fancyfoot have been defined by user,
 %   somewhere in the Preamble. If not, then pre-defined styles based on trimsize
 %   will be applied \AtEndPreamble.
@@ -72,7 +67,6 @@
   \@tempFancyhead[#1]{\toggletrue{@inheadfoot}{\normalsize#2}}%
 }
 %
-\NDB{5.4 in novel-HeadFootStyles.sty.}
 \LetLtxMacro{\@tempFancyfoot}{\fancyfoot}
 \renewcommand\fancyfoot[2][]{%
   \@styledFootertrue%
@@ -84,7 +78,6 @@
   }%
 }
 %
-\NDB{5.5 in novel-HeadFootStyles.sty.}
 \LetLtxMacro{\@myTempTPS}{\thispagestyle}
 % Re-define \thispagestyle based on layout. When style requests only the page
 % number, decide what to do based on this command and whether footer is used:
@@ -92,7 +85,6 @@
 %
 %% See AtBeginShipout routine in novel.cls.
 %
-\NDB{5.6 in novel-HeadFootStyles.sty.}
 \gdef\thispagestyle#1{%
   \global\@thispagestylesettrue%
   \gdef\@pagestyleOK{false}%
@@ -110,7 +102,6 @@
     \else \@myTempTPS{empty}%
     \fi%
   }{}%
-  \NDB{5.6.1 in novel-HeadFootStyles.sty.}%
   \ifthenelse{\equal{#1}{forcenumber}}{%
     \gdef\@pagestyleOK{true}%
     \if@gotFooter \@myTempTPS{fancyplain}%
@@ -118,7 +109,6 @@
     \fi%
   }{}%
   %
-  \NDB{5.6.2 in novel-HeadFootStyles.sty.}%
   \ifthenelse{\equal{#1}{dropfolioinside}% after \clearpage
     \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{% compatibility
     \gdef\@pagestyleOK{true}%
@@ -130,7 +120,6 @@
       \@dropfolioinside
     \fi%
   }{}%
-  \NDB{5.6.3 in novel-HeadFootStyles.sty.}%
   % With `dropfoliobeneath` only a footer is used, if present. If no footer,
   %  then the styled page number is centered at one baselineskip beneath the
   %  ordinary bottom of the textblock. Thus, the number intrudes into the
@@ -146,14 +135,12 @@
       \@dropfoliobeneath
     \fi%
   }{}%
-  \NDB{5.6.4 in novel-HeadFootStyles.sty.}%
   %%
   \ifthenelse{\equal{\@pagestyleOK}{true}}{}{%
     \ClassWarning{novel}{^^JPage \pagenumberstyle\space has %
     \string\thispagestyle{}^^J%
     but its argument is not defined. Default substituted. Better fix that.^^J}%
   }%
-  \NDB{5.6.5 in novel-HeadFootStyles.sty.}%
 }
 %
 %% End initialize fancyhdr.
@@ -161,19 +148,16 @@
 
 %% See AtBeginDocument routine in novel.cls:
 %% -----------------------------------------------------------------------------
-\NDB{5.7 in novel-HeadFootStyles.sty.}
 \gdef\@activateHeadFootStyles{ % called AtBeginDocument by novel.cls
   % Pre-configured header/footer styles, unless user over-rode them:
   % \versoheadtext is initialized to \theauthor
   % \rectoheadtext is initialized to \thetitle
-  \NDB{5.7.1 in novel-HeadFootStyles.sty.}%
   \@ifundefined{versoheadtext}{
     \NewVersoHeadText{\smcp{\StrSubstitute{\theauthor}{\space}{ \,}}}
   }{}
   \@ifundefined{rectoheadtext}{
     \NewRectoHeadText{\smcp{\StrSubstitute{\thetitle}{\space}{ \,}}}
   }{}
-  \NDB{5.7.2 in novel-HeadFootStyles.sty.}%
   %
   % ----------------------------------------------------------------------------
   % IF YOU ARE WRITING YOUR OWN HEADER/FOOTER STYLE:
@@ -251,7 +235,6 @@
     \fi
   }{}
   %
-  \NDB{5.7.1 in novel-HeadFootStyles.sty.}%
   %
   % END PRE-DEFINED STYLES.
   % ----------------------------------------------------------------------------
@@ -284,7 +267,6 @@
 %
 %% end initialize fancyhdr
 
-\NDB{5.8 in novel-HeadFootStyles.sty.}
 
 %% DROPFOLIO
 %% -----------------------------------------------------------------------------
@@ -304,14 +286,12 @@
     \setlength\temp@pgnumraise{%
       \New@BottomMargin+0.5\New@MediaHeight-0.5\New@TrimHeight}%
   \fi%
-  \NDB{5.8.1 in novel-HeadFootStyles.sty.}%
   \check@IsVerso%
   \if@isVerso%
     \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
      \hspace{\dimexpr\Trim@Lx+\New@OutsideMargin+0.5\textwidth-0.5\temp@pgnumwidth}\raisebox{%
       \temp@pgnumraise}{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
   \else%
-    \NDB{5.8.2 in novel-HeadFootStyles.sty.}%
     \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
      \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%
       \charscale[1,0.5\textwidth,\temp@pgnumraise]{%
@@ -321,7 +301,6 @@
 %
 \let\dropfolionow\relax % compatibility with earlier version.
 %
-\NDB{5.9 in novel-HeadFootStyles.sty.}
 
 % \@dropfoliobeneath does not change the textblock height. The styled page
 %   number is centered where an extra line would be, within the bottom margin.
@@ -335,14 +314,12 @@
     \setlength\temp@pgnumraise{%
       \New@BottomMargin-\nbs+0.5\New@MediaHeight-0.5\New@TrimHeight}%
   \fi%
-  \NDB{5.9.1 in novel-HeadFootStyles.sty.}%
   \check@IsVerso%
   \if@isVerso%
     \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
      \hspace{\dimexpr\Trim@Lx+\New@OutsideMargin-0.5\temp@pgnumwidth}\raisebox{%
       \temp@pgnumraise}{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
   \else%
-    \NDB{5.9.2 in novel-HeadFootStyles.sty.}%
     \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
      \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%
       \charscale[1,0.5\textwidth,\temp@pgnumraise]{%
@@ -352,7 +329,6 @@
 %%
 %
 
-\NDB{5.10 in novel-HeadFootStyles.sty.}
 
 % Content of header text (if present) can be changed at any time within
 %   the body, using the following commands. If not used, then
@@ -371,7 +347,6 @@
 \let\SetVersoHeadText\NewVersoHeadText\relax % for convenience
 \let\RenewVersoHeadText\NewVersoHeadText\relax % for convenience
 %
-\NDB{5.11 in novel-HeadFootStyles.sty.}
 \gdef\NewRectoHeadText#1{
   \FPdiv{\@myk}{\@loosehead}{500}
   \setlength\@mykem{\@myk em}
@@ -379,7 +354,6 @@
 }
 \let\SetRectoHeadText\NewRectoHeadText\relax % for convenience
 \let\RenewRectoHeadText\NewRectoHeadText\relax % for convenience
-\NDB{5.12 in novel-HeadFootStyles.sty.}
 %
 %%
 

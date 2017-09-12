@@ -13,11 +13,9 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/08/15 v1.38 LaTeX file (layout settings)]
+[2017/09/12 v1.39 LaTeX file (layout settings)]
 %%
 
-% Novel Tracking codes in this file begin with 3.
-\NDB{3.0 in novel-LayoutSettings.sty.}
 
 %% Note that nearly all layout settings are preconfigured based on Trim Size.
 %% In general, these user commands may be used to over-ride the presets.
@@ -56,7 +54,6 @@
 \newlength\normalxheight
 \newlength\normalXheight
 %%
-\NDB{3.1 in novel-LayoutSettings.sty.}
 
 
 %% SIZE-RELATED COMMANDS AVAILABLE IN PREAMBLE.
@@ -72,7 +69,6 @@
 %
 % \SetTrimSize{}{} width and height of printed book.
 \newcommand\SetTrimSize[2]{%
-  \NDB{3.2.0 in novel-LayoutSettings.sty.}
   \global\@TrimSizeSettrue
   \ifthenelse{\dimtest{#1}{<}{2.99in}}{
     \ClassError{novel}{Unacceptably small Trim Width}%
@@ -91,7 +87,6 @@
      {\string\SetTrimSize\space cannot follow \string\ReworkTrimSize^^J%
       and cannot follow \string\ReworkMargins.}%
   \fi
-  \NDB{3.2.1 in novel-LayoutSettings.sty.}
   \setlength\Old@TrimWidth{#1}%
   \setlength\Old@TrimHeight{#2}%
   \setlength\New@TrimWidth{#1}%
@@ -102,12 +97,10 @@
     \setlength\New@MediaWidth{#1}%
     \setlength\New@MediaHeight{#2}%
   \fi
-  \NDB{3.2.3 in novel-LayoutSettings.sty.}
 }
 %
 % Retroactively change Trim Size after layout. See documentation:
 \newcommand\ReworkTrimSize[2]{%
-  \NDB{3.4.0 in novel-LayoutSettings.sty.}
   \if@coverart % New in version 1.2
   \ClassError{novel}{Rework command cannot be used with coverart option}%
   {Instead of reworking document size, you must re-do the artwork.}
@@ -122,7 +115,6 @@
      Carefully review your PDF to ensure that line breaks, paragraphs,^^J%
      and page breaks are where you expect them to be.^^J}%
   \fi
-  \NDB{3.4.1 in novel-LayoutSettings.sty.}
 }
 % Margins at top and bottom are relative to:
 %   top of header, or top of textblock if no header;
@@ -130,7 +122,6 @@
 % Inside margin generally greater than outside, due to gutter.
 % Standard margins command ("TOBI, or not TOBI, that is the question."):
 \newcommand\SetMargins[4]{ % top, outside, bottom, inside
-  \NDB{3.5.0 in novel-LayoutSettings.sty.}
   \global\@MarginsSettrue
   \if@ReworkMarginsSet
     \ClassError{novel}{^^JCannot set Margins after reworking them}%
@@ -144,11 +135,9 @@
   \setlength\New@BottomMargin{#3}
   \setlength\Old@InsideMargin{#4}
   \setlength\New@InsideMargin{#4}
-  \NDB{3.5.1 in novel-LayoutSettings.sty.}
 }
 % Retroactively change margins after layout. See documentation:
 \newcommand\ReworkMargins[4]{
-  \NDB{3.6.0 in novel-LayoutSettings.sty.}
   \if@coverart % New in version 1.2
   \ClassError{novel}{Rework command cannot be used with coverart option}%
   {Instead of reworking document size, you must re-do the artwork.}
@@ -163,7 +152,6 @@
    Carefully review your PDF to ensure that line breaks, paragraphs,^^J%
    and page breaks are where you expect them to be.^^J}%
   \fi
-  \NDB{3.6.1 in novel-LayoutSettings.sty.}
 }
 % \SetMediaSize[]{}{} such as {8.5in}{11in}.
 %   This command is only used when the Trim Size must be placed in a larger
@@ -176,7 +164,6 @@
 %
 \newif \if@offcenterTrim \@offcenterTrimfalse
 \newcommand\SetMediaSize[3][center]{ % [alignment] width, height
-  \NDB{3.7.0 in novel-LayoutSettings.sty.}
   \ifthenelse{\equal{#1}{center} \OR \equal{#1}{edge}}{
     \global\@MediaSizeSettrue
     \setlength\Old@MediaWidth{#2}
@@ -190,7 +177,6 @@
   \if@coverart\else % new in version 1.2
     \ifthenelse{\equal{#1}{edge}}{\global\@offcenterTrimtrue}{}
   \fi
-  \NDB{3.7.1 in novel-LayoutSettings.sty.}
 }
 % \SetLinesPerPage{} limited due to fontsize and Trim Size constraints.
 % There is no `rework' command, because as long as the number of lines fit,
@@ -199,7 +185,6 @@
 %   a reworked size cannot fit. In that case, the user's best plan is remove
 %   header or footer (if possible), or reduce vertical margins (if possible).
 \newcommand\SetLinesPerPage[1]{
-  \NDB{3.8.0 in novel-LayoutSettings.sty.}
   \global\@LinesPerPageSettrue
   \FPiflt{#1}{1}%
     \ClassError{novel}{\string\SetLinesPerPage\ must be at least 1}%
@@ -207,7 +192,6 @@
   \else\fi %
   \FPround{\temp@IntegerLines}{#1}{0}
   \def\my@LinesPerPage{\temp@IntegerLines}
-  \NDB{3.8.1 in novel-LayoutSettings.sty.}
 }
 % \SetFontSize{} may be in any units, even decimals: 12.2pt, 11.5bp, etc.
 % When packages load, the font size is temporarily set to 11pt at 15pt skip,
@@ -215,10 +199,8 @@
 % Then the size is changed to its actual value based on this command, or on
 % the defaults for Trim Size, or on the effects of \Rework.
 \newcommand\SetFontSize[1]{
-  \NDB{3.9.0 in novel-LayoutSettings.sty.}
   \global\@FontSizeSettrue
   \global\setlength\Old@FontSize{#1}
-  \NDB{3.9.1 in novel-LayoutSettings.sty.}
 }
 %
 %% End size-related commands available in Preamble.
@@ -246,7 +228,6 @@
 \SetHeadJump{1.5} % default
 \gdef\SetFootJump#1{\gdef\@footjump{#1}}
 \SetFootJump{1.5} % default
-\NDB{3.10 in novel-LayoutSettings.sty.}
 % New in version 1.2, coverart.
 \if@coverart % cover art has no header or footer
   \gdef\SetHeadFootStyle#1{\gdef\my@HeadFootStyle{0}}
@@ -257,20 +238,17 @@
   \gdef\SetHeadFootStyle#1{\gdef\my@HeadFootStyle{#1}}
   \gdef\SetHeadStyle#1{\gdef\my@HeadFootStyle{#1}} % deprecated
 \fi
-\NDB{3.11 in novel-LayoutSettings.sty.}
 % See docs part 7 for what these emblems do, if used:
 \newcommand\SetEmblems[2]{ % verso, recto
   \gdef\my@VersoEmblem{{\headfont #1}}
   \gdef\my@RectoEmblem{{\headfont #2}}
 }
-\NDB{3.12 in novel-LayoutSettings.sty.}
 \let\SetEmblem\SetEmblems% for convenience
 % If you want something fancier than \thepage:
 \gdef\SetPageNumberStyle#1{\gdef\pagenumberstyle{#1}}
 
 % See novel.cls for the accompanying AtBeginDocument routine.
 
-\NDB{3.13 in novel-LayoutSettings.sty.}
 %
 \newif \if@gotHeader
 \newif \if@gotFooter
@@ -279,7 +257,6 @@
 \newif \if@validHF
 %
 \gdef\@reserveHFspace{ % used for layout calculations
-  \NDB{3.14.1 in novel-LayoutSettings.sty.}
   \ifthenelse{\equal{\my@HeadFootStyle}{0}}{
     \@gotHeaderfalse\@gotFooterfalse\@validHFtrue
   }{}
@@ -307,13 +284,11 @@
       {\string\SetHeadFootStyle\space needs choice of 0,1,2,3,4,5,6,^^J%
       even if you wish to customize using fancyhdr syntax.^^J}%
   \fi
-  \NDB{3.14.2 in novel-LayoutSettings.sty.}
 } % end \@reserveHFspace
 % Each new chapter generally has its own header/footer style. This allows a
 % default setting when chapters begin with ChapterStart environment:
 \gdef\SetChapterStart#1{\gdef\@setchapterstart{#1}}
 \SetChapterStart{footer} % default
-\NDB{3.15 in novel-LayoutSettings.sty.}
 %
 % See novel.cls for the accompanying AtBeginDocument routine.
 %
@@ -322,7 +297,6 @@
 
 %% New in version 1.2: cover image.
 \newcommand\SetCoverImage[1]{
-  \NDB{3.17.0 in novel-LayoutSettings.sty.}
   \def\coverimageok{false}
   \IfSubStr{#1}{jpg}{\def\coverimageok{true}}{}
   \IfSubStr{#1}{jpeg}{\def\coverimageok{true}}{}
@@ -334,7 +308,6 @@
     \ClassError{novel}{Cover image has wrong file extension}%
     {Cover image must be jpg, JPG, jpeg, or JPEG.}
   }%
-  \NDB{3.17.1 in novel-LayoutSettings.sty.}
 }
 %%
 
@@ -351,7 +324,6 @@
 %   dagger, dbldagger, and section (when used as footnote markers)
 %   are always partially faked.
 \newcommand\SetMarkerStyle[2][real]{
-  \NDB{3.18.0 in novel-LayoutSettings.sty.}
   \def\@goodfnm{no}
   \ifthenelse{\equal{#2}{asterisk}}{%
     \def\@goodfnm{yes}\global\toggletrue{@usesymbolmark}%
@@ -370,7 +342,6 @@
     \ClassError{novel}{Bad choice for \string\SetMarkers}%
     {Optional: real, fake. Required: asterisk, dagger, number.}%
   }{}
-  \NDB{3.18.1 in novel-LayoutSettings.sty.}
 }
 %
 \SetMarkerStyle[real]{asterisk} % default
@@ -389,7 +360,6 @@
 \SetCropmarkGap{0.125in} % default
 %%
 
-\NDB{3.19 in novel-LayoutSettings.sty.}
 
 
 %% Fake \microtypesetup until package is loaded later:
@@ -400,7 +370,6 @@
 }
 %%
 
-\NDB{3.20 in novel-LayoutSettings.sty.}
 
 
 %% MISCELLANOUS SETTINGS. Mostly remove "glue". Best to leave as-is.
@@ -464,14 +433,12 @@
 %
 %% End miscellaneous settings.
 
-\NDB{3.21 in novel-LayoutSettings.sty.}
 
 % The following might become unnecessary if fontspec adds the capability to
 % disable keys. For now: Color and Opacity cannot be used as font features,
 %   for a black/white printed book. Alas, fontspec over-rules xcolor.
 % So, this code over-rules fontspec:
 \gdef\novel@checkfeatures#1{%
-  \NDB{3.22.0 in novel-LayoutSettings.sty.}
   \def\@featuresareok{yes}
   \IfSubStr{#1}{Color}{\def\@featuresareok{no}}{}%
   \IfSubStr{#1}{Colour}{\def\@featuresareok{no}}{}%
@@ -484,7 +451,6 @@
     {You defined a font, or added a font feature, with Color or Opacity.^^J%
      That is disallowed in `novel' class.}%
   }
-  \NDB{3.22.1 in novel-LayoutSettings.sty.}
 }
 %%
 
@@ -520,7 +486,6 @@
 \newif \if@parentfontset
 \gdef\@parentfontfeatures{}
 \gdef\@parentfontname{}
-\NDB{3.23 in novel-LayoutSettings.sty.}
 \DeclareDocumentCommand \SetParentFont { O{} m O{} } {% from version 1.1.
   \novel@checkfeatures{#1,#3}
   \gdef\@parentfontfeatures{#1,#3}
@@ -533,7 +498,6 @@
   \gdef\@parentfontname{#2}
   \global\@parentfontsettrue
 }%
-\NDB{3.24 in novel-LayoutSettings.sty.}
 %% Store settings for the chapterfont:
 % The chapter font is used by the \ChapterTitle{} command.
 \newif \if@chapterfontset
@@ -582,7 +546,6 @@
   \global\@gotdecotrue
   \newfontface\decofont[#1,#3]{#2}
 }%
-\NDB{3.25 in novel-LayoutSettings.sty.}
 %
 \msg_set:nnnn {fontspec} {font-not-found} { % rewrites the standard message
   Font~ "#1"~ cannot~ be~ found.
@@ -592,7 +555,6 @@
   If~the~missing~font~is~anything~else,~then~the~missing~font~is\\
   not~caused~by~`novel'~class.\\
 }%
-\NDB{3.26 in novel-LayoutSettings.sty.}
 %% For syntax consistency:
 \cs_new_eq:NN \NewFontFamily \newfontfamily
 \cs_new_eq:NN \NewFontFace \newfontface
@@ -602,7 +564,6 @@
 \cs_new_eq:NN \AddFontFeatures \addfontfeatures
 \cs_new_eq:NN \AddFontFeature \addfontfeatures
 %%
-\NDB{3.27 in novel-LayoutSettings.sty.}
 %% \CreateFontFeature{substitutions}{feature code}
 % Problem: Font has one or more alternate glyphs that you would like to use,
 %   but they are not listed in a feature set for the font.
@@ -644,7 +605,6 @@
 %%
 %% end definition of parent and other fonts.
 
-\NDB{3.29 in novel-LayoutSettings.sty.}
 
 %% FAKE POLYGLOSSIA COMMANDS
 %% --------------------------------------------------------------------------
@@ -680,20 +640,17 @@
 %
 %% end fake polyglossia commands.
 
-\NDB{3.30 in novel-LayoutSettings.sty.}
 
-%% FRONTMATTER, MAINMATTER, BACKMATTER
+%% FRONTMATTER, MAINMATTER. BUT NO BACKMATTER!
 %% --------------------------------------------------------------------------
 %
 \newif \ifWithinFrontmatter \WithinFrontmatterfalse
 \newif \ifWithinMainmatter \WithinMainmatterfalse
-\newif \ifWithinBackmatter \WithinBackmatterfalse
 \newcounter{frontmatterpages}
 \newcounter{runningpages}
 %
 % See novel.cls for the AtBeginShipout routine.
 %
-\NDB{3.32 in novel-LayoutSettings.sty.}
 \def\frontmatter{ % starts page count and frontmatter count at 1.
   \ifWithinFrontmatter
     \ClassError{novel}{\string\frontmatter\ used more than once}%
@@ -701,115 +658,48 @@
   \fi
   \ifWithinMainmatter
    \ClassError{novel}{\string\frontmatter\ cannot follow \mainmatter}%
-   {In order: \string\frontmatter\ \string\mainmatter\ \string\backmatter^^J%
-    but you do not need all of them.^^J}%
+   {In order: \string\frontmatter\ \string\mainmatter^^J%
+    but you do not need both of them.^^J}%
   \fi
-  \ifWithinBackmatter
-   \ClassError{novel}{\string\frontmatter\ cannot follow \backmatter}%
-   {In order: \string\frontmatter\ \string\mainmatter\ \string\backmatter^^J%
-    but you do not need all of them.^^J}%
-  \fi
-  \WithinFrontmattertrue\WithinMainmatterfalse\WithinBackmatterfalse
+  \WithinFrontmattertrue\WithinMainmatterfalse
   \clearpage
   \pagenumbering{roman}
   \setcounter{page}{1}
   \setcounter{frontmatterpages}{1}
 }
-\NDB{3.33 in novel-LayoutSettings.sty.}
 %
 \def\mainmatter{ % restarts page to 1, arabic numbers; freeze frontpagecount
   \ifWithinMainmatter
     \ClassError{novel}{\string\mainmatter\ used more than once}%
     {You issued \string\mainmatter\ more than once.}%
   \fi
-  \ifWithinBackmatter
-   \ClassError{novel}{\string\mainmatter\ cannot follow \backmatter}%
-   {In order: \string\frontmatter\ \string\mainmatter\ \string\backmatter^^J%
-    but you do not need all of them.^^J}%
-  \fi
-  \WithinFrontmatterfalse\WithinMainmattertrue\WithinBackmatterfalse
+  \WithinFrontmatterfalse\WithinMainmattertrue
   \setcounter{frontmatterpages}{\value{page}}
   \addtocounter{frontmatterpages}{-1}
   \pagenumbering{arabic}
   \setcounter{page}{1}
 }
-\NDB{3.34 in novel-LayoutSettings.sty.}
 %
-\def\backmatter{\@ifstar\@backmatterst\@backmatterns}
-%
-\def\@backmatterst{% continues frontmatter count w/ lowercase roman numerals
-  \ifWithinBackmatter
-    \ClassError{novel}{\string\backmatter\space used more than once}%
-    {You issued \string\backmatter\space more than once.^^J}%
-  \fi
-  % If you really must go directly from front to back without main,
-  %   simply issue \mainmatter\backmatter together. Not advised.
-  \ifWithinFrontmatter
-  \ClassError{novel}{Missing \string\mainmatter}%
-  {You went directly from \string\frontmatter\space to \string\backmatter^^J%
-   Must have \string\mainmatter\space in between.^^J}%
-  \fi
-  \WithinFrontmatterfalse\WithinMainmatterfalse\WithinBackmattertrue
-  \addtocounter{frontmatterpages}{1}
-  \pagenumbering{roman}
-  \setcounter{page}{\value{frontmatterpages}}
+\def\backmatter{\@ifstar\@backmatterst\@backmatterns} % obsolete from v. 1.40.
+\def\@backmatterst{%
+  \ClassWarning{novel}{Command \string\backmatter*\ ignored. Do not use.^^J}%
 }
 %
-\def\@backmatterns{ % continues mainmatter arabic numerals
-  \ifWithinBackmatter
-    \ClassError{novel}{\string\backmatter\space used more than once}%
-    {You issued \string\backmatter\space more than once.^^J}%
-  \fi
-  % If you really must go directly from front to back without main,
-  %   simply issue \mainmatter\backmatter together. Not advised.
-  \ifWithinFrontmatter
-  \ClassError{novel}{Missing \string\mainmatter}%
-  {You went directly from \string\frontmatter\space to \string\backmatter^^J%
-   Must have \string\mainmatter\space in between.^^J}%
-  \fi
-  \WithinFrontmatterfalse\WithinMainmatterfalse\WithinBackmattertrue
+\def\@backmatterns{%
+  \ClassWarning{novel}{Command \string\backmatter\ ignored. Do not use.^^J}%
 }
-\NDB{3.35 in novel-LayoutSettings.sty.}
 %
-\def\Backmatter{\@ifstar\@Backmatterst\@Backmatterns}
+\def\Backmatter{\@ifstar\@Backmatterst\@Backmatterns} % obsolete from v. 1.40.
 %
 \def\@Backmatterst{% continues frontmatter count w/ uppercase Roman numerals
-  \ifWithinBackmatter
-    \ClassError{novel}{\string\backmatter\space used more than once}%
-    {You issued \string\backmatter\space more than once.^^J}%
-  \fi
-  % If you really must go directly from front to back without main,
-  %   simply issue \mainmatter\backmatter together. Not advised.
-  \ifWithinFrontmatter
-  \ClassError{novel}{Missing \string\mainmatter}%
-  {You went directly from \string\frontmatter\space to \string\backmatter^^J%
-   Must have \string\mainmatter\space in between.^^J}%
-  \fi
-  \WithinFrontmatterfalse\WithinMainmatterfalse\WithinBackmattertrue
-  \addtocounter{frontmatterpages}{1}
-  \pagenumbering{Roman}
-  \setcounter{page}{\value{frontmatterpages}}
+  \ClassWarning{novel}{Command \string\Backmatter*\ ignored. Do not use.^^J}%
 }
 %
-\def\@Backmatterns{ % restarts page count with uppercase Roman numerals
-  \ifWithinBackmatter
-    \ClassError{novel}{\string\backmatter\ used more than once}%
-    {You issued \string\backmatter\ more than once.^^J}%
-  \fi
-  % If you really must go directly from front to back without main,
-  %   simply issue \mainmatter\backmatter together. Not advised.
-  \ifWithinFrontmatter
-  \ClassError{novel}{Missing \string\mainmatter}%
-  {You went directly from \string\frontmatter\space to \string\backmatter^^J%
-   Must have \string\mainmatter\space in between.^^J}%
-  \fi
-  \WithinFrontmatterfalse\WithinMainmatterfalse\WithinBackmattertrue
-  \pagenumbering{Roman}
-  \setcounter{page}{1}
+\def\@Backmatterns{%
+  \ClassWarning{novel}{Command \string\Backmatter\ ignored. Do not use.^^J}%
 }
 %
-%% end frontmatter, mainmatter, backmatter.
-\NDB{3.36 in novel-LayoutSettings.sty.}
+%% end frontmatter, mainmatter. No backmatter!
 
 
 %% DISABLE OR NEUTRALIZE SOME STANDARD LATEX COMMANDS
@@ -855,7 +745,6 @@
 \long\gdef\listoffigures\@nodocommand{listoffigures}
 %
 %% end disable or neutralize.
-\NDB{3.37 in novel-LayoutSettings.sty.}
 
 
 %%

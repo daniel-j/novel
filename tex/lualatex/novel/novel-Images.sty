@@ -13,11 +13,9 @@
 %% 
 %%
 \ProvidesFile{novel-Images.sty}%
-[2017/08/15 v1.38 LaTeX file (image placement)]
+[2017/09/12 v1.39 LaTeX file (image placement)]
 %%
 
-%% Novel Tracking messages in this file begin with 7.
-\NDB{7.0 in novel-Images.sty.}
 
 %%
 %% Be sure to read the separate documentation about how to prepare images.
@@ -81,7 +79,6 @@
    {The `novel' class has its own commands for placing images. See docs.^^J%
     You cannot use the \string\includegraphics\space command.}%
 }
-\NDB{7.1 in novel-Images.sty.}
 %
 % \InlineImage can be used in body, header, footer.
 % However, macros such as \imagefilename, \imagewidth, etc.
@@ -114,7 +111,6 @@
   \ifthenelse{\equal{\@myilya}{} \OR \equal{\@myilya}{0}}{%
     \def\@myily{0pt}}{\def\@myily{\@myilya}%
   }%
-  \NDB{7.1.1 in novel-Images.sty.}%
   \iftoggle{@inheadfoot}{}{\gdef\imagefilename{#3}}% for possible later use
   \gdef\my@graphic{\@includegraphics[draft=false]{#3}}%
   \setlength\@imagewidth{\widthof{\my@graphic}}%
@@ -122,14 +118,12 @@
   \iftoggle{@inheadfoot}{}{\setlength\imagewidth{\@imagewidth}}%
   \setlength\@imageheight{\heightof{\my@graphic}}%
   \global\@imageheight=\@imageheight%
-  \NDB{7.1.2 in novel-Images.sty.}%
   \iftoggle{@inheadfoot}{}{%
     \setlength\imageheight{\@imageheight}%
     \global\imageheight=\imageheight%
     \typeout{^^JClass~`novel'~Info:~An~image~was~placed~on~page~\thepage.^^J%
       Review~layout~to~ensure~that~it~does~not~overflow~into~margins.^^J}%
   }%
-  \NDB{7.1.3 in novel-Images.sty.}%
   %
   \setlength\@imagehoffset{\@myilx}%
   \IfBeginWith{\@myily}{b}{%
@@ -142,7 +136,6 @@
     \setlength\@imagevoffset{-\@imageheight}%
     \addtolength\@imagevoffset{\@myily}%
   }%
-  \NDB{7.1.4 in novel-Images.sty.}%
   %
   \IfBooleanTF{#1}%
   % starred:
@@ -154,7 +147,6 @@
     }%
   }%
   % unstarred:
-  \NDB{7.1.5 in novel-Images.sty.}%
   {%
     \iftoggle{@inheadfoot}{}{\gdef\imagestarred{false}}%
     \hspace{\@imagehoffset}%
@@ -167,7 +159,6 @@
 %
 %%
 
-\NDB{7.2 in novel-Images.sty.}
 
 
 %% \BlockImage[alignment]{image}[text]
@@ -205,7 +196,6 @@
   \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{%
     \def\@myy{0pt}}{\def\@myy{\@myyt}%
   }
-  \NDB{7.2.1 in novel-Images.sty.}%
   \newdimen\@sbsheight
   \ifthenelse{\equal{\@myalign}{c}\OR\equal{\@myalign}{}}{%
     {\centering\strut\InlineImage*[{\@myx-0.5\imagewidth},{\@myy}]{#2}\par}
@@ -213,9 +203,8 @@
     {\centering\strut #3\par}
     \setbox0=\vbox{{\centering #3\par}}
   }{}
-  \NDB{7.2.2 in novel-Images.sty.}%
   \ifthenelse{\equal{\@myalign}{r}}{%
-    \noindent\InlineImage*[{\textwidth-\imagewidth+\@myx},{\@myy}]{#2}\par%
+    \noindent\InlineImage[{\textwidth-\imagewidth+\@myx},{\@myy}]{#2}\par%
     \vspace{-\nbs}
     \begin{adjustwidth}{0pt}{\imagewidth+\parindent}%
       #3\par%
@@ -226,7 +215,6 @@
       \end{adjustwidth}%
     }%
   }{}
-  \NDB{7.2.3 in novel-Images.sty.}%
   \ifthenelse{\equal{\@myalign}{l}}{%
     \noindent\InlineImage*[{\@myx},{\@myy}]{#2}\par%
     \vspace{-\nbs}
@@ -239,7 +227,6 @@
       \end{adjustwidth}%
     }%
   }{}
-  \NDB{7.2.4 in novel-Images.sty.}%
   % portion here, inspired by post from user Killian Foth,
   % at stackoverflow.com, license CC-by-sa-3.0.
   \@sbsheight=\ht0 \advance\@sbsheight by \dp0
@@ -263,7 +250,6 @@
 \ExplSyntaxOff
 %%
 
-\NDB{7.3 in novel-Images.sty.}
 
 
 % Returns 1 for monochrome, 8 for grayscale (or rgb). EXPERIMENTAL.
@@ -277,7 +263,6 @@
   }%
 }
 %
-\NDB{7.4 in novel-Images.sty.}
 
 
 %%

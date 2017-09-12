@@ -13,11 +13,9 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2017/08/15 v1.38 LaTeX file (text macros usable within document body)]
+[2017/09/12 v1.39 LaTeX file (text macros usable within document body)]
 %%
 
-%% Novel Tracking messages in this file begin with 4.
-\NDB{4.0 in novel-TextMacros.sty.}
 
 %% This file contains commands that are usable within the document body,
 %% for styling and otherwise manipulating text.
@@ -39,7 +37,7 @@
 % \DecoChapterTitle{}{}, \SideDecoChapterTitle{}, ModernChapterTitle[]{}{} -- See novel-ChapterScene.sty.
 % {\chapterfont text} and other pre-defined font selection commands -- See novel-LayoutSettings.sty.
 % \decoglyph{} and \acronym{} -- See novel-FontDefaults.sty.
-% \frontmatter, \mainmatter, \backmatter and variations -- See novel-LayoutSettings.sty.
+% \frontmatter, \mainmatter -- See novel-LayoutSettings.sty.
 % \footnote[]{}, \endnote, \endnotetext[]{} -- See novel-Footnotes.sty.
 % \thispagestyle{choice} and \dropfolio -- See novel-HeadFootStyles.sty.
 % \NewVersoHeadText{}, \NewRectoHeadText{}  Also \Set and \Renew forms. -- See novel-HeadFootStyles.sty.
@@ -141,14 +139,12 @@
 % Useful when you wish to put a note to yourself in the *.tex document.
 % Not the same as % comment, because anything after the braces will print.
 \long\gdef\memo#1{}
-\NDB{4.1 in novel-TextMacros.sty.}
 %
 \gdef\stake{\rule{0pt}{1pt}} % placeholder
 %
 % \forceindent and \backindent perform or remove indent, using \hspace{}.
 % Rationale: Sometimes \indent and \noindent are neutralized by another command.
 \newlength\forceparlength % holds default value, even when \parindent changed
-\NDB{4.2 in novel-TextMacros.sty.}
 
 % See novel.cls for accompanying AtBeginDocument routine.
 
@@ -172,7 +168,6 @@
  }
 %
 \ExplSyntaxOff
-\NDB{4.4 in novel-TextMacros.sty.}
 %
 \let\textsc\smcp\relax % unified
 \let\oldscshape\scshape\relax % in case needed later
@@ -190,7 +185,6 @@
 %% Just in case `xcolor' re-defines its internals, to prevent code bomb:
 \ProvideDocumentCommand\@declaredcolor { m } {}
 \ProvideDocumentCommand\@undeclaredcolor { o m } {}
-\NDB{4.5 in novel-TextMacros.sty.}
 %%
 \if@graytext % and the usual colors, including black and white.
   \definecolor[named]{gray1}{gray}{0.15} % ten percent gray, etc.
@@ -211,7 +205,6 @@
    \ifthenelse{\equal{#2}{hingledingle}}{\@declaredcolor{white}}{}% hingledingle is internal alias for white
    }
 \fi
-\NDB{4.6 in novel-TextMacros.sty.}
 %%
 
 
@@ -233,7 +226,6 @@
  \expandafter\aftergroup\csname nov@ettl@fterGroup\the\nov@ettl@fter\endcsname%
 }
 % End code from `etextools`.
-\NDB{4.7 in novel-TextMacros.sty.}
 
 
 
@@ -251,7 +243,6 @@
     #2%
   \fi%
 }
-\NDB{4.8 in novel-TextMacros.sty.}
 %% \bigemdash inspired by code by RTBarnard at stackoverflow.com, CC-by-sa-3.0:
 % Allows a rule of variable length to fill available space at its right.
 % There must be a "right-hand limit" imposed by something, such as by enclosing
@@ -277,7 +268,6 @@
   {\leaders\hbox{\rule[\@myraise ex]{1pt}{\@mythick em}}\hfill\stake}%
  }
 %%
-\NDB{4.9 in novel-TextMacros.sty.}
 
 %%
 % \charscale[scale,x,y]{text} and starred version
@@ -325,7 +315,6 @@
  }
 \ExplSyntaxOff
 %%
-\NDB{4.10 in novel-TextMacros.sty.}
 
 
 
@@ -357,7 +346,6 @@
 \FPround{\my@tempDetailsSkipNum}{\my@tempDetailsSkipNum}{2}%
 \fontsize{\my@tempDetailsFontNum pt}{\my@tempDetailsSkipNum pt}\selectfont}%
 {\endgroup}
-\NDB{4.11 in novel-TextMacros.sty.}
 %
 %%
 % Environment toc (alternative table of contents):
@@ -376,7 +364,6 @@
 }{%
   \endgroup\end{adjustwidth}\par%
 }%
-\NDB{4.12 in novel-TextMacros.sty.}
 %% \tocitem[number]{description}{page} provides a one-line table entry in toc.
 % optional number might be chapter number. Can use ~ to offset.
 % unstarred: distance between description and page is not decorated.
@@ -394,7 +381,6 @@
   \dotfill%
   \,#3\par\vspace{\@tocskip}%
 }%
-\NDB{4.13 in novel-TextMacros.sty.}
 %
 \newcommand\@tocitemns[3][]{%
   \ifthenelse{\equal{#1}{}}{}{%
@@ -408,7 +394,6 @@
   \hfill%
   #3\par\vspace{\@tocskip}%
 }%
-\NDB{4.14 in novel-TextMacros.sty.}
 %% end toc and \tocitem.
 %%
 %% legalese environment. Certain info, such as Copyright page, customarily is
@@ -427,7 +412,6 @@
   \setlength\@temphangl{\widthof{#1}}%
   \stake\hspace{-\@temphangl}#1%
 }
-\NDB{4.15 in novel-TextMacros.sty.}
 %%
 % \showlength[decimal places]{length}{units}
 % Returns the length as a string with the units, but does not change the length.
@@ -455,7 +439,6 @@
   \temp@lengthnum#3%
 }
 %% end \showlength
-\NDB{4.16 in novel-TextMacros.sty.}
 
 
 %% \squeeze{} and \crush{} slightly shrink the horizonal dimension of the
@@ -489,7 +472,6 @@
 \gdef\realmarker{\toggletrue{@realmarker}} % anywhere in text
 \gdef\fakemarker{\togglefalse{@realmarker}} % anywhere in text
 %%
-\NDB{4.17 in novel-TextMacros.sty.}
 \ExplSyntaxOn
 %
 \DeclareDocumentCommand \sups { m }
@@ -507,7 +489,6 @@
   }%
  }% end \sups
 %
-\NDB{4.18 in novel-TextMacros.sty.}
 \DeclareDocumentCommand \subs { m }
  {%
   \iftoggle{@realmarker}{%
@@ -535,7 +516,6 @@
 \gdef\specialblankline{\null} % deprecated
 %%
 
-\NDB{4.19 in novel-TextMacros.sty.}
 
 
 %%

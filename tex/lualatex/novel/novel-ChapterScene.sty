@@ -13,11 +13,9 @@
 %% 
 %%
 \ProvidesFile{novel-ChapterScene.sty}%
-[2017/08/15 v1.38 LaTeX file (chapter and scene macros)]
+[2017/09/12 v1.39 LaTeX file (chapter and scene macros)]
 %%
 
-%% Novel Tracking messages in this file begin with 6.
-\NDB{6.0 in novel-ChapterScene.sty.}
 
 
 % Class `novel' does not use \maketitle.
@@ -27,7 +25,6 @@
     You must make your own title pages!^^J}%
 }
 %
-\NDB{6.1 in novel-ChapterScene.sty.}
 
 
 %% SCENE CHANGES
@@ -57,7 +54,6 @@
   \raisebox{-.3em}{*\quad\quad*\quad\quad*}\hfil\par%
 }
 %% end scene changes
-\NDB{6.2 in novel-ChapterScene.sty.}
 
 
 %% Repair \FirstLine{} command from `magaz' package.
@@ -67,7 +63,7 @@
 %   and empty line to restore grid and absorb the noindent.
 % Starred version uses the original \FirstLine definition, just in case
 %   the following paragraph has some exotic feature.
-% Thanks to user `egreg' at tex.stackexchange.com for debug assistance.
+% Thanks to user `egreg' at tex.stackexchange.com for assistance.
 \let\oldFirstLine\FirstLine
 \def\FirstLine{\@ifstar\FirstLineFoo\@FirstLineFoo} % improved
 \def\FirstLineFoo#1{\oldFirstLine{#1}} % starred restores original def.
@@ -75,7 +71,6 @@
   \oldFirstLine{#1}\par\vspace{-\nbs}\strut\par%
 }
 %%
-\NDB{6.3 in novel-ChapterScene.sty.}
 
 
 %% ChapterStart environment.
@@ -90,7 +85,6 @@
 % The argument is the number of normal baselineskips high:
 \newenvironment{ChapterStart}[1][10]
 {%
-  \NDB{6.4.0 in novel-ChapterScene.sty.}%
   \setlength\@oldparindent{\parindent}%
   \global\@oldparindent=\@oldparindent%
   \setlength\parindent{0pt}%
@@ -102,9 +96,7 @@
   \null%
   \setcounter{@linequarter}{0}%
   \begin{textblock*}{\textwidth}[0,0](0pt,0pt)%
-  \NDB{6.4.1 in novel-ChapterScene.sty.}%
 }{% close the environment:
-  \NDB{6.4.3 in novel-ChapterScene.sty.}%
   \ifthenelse{%
     \equal{\value{@linequarter}}{1} \OR \equal{\value{@linequarter}}{5}%
     \OR \equal{\value{@linequarter}}{9} \OR \equal{\value{@linequarter}}{13}%
@@ -123,12 +115,10 @@
   \setlength\parindent{\@oldparindent}%
   \global\parindent=\parindent%
   \nov@AfterGroup\NoIndentAfterThis% etextools and noindentafter
-  \NDB{6.4.4 in novel-ChapterScene.sty.}%
 }
 %%
 \LetLtxMacro\ChapterDisplay\ChapterStart\relax % deprecated
 \LetLtxMacro\endChapterDisplay\endChapterStart\relax % deprecated
-\NDB{6.5 in novel-ChapterScene.sty.}
 %
 \newcommand\ChapterTitle[2][c]{% optional alignment l, c, r
   \ignorespaces%
@@ -144,7 +134,6 @@
   \fi%
   {\@csalign\stake\smash{{\chapterfont{}#2}}\par}%
 }
-\NDB{6.6 in novel-ChapterScene.sty.}
 %
 \newcommand\ChapterSubtitle[2][c]{% optional alignment l, c, r
   \vspace{0.25\nbs}\addtocounter{@linequarter}{1}
@@ -159,7 +148,6 @@
   \fi%
   {\@csalign{\stake\smash{\subchfont #2}}\par}%
 }
-\NDB{6.7 in novel-ChapterScene.sty.}
 % In ChapterDeco, a trick is used. Instead of two optional arguments, and
 % instead of using expl3 syntax to create different argument delimiters,
 % the arguments for alignment and scale are passed as a single option.
@@ -190,7 +178,6 @@
 }
 %
 %%
-\NDB{6.8 in novel-ChapterScene.sty.}
 
 
 %% \Epigraph[align,scale,width]{text} OBSOLETE IN CODE VERSION 1.2
@@ -226,8 +213,38 @@
   \NoIndentAfterThis%
 } % end \QuickChapter
 %%
-\NDB{6.9 in novel-ChapterScene.sty.}
 
+%% New in version 1.40: \cleartorecto and \cleartoend
+% \cleartorecto works same as \clearpage when next page is recto.
+%   If next page would be verso, a blank verso is inserted,
+%   so that the following material is recto.
+% \cleartoend is used at very end of book.
+%   It adds a blank page. If the blank is verso, end of book.
+%   But if that blank is recto, it adds a second blank page, end of book.
+%   So, the book always ends with a blank verso.
+\def\cleartorecto{
+  \clearpage
+  \ifodd
+    \c@page
+  \else
+    \thispagestyle{empty}
+    \null
+    \clearpage
+  \fi
+}
+%
+\def\cleartoend{
+  \clearpage
+  \thispagestyle{empty}
+  \null
+  \clearpage
+  \ifodd
+    \thispagestyle{empty}
+    \null
+    \clearpage
+  \fi
+}
+%
 
 
 

@@ -17,14 +17,16 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/08/15 v1.38 LaTeX document class]
+\ProvidesClass{novel}[2017/09/12 v1.39 LaTeX document class]
 %%
+
+%% Version 1.40: removed `debug' option (was not useful). Major docs rewrite.
 
 %% Version 1.38: corrected offset in cover artwork; some docs modified.
 
 %% Version 1.36: minor documentation correction.
 
-%% Version 1.34: Added debug class option and related code.
+%% Version 1.34: Added debug class option and related code. [Later removed.]
 
 %% Version 1.32 includes a minor documentation fix, and a major bug fix
 %% concerning looose text tracking. The bug occasionally appeared when
@@ -58,11 +60,6 @@
 %% is the default. Actually, I recommend it! In addition, an included
 %% custom font, NovelDeco.otf, is used for special purposes.
 %%
-
-%% From version 1.34, novel has a debug system. See documentation pg. 11.
-%% Some messages appear in log file, whether or not debug option used.
-%% Other messages only appear with debug option.
-\typeout{Novel Tracking 0.0: Begin loading novel.cls file.}
 
 
 %% REQUIRE LUATEX and do some preliminary setup.
@@ -127,7 +124,7 @@
 %% -----------------------------------------------------------------------------
 % Allowed option list:
 %   draft xml shademargins graytext greytext cropmarks cropview closecrop
-%   coverart debug
+%   coverart unblock
 % Yes, I realize that this could have been done another way:
 \gdef\@mycol{\@classoptionslist}
 \StrDel{\@mycol}{ }[\@mycol]
@@ -141,11 +138,13 @@
 \StrDel{\@mycol}{cropview}[\@mycol]
 \StrDel{\@mycol}{closecrop}[\@mycol]
 \StrDel{\@mycol}{coverart}[\@mycol]
-\StrDel{\@mycol}{debug}[\@mycol]
+\StrDel{\@mycol}{debug}[\@mycol] % obsolete
+\StrDel{\@mycol}{unblock}[\@mycol]
 %
 \ifthenelse{\equal{\@mycol}{}}{}{
   \ClassWarning{novel}{Unrecognized class option: \@mycol^^J%
    The unrecognized option was ignored!^^J%
+   If `debug' it is obsolete from v.1.40.^^J%
    Note that font point size and document size^^J%
    are not novel class options. See documentation.}%
 }
@@ -214,11 +213,6 @@
 \DeclareOption{coverart}{
   \@coverarttrue
 }
-% New in version 1.34: debug option. See documentation page 11.
-\newif \if@noveldebug
-\DeclareOption{debug}{
-  \@noveldebugtrue
-}
 % New in version 1.34: unblock option, for developer use only.
 % Normally, a number of packages known to be incompatible with this document class
 % are blocked from loading. If the user tries to get them via \usepackage
@@ -258,14 +252,6 @@
   \global\@graytextfalse
 \fi
 %% end class options
-
-\typeout{Novel Tracking 0.0: Class options processed.}
-
-% \NDB is used in various other files, part of novel class.
-% It may also be used in the TeX document.
-% If debug option, this prints a message to log file.
-% Example usage: \NDB{your message goes here}
-\gdef\NDB#1{\if@noveldebug\typeout{Novel Tracking #1}\fi}
 
 
 %% Activate xcolor, adjustbox, and eso-pic:
@@ -311,7 +297,6 @@
 %
 %% end temporary normal point size and baselineskip
 
-\typeout{Novel Tracking 0.1: Additional packages loaded.}
 
 %% Define commands used for File Data, including PDF/X Settings.
 %% -----------------------------------------------------------------------------
@@ -319,7 +304,6 @@
 %% and in XMP. This class does not write it to the Catalog.
 %% Defines commands such as \title{}, not necessarily the same as other TeX.
 \RequirePackage{novel-FileData}
-\typeout{Novel Tracking 0.2: novel-FileData.sty loaded.}
 %
 %%
 
@@ -329,7 +313,6 @@
 %% Define commands that over-ride the class option pre-configured settings.
 %% Variety of miscellaneous layout settings such as \parsep, \parindent, etc.
 \RequirePackage{novel-LayoutSettings}
-\typeout{Novel Tracking 0.3: novel-LayoutSettings.sty loaded.}
 %
 %%
 
@@ -339,19 +322,14 @@
 %%
 % Macros for use in document body:
 \RequirePackage{novel-TextMacros} % part of novel class
-\typeout{Novel Tracking 0.4: novel-TextMacros.sty loaded.}
 % Standard `fancyhdr' header footer styles:
 \RequirePackage{novel-HeadFootStyles} % part of novel class
-\typeout{Novel Tracking 0.5: novel-HeadFootStyles.sty loaded.}
 % Chapter and Scene styles:
 \RequirePackage{novel-ChapterScene}
-\typeout{Novel Tracking 0.6: novel-ChapterScene.sty loaded.}
 % Image placement:
 \RequirePackage{novel-Images} % part of novel class
-\typeout{Novel Tracking 0.7: novel-Images.sty loaded.}
 % Footnotes and endnotes:
 \RequirePackage{novel-Footnotes} % part of novel class
-\typeout{Novel Tracking 0.8: novel-Footnotes.sty loaded.}
 %%
 
 
@@ -359,17 +337,12 @@
 %% -----------------------------------------------------------------------------
 %
 \AtEndPreamble{
-  \typeout{Novel Tracking 1.AEP.E: Entered AtEndPreamble routine in novel.cls.}
   \RequirePackage{novel-CalculateLayout}
-  \typeout{Novel Tracking 1.9: novel-CalculateLayout.sty loaded.}
   \RequirePackage{novel-FontDefaults}
-  \typeout{Novel Tracking 1.10: novel-FontDefaults.sty loaded.}
   \renewcommand\textls[2][]{#2%
     \typeout{Class `novel' Alert: \string\textls\space ignored on pg \thepage.}%
   } % nullifies this microtype command (problems)
-  \RequirePackage{novel-pdfx}
-  \typeout{Novel Tracking 1.11: novel-pdfx.sty loaded.}
-  \typeout{Novel Tracking 1.AEP.X: Exiting AtEndPreamble routine in novel.cls.}
+  \RequirePackage{novel-pdfx}%
 }
 %%
 
@@ -378,14 +351,12 @@
 %% -----------------------------------------------------------------------------
 %
 \AtBeginDocument{ %
-  \typeout{Novel Tracking 1.ABD.E: Entering AtBeginDocument routine in novel.cls.}
   \defaultfontfeatures{} % reset
   % Any other fonts will use these defaults:
   \defaultfontfeatures{%
     SmallCapsFeatures={Renderer=Basic},Kerning=On,%
     Ligatures=TeX,%
   }%
-  \NDB{1.ABD.1 in novel.cls.}
   %
   % Find some useful measurements:
   \gdef\@normalxheight{\heightof{x}}
@@ -394,14 +365,12 @@
   \gdef\@normalXheight{\heightof{X}}
   \setlength\normalXheight{\@normalXheight}
   \global\normalXheight=\normalXheight
-  \NDB{1.ABD.2 in novel.cls.}
   % Activate user choice of whether or not to indent after scenebreak commands:
   \if@indentAfterScenebreak\else
     \NoIndentAfterCmd{\scenebreak}
     \NoIndentAfterCmd{\sceneline}
     \NoIndentAfterCmd{\scenestars}
   \fi
-  \NDB{1.ABD.3 in novel.cls.}
   %
   \@activateHeadFootStyles % in file `novel-HeadFootStyles.sty'
   \@novelPDFinfo % in file `novel-pdfx.sty'.
@@ -410,7 +379,6 @@
   \let\title\relax
   \let\author\relax
   \let\subtitle\relax
-  \NDB{1.ABD.4 in novel.cls.}
   % Dealing with known incompatible packages:
   \if@novelunblock
     \gdef\sorry@no#1{} % let them be used
@@ -424,7 +392,6 @@
       }{}%
     }
   \fi
-  \NDB{1.ABD.5 in novel.cls.}
   %
   \sorry@no{pdfx}
   \sorry@no{xmpincl}
@@ -454,13 +421,12 @@
   \sorry@no{engord}
   \sorry@no{endnotes}
   %%
-  \NDB{1.ABD.6 in novel.cls.}
+
   %%
   %% Pertains to novel-LayoutSettings.sty:
   \ifcsname pagenumberstyle\endcsname\else
     \SetPageNumberStyle{\thepage}
   \fi
-  \NDB{1.ABD.7 in novel.cls.}
   %
   \def\@setchapterstartOK{false}%
   \ifthenelse{\equal{\@setchapterstart}{empty}}{%
@@ -494,14 +460,12 @@
     \ClassError{novel}{\string\SetChapterStart\space bad argument}%
     {\string\SetChapterStart\space only allows certain choices.^^J}%
   }%
-  \NDB{1.ABD.8 in novel.cls.}
   %%
   %% Pertains to novel-TextMacros.sty:
   \setlength\forceparlength{\parindent}
   \global\forceparlength=\forceparlength
   \gdef\forceindent{\ifvmode\else\unskip\fi\stake\hspace{\forceparlength}}
   \gdef\backindent{\ifvmode\else\unskip\fi\hspace{-\forceparlength}}
-  \NDB{1.ABD.9 in novel.cls.}
   %%
   %% Pertains to novel-footnotes.sty:
   \gdef\SetFootnoteMarker#1{%
@@ -510,7 +474,6 @@
   }
   % Must wait for \nbs to be calculated:
   \setlength\footnotesep{0.8\nbs}
-  \NDB{1.ABD.10 in novel.cls.}
   % Must wait for main font and its size to be active:
   \newlength\@hoaring
   \setlength\@hoaring{\heightof{Å}}
@@ -539,20 +502,16 @@
   \addtolength\@tweight{-0.2\@tweight}%
   \addtolength\@tweight{-\@hoaring}%
   \global\@tweight=\@tweight%
-  \NDB{1.ABD.11 in novel.cls.}
   % Must wait to see how \SetFootnoteMarker was used:
   \ifthenelse{\equal{\@myfnsymbols}{*}}{\setcounter{@maxfnsymbol}{8}}{}
   \ifthenelse{\equal{\@myfnsymbols}{†}}{\setcounter{@maxfnsymbol}{6}}{}
-  \NDB{1.ABD.12 in novel.cls.}
   %%
-  \typeout{Novel Tracking 1.ABD.X: Exiting AtBeginDocument in novel.cls.}
 }
 %%
 
 
 %% New in version 1.2, coverart option. See docs page 10.
 \AfterEndPreamble{
-    \typeout{Novel Tracking 1.FEP.E: Entered AfterEndPreamble in novel.cls.}
     \if@coverart
       \AddToShipoutPictureBG{%
         \AtPageUpperLeft{%
@@ -561,18 +520,15 @@
       }
       \null% without this, page has no "content"
     \fi
-    \typeout{Novel Tracking 1.FEP.X: Exiting AfterEndPreamble in novel.cls.}
 }
 %%
 
 
 %% AtBeginShipout occurs at the completion of each page layout, in document body.
 \AtBeginShipout{%
-  \NDB{1.ABS.E: Entered AtBeginShipout, page \thepage, in novel.cls.}%
   \gdef\@fnafter{}% Pertains to some standard LaTeX footnote code.
   \stepcounter{runningpages}%
   \global\@thispagestylesetfalse%
-  \NDB{1.ABS.X: Exiting AtBeginShipout, page \thepage, in novel.cls.}%
 }
 %%
 

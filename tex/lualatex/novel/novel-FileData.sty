@@ -13,11 +13,8 @@
 %% 
 %%
 \ProvidesFile{novel-FileData.sty}%
-[2017/08/15 v1.38 LaTeX file (File Data settings)]
+[2017/09/12 v1.39 LaTeX file (File Data settings)]
 %% 
-
-%% Novel Tracking codes in this file begin with 2.
-\NDB{2.0 in novel-FileData.sty.}
 
 
 %% FILE DATA (see class documentation for technical meaning of this term).
@@ -35,7 +32,6 @@
 \gdef\thetitle{\@title}
 \gdef\theTitle{\@title}
 \title{}
-\NDB{2.1 in novel-FileData.sty.}
 %
 % \author{} or \SetAuthor{}
 % Copied to metadata at end of preamble, unless not set or over-ridden.
@@ -47,7 +43,6 @@
 \gdef\theauthor{\@author}
 \gdef\theAuthor{\@author}
 \author{}
-\NDB{2.2 in novel-FileData.sty.}
 %
 % \subtitle{}  or \SetSubtitle{}  (if any)
 % Not copied to metadata by itself, as there is no such metadata entry.
@@ -59,7 +54,6 @@
 \gdef\thesubtitle{\@subtitle}
 \gdef\theSubtitle{\@subtitle}
 \subtitle{}
-\NDB{2.3 in novel-FileData.sty.}
 %
 % \SetApplication{}  (rarely used)
 % Also known as CreatorTool.
@@ -68,7 +62,6 @@
 % Normally leave as default, but can change if urgent.
 \gdef\SetApplication#1{\gdef\@novelApplication{#1}}
 \SetApplication{LaTeX with novel and microtype} % default
-\NDB{2.4 in novel-FileData.sty.}
 %
 % \SetProducer{}  (rarely used)
 % Name of the software that compiles to source to make PDF.
@@ -76,7 +69,6 @@
 % Normally leave as default, but can change if urgent.
 \gdef\SetProducer#1{\gdef\@novelProducer{#1}}
 \SetProducer{LuaTeX with novel-pdfx and hyperref} % default
-\NDB{2.5 in novel-FileData.sty.}
 %
 % Although some other data fields could have been added,
 %   they do not pertain to fiction, especially if your book is print-on-demand.
@@ -106,22 +98,18 @@
 \gdef\@OIregistry{}
 \gdef\@OIprofile{}
 %
-\NDB{2.6 in novel-FileData.sty.}
 %%
 \gdef\SetPDFX{\@ifstar\@setpdfxst\@setpdfxns}
 \newcommand\@setpdfxst[2][CGATSTR001]{
   \global\@noembediccfalse
   \@setpdfx{#1}{#2}
 }
-\NDB{2.7 in novel-FileData.sty.}
 \newcommand\@setpdfxns[2][CGATSTR001]{
   \global\@noembedicctrue
   \@setpdfx{#1}{#2}
 }
-\NDB{2.8 in novel-FileData.sty.}
 %
 \newcommand\@setpdfx[2]{
-  \NDB{2.9.0 in novel-FileData.sty.}
   \ifthenelse{\equal{#2}{off}}{
     \global\pdfx@isOFFtrue
     \@chosenComplianceOKtrue
@@ -162,7 +150,6 @@
     \ClassError{novel}{Bad compliance argument for \string\SetPDFX}%
      {Choose: off, X-1a:2001, X-1a:2003, X-3:2002, X-3:2003.^^J}%
   \fi
-  \NDB{2.9.1 in novel-FileData.sty.}
   %
   \ifpdfx@isOFF\else % Output Intent ignored if compliance is `off'.
     % Grab the file that defines the output intent information:
@@ -176,7 +163,6 @@
     }
     \makeatother % back to usual
   \fi
-  \NDB{2.9.2 in novel-FileData.sty.}
 } % end \@setpdfx
 %
 

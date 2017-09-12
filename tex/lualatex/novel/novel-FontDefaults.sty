@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-FontDefaults.sty}%
-[2017/08/15 v1.38 LaTeX file (default fonts)]
+[2017/09/12 v1.39 LaTeX file (default fonts)]
 %%
 
 
@@ -21,8 +21,7 @@
 %% This file is loaded \AtEndPreamble.
 %%
 
-%% Novel Tracking messages in this file begin with 10.
-\NDB{10.0 in novel-FontDefaults.sty.}
+
 
 %% Most TeX installations will use Latin Modern or Computer Modern
 %%   as default fonts. These are unsuitable for commercial fiction.
@@ -39,7 +38,6 @@
 \defaultfontfeatures[\ttfamily]{% monofont has no kerning or common ligatures
   SmallCapsFeatures={Renderer=Basic},Ligatures=TeX,%
 }%
-\NDB{10.1 in novel-FontDefaults.sty.}
 \ifthenelse{\equal{\ttdefault}{lmtt}\OR\equal{\ttdefault}{cmtt}}{% over-ride:
   \IfFontExistsTF{Libertinus Mono}{
     \setmonofont[%
@@ -55,7 +53,6 @@
     }
   }
 }{} % User \setmonofont, so leave alone.
-\NDB{10.2 in novel-FontDefaults.sty.}
 %%
 \defaultfontfeatures{} % reset
 % Main and sans fonts: kerning, ligatures, and OldStyle numbers if available:
@@ -75,7 +72,6 @@
     }
   }
 }{} % User \setsansfont, so leave alone.
-\NDB{10.3 in novel-FontDefaults.sty.}
 %%
 % At this point, if \rmdefault is something other than lmr, it means
 %   that the user attempted to set the main font using ordinary TeX commands,
@@ -110,13 +106,11 @@
    }
  }
 \fi
-\NDB{10.4 in novel-FontDefaults.sty.}
 % Now we are ready to set the main font:
 \setmainfont[\@parentfontfeatures]{\@parentfontname}
 \let\textfont\rmfamily\relax % compatibility
 \let\mainfont\rmfamily\relax % compatibility
 %
-\NDB{10.5 in novel-FontDefaults.sty.}
 %%
 \defaultfontfeatures{} % reset
 % New in version 1.38, \straightquote and \straightdblquote:
@@ -128,7 +122,6 @@
   SmallCapsFeatures={Renderer=Basic},Kerning=On,%
   Ligatures=TeX,Ligatures=CommonOff,Numbers=Lining,%
 }%
-\NDB{10.6 in novel-FontDefaults.sty.}
 %% The novel-specific fonts:
 \if@chapterfontset\else
   \SetChapterFont[\@parentfontfeatures,Scale=1.6]{\@parentfontname}
@@ -146,7 +139,6 @@
   \global\@headfontdefaulttrue
 \fi
 \newfontfamily\headfont[\@headfontfeatures]{\@headfontname}
-\NDB{10.7 in novel-FontDefaults.sty.}
 %%
 \defaultfontfeatures{} % reset
 \defaultfontfeatures{% for decofont
@@ -158,7 +150,6 @@
     \SetDecoFont{NovelDeco}
   }{}
 \fi
-\NDB{10.8 in novel-FontDefaults.sty.}
 %%
 \gdef\acronym#1{#1}% Re-defined below, if decofont available.
 %%
@@ -206,7 +197,6 @@
   %
 \fi% end \if@gotdeco
 %
-\NDB{10.9 in novel-FontDefaults.sty.}
 %
 %%
 % Any other fonts will use these defaults:
@@ -231,10 +221,8 @@
 \let\setdefaultlanguage\relax
 \let\setotherlanguage\relax
 \let\setotherlanguages\relax
-\NDB{10.10 in novel-FontDefaults.sty.}
 % Now that the basic fonts are defined, we can load these packages:
 \RequirePackage{polyglossia} % Instead of babel.
-\NDB{10.11 in novel-FontDefaults.sty.}
 %
 \ifthenelse{\equal{\@setmainlang}{}}{
   \setmainlanguage{english}
@@ -259,7 +247,6 @@
     \setotherlanguages[\@setotherlangsopt]{\@setotherlangs}
   }
 }
-\NDB{10.12 in novel-FontDefaults.sty.}
 %% This provides default microtype settings, allows the user to over-ride,
 %    and hopefully prevents the user from choosing inappropriate settings:
 \let\microtypesetup\relax % fake command no longer needed
@@ -278,7 +265,6 @@
 %
 %%
 
-\NDB{10.13 in novel-FontDefaults.sty.}
 
 
 %

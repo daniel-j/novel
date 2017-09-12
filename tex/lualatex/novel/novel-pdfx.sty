@@ -23,8 +23,8 @@
 %% -----------------------------------------------------------------------------
 %%
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesFile{novel-pdfx.sty}
-  [2017/08/15 v1.38 LaTeX file (PDF/X support for novel class)]
+\ProvidesFile{novel-pdfx.sty}%
+[2017/09/12 v1.39 LaTeX file (PDF/X support for novel class)]
 % This package supports, and is part of, class `novel'.
 % No support for anything but LuaLaTeX.
 
@@ -33,8 +33,6 @@
 %% This file is loaded \AtEndPreamble.
 %%
 
-%% Novel Tracking messages in this file begin with 11.
-\NDB{11.0 in novel-pdfx.sty.}
 
 
 %
@@ -45,14 +43,12 @@
   pdfpagelabels=true,pageanchor=false,pdfstartview=}
 %
 \RequirePackage[\pdfx@pdfX@opts@luatex]{hyperref}
-\NDB{11.1 in novel-pdfx.sty.}
 %
 \hypersetup{pdfencoding=auto}
 \expandafter\ifx\csname KV@Hyp@psdextra\endcsname\relax\else
  \hypersetup{psdextra}
 \fi
 \Hy@bookmarksfalse
-\NDB{11.2 in novel-pdfx.sty.}
 %
 \newif \if@gottitle \@gottitlefalse % refers to PDF File Data
 % Was \title{} called prior to this step? If so:
@@ -66,7 +62,6 @@
        before using \string\SetPDFX.^^J}
   \fi
 \fi
-\NDB{11.3 in novel-pdfx.sty.}
 %
 \if@gottitle\else
   \ClassWarning{novel}{Your file has been compiled without standard^^J %
@@ -82,7 +77,6 @@
 \edef\pdfcreationdate{\pdfcreationdate}%
 \let\pdfx@mdfivesum\pdf@mdfivesum
 %
-\NDB{11.4 in novel-pdfx.sty.}
 
 
 
@@ -111,7 +105,6 @@
 \FPmul{\my@THnum}{\my@THnum}{0.99626401}
 \FPround{\my@THnum}{\my@THnum}{3}
 %
-\NDB{11.5 in novel-pdfx.sty.}
 \FPsub{\my@TWorigin}{\my@MWnum}{\my@TWnum}
 \FPmul{\my@TWorigin}{\my@TWorigin}{0.5}
 \FPround{\my@TWorigin}{\my@TWorigin}{3}
@@ -128,7 +121,6 @@
 \FPclip{\my@THorigin}{\my@THorigin}
 \FPclip{\my@THcorner}{\my@THcorner}
 %
-\NDB{11.6 in novel-pdfx.sty.}
 \newcommand\novel@CropBox{%
  \if@cropview%
    /CropBox[\my@TWorigin\space\my@THorigin\space\my@TWcorner\space\my@THcorner]%
@@ -136,12 +128,10 @@
    /CropBox[0\space0\space\my@MWnum\space\my@MHnum]%
  \fi%
 }
-\NDB{11.7 in novel-pdfx.sty.}
 %
 \newcommand\novel@TrimBox{%
   /TrimBox[\my@TWorigin\space\my@THorigin\space\my@TWcorner\space\my@THcorner]%
 }
-\NDB{11.8 in novel-pdfx.sty.}
 %
 % New in version 1.2: BleedBox, only for cover art. Same size as MediaBox.
 \newcommand\novel@BleedBox{%
@@ -149,14 +139,12 @@
    /BleedBox[0\space0\space\my@MWnum\space\my@MHnum]%
   \else\fi%
 }
-\NDB{11.9 in novel-pdfx.sty.}
 %
 \begingroup\edef\next{%
 \endgroup\pdfpageattr{\novel@CropBox^^J\novel@BleedBox^^J\novel@TrimBox}}\next
 %
 %% End calculate and specify TrimBox.
 
-\NDB{11.10 in novel-pdfx.sty.}
 
 
 %% DISABLE HYPERLINKS AND BOOKMARKS
@@ -193,7 +181,6 @@
 }{}
 %% End disable hyperlinks and bookmarks.
 
-\NDB{11.11 in novel-pdfx.sty.}
 
 
 %% GENERAL PDF INTERNAL METADATA PREPARATION
@@ -205,7 +192,6 @@
 %
 %% End general PDF in internal metadata preparation.
 
-\NDB{11.12 in novel-pdfx.sty.}
 
 
 %% PREPARATION OF XMP METADATA
@@ -230,7 +216,6 @@
 \def\pad@cxxviii{\pad@lxiv\pad@lxiv}
 \def\pad@cclvi{\pad@cxxviii\pad@cxxviii}
 \def\pad@dxii{\pad@cclvi\pad@cclvi}
-\NDB{11.13 in novel-pdfx.sty.}
 %
 % Frankly, I am not sure if all this rigamarole is necessary, but it works!
 % Here, portions of XMP code are prepared. Later, they will be inserted
@@ -254,13 +239,11 @@
     \pad@vi</dc:creator>^^J
   }
 }
-\NDB{11.14 in novel-pdfx.sty.}
 %
 \def\@documentID{uuid:\xmp@docid}
 \def\@instanceID{uuid:\xmp@instid}
 %
 \def\@pdfVersion{1.\the\pdfminorversion}
-\NDB{11.15 in novel-pdfx.sty.}
 %
 \ifpdfx@isOFF
   \gdef\@verconfString{}%
@@ -272,7 +255,6 @@
     \fi
   }
 \fi
-\NDB{11.16 in novel-pdfx.sty.}
 %
 \ifpdfx@isOFF
   \gdef\@pdfidString{}%
@@ -281,7 +263,6 @@
     \pad@vi<pdfxid:GTS_PDFXVersion>\@PDFXversion</pdfxid:GTS_PDFXVersion>^^J
   }
 \fi
-\NDB{11.17 in novel-pdfx.sty.}
 %
 \ifthenelse{\equal{\@novelApplication}{} \OR \equal{\@novelApplication}{ }}{
   \gdef\@applicationString{}%
@@ -294,7 +275,6 @@
 }{
   \gdef\@producerString{\pad@vi<pdf:Producer>\@novelProducer</pdf:Producer>^^J}%
 }
-\NDB{11.18 in novel-pdfx.sty.}
 %
 % Calculation of Dates and Times, which must be in a specific format.
 % Each time you process to PDF, the current date/time is used,
@@ -344,7 +324,6 @@
 %
 %% End Prepare XMP metadata.
 
-\NDB{11.19 in novel-pdfx.sty.}
 
 
 %% WRITE THE XMP METADATA, UNLESS PDF/X IS OFF OR NO TITLE
@@ -384,7 +363,6 @@
 %
 %% End write the XMP metadata.
 
-\NDB{11.20 in novel-pdfx.sty.}
 
 
 %% PREPARE PDF /INFO METADATA
@@ -413,7 +391,6 @@
     \endgroup
   \fi
 }
-\NDB{11.21 in novel-pdfx.sty.}
 % Now, massage the metadata:
 \@infotopdfstring{\@infotitle}{\@title}
 \@infotopdfstring{\@infoauthor}{\@author}
@@ -428,7 +405,6 @@
 %
 %% End prepare PDF /Info.
 
-\NDB{11.22 in novel-pdfx.sty.}
 
 
 %% WRITE THE OUTPUT INTENT, UNLESS PDFX IS OFF.
@@ -490,7 +466,6 @@
 %
 %% End write the output intent.
 
-\NDB{11.23 in novel-pdfx.sty.}
 
 
 %% DISABLE HYPERREF OPTIONS
@@ -508,7 +483,6 @@
 %
 %% End disable hyperref options.
 
-\NDB{11.24 in novel-pdfx.sty.}
 
 
 %% PREPARE PDF/Info
@@ -544,7 +518,6 @@
 %
 %% End prepare PDF/Info.
 
-\NDB{11.25 in novel-pdfx.sty.}
 
 
 %%

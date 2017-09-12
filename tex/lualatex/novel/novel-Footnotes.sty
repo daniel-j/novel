@@ -13,11 +13,9 @@
 %% 
 %%
 \ProvidesFile{novel-Footnotes.sty}%
-[2017/08/15 v1.38 LaTeX file (commands for footnotes and endnotes)]
+[2017/09/12 v1.39 LaTeX file (commands for footnotes and endnotes)]
 %%
 
-%% Novel Tracking codes in this file begin with 8.
-\NDB{8.0 in novel-Footnotes.sty.}
 
 
 %% FOOTNOTES
@@ -50,7 +48,6 @@
 \gdef\ResetFootnoteSymbol{\setcounter{@fnsymbolcount}{1}} % only symbols
 \gdef\Resetendnote{\setcounter{@rnnumbercount}{1}}
 %
-\NDB{8.1 in novel-Footnotes.sty.}
 \newtoggle{@usenomark} % when true: no mark, no increment count
 \newtoggle{@placedfootnotenumber} % true if any numerical footnote placed
 %
@@ -63,7 +60,6 @@
 }
 \let\footnoterule\@fourem
 %
-\NDB{8.2 in novel-Footnotes.sty.}
 
 
 % \@makefnmark applies to the footnote marker in the flow of main text:
@@ -74,7 +70,6 @@
   {\forceindent#1}%
   {\forceindent\@getbotfnmark\,#1}%
 } % end \@makefntext
-\NDB{8.3 in novel-Footnotes.sty.}
 % Now re-define \footnote:
 \newcommand\footnote[2][]{%
   \ifthenelse{\equal{#1}{0}}{%
@@ -90,7 +85,6 @@
   \unskip\my@oldfootnote{#2}%
   \endgroup%
 } % end \footnote
-\NDB{8.4 in novel-Footnotes.sty.}
 %
 % \@rollfnsymbol prevents running out of symbolic markers:
 \gdef\@rollfnsymbol{%
@@ -99,7 +93,6 @@
     \setcounter{@fnsymbolcount}{1}%
   }{}%
 } % end \@rollfnsymbol
-\NDB{8.5 in novel-Footnotes.sty.}
 %
 % \@getfnmark places a footnote marker in the running text.
 % The marker depends upon whether it should be a number or a symbol.
@@ -132,7 +125,6 @@
     \sups{\arabic{@fnnumbercount}}%
   }%
 } % end \@getfnmark
-\NDB{8.6 in novel-Footnotes.sty.}
 %
 % \@getbotfnmark places the marker in front of the actual footnote,
 % towards the bottom of the textblock. It duplicates the marker used in
@@ -170,7 +162,6 @@
 %
 %% end footnotes
 
-\NDB{8.7 in novel-Footnotes.sty.}
 
 
 %% ENDNOTES
@@ -191,7 +182,6 @@
 \stepcounter{@endnotecount}\sups{\arabic{@endnotecount}}%
 \long\edef\@endnotelist{\@endnotelist\space (\arabic{@endnotecount},p.\thepage)}%
 }
-\NDB{8.8 in novel-Footnotes.sty.}
 %%
 % \endnotetext{ID}{text} where ID is (usually) the endnote number.
 % If ID is other than space or tilde, it prints at left margin, followed by
@@ -207,7 +197,6 @@
 }
 %% end endnotes
 
-\NDB{8.9 in novel-Footnotes.sty.}
 
 
 %% See novel.cls for the accompanying AtBeginDocument routine.

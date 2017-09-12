@@ -12,15 +12,13 @@
 %% 
 %%
 \ProvidesFile{novel-CalculateLayout.sty}%
-[2017/08/15 v1.38 LaTeX file (layout calculations)]
+[2017/09/12 v1.39 LaTeX file (layout calculations)]
 %%
 
 %%
 %% This file is loaded \AtEndPreamble, which precedes \AtBeginDocument.
 %%
 
-%% Novel Tracking messages in this file begin with 9.
-\NDB{9.0 in novel-CalculateLayout.sty.}
 
 \newlength\normalFontSize % becomes 1em in normal text.
 \newlength\normalBaselineSkip % also abbreviated as \nbs
@@ -37,7 +35,6 @@
     \SetMediaSize{5.5in}{8.5in}
   \fi
 \fi
-\NDB{9.1 in novel-CalculateLayout.sty.}
 % Default margins are based on Trim Height, if user does not set margins.
 % Works for standard w/h aspect ratios, but not for exotically narrow.
 \if@MarginsSet\else
@@ -72,7 +69,6 @@
     } % end internal dimtest
   } % end dimtest for margins.
 \fi % end default margins
-\NDB{9.2 in novel-CalculateLayout.sty.}
 %
 % Choose default font size based on Trim Width, unless font size set by user:
 \if@FontSizeSet\else
@@ -86,7 +82,6 @@
     } % end internal dimtest
   } % end dimtest for font size.
 \fi
-\NDB{9.3 in novel-CalculateLayout.sty.}
 %
 % Default lines/page based on Trim Height, font size, unless LPP set by user:
 \if@LinesPerPageSet\else
@@ -102,7 +97,6 @@
   \FPclip{\@tempLPP}{\@tempLPP} % remove excess trailing 0.
   \gdef\my@LinesPerPage{\@tempLPP}
 \fi
-\NDB{9.4 in novel-CalculateLayout.sty.}
 %
 % Correct bottom margin for descenders, assumed to be 0.3em:
 \addtolength\Old@BottomMargin{0.3\Old@FontSize}
@@ -120,7 +114,6 @@
 %
 %% end set default sizes and initial corrections
 
-\NDB{9.5 in novel-CalculateLayout.sty.}
 
 
 %% OLD, NEW, CURRENT, LIVE, TEXT MACRO DEFINITIONS
@@ -180,7 +173,6 @@
 %
 %% End old, new... macro definitions.
 
-\NDB{9.6 in novel-CalculateLayout.sty.}
 
 %% PRELIMINARY CALCULATION OF BASELINESKIP
 %% -----------------------------------------------------------------------------
@@ -199,7 +191,6 @@
 \if@gotFooter % allow for footer jump
   \FPadd{\adj@LinesPerPage}{\adj@LinesPerPage}{\@footjump}
 \fi
-\NDB{9.7 in novel-CalculateLayout.sty.}
 %
 % Baseline Skip is Live Height divided by adjusted number of lines.
 % Thus initially, Text (with header/footer) occupies full Live Height.
@@ -221,7 +212,6 @@
 %
 %% End preliminary calculation of baselineskip.
 
-\NDB{9.8 in novel-CalculateLayout.sty.}
 
 
 %% FIT CurrentTextWidth TO NewLiveWidth
@@ -235,7 +225,6 @@
 %
 %% end fit CurrentTextWidth to NewLiveWidth
 
-\NDB{9.9 in novel-CalculateLayout.sty.}
 
 %% ADJUST CurrentBaselineSkip TO FIT NewLiveHeight
 %% -----------------------------------------------------------------------------
@@ -247,7 +236,6 @@
   \setlength\Current@BaselineSkip{\Current@BaselineSkipNum pt}
   \FPmul{\Current@TextHeightNum}{\Current@BaselineSkipNum}{\adj@LinesPerPage}
 \fi
-\NDB{9.10 in novel-CalculateLayout.sty.}
 % Check if the revised skip is too small:
 \FPdiv{\@ratioBLtoFS}{\Current@BaselineSkipNum}{\Current@FontSizeNum}
 \FPiflt{\@ratioBLtoFS}{1.2} % Too small. Re-tweak font, text width, skip.
@@ -266,8 +254,6 @@
 %
 %% end adjust CurrentBaselineSkip to fit NewLiveHeight.
 
-\NDB{9.11 in novel-CalculateLayout.sty.}
-
 
 %% DISTRIBUTE SIDE EXCESS
 %% -----------------------------------------------------------------------------
@@ -280,7 +266,6 @@
 %
 %% end distribute side excess.
 
-\NDB{9.12 in novel-CalculateLayout.sty.}
 
 
 %% SET TEXTWIDTH, FONT SIZE, BASELINESKIP
@@ -294,14 +279,12 @@
 \@setfontsize\normalsize\normalFontSize{\normalBaselineSkip}%
 \normalsize % Defined in `novel.cls'. Uses numbers, not lengths.
 %
-\NDB{9.13 in novel-CalculateLayout.sty.}
 \newlength\nfs % abbreviation for normal fontsize
 \setlength\nfs{\normalFontSize}
 \gdef\nfsnum{\strip@pt\nfs}
 \newlength\nbs % abbreviation for normal baselineskip
 \setlength\nbs{\normalBaselineSkip}
 \gdef\nbsnum{\strip@pt\nbs} % just the numerical part
-\NDB{9.14 in novel-CalculateLayout.sty.}
 %
 % This document class limits range of normal point size:
 \FPiflt{\Current@FontSizeNum}{8}%
@@ -327,7 +310,6 @@
   \typeout{^^JClass `novel' Alert: Line spacing is allowable, but wide.^^J%
   Consider more lines per page, or add header or footer.^^J}%
 \fi
-\NDB{9.15 in novel-CalculateLayout.sty.}
 %
 \FPdiv{\Ratio@BaselineSkip}{\Current@BaselineSkipNum}{\Old@BaselineSkipNum}
 \FPround{\Ratio@BaselineSkip}{\Ratio@BaselineSkip}{3}
@@ -336,7 +318,6 @@
 \FPdiv{\Ratio@EM}{\Current@FontSizeNum}{\Old@FontSizeNum}
 \FPround{\Ratio@EM}{\Ratio@EM}{3}
 \FPclip{\Ratio@EM}{\Ratio@EM}
-\NDB{9.16 in novel-CalculateLayout.sty.}
 % Alert if images scaled by \Rework:
 \ifthenelse{\equal{\Ratio@EM}{1} \AND \equal{\Ratio@BaselineSkip}{1}}{}{%
   \typeout{^^JClass `novel' Alert: Due to \string\Rework\space there may be^^J%
@@ -362,8 +343,6 @@
 %
 %% end set textwidth, font size, baselineskip
 
-\NDB{9.17 in novel-CalculateLayout.sty.}
-
 
 
 %% BEGIN LAYOUT CALCULATIONS
@@ -378,7 +357,6 @@
   \setlength\headheight{0pt}
   \setlength\headsep{0pt}
 \fi
-\NDB{9.18 in novel-CalculateLayout.sty.}
 %
 % Prior to this, the following were set by user or calculated:
 % \textwidth \headsep \headheight
@@ -395,8 +373,6 @@
   \setlength\paperwidth{\textwidth+0.2in}
 \fi
 %%
-
-\NDB{9.19 in novel-CalculateLayout.sty.}
 
 
 %
@@ -439,7 +415,6 @@
 \fi
 %%
 
-\NDB{9.20 in novel-CalculateLayout.sty.}
 
 %
 % \evensidemargin is at the left (outside edge) of verso pages.
@@ -456,9 +431,6 @@
   \setlength\evensidemargin{-0.9in}
 \fi
 %%
-
-\NDB{9.21 in novel-CalculateLayout.sty.}
-
 
 
 %
@@ -484,7 +456,6 @@
 \fi
 %%
 
-\NDB{9.22 in novel-CalculateLayout.sty.}
 
 % Vertical position of the textblock is measured to the "top" of the first line
 % of text. But that could be an X height, or an accented character height,
@@ -519,7 +490,6 @@
 \fi
 %%
 
-\NDB{9.23 in novel-CalculateLayout.sty.}
 
 %% End layout calculations.
 
@@ -549,7 +519,6 @@
 \fi
 % End when Media Size exceeds Trim Size.
 
-\NDB{9.24 in novel-CalculateLayout.sty.}
 
 % When Media Size = Trim Size, cropmarks are disabled.
 % Too late for \@cropviewfalse; OK since CropBox already calculated properly.
@@ -569,7 +538,6 @@
 \newlength\adj@NewLiveHeight
 \setlength\adj@NewLiveHeight{\New@LiveHeight+0.3\normalFontSize}
 %
-\NDB{9.25 in novel-CalculateLayout.sty.}
 \gdef\@getPageXY{
   \check@IsVerso % defined in novel-HeadFootStyles.sty
   \if@isVerso
@@ -591,7 +559,6 @@
   \setlength\Live@By{\Trim@By+\New@BottomMargin-0.3\normalFontSize}
 }
 %
-\NDB{9.26 in novel-CalculateLayout.sty.}
 
 
 %% With class option `shademargins' (only effective in draft mode):
@@ -625,7 +592,6 @@
   \fi%
 \fi % end \if@shademargins
 %
-\NDB{9.27 in novel-CalculateLayout.sty.}
 
 % Labels each page with DRAFT at upper left, if in draft mode:
 \if@useDraftMode
@@ -634,7 +600,6 @@
   }%
 \fi
 %
-\NDB{9.28 in novel-CalculateLayout.sty.}
 
 % Cropmarks (trim marks, really) are not important in this document class.
 % That's because the targeted printing services generally do not want them.
@@ -694,7 +659,6 @@
 %
 %% end cropmarks
 
-\NDB{9.29 in novel-CalculateLayout.sty.}
 
 
 %%

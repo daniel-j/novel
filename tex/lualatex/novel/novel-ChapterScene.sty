@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-ChapterScene.sty}%
-[2017/09/12 v1.39 LaTeX file (chapter and scene macros)]
+[2017/09/14 v1.40 LaTeX file (chapter and scene macros)]
 %%
 
 
@@ -222,23 +222,26 @@
 %   It adds a blank page. If the blank is verso, end of book.
 %   But if that blank is recto, it adds a second blank page, end of book.
 %   So, the book always ends with a blank verso.
-\def\cleartorecto{
+\gdef\cleartorecto{
   \clearpage
-  \ifodd
-    \c@page
+  \ifodd\c@page
   \else
     \thispagestyle{empty}
     \null
     \clearpage
   \fi
 }
-%
-\def\cleartoend{
-  \clearpage
-  \thispagestyle{empty}
-  \null
-  \clearpage
-  \ifodd
+\gdef\cleartoend{
+  \ifodd\c@page
+    \clearpage
+    \thispagestyle{empty}
+    \null
+    \clearpage
+  \else
+    \clearpage
+    \thispagestyle{empty}
+    \null
+    \clearpage
     \thispagestyle{empty}
     \null
     \clearpage

@@ -1,0 +1,183 @@
+%%
+%% This is file `novel-xmppacket.sty', part of class `novel'.
+%% Copyright 2017 Robert Allgeyer.
+%%
+%% 
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%%
+%% -----------------------------------------------------------------------------
+%%
+%% The descriptive properties of the namespaces, and the general format of XMP,
+%% are public standards released by Adobe Systems Incorporated.
+%% See http://www.adobe.com/products/xmp.html
+%%
+%% -----------------------------------------------------------------------------
+%%
+%%
+\ProvidesFile{novel-xmppacket.sty}%
+[2017/09/14 v1.40 LaTeX file (novel XMP packet template)]
+%%
+
+
+
+% This packet uses utf-8 BOM.
+% The catcodes allow # _ ~ $ % & to be used as ordinary characters.
+% The \edef and \let get rid of escape backslashes in front of those characters.
+% NO COMMENTS AFTER THIS! Until \endgroup.
+
+
+
+
+
+\begingroup
+\catcode`\¤=12\relax
+\lccode`\¤="FEFF
+\lowercase{\gdef\@novelBOM{¤}}
+\catcode`\#=12
+\catcode`\_=12
+\catcode`\~=12
+\catcode`\$=12
+\catcode`\%=12
+\catcode`\&=12
+
+\edef\@pctchar{\expandafter\@gobble\string\%}
+\let\%\@pctchar
+\edef\@hashchar{\expandafter\@gobble\string\#}
+\let\#\@hashchar
+\edef\@ampchar{\expandafter\@gobble\string\&amp;}
+\let\&\@ampchar
+\edef\@dollarchar{\expandafter\@gobble\string\$}
+\let\$\@dollarchar
+\edef\@underchar{\expandafter\@gobble\string\_}
+\let\_\@underchar
+\edef\@tildechar{\expandafter\@gobble\string\~}
+\let\~\@tildechar
+
+\xdef\@xmpPacket{<?xpacket begin="\@novelBOM" id="W5M0MpCehiHzreSzNTczkc9d"?>^^J
+<x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 4.2.1-c043 52.372728, 2009/01/18-15:08:04\pad@iv\pad@iv">^^J
+\pad@ii<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">^^J
+\pad@iv<rdf:Description rdf:about=""^^J
+\pad@viii xmlns:xmp="http://ns.adobe.com/xap/1.0/">^^J
+\pad@vi<xmp:ModifyDate>\@modifyDate</xmp:ModifyDate>^^J
+\pad@vi<xmp:CreateDate>\@createDate</xmp:CreateDate>^^J
+\@applicationString
+\pad@vi<xmp:MetadataDate>\@metadataDate</xmp:MetadataDate>^^J
+\pad@iv</rdf:Description>^^J
+\pad@iv<rdf:Description rdf:about=""^^J
+\pad@viii xmlns:dc="http://purl.org/dc/elements/1.1/">^^J
+\pad@vi<dc:format>application/pdf</dc:format>^^J
+\@titleString
+\@authorString
+\pad@iv</rdf:Description>^^J
+\pad@iv<rdf:Description rdf:about=""^^J
+\pad@viii xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/">^^J
+\pad@vi<xmpMM:DocumentID>\@documentID</xmpMM:DocumentID>^^J
+\pad@vi<xmpMM:InstanceID>\@instanceID</xmpMM:InstanceID>^^J
+\pad@vi<xmpMM:RenditionClass>default</xmpMM:RenditionClass>^^J
+\pad@vi<xmpMM:VersionID>1</xmpMM:VersionID>^^J
+\pad@iv</rdf:Description>^^J
+\pad@iv<rdf:Description rdf:about=""^^J
+\pad@viii xmlns:pdf="http://ns.adobe.com/pdf/\@pdfVersion/">^^J
+\@producerString
+\pad@vi<pdf:Trapped>False</pdf:Trapped>^^J
+\pad@iv</rdf:Description>^^J
+\pad@iv<rdf:Description rdf:about=""^^J
+\pad@viii xmlns:pdfx="http://ns.adobe.com/pdfx/\@pdfVersion/">^^J
+\@verconfString
+\pad@iv</rdf:Description>^^J
+\pad@iv<rdf:Description rdf:about=""^^J
+\pad@viii xmlns:pdfxid="http://www.npes.org/pdfx/ns/id/">^^J
+\@pdfidString
+\pad@iv</rdf:Description>^^J
+\pad@iv<rdf:Description rdf:about=""^^J
+\pad@viii xmlns:pdfaExtension="http://www.aiim.org/pdfa/ns/extension/"^^J
+\pad@viii xmlns:pdfaSchema="http://www.aiim.org/pdfa/ns/schema#"^^J
+\pad@viii xmlns:pdfaProperty="http://www.aiim.org/pdfa/ns/property#">^^J
+\pad@vi<pdfaExtension:schemas>^^J
+\pad@viii<rdf:Bag>^^J
+\pad@x<rdf:li rdf:parseType="Resource">^^J
+\pad@xii<pdfaSchema:namespaceURI>http://ns.adobe.com/pdf/\@pdfVersion/</pdfaSchema:namespaceURI>^^J
+\pad@xii<pdfaSchema:prefix>pdf</pdfaSchema:prefix>^^J
+\pad@xii<pdfaSchema:schema>Adobe PDF Schema</pdfaSchema:schema>^^J
+\pad@xii<pdfaSchema:property>^^J
+\pad@xiv<rdf:Seq>^^J
+\pad@xvi<rdf:li rdf:parseType="Resource">^^J
+\pad@xviii<pdfaProperty:category>internal</pdfaProperty:category>^^J
+\pad@xviii<pdfaProperty:description>A name object indicating whether the document has been modified to include trapping information</pdfaProperty:description>^^J
+\pad@xviii<pdfaProperty:name>Trapped</pdfaProperty:name>^^J
+\pad@xviii<pdfaProperty:valueType>Text</pdfaProperty:valueType>^^J
+\pad@xvi</rdf:li>^^J
+\pad@xiv</rdf:Seq>^^J
+\pad@xii</pdfaSchema:property>^^J
+\pad@x</rdf:li>^^J
+\pad@x<rdf:li rdf:parseType="Resource">^^J
+\pad@xii<pdfaSchema:namespaceURI>http://ns.adobe.com/pdfx/\@pdfVersion/</pdfaSchema:namespaceURI>^^J
+\pad@xii<pdfaSchema:prefix>pdfx</pdfaSchema:prefix>^^J
+\pad@xii<pdfaSchema:schema>PDF/X ID Schema</pdfaSchema:schema>^^J
+\pad@xii<pdfaSchema:property>^^J
+\pad@xiv<rdf:Seq>^^J
+\pad@xvi<rdf:li rdf:parseType="Resource">^^J
+\pad@xviii<pdfaProperty:category>internal</pdfaProperty:category>^^J
+\pad@xviii<pdfaProperty:description>ID of PDF/X standard</pdfaProperty:description>^^J
+\pad@xviii<pdfaProperty:name>GTS_PDFXVersion</pdfaProperty:name>^^J
+\pad@xviii<pdfaProperty:valueType>Text</pdfaProperty:valueType>^^J
+\pad@xvi</rdf:li>^^J
+\pad@xvi<rdf:li rdf:parseType="Resource">^^J
+\pad@xviii<pdfaProperty:category>internal</pdfaProperty:category>^^J
+\pad@xviii<pdfaProperty:description>Conformance level of PDF/X standard</pdfaProperty:description>^^J
+\pad@xviii<pdfaProperty:name>GTS_PDFXConformance</pdfaProperty:name>^^J
+\pad@xviii<pdfaProperty:valueType>Text</pdfaProperty:valueType>^^J
+\pad@xvi</rdf:li>^^J
+\pad@xiv</rdf:Seq>^^J
+\pad@xii</pdfaSchema:property>^^J
+\pad@x</rdf:li>^^J
+\pad@x<rdf:li rdf:parseType="Resource">^^J
+\pad@xii<pdfaSchema:namespaceURI>http://ns.adobe.com/xap/1.0/mm/</pdfaSchema:namespaceURI>^^J
+\pad@xii<pdfaSchema:prefix>xmpMM</pdfaSchema:prefix>^^J
+\pad@xii<pdfaSchema:schema>XMP Media Management Schema</pdfaSchema:schema>^^J
+\pad@xii<pdfaSchema:property>^^J
+\pad@xiv<rdf:Seq>^^J
+\pad@xvi<rdf:li rdf:parseType="Resource">^^J
+\pad@xviii<pdfaProperty:category>internal</pdfaProperty:category>^^J
+\pad@xviii<pdfaProperty:description>UUID based identifier for specific incarnation of a document</pdfaProperty:description>^^J
+\pad@xviii<pdfaProperty:name>InstanceID</pdfaProperty:name>^^J
+\pad@xviii<pdfaProperty:valueType>URI</pdfaProperty:valueType>^^J
+\pad@xvi</rdf:li>^^J
+\pad@xiv</rdf:Seq>^^J
+\pad@xii</pdfaSchema:property>^^J
+\pad@x</rdf:li>^^J
+\pad@x<rdf:li rdf:parseType="Resource">^^J
+\pad@xii<pdfaSchema:namespaceURI>http://www.npes.org/pdfx/ns/id/</pdfaSchema:namespaceURI>^^J
+\pad@xii<pdfaSchema:prefix>pdfxid</pdfaSchema:prefix>^^J
+\pad@xii<pdfaSchema:schema>PDF/X ID Schema</pdfaSchema:schema>^^J
+\pad@xii<pdfaSchema:property>^^J
+\pad@xiv<rdf:Seq>^^J
+\pad@xvi<rdf:li rdf:parseType="Resource">^^J
+\pad@xviii<pdfaProperty:category>internal</pdfaProperty:category>^^J
+\pad@xviii<pdfaProperty:description>ID of PDF/X standard</pdfaProperty:description>^^J
+\pad@xviii<pdfaProperty:name>GTS_PDFXVersion</pdfaProperty:name>^^J
+\pad@xviii<pdfaProperty:valueType>Text</pdfaProperty:valueType>^^J
+\pad@xvi</rdf:li>^^J
+\pad@xiv</rdf:Seq>^^J
+\pad@xii</pdfaSchema:property>^^J
+\pad@x</rdf:li>^^J
+\pad@viii</rdf:Bag>^^J
+\pad@vi</pdfaExtension:schemas>^^J
+\pad@iv</rdf:Description>^^J
+\pad@ii</rdf:RDF>^^J
+</x:xmpmeta>^^J
+\pad@dxii
+<?xpacket end="w"?>}
+\endgroup
+
+
+%%
+%% End of file `novel-xmppacket.sty'.
+

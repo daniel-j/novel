@@ -1,0 +1,257 @@
+%%
+%% This is file `novel-ChapterScene.sty', part of class `novel'.
+%% Copyright 2017 Robert Allgeyer.
+%%
+%% 
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%%
+\ProvidesFile{novel-ChapterScene.sty}%
+[2017/09/14 v1.40 LaTeX file (chapter and scene macros)]
+%%
+
+
+
+% Class `novel' does not use \maketitle.
+\gdef\maketitle{%
+  \ClassError{novel}{\string\maketitle does not exist in this class}%
+   {Sorry, but there is no \string\maketitle command in `novel' class.^^J%
+    You must make your own title pages!^^J}%
+}
+%
+
+
+%% SCENE CHANGES
+%% -----------------------------------------------------------------------------
+%% \scenebreak    \sceneline    \scenestars
+%   Use anywhere in document body.
+%   These commands skip a line.
+%   \scenebreak leaves the gap empty.
+%   \sceneline centers a line, about 1/3 textwidth.
+%   \scenestars centers three widely-spaced asterisks.
+%   Default behavior is \noindent for following paragraph.
+%   Use \IndentAfterScenebreak in preamble to change this globally.
+%   Either way, the local behavior can be changed using \indent or \noindent.
+%   Note: The indent behavior is activated AtBeginDocument.
+\newif\if@indentAfterScenebreak \@indentAfterScenebreakfalse
+\newcommand\IndentAfterScenebreak{\@indentAfterScenebreaktrue}
+%
+\newcommand\scenebreak{\null}
+%
+\newcommand\sceneline{%
+  \noindent\hfil%
+  \raisebox{0.2em}{\rule{0.35\textwidth}{.4pt}}\hfil\par%
+}
+%
+\newcommand\scenestars{%
+  \noindent\hfil%
+  \raisebox{-.3em}{*\quad\quad*\quad\quad*}\hfil\par%
+}
+%% end scene changes
+
+
+%% Repair \FirstLine{} command from `magaz' package.
+% Problem: Conflict with \noindent\nov@AfterGroup as used in ChapterStart.
+%   The \noindent is carried past \FirstLine to the following paragraph.
+% Solution: After FirstLine completes, back up one line vertically, then insert
+%   and empty line to restore grid and absorb the noindent.
+% Starred version uses the original \FirstLine definition, just in case
+%   the following paragraph has some exotic feature.
+% Thanks to user `egreg' at tex.stackexchange.com for assistance.
+\let\oldFirstLine\FirstLine
+\def\FirstLine{\@ifstar\FirstLineFoo\@FirstLineFoo} % improved
+\def\FirstLineFoo#1{\oldFirstLine{#1}} % starred restores original def.
+\def\@FirstLineFoo#1{%
+  \oldFirstLine{#1}\par\vspace{-\nbs}\strut\par%
+}
+%%
+
+
+%% ChapterStart environment.
+% The most useful way to start a new chapter. Occupies a fixed amount of
+% vertical space. Also self-adjust when used with dropfolio. Automatically
+% calls \thispagestyle if set for all chapter displays.
+\newif \if@addCTline \@addCTlinetrue
+\newcounter{@linequarter}
+\newif \if@csalignok \@csalignokfalse
+\newlength\@oldparindent
+%
+% The argument is the number of normal baselineskips high:
+\newenvironment{ChapterStart}[1][10]
+{%
+  \setlength\@oldparindent{\parindent}%
+  \global\@oldparindent=\@oldparindent%
+  \setlength\parindent{0pt}%
+  \global\parindent=\parindent%
+  \FPsub{\@fixlines}{#1}{2}%
+  \FPsub{\@fixlines}{\@fixlines}{0.001}% fudge to avoid rounding problems
+  \if@thispagestyleset\else\thispagestyle{\@setchapterstart}\fi%
+  \ResetFootnoteSymbol% resets symbolic markers, but not numerical markers
+  \null%
+  \setcounter{@linequarter}{0}%
+  \begin{textblock*}{\textwidth}[0,0](0pt,0pt)%
+}{% close the environment:
+  \ifthenelse{%
+    \equal{\value{@linequarter}}{1} \OR \equal{\value{@linequarter}}{5}%
+    \OR \equal{\value{@linequarter}}{9} \OR \equal{\value{@linequarter}}{13}%
+  }{\vspace{0.75\nbs}}{}%
+  \ifthenelse{%
+    \equal{\value{@linequarter}}{2} \OR \equal{\value{@linequarter}}{6}%
+    \OR \equal{\value{@linequarter}}{10} \OR \equal{\value{@linequarter}}{14}%
+  }{\vspace{0.5\nbs}}{}%
+  \ifthenelse{%
+    \equal{\value{@linequarter}}{3} \OR \equal{\value{@linequarter}}{7}%
+    \OR \equal{\value{@linequarter}}{11} \OR \equal{\value{@linequarter}}{15}%
+  }{\vspace{0.25\nbs}}{}%
+  \end{textblock*}%
+  \vspace{\@fixlines\nbs}%
+  \if@addCTline\null\fi%
+  \setlength\parindent{\@oldparindent}%
+  \global\parindent=\parindent%
+  \nov@AfterGroup\NoIndentAfterThis% etextools and noindentafter
+}
+%%
+\LetLtxMacro\ChapterDisplay\ChapterStart\relax % deprecated
+\LetLtxMacro\endChapterDisplay\endChapterStart\relax % deprecated
+%
+\newcommand\ChapterTitle[2][c]{% optional alignment l, c, r
+  \ignorespaces%
+  \vspace{0.5\nbs}\addtocounter{@linequarter}{2}%
+  \@csalignokfalse%
+  \ifthenelse{\equal{#1}{l}}{\let\@csalign\relax\@csalignoktrue}{}%
+  \ifthenelse{\equal{#1}{c}}{\let\@csalign\centering\relax\@csalignoktrue}{}%
+  \ifthenelse{\equal{#1}{r}}{\let\@csalign\hfill\relax\@csalignoktrue}{}%
+  \if@csalignok\else%
+    \ClassError{novel}{Chapter Title, Deco, Subtitle align must be l, c, or r}%
+    {On page \thepage you wrote a Chapter command with alignment^^J%
+     other than the allowed l, c, or r.}%
+  \fi%
+  {\@csalign\stake\smash{{\chapterfont{}#2}}\par}%
+}
+%
+\newcommand\ChapterSubtitle[2][c]{% optional alignment l, c, r
+  \vspace{0.25\nbs}\addtocounter{@linequarter}{1}
+  \@csalignokfalse%
+  \ifthenelse{\equal{#1}{l}}{\let\@csalign\relax\@csalignoktrue}{}
+  \ifthenelse{\equal{#1}{c}}{\let\@csalign\centering\relax\@csalignoktrue}{}
+  \ifthenelse{\equal{#1}{r}}{\let\@csalign\hfill\relax\@csalignoktrue}{}
+  \if@csalignok\else%
+    \ClassError{novel}{Chapter Title, Deco, Subtitle align must be l, c, or r}%
+    {On page \thepage you wrote a Chapter command with alignment^^J%
+     other than the allowed l, c, or r.}%
+  \fi%
+  {\@csalign{\stake\smash{\subchfont #2}}\par}%
+}
+% In ChapterDeco, a trick is used. Instead of two optional arguments, and
+% instead of using expl3 syntax to create different argument delimiters,
+% the arguments for alignment and scale are passed as a single option.
+% This works because one is a letter, and the other is a number.
+% So it is easy to separte them by parsing.
+\newcommand\ChapterDeco[2][c1]{% optional alignment and scale, either order
+  \StrDel{#1}{ }[\temp@cds]% may use space separator
+  \StrDel{\temp@cds}{,}[\temp@cd]% may use comma separator
+  \IfSubStr{#1}{l}{%
+    \let\@csalign\relax\@csalignoktrue%
+    \StrDel{\temp@cd}{l}[\temp@cd]%
+  }{}%
+  \IfSubStr{#1}{c}{%
+    \let\@csalign\centering\relax\@csalignoktrue%
+    \StrDel{\temp@cd}{c}[\temp@cd]%
+  }{}%
+  \IfSubStr{#1}{r}{%
+    \let\@csalign\hfill\relax\@csalignoktrue%
+    \StrDel{\temp@cd}{r}[\temp@cd]%
+  }{}%
+  \if@csalignok\else%
+    \let\@csalign\centering\relax\@csalignoktrue%
+  \fi%
+  \IfEndWith{\temp@cd}{.}{\StrSubstitute{\temp@cd}{.}{.0}[\temp@cd]}{}%
+  \IfBeginWith{\temp@cd}{.}{\StrSubstitute{\temp@cd}{.}{1.}[\temp@cd]}{}%
+  \IfDecimal{\temp@cd}{\def\@thisScale{\temp@cd}}{\def\@thisScale{1}}%
+  {\@csalign\charscale[\@thisScale,0pt,0.2\nbs]{#2}\par}%
+}
+%
+%%
+
+
+%% \Epigraph[align,scale,width]{text} OBSOLETE IN CODE VERSION 1.2
+
+
+%% \QuickChapter[line style]{text} intended for a story consisting of numerous
+% short chapters without page breaks. Two blank lines are inserted. In the gap
+% is the text, using subchfont. Optional line follows using \bigemdash style.
+% If option is empty, no line. If a length, then the line is that length.
+% If option * then the line fills to end of text line.
+\newlength\@tempscfx%
+\newcommand\QuickChapter[2][]{%
+  \null%
+  \def\@qctweak{0.3} % raise above grid, em of subchfont
+  \noindent{\subchfont\charscale[1,0pt,\@qctweak em]{#2}%
+    \setlength\@tempscfx{\heightof{x}}%
+    \global\@tempscfx=\@tempscfx%
+  }% end subchfont
+  \def\@tempscfxnum{\strip@pt\@tempscfx}%
+  \def\nxhnum{\strip@pt\normalxheight}%
+  \FPdiv{\@qclineth}{\@tempscfxnum}{\nxhnum}% scale of subchfont
+  \FPmul{\@howthick}{\@qclineth}{0.049}% typical emdash thickness, em.
+  \FPadd{\@howraise}{\@qctweak}{0.23}% typical emdash height em raised.
+  \FPmul{\@howraise}{\@howraise}{\@qclineth}%
+  \def\@tempscfxnum{\strip@pt\@tempscfx}%
+  \ifthenelse{\equal{#1}{} \OR \equal{#1}{ }}{}{% no line, else:
+    \ifthenelse{\equal{#1}{*}}{% line fills:
+      ~\leaders\hbox{\smash{\rule[\@howraise em]{1pt}{\@howthick em}}}\hfill\stake\par%
+    }{% else line at specific length:
+      ~\makebox[#1][l]{\leaders\hbox{\smash{\rule[\@howraise em]{1pt}{\@howthick em}}}\hfill}%
+    }%
+  }%
+  \NoIndentAfterThis%
+} % end \QuickChapter
+%%
+
+%% New in version 1.40: \cleartorecto and \cleartoend
+% \cleartorecto works same as \clearpage when next page is recto.
+%   If next page would be verso, a blank verso is inserted,
+%   so that the following material is recto.
+% \cleartoend is used at very end of book.
+%   It adds a blank page. If the blank is verso, end of book.
+%   But if that blank is recto, it adds a second blank page, end of book.
+%   So, the book always ends with a blank verso.
+\gdef\cleartorecto{
+  \clearpage
+  \ifodd\c@page
+  \else
+    \thispagestyle{empty}
+    \null
+    \clearpage
+  \fi
+}
+\gdef\cleartoend{
+  \ifodd\c@page
+    \clearpage
+    \thispagestyle{empty}
+    \null
+    \clearpage
+  \else
+    \clearpage
+    \thispagestyle{empty}
+    \null
+    \clearpage
+    \thispagestyle{empty}
+    \null
+    \clearpage
+  \fi
+}
+%
+
+
+
+%
+%% End of file `novel-ChapterScene.sty'.
+
+

@@ -1,0 +1,667 @@
+%%
+%% This is file `novel-CalculateLayout.sty', a custom file.
+%% Copyright 2017 Robert Allgeyer.
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%%
+\ProvidesFile{novel-CalculateLayout.sty}%
+[2017/09/14 v1.40 LaTeX file (layout calculations)]
+%%
+
+%%
+%% This file is loaded \AtEndPreamble, which precedes \AtBeginDocument.
+%%
+
+
+\newlength\normalFontSize % becomes 1em in normal text.
+\newlength\normalBaselineSkip % also abbreviated as \nbs
+
+
+%% SET DEFAULT SIZES, AND INITIAL CORRECTIONS
+%% -----------------------------------------------------------------------------
+%%
+% Default Trim Size, if user does not set it. This is a popular size for
+% US softcover fiction, and is close to a popular British size.
+\if@TrimSizeSet\else
+  \SetTrimSize{5.5in}{8.5in} % width, height
+  \if@MediaSizeSet\else
+    \SetMediaSize{5.5in}{8.5in}
+  \fi
+\fi
+% Default margins are based on Trim Height, if user does not set margins.
+% Works for standard w/h aspect ratios, but not for exotically narrow.
+\if@MarginsSet\else
+  \ifthenelse{\dimtest{\Old@TrimHeight}{<}{8.99in}}{ % small sizes:
+    \global\setlength\Old@TopMargin{0.5in}
+    \global\setlength\Old@OutsideMargin{0.5in}
+    \global\setlength\Old@BottomMargin{0.5in}
+    \global\setlength\Old@InsideMargin{0.75in} 
+    \global\setlength\New@TopMargin{0.5in}
+    \global\setlength\New@OutsideMargin{0.5in}
+    \global\setlength\New@BottomMargin{0.5in}
+    \global\setlength\New@InsideMargin{0.75in}
+  }{ % medium sizes:
+    \ifthenelse{\dimtest{\Old@TrimHeight}{<}{9.99in}}{
+      \global\setlength\Old@TopMargin{0.75in}
+      \global\setlength\Old@OutsideMargin{0.75in}
+      \global\setlength\Old@BottomMargin{0.75in}
+      \global\setlength\Old@InsideMargin{1in} 
+      \global\setlength\New@TopMargin{0.75in}
+      \global\setlength\New@OutsideMargin{0.75in}
+      \global\setlength\New@BottomMargin{0.75in}
+      \global\setlength\New@InsideMargin{1in}
+    }{ % large sizes:
+      \global\setlength\Old@TopMargin{1in}
+      \global\setlength\Old@OutsideMargin{1in}
+      \global\setlength\Old@BottomMargin{1in}
+      \global\setlength\Old@InsideMargin{1.25in} 
+      \global\setlength\New@TopMargin{1in}
+      \global\setlength\New@OutsideMargin{1in}
+      \global\setlength\New@BottomMargin{1in}
+      \global\setlength\New@InsideMargin{1.25in}
+    } % end internal dimtest
+  } % end dimtest for margins.
+\fi % end default margins
+%
+% Choose default font size based on Trim Width, unless font size set by user:
+\if@FontSizeSet\else
+  \ifthenelse{\dimtest{\Old@TrimWidth}{<}{5.49in}}{
+    \global\setlength\Old@FontSize{11pt} % smaller books
+  }{
+    \ifthenelse{\dimtest{\Old@TrimWidth}{<}{6.24in}}{
+      \global\setlength\Old@FontSize{11.4pt} % medium books
+    }{
+      \global\setlength\Old@FontSize{12pt} % larger books
+    } % end internal dimtest
+  } % end dimtest for font size.
+\fi
+%
+% Default lines/page based on Trim Height, font size, unless LPP set by user:
+\if@LinesPerPageSet\else
+  \def\@tempOFSnum{\strip@pt\Old@FontSize}
+  \FPmul{\@tempOBSnum}{\@tempOFSnum}{1.3} % for a nice, uncramped baselineskip
+  \def\@tempTH{\strip@pt\Old@TrimHeight}
+  \def\@tempTM{\strip@pt\Old@TopMargin}
+  \FPsub{\@tempLH}{\@tempTH}{\@tempTM}
+  \FPsub{\@tempLH}{\@tempLH}{\@tempTM} %  \@tempLH is available live height
+  \FPdiv{\@tempLPP}{\@tempLH}{\@tempOBSnum}
+  \FPsub{\@tempLPP}{\@tempLPP}{1.5} % allows for default header
+  \FPround{\@tempLPP}{\@tempLPP}{0} % integer
+  \FPclip{\@tempLPP}{\@tempLPP} % remove excess trailing 0.
+  \gdef\my@LinesPerPage{\@tempLPP}
+\fi
+%
+% Correct bottom margin for descenders, assumed to be 0.3em:
+\addtolength\Old@BottomMargin{0.3\Old@FontSize}
+\addtolength\New@BottomMargin{0.3\Old@FontSize}
+% Warn if user requests unrealistic HeadJump or FootJump:
+\FPiflt{\@headjump}{1}
+ \ClassWarning{novel}{^^JYou requested \string\HeadJump<1. Unless you have^^J%
+   a very good reason for that, you had better increase it to at least 1.^^J}%
+\else\fi
+%
+\FPiflt{\@footjump}{1}
+ \ClassWarning{novel}{^^JYou requested \string\FootJump<1. Unless you have^^J%
+   a very good reason for that, you had better increase it to at least 1.^^J}%
+\else\fi
+%
+%% end set default sizes and initial corrections
+
+
+
+%% OLD, NEW, CURRENT, LIVE, TEXT MACRO DEFINITIONS
+%% -----------------------------------------------------------------------------
+%%
+% The `novel' class has a \Rework feature. This allows the user to compile
+% a document using "old" settings" then re-compile using some "new" settings,
+% without changing the paragraph structure or pagination. Not for everyone!
+% The rework is done all at once, without requiring an additional pass.
+% Here, the old and new values are compared, and the effect predicted.
+% The reworked document has will have font size and baselineskip changed
+% to meet the new size requirements.
+%
+% "Old" values come from preset values, depending on class Trim Size option.
+%   Or, the presets may be over-ridden using \Set---- commands.
+% "New" values are initialized to "Old" or \Set---- as above.
+%   Then, they can be over-ridden using \Rework---- commands.
+% "Current" values are the latest and greatest, as calculations progress.
+%   They are initialized to "Old" values."
+% Widths and Heights are lengths, stored by \setlength.
+% Expression ending in "Num" are pure numbers, suitable for FP calculations.
+% "Live" refers to the area available to text (including header/footer).
+%
+% Find the Old and New Live Width and Height, and initialize
+% Text Width and Height to Old Live. Initialize Font Size.
+\newlength\Old@LiveWidth
+  \setlength\Old@LiveWidth{\Old@TrimWidth}
+  \addtolength\Old@LiveWidth{-\Old@OutsideMargin}
+  \addtolength\Old@LiveWidth{-\Old@InsideMargin}
+  \def\Old@LiveWidthNum{\strip@pt\Old@LiveWidth}
+\newlength\Old@LiveHeight
+  \setlength\Old@LiveHeight{\Old@TrimHeight}
+  \addtolength\Old@LiveHeight{-\Old@TopMargin}
+  \addtolength\Old@LiveHeight{-\Old@BottomMargin}
+\newlength\Current@FontSize
+  \setlength\Current@FontSize{\Old@FontSize}
+  \def\Current@FontSizeNum{\strip@pt\Current@FontSize}
+  \def\Old@FontSizeNum{\strip@pt\Old@FontSize}
+  \addtolength\Old@LiveHeight{-\Current@FontSizeNum pt}
+  \def\Old@LiveHeightNum{\strip@pt\Old@LiveHeight}
+\newlength\Current@TextWidth
+  \setlength\Current@TextWidth{\Old@LiveWidth}
+  \def\Current@TextWidthNum{\strip@pt\Current@TextWidth}
+\newlength\Current@TextHeight
+  \setlength\Current@TextHeight{\Old@LiveHeight}
+  \def\Current@TextHeightNum{\strip@pt\Current@TextHeight}
+\newlength\New@LiveWidth
+  \setlength\New@LiveWidth{\New@TrimWidth}
+  \addtolength\New@LiveWidth{-\New@OutsideMargin}
+  \addtolength\New@LiveWidth{-\New@InsideMargin}
+  \def\New@LiveWidthNum{\strip@pt\New@LiveWidth}
+\newlength\New@LiveHeight
+  \setlength\New@LiveHeight{\New@TrimHeight}
+  \addtolength\New@LiveHeight{-\New@TopMargin}
+  \addtolength\New@LiveHeight{-\New@BottomMargin}
+  \def\New@LiveHeightNum{\strip@pt\New@LiveHeight}
+%
+%% End old, new... macro definitions.
+
+
+%% PRELIMINARY CALCULATION OF BASELINESKIP
+%% -----------------------------------------------------------------------------
+%%
+% Get values of \@gotHeader and \@gotFooter booleans:
+\@reserveHFspace % defined in `novel-LayoutSettings.sty'.
+% Adjusted LinesPerPage will include header, footer, and added separations:
+\let\adj@LinesPerPage\my@LinesPerPage % Start with the textblock lines.
+% The footskip is always "there" even if no content. Remove it:
+\FPsub{\adj@LinesPerPage}{\adj@LinesPerPage}{1}
+%
+\if@gotHeader % allow for header jump
+  \FPadd{\adj@LinesPerPage}{\adj@LinesPerPage}{\@headjump}
+\fi
+%
+\if@gotFooter % allow for footer jump
+  \FPadd{\adj@LinesPerPage}{\adj@LinesPerPage}{\@footjump}
+\fi
+%
+% Baseline Skip is Live Height divided by adjusted number of lines.
+% Thus initially, Text (with header/footer) occupies full Live Height.
+\newlength\Current@BaselineSkip
+\FPdiv{\Current@BaselineSkipNum}{\Old@LiveHeightNum}{\adj@LinesPerPage}
+% Check to see if Baseline Skip is insufficient:
+\FPdiv{\@ratioBStoFS}{\Current@BaselineSkipNum}{\Current@FontSizeNum}
+\FPiflt{\@ratioBStoFS}{1.2}%
+  \ClassError{novel}{Too many lines per page^^J}%
+   {You requested too many lines per page, for the page dimensions and^^J%
+    font size. Maybe few lines, or smaller font size, or eliminate^^J%
+    header or footer? Or a bigger Trim Size?^^J}%
+\else % OK, so set CurrentBaselineSkip:
+  \setlength\Current@BaselineSkip{\Current@BaselineSkipNum pt}
+\fi
+\newlength\Old@BaselineSkip
+  \setlength\Old@BaselineSkip{\Current@BaselineSkipNum pt}
+\gdef\Old@BaselineSkipNum{\strip@pt\Old@BaselineSkip}
+%
+%% End preliminary calculation of baselineskip.
+
+
+
+%% FIT CurrentTextWidth TO NewLiveWidth
+%% -----------------------------------------------------------------------------
+%%
+\FPdiv{\my@TextRescaleNum}{\New@LiveWidthNum}{\Current@TextWidthNum}
+\FPmul{\Current@FontSizeNum}{\Current@FontSizeNum}{\my@TextRescaleNum}
+\setlength\Current@FontSize{\Current@FontSizeNum pt}
+\FPmul{\Current@TextWidthNum}{\Current@TextWidthNum}{\my@TextRescaleNum}
+\setlength\Current@TextWidth{\Current@TextWidthNum pt}
+%
+%% end fit CurrentTextWidth to NewLiveWidth
+
+
+%% ADJUST CurrentBaselineSkip TO FIT NewLiveHeight
+%% -----------------------------------------------------------------------------
+%%
+% Test if New Text Height fits within New Live Height:
+\FPifgt{\Current@TextHeightNum}{\New@LiveHeightNum} % does not fit, so fix it
+  \FPdiv{\my@NBSrescaleNum}{\New@LiveHeightNum}{\Current@TextHeightNum}
+  \FPmul{\Current@BaselineSkipNum}{\Current@BaselineSkipNum}{\my@NBSrescaleNum}
+  \setlength\Current@BaselineSkip{\Current@BaselineSkipNum pt}
+  \FPmul{\Current@TextHeightNum}{\Current@BaselineSkipNum}{\adj@LinesPerPage}
+\fi
+% Check if the revised skip is too small:
+\FPdiv{\@ratioBLtoFS}{\Current@BaselineSkipNum}{\Current@FontSizeNum}
+\FPiflt{\@ratioBLtoFS}{1.2} % Too small. Re-tweak font, text width, skip.
+  \FPdiv{\@rescaleFontSize}{\@ratioBLtoFS}{1.2}
+  \FPmul{\Current@FontSizeNum}{\Current@FontSizeNum}{\@rescaleFontSize}
+  \setlength\Current@FontSize{\Current@FontSizeNum pt}
+  \FPmul{\Current@TextWidthNum}{\Current@TextWidthNum}{\@rescaleFontSize}
+  \setlength\Current@TextWidth{\Current@TextWidthNum pt}
+  \FPdiv{\Current@BaselineSkipNum}{\New@LiveHeightNum}{\adj@LinesPerPage}
+  \setlength\Current@BaselineSkip{\Current@BaselineSkipNum pt}
+  \FPmul{\Current@TextHeightNum}{\Current@BaselineSkipNum}{\adj@LinesPerPage}
+\fi
+%
+% Note that if the revised skip is larger than desired, it is easy to change.
+% Simply increase the top/bottom margin, which does not affect line breaks.
+%
+%% end adjust CurrentBaselineSkip to fit NewLiveHeight.
+
+
+%% DISTRIBUTE SIDE EXCESS
+%% -----------------------------------------------------------------------------
+%% The prior calculation may have shrunk CurrentTextWidth below NewLiveWidth.
+\newlength\fix@SideMargin
+  \setlength\fix@SideMargin{\New@LiveWidth}
+  \addtolength\fix@SideMargin{-\Current@TextWidth}
+\addtolength\New@OutsideMargin{0.5\fix@SideMargin}
+\addtolength\New@InsideMargin{0.5\fix@SideMargin}
+%
+%% end distribute side excess.
+
+
+
+%% SET TEXTWIDTH, FONT SIZE, BASELINESKIP
+%% -----------------------------------------------------------------------------
+%
+\setlength\textwidth{\Current@TextWidthNum pt}
+%
+\setlength\normalFontSize{\Current@FontSizeNum pt}
+\setlength\normalBaselineSkip{\Current@BaselineSkipNum pt}
+%
+\@setfontsize\normalsize\normalFontSize{\normalBaselineSkip}%
+\normalsize % Defined in `novel.cls'. Uses numbers, not lengths.
+%
+\newlength\nfs % abbreviation for normal fontsize
+\setlength\nfs{\normalFontSize}
+\gdef\nfsnum{\strip@pt\nfs}
+\newlength\nbs % abbreviation for normal baselineskip
+\setlength\nbs{\normalBaselineSkip}
+\gdef\nbsnum{\strip@pt\nbs} % just the numerical part
+%
+% This document class limits range of normal point size:
+\FPiflt{\Current@FontSizeNum}{8}%
+  \ClassError{novel}{Normal fontsize must be at least 8pt^^J}%
+   {In the class options, you chose a font size that is too small.^^J%
+   It must be at least 8pt.^^J}%
+\fi
+%
+\FPifgt{\Current@FontSizeNum}{18.1}%
+  \ClassError{novel}{Normal fontsize cannot exceed 18bp^^J}%
+   {In the class options, you chose a font size that is too large.^^J%
+   It cannot exceed 18bp.^^J}%
+\fi
+% Alert when lines closer than generally-accepted usage:
+\FPmul{\@minBaselineSkipNum}{\Current@FontSizeNum}{1.24}
+\FPiflt{\Current@BaselineSkipNum}{\@minBaselineSkipNum}
+  \typeout{^^JClass `novel' Alert: Line spacing is allowable, but close.^^J%
+  Consider fewer lines per page, or eliminate header or footer.^^J}%
+\fi
+% Alert when lines are farther than generally-accepted usage:
+\FPmul{\@bigBS}{\Current@FontSizeNum}{1.41}
+\FPifgt{\Current@BaselineSkipNum}{\@bigBS}
+  \typeout{^^JClass `novel' Alert: Line spacing is allowable, but wide.^^J%
+  Consider more lines per page, or add header or footer.^^J}%
+\fi
+%
+\FPdiv{\Ratio@BaselineSkip}{\Current@BaselineSkipNum}{\Old@BaselineSkipNum}
+\FPround{\Ratio@BaselineSkip}{\Ratio@BaselineSkip}{3}
+\FPclip{\Ratio@BaselineSkip}{\Ratio@BaselineSkip}
+%
+\FPdiv{\Ratio@EM}{\Current@FontSizeNum}{\Old@FontSizeNum}
+\FPround{\Ratio@EM}{\Ratio@EM}{3}
+\FPclip{\Ratio@EM}{\Ratio@EM}
+% Alert if images scaled by \Rework:
+\ifthenelse{\equal{\Ratio@EM}{1} \AND \equal{\Ratio@BaselineSkip}{1}}{}{%
+  \typeout{^^JClass `novel' Alert: Due to \string\Rework\space there may be^^J%
+  places where an image no longer fits properly with surrounding text.^^J%
+  Try scaling such images in an external graphics editor. They cannot be^^J%
+  automatically scaled within the document. See `novel' docs, Page 9.^^J%
+  Suggested scale for inline images: \Ratio@EM ^^J%
+  Suggested scale for block images: \Ratio@BaselineSkip ^^J%
+  Maybe also change gaps for imageAtLeft and imageAtRight, trial-and-error.^^J}%
+}
+%
+\setlength\parindent{1.5em}
+%
+%% Values to be used by footnotes:
+\FPdiv{\my@FontScale}{\Current@FontSizeNum}{12}
+% Substitute for \footnotesize, but only works for actual footnotes,
+%   about 10pt with similarly reduced skip:
+\FPmul{\@myfootnotesizenum}{\my@FontScale}{10}
+\FPround{\@myfootnotesizenum}{\@myfootnotesizenum}{2}
+\FPmul{\@myfootnoteskipnum}{\my@FontScale}{\Current@BaselineSkipNum}
+\FPmul{\@myfootnoteskipnum}{\@myfootnoteskipnum}{0.84}
+\FPround{\@myfootnoteskipnum}{\@myfootnoteskipnum}{2}
+%
+%% end set textwidth, font size, baselineskip
+
+
+
+%% BEGIN LAYOUT CALCULATIONS
+%% -----------------------------------------------------------------------------
+%
+\if@gotHeader
+  \setlength\headheight{\nbs}
+  \FPsub{\@headsepmul}{\@headjump}{1}
+  \FPmul{\@headsep}{\@headsepmul}{\Current@BaselineSkipNum}
+  \setlength\headsep{\@headsep pt}
+\else
+  \setlength\headheight{0pt}
+  \setlength\headsep{0pt}
+\fi
+%
+% Prior to this, the following were set by user or calculated:
+% \textwidth \headsep \headheight
+%
+\setlength\paperwidth{\New@MediaWidth} % MediaWidth
+\setlength\paperheight{\New@MediaHeight} % MediaHeight
+
+
+%% The `closecrop' class option calculates layout, then removes most of the
+%%  margins. Draft mode only. Purpose is to create a file with just enough white
+%%  space around the text to be readable on a handheld device. Not an E-book!
+%% Additional closecrop code is located farther down this page.
+\if@closecrop
+  \setlength\paperwidth{\textwidth+0.2in}
+\fi
+%%
+
+
+%
+% Standard TeX \hoffset and \voffset is not relative to the MediaBox, but is
+% relative to 1in from the top left corner of the MediaBox. Ouch.
+% I thought about making the 1in go away, by re-setting \hoffset and \voffset
+% to -1in each. Then other calculations would make more sense.
+% In the end, I decided against that, since other packages expect the usual.
+\setlength\hoffset{0pt} % relative to 1in built-in offset at left side
+\setlength\voffset{0pt} % relative to 1in built-in offset at top
+%
+% \textheight is peculiar. Unless it is exact to 1/65536 TeX pt, which is
+%  the smallest resolution, the log file will babbled about Underfull vbox
+% (badness 10000) for every page. I believe this is a bug in Tex. It's not
+% all that bad, folks. On the other hand, if \textheight is even a fraction
+% smaller than its theoretical value, there will be one less line of text.
+% Even the geometry package can miss, due to rounding error somewhere.
+% After some investigation, I determined that the following works. Basically,
+% \textheight must be the normal baselineskip multiplied by the number of lines
+% per page, minus 1 for the (invisible) footskip, with \normalFontSize added.
+% To straddle the fence between Underfull vbox complaints, and missing a line,
+% I added a very tiny fudge amount, which is less that 1/65536pt.
+\FPsub{\less@LinesPerPage}{\my@LinesPerPage}{1}
+\setlength\textheight{\normalFontSize+\less@LinesPerPage\nbs+0.000001pt}
+%
+% \oddsidemargin is at the left (inside, spine edge) of recto pages.
+% Measured 1in (72.27pt) inside the MediaBox, to the textblock. May be negative.
+% When the TrimBox equals the MediaBox, or is centered within it,
+% the value is \New@InsideMargin+0.5\New@MediaWidth-0.5\New@TrimWidth-72.27pt
+\if@offcenterTrim
+  \setlength\oddsidemargin{\New@InsideMargin-72.27pt}
+\else
+  \setlength\oddsidemargin{%
+    \New@InsideMargin+0.5\New@MediaWidth-0.5\New@TrimWidth-72.27pt}
+\fi
+
+%%
+\if@closecrop
+  \setlength\oddsidemargin{-0.9in}
+\fi
+%%
+
+
+%
+% \evensidemargin is at the left (outside edge) of verso pages.
+% Calculation as above, but using \New@OutsideMargin
+\if@offcenterTrim
+  \setlength\evensidemargin{\New@OutsideMargin-72.27pt}
+\else
+  \setlength\evensidemargin{%
+    \New@OutsideMargin+0.5\New@MediaWidth-0.5\New@TrimWidth-72.27pt}
+\fi
+
+%%
+\if@closecrop
+  \setlength\evensidemargin{-0.9in}
+\fi
+%%
+
+
+%
+% \topmargin is measured from 1in below the top of the MediaBox, to the top of
+% whatever comes first (header or textblock). May be negative.
+% When the TrimBox equals the MediaBox, or is centered within it,
+% the value is \New@TopMargin+0.5\New@MediaHeight-0.5\New@TrimHeight-72.27pt
+\if@offcenterTrim
+  \setlength\topmargin{\New@TopMargin-72.27pt}
+\else
+  \setlength\topmargin{%
+    \New@TopMargin+0.5\New@MediaHeight-0.5\New@TrimHeight-72.27pt}
+\fi
+%
+
+%%
+\if@closecrop
+  \if@gotHeader
+    \setlength\topmargin{-1in}
+  \else
+    \setlength\topmargin{-0.9in}
+  \fi
+\fi
+%%
+
+
+% Vertical position of the textblock is measured to the "top" of the first line
+% of text. But that could be an X height, or an accented character height,
+% an ascender, or something else, depending on the line's content.
+% Setting \topskip=\normalFontSize places the "top" at 1em above the baseline,
+% which provides a fixed clearance regardless of accented characters
+% (unless stacked high). Note that when \charscale is used to make a special
+% line start, it doesn't affect the height, since it is "smashed."
+\setlength\topskip{\normalFontSize}
+%
+% In `novel' class, footers are done in an unusal manner. The position of
+% the footer baseline is fixed, regardless of the desired jump between text
+% and footer. Then, the content (if any) of the footer is relatively positioned
+% using \smash and \raisebox.
+\setlength\footskip{\nbs}
+%
+
+
+%%
+\if@closecrop
+  \if@gotFooter
+    \if@gotHeader
+      \setlength\paperheight{%
+        \textheight+\headsep+\headheight+\@footjump\nbs+1pt}
+    \else
+      \setlength\paperheight{%
+        \textheight+\headsep+\headheight+\@footjump\nbs+\nfs}
+    \fi
+  \else
+    \setlength\paperheight{\textheight+\headsep+\headheight+0.1in}
+  \fi
+\fi
+%%
+
+
+%% End layout calculations.
+
+
+
+
+% When Media Size exceeds Trim Size, this sets the position:
+\newlength\temp@PaperWidth
+\newlength\temp@PaperHeight
+\newlength\temp@Hoffset
+\newlength\temp@Voffset
+%
+\if@offcenterTrim
+  \setlength\temp@PaperWidth{\New@TrimWidth}
+  \setlength\temp@PaperHeight{\New@TrimHeight}
+  \setlength\temp@Hoffset{0pt}
+  \setlength\temp@Voffset{0pt}
+\else
+  \setlength\temp@PaperWidth{\New@MediaWidth}
+  \setlength\temp@PaperHeight{\New@MediaHeight}
+  \setlength\temp@Hoffset{\temp@PaperWidth}
+  \addtolength\temp@Hoffset{-\New@TrimWidth}
+  \setlength\temp@Hoffset{0.5\temp@Hoffset}
+  \setlength\temp@Voffset{\temp@PaperHeight}
+  \addtolength\temp@Voffset{-\New@TrimHeight}
+  \setlength\temp@Voffset{0.5\temp@Voffset}
+\fi
+% End when Media Size exceeds Trim Size.
+
+
+% When Media Size = Trim Size, cropmarks are disabled.
+% Too late for \@cropviewfalse; OK since CropBox already calculated properly.
+\ifthenelse{%
+  \dimtest{\New@TrimWidth}{=}{\New@MediaWidth} %
+  \AND \dimtest{\New@TrimHeight}{=}{\New@MediaHeight}%
+}{\global\@cropmarksfalse}{}
+% end disabling `cropmarks' option.
+
+% Left, Right, Top, Bottom, x and y
+\newlength\Trim@Lx
+\newlength\Trim@Rx
+\newlength\Trim@Ty
+\newlength\Trim@By
+\newlength\Live@Lx
+\newlength\Live@By
+\newlength\adj@NewLiveHeight
+\setlength\adj@NewLiveHeight{\New@LiveHeight+0.3\normalFontSize}
+%
+\gdef\@getPageXY{
+  \check@IsVerso % defined in novel-HeadFootStyles.sty
+  \if@isVerso
+    \setlength\Trim@Lx{\evensidemargin-\New@OutsideMargin+72.27pt}
+    \setlength\Trim@Rx{\Trim@Lx+\New@TrimWidth}
+    \setlength\Live@Lx{\evensidemargin+72.27pt}
+  \else
+    \setlength\Trim@Lx{\oddsidemargin-\New@InsideMargin+72.27pt}
+    \setlength\Trim@Rx{\Trim@Lx+\New@TrimWidth}
+    \setlength\Live@Lx{\oddsidemargin+72.27pt}
+  \fi
+  \if@offcenterTrim
+    \setlength\Trim@By{\New@MediaHeight-\New@TrimHeight}
+    \setlength\Trim@Ty{\New@MediaHeight}
+  \else
+    \setlength\Trim@By{0.5\New@MediaHeight-0.5\New@TrimHeight}
+    \setlength\Trim@Ty{0.5\New@MediaHeight+0.5\New@TrimHeight}
+  \fi
+  \setlength\Live@By{\Trim@By+\New@BottomMargin-0.3\normalFontSize}
+}
+%
+
+
+%% With class option `shademargins' (only effective in draft mode):
+% Based on code by Ulrike Fischer at tex.stackexchange.com, CC-by-sa-3.0:
+% The 0.903215 is a value that the user would not be likely to choose.
+% The re-defined color command makes an exception for that value.
+\definecolor[named]{hingledingle}{gray}{1} % fake white, when white disallowed
+%
+\if@shademargins
+  \pagecolor{hingledingle}%
+  \if@offcenterTrim%
+    \AddToShipoutPictureBG{\@getPageXY%
+      \AtPageLowerLeft{\color[gray]{0.903215}%
+        \hspace{\Trim@Lx}\rule[\Trim@By]{\New@TrimWidth}{\New@TrimHeight}}%
+    }%
+    %
+    \AddToShipoutPictureBG{\@getPageXY%
+      \AtPageLowerLeft{\color{hingledingle}%
+        \hspace{\Live@Lx}\rule[\Live@By]{\New@LiveWidth}{\adj@NewLiveHeight}}%
+    }%
+  \else% trim is centered
+    \AddToShipoutPictureBG{\@getPageXY%
+      \AtPageLowerLeft{\color[gray]{0.903215}%
+        \hspace{\Trim@Lx}\rule[\Trim@By]{\New@TrimWidth}{\New@TrimHeight}}%
+    }%
+    %
+    \AddToShipoutPictureBG{\@getPageXY%
+      \AtPageLowerLeft{\color{hingledingle}%
+        \hspace{\Live@Lx}\rule[\Live@By]{\New@LiveWidth}{\adj@NewLiveHeight}}%
+    }%
+  \fi%
+\fi % end \if@shademargins
+%
+
+% Labels each page with DRAFT at upper left, if in draft mode:
+\if@useDraftMode
+  \AddToShipoutPictureBG{\@getPageXY%
+    \AtPageUpperLeft{\raisebox{-\nbs}{\textbf{~DRAFT}}}
+  }%
+\fi
+%
+
+% Cropmarks (trim marks, really) are not important in this document class.
+% That's because the targeted printing services generally do not want them.
+% But a minimal capability was easy to add. The far end of each mark is
+% half an inch from the trim area. The close end is separated by a gap >= 0pt.
+% So the length of the marks is generally less than half an inch.
+% If trim is at the edge of the media box, instead of centered,
+% then only one pair of marks will be written.
+% The marks are turned on using `cropmarks' class option. The gap is set
+% in Preamble using \SetCropmarkGap{length}.
+\if@cropmarks
+  \if@offcenterTrim
+  \check@IsVerso
+    \if@isVerso
+  % H bottom left:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Lx-0.5in}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
+  % V bottom left:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
+    \else
+  % H bottom right:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Rx+\@mygap}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
+  % V bottom right:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\Trim@Rx}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
+    \fi
+  \else
+  % H top left:
+  \AddToShipoutPictureBG{\@getPageXY%
+  \AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Lx-0.5in}\rule[\Trim@Ty]{0.5in-\@mygap}{0.5pt}}}
+  % H bottom left:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Lx-0.5in}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
+  % H top right:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Rx+\@mygap}\rule[\Trim@Ty]{0.5in-\@mygap}{0.5pt}}}
+  % H bottom right:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Rx+\@mygap}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
+  % V top left:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@Ty+\@mygap]{0.5pt}{0.5in-\@mygap}}}
+  % V bottom left:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
+  % V top right:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\Trim@Rx}\rule[\Trim@Ty+\@mygap]{0.5pt}{0.5in-\@mygap}}}
+  % V bottom right:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\Trim@Rx}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
+  \fi
+\fi
+%
+%% end cropmarks
+
+
+
+%%
+%% End of file `novel-CalculateLayout.sty'.
+
+

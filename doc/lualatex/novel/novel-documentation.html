@@ -350,6 +350,7 @@ function showul(thisul){
           <li><p class="noimg"><a href="#h9.3.7">9.3.7 Sample Preface</a></p></li>
           <li><p class="noimg"><a href="#h9.3.8">9.3.8 Sample Acknowledgements</a></p></li>
           <li><p class="noimg"><a href="#h9.3.9">9.3.9 Sample Map</a></p></li>
+          <li><p class="noimg"><a href="#h9.3.10">9.3.10 Characters, Synopsis</a></p></li>
         </ul>
       </li><!-- end 9.3 -->
     </ul>
@@ -409,6 +410,7 @@ function showul(thisul){
         </ul>
       </li><!-- end 12.2 -->
       <li><p class="noimg"><a href="#h12.3">12.3. Regarding Back Matter</a></p></li>
+      <li><p class="noimg"><a href="#h12.4">12.4. \cleartoend</a></p></li>
     </ul>
   </li><!-- end 12 -->
 
@@ -506,8 +508,8 @@ function showul(thisul){
 <!-- **************************************************************************************** -->
 
 <h1 id="h0">Document class <i>novel</i> - documentation</h1>
-<p class="noindent">Version: 1.40, 2017/09/14. This is a complete re-write of the documentation, with the HTML in a single file, and many improvements. Version 1.40.1: Minor doc changes, especially correction to code for converting cover image to CMYK.</p>
-<p>A complete example novel, text and cover, can be found at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/">GitHub project page</a>, in the "other" folder.</p>
+<p class="noindent">Version: 1.40, 2017/09/14. This is a complete re-write of the documentation, with the HTML in a single file, and many improvements. Version 1.40.1: Minor doc changes, especially correction to code for converting cover image to CMYK. Version 1.40.2: More minor doc changes.</p>
+<p class="noindent" style="position:relative"><span style="position:absolute; top:-.1em; font-size:150%; color:#008000">&#9786;</span>&nbsp; &nbsp; &nbsp; An example novel, text and cover, can be found at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/">GitHub project page</a>, in the "other" folder. You will find its TeX source and the resulting PDF.</p>
 <p>&nbsp;</p>
 
 
@@ -531,10 +533,10 @@ function showul(thisul){
 
 <h4 id="h1.1.1">1.1.1. &nbsp; Installation</h4>
 <div class="d4" id="d1.1.1">
-<p class="noindent">Your TeX installation must be based on TeXLive 2016 or later (including any recent MiKTeX). If you are on Linux and your distro is something such as Ubuntu 16.04 LTS (Xenial), then the distro version of TeXLive is too old. However, you can sill install a more recent version of TeXLive manually, to your home directory, from <a class="external" rel="external" target="new" href="https://www.tug.org/texlive/"></a>.</p>
+<p class="noindent">Your TeX installation must be based on TeXLive 2016 or later (including any recent MiKTeX). If you are on Linux and your distro is something such as Ubuntu 16.04 LTS (Xenial), then the distro version of TeXLive is too old. However, you can still install a more recent version of TeXLive manually, to your home directory, from <a class="external" rel="external" target="new" href="https://www.tug.org/texlive/">tug.org</a>.</p>
 <p>The <i>novel</i> package is not (yet) included with default TeX distribution. Once you have TeX working, use its package manager to install <i>novel</i>. The TeX package will be placed in <i>(texroot)/tex/lualatex/novel/</i>, the documentation will be placed in <i>(texroot)/doc/lualatex/novel/</i>, and the included font will be placed in <i>(texroot)/fonts/opentype/novel/</i>.</p>
 <p>Fonts from the <i>libertinus</i> package are required, and may be installed via your TeX package manager. Note that a <i>novel</i> document does not request the package, so you will not see an error if the fonts are not installed! Instead, if you have not manually specified which fonts to use, it will automatically look for pre-installed Libertinus fonts (or Linux Libertine O) as defaults.</p>
-<p>Since you will be using LuaTeX, the font cache will be updated to include the newly-installed fonts, the next time you run this software. However, I recommend that you force a full cache refresh, by locating the <i>luatex-cache</i> directory, and discard its contents. The cache may be anywhere (sadly), so you will have to hunt for it. If you have never used LuaTeX before, it may not exist. If there are any updates to the fonts, then a manual cache refresh is necessary.</p>
+<p>Since you will be using LuaLaTeX, the font cache will be updated to include the newly-installed fonts, the next time you run this software. However, I recommend that you force a full cache refresh, by locating the <i>luatex-cache</i> directory, and discard its contents. The cache may be anywhere (sadly), so you will have to hunt for it. If you have never used LuaLaTeX before, it may not exist. If there are any updates to the fonts, then a manual cache refresh is necessary.</p>
 </div>
 
 <h4 id="h1.1.2">1.1.2. &nbsp; Licensing</h4>
@@ -548,8 +550,8 @@ function showul(thisul){
 <p class="noindent">My method of "programming" largely involves using or modifying code provided by others under allowable license terms. Thus, within the TeX code files, you will find places where small or large pieces of code are the work of someone else. Names or organizations are credited in-place within the TeX code, according to license.</p>
 <p>Various clipart graphics were obtained from <a class="external" rel="external" target="new" href="https://openclipart.org">openclipart.org</a>. The <i>NovelDeco.otf</i> font is partly derived from <i>Linux Libertine O</i>, using <a class="external" rel="external" target="new" href="https://fontforge.github.io/en-US/">FontForge.</a></p>
 <p>I read popular fiction a lot, usually books from my local public library. Even if I do not read a particular book, I often look a how it is designed. Throughout this documentation, where I recommend a design or style, it is most often based on the preponderance of designs/styles as I have seen in softcover or hardcover popular fiction, from major publishers in the U.S.A. That does not include "mass-market paperback" versions (the kind seen at supermarkets, rather than at bookstores). I may mention several common alternatives.</p>
-<p>I have also consulted the authoritative Chicago Manual of Style (CMoS) hardcover 16th Edition. In the case of fiction, CMoS occasionally notes that publishers sometimes don't do things the official way.</p>
-<p>Although I have looked at a variety of web sites concerning book design, I give these the least credence, because (a) often they merely duplicate each other's opinions, right or wrong, and (b) they may simply echo CMoS.</p>
+<p>I have also consulted the authoritative <i>Chicago Manual of Style (CMoS)</i> hardcover 16th Edition. In the case of fiction, <i>CMoS</i> notes that publishers sometimes don't do things the official way.</p>
+<p>Although I have looked at a variety of web sites concerning book design, I give these the least credence, because (a) often they merely duplicate each other's opinions, right or wrong, and (b) they may simply echo <i>CMoS</i>.</p>
 </div>
 
 <h4 id="h1.1.4">1.1.4. &nbsp; Success Story</h4>
@@ -561,8 +563,8 @@ function showul(thisul){
 
 <h4 id="h1.1.5">1.1.5. &nbsp; Help Wanted</h4>
 <div class="d4" id="d1.1.5">
-<p class="noindent">Although this package works for me, and there are no known issues, bugs are always possible. You may file an issue at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel">GitHub project page</a>, or contact the author by e-mail if you do not have a GitHub account. My e-mail address is towards the top of the <i>novel.cls</i> file.</p>
-<p>I, the original author of this package, am a retiree who prefers to move on to other things. If you are of a mind to take up long-term maintenance, then contact me by e-mail. If you already are a package developer with a <a class="external" rel="external" target="new" href="https://ctan.org/contact">CTAN</a> login, also contact them. You will need to understand elementary LuaLaTeX, fontspec, Unicode, Open Type fonts, PDF/X, and the general needs of ficion writers in the printed (not e-book) market. However, Lua, XeTeX, TiKz, math, and physics are not required (possibly counterproductive).</p>
+<p class="noindent">Although this package works for me, and there are no <i>known</i> issues, bugs are always possible. You may file an issue at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel">GitHub project page</a>, or contact me by e-mail if you do not have a GitHub account. My e-mail address is towards the top of the <i>novel.cls</i> file.</p>
+<p>I, the original author of this package, am a retiree who prefers to move on to other things. If you are of a mind to take up long-term maintenance, then contact me by e-mail. If you already are a package developer with a <a class="external" rel="external" target="new" href="https://ctan.org/contact">CTAN</a> login, also contact them. You will need to understand elementary LuaLaTeX, fontspec, Unicode, Open Type fonts, PDF/X, and the general needs of fiction writers in the printed (not e-book) market. However, Lua, XeTeX, TiKz, math, and physics are not required (possibly counterproductive).</p>
 </div>
 </div><!-- end class="d3" -->
 
@@ -576,7 +578,7 @@ function showul(thisul){
 <p>Instead of typing TeX codes such as \`{e} you can simply paste è from a Unicode character map. Other alphabets such as Greek and Cyrillic are directly supported, as long as you choose fonts that support those character sets.</p>
 <p>Do not call for <i>fontenc</i> in your Preamble. The <i>novel</i> class is pre-configured for utf-8.</p>
 <p>If you use a plain text editor, or TeXWorks, or export plain text from a word processor, be sure that your text is encoded as utf-8, without byte order mark (BOM).</p>
-<p>If you are on Windows, do not use Notepad! The free <a class="external" rel="external" target="new" href="https://notepad-plus-plus.org">Notepad++</a> (also <a class="external" rel="external" target="new" href="https://portableapps.com/apps/development/notepadpp_portable">Portable</a> version) is a suitable plain text editor. Configure it as specified.</p>
+<p>If you are on Windows, do not use Notepad! The free <a class="external" rel="external" target="new" href="https://notepad-plus-plus.org">Notepad++</a> (also <a class="external" rel="external" target="new" href="https://portableapps.com/apps/development/notepadpp_portable">Portable</a> version) is a suitable plain text editor. Configure it as specified, with utf-8 and without BOM. Does not matter whether UNIX or DOS line endings, as long as you are consistent.</p>
 </div>
 
 <h4 id="h1.2.2">1.2.2. &nbsp; Do Not Load Fonts via \usepackage or \RequirePackage</h4>
@@ -586,7 +588,7 @@ function showul(thisul){
 
 <h4 id="h1.2.3">1.2.3. &nbsp; Use LuaLaTeX and Open Type fonts</h4>
 <div class="d4" id="d1.2.3">
-<p class="noindent"><img class="floatright" src="html-resources/doordie.png" width="279" height="300" alt="Thou Shalt"/> With <i>novel</i>, you will be using the <i>LuaLaTeX</i> engine, whether you like it or not. No <i>pdfTeX</i>, no <i>XeTeX</i>, no <i>dvips</i>. You do not have to understand <i>Lua</i> code, since the heavy lifting is already done for you.</p>
+<p class="noindent"><img class="floatright" src="html-resources/doordie.png" width="279" height="300" alt="Thou Shalt"/> With <i>novel</i>, you will be using the <i>LuaLaTeX</i> engine, whether you like it or not. No <i>pdfTeX</i>, no <i>XeTeX</i>, no <i>dvips</i>. You do not have to understand <i>Lua</i> code, since the heavy lifting is already done for you. Just follow the instructions in this documentation.</p>
 <p>The built-in <i>fontspec</i> package handles modern Open Type fonts, and is able to access their internal features. The syntax is easy to learn, and very powerful. And, you can directly include text with diacritical marks, Greek, Cyrillic, and most other utf-8 encoded characters in your document. All you need are the fonts, and you probably have them. You will wonder why you never did this before.</p>
 </div>
 
@@ -632,6 +634,7 @@ function showul(thisul){
 <p>Remember that TeX closes paragraphs by skipping lines, or by \par. Also remember that in most word processors, the emdash is <i>two</i> hyphens, not the three used in TeX. You can always insert an emdash (or endash) directly. You can write TeX code into the word processor, where it will be treated like ordinary text, so use \textit{italicized} or similar command, rather than the word processor's italics menu.</p>
 <p>In any case, be sure to export plain text as utf-8, then compile it with <i>lualatex</i>.</p>
 <p class="noindent"><b>&bull; Tip:</b> For the editing and proofreading phase, where spelling and grammar are carefully reviewed, I use a special font <i>CPmodified.otf</i>. This is my custom derivative of the <a class="external" rel="external" target="new" href="https://quoteunquoteapps.com/courierprime/">Courier Prime</a> regular font. <i>Cpmodified</i> can be found in the documentation <i>extras</i> folder. It is released under the SIL Open Font License v.1.1. To use this font for editing, install it in your <i>operating system</i>, not TeX. Then, call it from your word processor. The font includes Latin-1 and ANSI characters, and a few others. It is not quite monospaced (the em dash and ellipsis are longer). Punctuation is highly exaggerated, so you can see it more easily. My own experience is that most errors in the nearly-finished document involve punctuation.</p>
+<p class="noindent"><b>&bull; Tip:</b> Word processors usually make an incorrect substitution for certain English elisions (possibly in other languages also). When you type "Give 'em hell," the substitution may provide <i>Give &lsquo;em hell</i>, but the correct rendition is <i>Give &rsquo;em hell</i>. Can you see the tiny difference in the direction of the single quote? Probably not on your computer screen, but it will be noticeable in print. The <i>CPmodified.otf</i> font makes the difference obvious.</p>
 </div>
 
 <h4 id="h1.2.10">1.2.10. &nbsp; Think for yourself</h4>
@@ -675,13 +678,15 @@ function showul(thisul){
 <p>Your book will not be printed with "gray ink." Instead, anything other than pure black will be emulated by a pattern of black dots. This is known as "halftone." It causes a reduction in resolution, so your gray text will appear somewhat fuzzy. Therefore, do not use very small text, or characters with fine lines.</p>
 <p>Sometimes the halftone operation extends to nearby text that is not gray. So: Unlike the example shown above, it is a bad idea to mingle gray with the ordinary flow of black text. The most appropriate use of gray text is for special items such as chapter titles.</p>
 <p>You may place darker text over a lighter background. But even though the resulting PDF meets standards, lighter text over darker background is unlikely to print as intended.</p>
+<p>See also <a href="#h7.2.8">section 7.2.8</a>.</p>
 </div>
 
 <h3 id="h2.3">2.3. &nbsp; shademargins</h3>
 <div class="d3" id="d2.3">
 <p class="noindent">This option is ignored unless using draft mode. It is not necessary to use the <i>graytext</i> option.</p>
-<p><img class="floatright" style="margin-top:6px" src="html-resources/shademargins.png" width="132" height="205" title="shademargins" alt="shademargins"/> The <i>shademargins</i> option is simple: The margins will have a light gray background. Note that <em>margins</em> refers to the area between the live text area (including head/foot, if any) and the TrimBox, which is the finished size of your book. If you are using \SetMediaSize to request paper larger than your book's Trim Size, the excess area is <em>not</em> considered to be margins; it is discarded paper, so it is not gray.</p>
-<p>Some commands (in particular, images) allow their content to overflow the textblock area. With <code>shademargins</code> you can see where such object intrude into the margins.</p>
+<p><img class="floatright" style="margin-top:6px" src="html-resources/shademargins.png" width="132" height="205" title="shademargins" alt="shademargins"/> The <i>shademargins</i> option is simple: The margins will have a light gray background.</p>
+<p>Note that <em>margins</em> refers to the area between the live text area (including head/foot, if any) and the TrimBox, which is the finished size of your book. If you are using \SetMediaSize to request paper larger than your book's Trim Size, the excess area is <em>not</em> considered to be margins; it is discarded paper, so it is not gray.</p>
+<p>Some commands (in particular, images) allow their content to overflow the textblock area. With <i>shademargins</i> you can see where such object intrude into the margins.</p>
 <p>Sometimes it is hard to see whether a centered object is really centered, because the left-right margins are not the same width. With <i>shademargins</i> you can more easily see centering.</p>
 <p>Note that headers and footers are not part of the margins.</p>
 </div>
@@ -706,7 +711,7 @@ function showul(thisul){
 
 <h3 id="h2.6">2.6. &nbsp; closecrop</h3>
 <div class="d3" id="d2.6">
-<p class="noindent"><img class="floatright" style="margin-top:6px" src="html-resources/closecrop.png" width="110" height="186" title="closecrop" alt="closecrop"/> This option is only effective in draft mode. When used, the layout of your text is unchanged, but the surrounding margins are shrunk so that they just clear the live text area (which includes header and footer, if present). Also, the TrimSize is shrunk accordingly. Left and right margins are the same. The resulting PDF will be easier to read on a handheld device.</p>
+<p class="noindent"><img class="floatright" style="margin-top:6px" src="html-resources/closecrop.png" width="110" height="186" title="closecrop" alt="closecrop"/> This option is only effective in draft mode. When used, the layout of your text is unchanged, but the surrounding margins are shrunk so that they just clear the live text area (which includes header and footer, if present). Also, the TrimSize is shrunk accordingly. The resulting PDF will be easier to read on a handheld device.</p>
 <p>This does <em>not</em> produce an E-book, since the file will be missing some things that an E-book ought to have. The sole purpose of this option is to create a conveniently-sized file that you can carry around while you are thinking about edits and revisions.</p>
 </div>
 
@@ -803,8 +808,8 @@ function showul(thisul){
 <p class="noindent">&bull; Do not use the tilde <code>~</code> or the circumflex <code>^</code>.</p>
 <p class="noindent">&bull; Do not use TeX code, such as <code>\`e</code> for e with grave; instead paste è directly from a character map.</p>
 <p class="noindent">&bull; Do not use styling, such as {\small text} or \textit{text}.</p>
-<p class="noindent">&bull; Use only \straightquote{} and \straightdblquote{} if necessary, not TeX code for apostrphe or quote.</p>
-<p class="noindent">&bull; Do not use multiple hyphens to create longer dahses. Do not use em dash or en dash.</p>
+<p class="noindent">&bull; Use only \straightquote{} and \straightdblquote{} if necessary, not TeX code for apostrophe or quote.</p>
+<p class="noindent">&bull; Do not use multiple hyphens to create longer dashes. Do not use em dash or en dash.</p>
 </div>
 </div><!-- end class="d3" -->
 
@@ -812,24 +817,25 @@ function showul(thisul){
 <div class="d3" id="d3.3">
 <p class="noindent">Now that you understand what File Data means, and how it may be written, you can use commands to write it.</p>
 
-<h4 id="h3.3.1">3.3.1. &nbsp; \SetTitle{}</h4>
+<h4 id="h3.3.1">3.3.1. &nbsp; \SetTitle{<em>text</em>}</h4>
 <div class="d4" id="d3.3.1">
-<p class="noindent">If you do not use the \SetTitle{} command, or leave it empty or blank, then the resulting PDF cannot comply with PDF/X standards. In very rare cases, that is desirable. Note that this information is not automatically transferred to your book's title page. It will be used as default in certain page heading styles, but you can over-ride it. The information can be retrieved as \theTitle anywhere in your document.</p>
+<p class="noindent">If you do not use the \SetTitle{} command, or leave it empty or blank, then the resulting PDF cannot comply with PDF/X standards. In <i>very rare</i> cases, that is desirable.</p>
+<p>This information is not automatically transferred to your book's title page. It will be used as default in certain page heading styles, but you can over-ride it. The information can be retrieved as \theTitle anywhere in your document.</p>
 </div>
 
-<h4 id="h3.3.2">3.3.2. &nbsp; \SetAuthor{}</h4>
+<h4 id="h3.3.2">3.3.2. &nbsp; \SetAuthor{<em>text</em>}</h4>
 <div class="d4" id="d3.3.2">
 <p class="noindent">This information is not automatically transferred to your book's title page. It will be used as default in certain page heading styles, but you can over-ride it. The information can be retrieved as \theAuthor anywhere in your document.</p>
 </div>
 
-<h4 id="h3.3.3">3.3.3. &nbsp; \SetSubtitle{}</h4>
+<h4 id="h3.3.3">3.3.3. &nbsp; \SetSubtitle{<em>text</em>}</h4>
 <div class="d4" id="d3.3.3">
 <p class="noindent">There is no file data for subtitle! The only reason for using this command is if you wish to later retrieve the information as \theSubtitle in your document.</p>
 </div>
 
-<h4 id="h3.3.4">3.3.4 &nbsp; Advanced: \SetApplication{} and \SetProducer{}</h4>
+<h4 id="h3.3.4">3.3.4 &nbsp; Advanced: \SetApplication{<em>text</em>} and \SetProducer{<em>text</em>}</h4>
 <div class="d4" id="d3.3.4">
-<p class="noindent">The <i>Application</i>, also known as <i>CreatorTool</i>, is the program used to create your source document. Text editors, word processors, and page layout programs are the most common Applications (not particular to TeX). The PDF <i>Producer</i> is the program that converts the source document to PDF. In many cases, the Producer is a back-end, directly linked to the Application.</p>
+<p class="noindent">The <i>Application</i>, also known as <i>CreatorTool</i>, is the program used to create your source document. Text editors, word processors, and page layout programs are the most common Applications (not specific to TeX). The PDF <i>Producer</i> is the program that converts the source document to PDF. In many cases, the Producer is a back-end, directly linked to the Application.</p>
 <p>These details are automatically created when you compile your document, without any input from you. However, if you have the need to provide a custom text string for the Application or Producer, these commands will do it.</p>
 </div>
 </div><!-- end class="d3" -->
@@ -854,7 +860,7 @@ function showul(thisul){
 <h4 id="h3.4.2">3.4.2. &nbsp; Output Intent</h4>
 <div class="d4" id="d3.4.2">
 <p class="noindent">Unless compliance is <i>off</i>, an Output Intent is always required. However, <i>novel</i> treats this as an optional argument, because it will automatically use CGATSTR001 as default Output Intent.</p>
-<p>Output Intent informs the printer that you "intend" your PDF to be printed according to certain printer capabilities. If you took the trouble to soft-proof your PDF on a color-controlled monitor using color managed software, and if the printer's capabilities actually correspond to the intent, then the printed result will closely match what you expected. This is very important in commercial color printing (such as for cover artwork), but nearly irrelevant for a black and white book block. Nevertheless, an Output Intent is required to meet PDF/X compliance.</p>
+<p>Output Intent informs the printer that you "intend" your PDF to be printed according to certain printer capabilities. If you took the trouble to soft-proof your PDF on a color-calibrated monitor using color-managed software, and if the printer's capabilities actually correspond to the intent, then the printed result will closely match what you expected. This is very important in commercial color printing (such as for cover artwork), but nearly irrelevant for a black and white book block. Nevertheless, an Output Intent is required to meet PDF/X compliance.</p>
 </div>
 
 <h4 id="h3.4.3">3.4.3. &nbsp; Built-in Output Intent Codes</h4>
@@ -878,12 +884,13 @@ function showul(thisul){
 <p>You usually do not need it. In fact, unless your print service specifically asks you to embed the file, <i>don't do it</i>. When you use \SetPDFX in its un-starred form, the *.icc file will not be embedded.</p>
 <p>If your print service demands that you embed the *.icc color profile, then use \SetPDFX* (with the asterisk).</p>
 <p>Repeat: Do not embed the *.icc color profile unless specifically requested by your print service.</p>
-<p>If your printer requests "US Web Coated SWOP v2" and, as usual, requests that you <em>not</em> embed the corresponding *.icc color profile, then some software will read the Output Intent as "CGATS&nbsp;TR&nbsp;001" instead of "US&nbsp;Web&nbsp;Coated&nbsp;SWOP&nbsp;v2". They are identical. But not everyone knows that.</p>
+<p>&bull; If your printer requests "US Web Coated SWOP v2" and, as usual, requests that you <em>not</em> embed the corresponding *.icc color profile, then some software will read the Output Intent as "CGATS&nbsp;TR&nbsp;001" instead of "US&nbsp;Web&nbsp;Coated&nbsp;SWOP&nbsp;v2". They are identical. But not everyone knows that.</p>
 </div>
 
 <h4 id="h3.4.6">3.4.6. &nbsp; Where to Find *.icc Files</h4>
 <div class="d4" id="d3.4.6">
-<p class="noindent">Although many *.icc files are freely available, they usually cannot be distributed within an open-source project. You might already have them in your system, wherever such files are stored. Note that TeX uses forward slash in file paths, not backslash, even if the platform is Windows:</p>
+<p class="noindent">You do not need an *.icc color profile unless you choose to embed it.</p>
+<p>Although many *.icc files are freely available, they usually cannot be distributed within an open-source project. You might already have them in your system, wherever such files are stored. Note that TeX uses forward slash in file paths, not backslash, even if the platform is Windows:</p>
 <p class="isolate">
 Windows: <code>C:/Windows/System32/spool/drivers/color/</code> &nbsp; [older Windows: system32 instead of System32]<br/>
 Linux: <code>/usr/share/color</code> or hidden <code>~/.local/share/icc/</code> or other places<br/>
@@ -913,12 +920,13 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 
 <h4 id="h4.1.1">4.1.1. Trim Size</h4>
 <div class="d4" id="d4.1.1">
-<p class="noindent"><b>Trim Size</b> is the finished size of your book, width and height (but not thickness). In the case of hardcover books, where the cover is larger than the contents, it is (usually) the cover size that is measured, with the internal trim size being slightly smaller than nominal</p>
+<p class="noindent"><b>Trim Size</b> is the finished size of your book, width and height (but not thickness). In the case of softcover books, it is the exact size. In the case of hardcover books, where the cover is larger than the contents, it is (usually) the cover size that is measured, with the internal trim size being slightly smaller than nominal (some of the margins shaved away).</p>
+<p>Your print service has a list of standard trim sizes. For fiction, you probably want creme (off-white) paper, which eliminates a few of the choices. Choice of size may also be limited by the distribution channels you choose.</p>
 </div>
 
 <h4 id="h4.1.2">4.1.2. Media Size, TrimBox</h4>
 <div class="d4" id="d4.1.2">
-<p class="noindent"><img class="floatright" src="html-resources/mbcrectomar.png" width="202" height="264" alt="media size recto"/> In a few cases, the commercial printer will request that the PDF page size be something larger than the Trim Size of your book. In PDF terminology, the larger dimensions are the <b>Media Size</b>. Typically, the Media Size will be U.S. Letter, or A4, and the Trim Size must be floated in the center, horizontally and vertically. As an alternative, the Trim Size will be at the edge. Something of the sort happens when you print a copy of your PDF at home, where your printer's paper tray has letter or A4, not the Trim Size.</p>
+<p class="noindent"><img class="floatright" src="html-resources/mbcrectomar.png" width="202" height="264" alt="media size recto"/> In a few cases, the commercial printer will request that the PDF page size be something larger than the Trim Size of your book. In PDF terminology, the larger dimensions are the <b>Media Size</b>. Typically, the Media Size will be U.S. Letter, or A4, and the Trim Size must be floated in the center, horizontally and vertically. As an alternative, the Trim Size will be at the edge. Something of the sort happens when you print a copy of your PDF at home, where your printer's paper tray has Letter or A4, not the Trim Size.</p>
 <p>Unless you explicitly set it to a different value, Media Size will automatically be set at Trim Size. <i>Do not specify the Media Size, unless the commercial printer requests it.</i></p>
 <p>Since your PDF is being prepared for commercial print production, it will have an invisible <code>TrimBox</code> automatically encoded. This information tells the printer where the Trim Size is located. If (as usual) the Trim Size and Media Size are identical, then the TrimBox is the full size of the PDF page. But when the Trim Size is smaller than the Media Size, the TrimBox defines where the paper will be trimmed. Although it is not normally marked on the PDF page and never appears in print, some PDF viewers allow you make the TrimBox visible.</p>
 <p>In the accompanying diagram, the TrimBox is shown as a faint green line. The margins, shaded gray, are measured relative to the Trim Size, not relative to the Media Size. The excess area beyond the Trim Size is "wasted paper" that will not become part of the book.</p>
@@ -927,7 +935,7 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <h4 id="h4.1.3">4.1.3. Margins</h4>
 <div class="d4" id="d4.1.3">
 <p class="noindent"><b>Margins</b> are required on all four edges of the page. They do not have to be the same width. Generally the margin at the spine edge (inside margin) is wider.</p>
-<p>The accompanying illustration shows a typical recto page, on a layout with header and footer. The margins have been shaded gray in the picture (but, not in the book). The inside (spine) margin is at the left of this page. In the case of fiction, where there are no marginal notes, it is typically the case that the inside margin is the widest. But this is not a rule for all books. All that is required is that each margin be "wide enough" for the printing process.</p>
+<p>In the case of fiction, where there are no marginal notes, it is typically the case that the inside margin is the widest. But this is not a rule for all books. All that is required is that each margin be "wide enough" for the printing process.</p>
 <p>Keep in mind that the print services are not used to seeing books with exotic margins (such as bottom margin twice the size of top margin). They may think that there is a mistake in your PDF, or in the print job, if you do that.</p>
 <p>The <i>novel</i> document class does not provide for marginal notes.</p>
 <p>Normally, your TeX document will be compiled to a PDF that is electronically at the exact Trim Size. And normally, print services want it to be that way. When you view your PDF, the text will shift from side to side as you move through the pages, due to the slightly increased margin at the inside edge.</p>
@@ -941,10 +949,10 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 
 <h4 id="h4.2.1">4.2.1. \SetTrimSize{<em>width</em>}{<em>height</em>}</h4>
 <div class="d4" id="d4.2.1">
-<p class="noindent">Command \SetTrimSize{}{} sets the size of your book. Both values must be written, using units such as <i>in</i> or <i>mm</i>. If you do not use this command, the default Trim Size will be the widely-used 5.5in wide x 8.5in high.</p>
+<p class="noindent">Command \SetTrimSize sets the size of your book. Both values must be written, using units such as <i>in</i> or <i>mm</i>. If you do not use this command, the default Trim Size will be the widely-used 5.5in wide x 8.5in high.</p>
 <p>This setting is most crucial. Unless your book is very exceptional, its Trim Size will be one of several standard sizes available from the print service. Among those sizes, only one or two will be "standard" for your genre.</p>
 <p>In the USA, 5.5in x 8.5in is often used for softcover fiction. Some fiction, and most nonfiction, prefers the slightly larger 6in&nbsp;x&nbsp;9in trim size. Both of these are known as "trade" sizes.</p>
-<p>If you ever need to retroactively change Trim Size, see Appendix F.</p>
+<p>If you ever need to <i>retroactively</i> change Trim Size, see Appendix F.</p>
 <p>Do not request a <em>mass-market paperback</em> size unless you really, truly, know what you are doing. Since you are not a major writer for a major publishing house, you don't know; so, don't do it.</p>
 </div>
 
@@ -955,7 +963,7 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <p>Command \SetMargins lets you choose your own margins. If you use it, all four must be written, using units such as <i>in</i> or <i>mm</i>.</p>
 <p><img class="floatright" src="html-resources/whichgutter.png" width="276" height="219" alt="Which gutter?"/> If your book has headers and/or footers, they sit inside the rectangle bounded by the margins. That is, they do not sit inside the peripheral areas cleared by the margins.</p>
 <p>Be aware that there is a lot of confusion regarding the word "gutter." In the accompanying diagram, it might mean any of A, B, C, or D, depending on who is doing the talking and which software is in use. The <i>novel</i> class uses <em>inside margin</em>, also known as <em>spine margin</em>, to mean C.</p>
-<p>If you ever need to retroactively change margins, see Appendix F.</p>
+<p>If you ever need to <i>retroactively</i> change margins, see Appendix F.</p>
 </div>
 
 <h4 id="h4.2.3">4.2.3. \SetFontSize{<em>length</em>}</h4>
@@ -969,13 +977,13 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <h4 id="h4.2.4">4.2.4. \SetLinesPerPage{<em>integer</em>}</h4>
 <div class="d4" id="d4.2.4">
 <p class="noindent">Lines per page refers only to the textblock, and does <em>not</em> include header/footer. Lines are not stretched to fill short pages.</p>
-<p>By default, a suitable number of lines per page are set, based on other dimemsions. You can change the default with this command. Any non-integer will be rounded. There is no direct command to set the <em>leading</em>, also known as line-to-line spacing or <em>baselineskip</em>. Instead, is is calculated from the textblock height and number of lines.</p>
+<p>By default, a suitable number of lines per page are set, based on other dimemsions. You can change the default with this command. Any non-integer will be rounded. There is no direct command to set the <em>leading</em>, also known as line-to-line spacing or <em>baselineskip</em>. Instead, it is calculated from the textblock height and number of lines.</p>
 <p>If the calculated leading is less than 1.2x the font size, an error will result. It is difficult for TeX to honor all layout settings with such a small leading, which would normally be unacceptable for fiction in any case. If the calculated leading is at least 1.2x the font size, but less than 1.25x the font size, then the log file will have an Alert message, suggesting that you should consider using fewer lines per page. If the leading exceeds 1.4x the font size, then the log will have an Alert, suggesting more lines per page. The Alert messages are friendly; you do not necessarily have to do anything.</p>
 </div>
 
 <h4 id="h4.2.5">4.2.5. \SetHeadFootStyle{<em>number</em>}</h4>
 <div class="d4" id="d4.2.5">
-<p class="noindent"><img class="floatright" src="html-resources/headfoot.png" width="276" height="219" title="head foot style 1" alt="head foot style 1"/> The use of this command is described on <a href="noveldocs-06-header-footer.html#a6.1.2">Page 6</a>. It is mentioned here, because whether or not your book has headers and/or footers will affect the overall layout. The default is style 1, which has header but no footer (shown here).</p>
+<p class="noindent"><img class="floatright" src="html-resources/headfoot.png" width="276" height="219" title="head foot style 1" alt="head foot style 1"/> The use of this command is described in <a href="#h6.1.2">section 6.1.2</a>. It is mentioned here, because whether or not your book has headers and/or footers will affect the overall layout. The default is style 1, which has header but no footer (shown here).</p>
 <p>The pre-defined styles are comprehensive, for use in fiction. It is hard to imagine a header/footer style that is not identical to, or a variation from, one of those styles. But if you do wish to create your own style, you must use \SetHeadFootStyle to choose the closest available style, then use <i>fancyhdr</i> commands for your custom style. The reason is that \SetHeadFootStyle tells the layout engine how much space it needs to reserve.</p>
 </div>
 
@@ -992,7 +1000,7 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <h4 id="h4.2.7">4.2.7. Advanced: \SetMediaSize[<em>alignment</em>]{<em>width</em>}{<em>height</em>}</h4>
 <div class="d4" id="d4.2.7">
 <p class="noindent">Normally, the book Trim Size will also set the same size for the PDF pages. What you see is what you get.</p>
-<p>Some print services prefer that the Trim Size be floated in a standard paper size, such as US Letter or A4. That's not a technical necessity, but "the way things are done around here." If you must do that, use the \SetMediaSize command.</p>
+<p>Some print services prefer that the Trim Size be floated in a standard paper size, such as US Letter or A4. That's not a technical necessity, but "the way things are done around here." See <a href="#h4.1.2">section 4.1.2</a> for details. If you must do that, use the \SetMediaSize command.</p>
 <p>The width and height must be specified with units, such as <i>in</i> or <i>mm</i>. If the optional <em>alignment</em> is not specified, then The Trim Size will be centered horizontally and vertically in the Media Size. That is the preferred method.</p>
 <p>If you write <i>edge</i> for the optional alignment, then the Trim Size will be off-center in the Media Size. Do not do this unless your print service specifically wants it that way. If you are making a hand-made book with a home printer, then this option might be convenient.</p>
 <p>Note that margins are measured relative to the Trim Size, not the Media Size. The extra white space between Trim Size and Media Size is just that: extra white space, unrelated to the margins of your book.</p>
@@ -1007,7 +1015,7 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 
 <h4 id="h4.2.8">4.2.8. Advanced: \SetCropmarkGap{<em>length</em>}</h4>
 <div class="d4" id="d4.2.8">
-<p class="noindent"><img class="floatright" src="html-resources/cropmarkgap.png" width="140" height="141" alt="media size larger than trim size"/> This command is only effective if you use the <i>cropmarks</i> class option. Note that user-provided cropmarks are <em>very unusual</em> in the print-on demand market. Do not use them unless your print service specifically requests them. The built-in cropmark capability is very elementary, and cannot be easily enhanced by adding other LaTeX packages.</p>
+<p class="noindent"><img class="floatright" src="html-resources/cropmarkgap.png" width="140" height="141" alt="media size larger than trim size"/> This command is only effective if you use the <i>cropmarks</i> class option, as described in <a href="#h2.4">section 2.4</a>. Note that user-provided cropmarks are <em>very unusual</em> in the print-on demand market. Do not use them unless your print service specifically requests them. The built-in cropmark capability is very elementary, and cannot be easily enhanced by adding other LaTeX packages.</p>
 <p>In the accompanying image with cropmarks, a corner of the Trim Size is at lower right. The invisible TrimBox has been drawn with a green line. The cropmark gap is G.</p>
 </div>
 </div><!-- end class="d3" -->
@@ -1020,8 +1028,8 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 
 <h2 id="h5">5. &nbsp; Fonts</h2>
 <div class="d2" id="d5">
-<p class="noindent">This section describes how to choose fonts and font features, and how to apply fonts within your document. Local styling (such as italics) is described farther down this page.</p>
-<p><b>EEEK!</b> If you are like me, you <em>first</em> try to do something the way you did it before, then when it fails, you <em>finally</em> read the instructions. So, before you came to this page, you tried these things, and none of them worked:</p>
+<p class="noindent">This section describes how to choose fonts and font features, and how to apply fonts within your document. Local styling (such as italics) is described <a href="#h7">farther down</a> this page.</p>
+<p><b>EEEK!</b> If you are like me, you <em>first</em> try to do something the way you did it before, then when it fails, you <em>finally</em> read the instructions. So, before you came to this part, you tried these things, and none of them worked:</p>
 <p class="code"><code>
 \usepackage{somefont} &nbsp; % FAILS!<br/>
 \renewcommand\rmdefault{smf} \normalfont &nbsp; % FAILS!<br/>
@@ -1030,7 +1038,7 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <p><b>DON'T PANIC.</b> In <i>novel</i>, the essential fonts are specified with different code. Fortunately, they are all pre-configured. If you accept the carefully-chosen defaults, then you do not need to worry about fonts. You do not even need to specify the font families. Sit back and relax.</p>
 <p>You can do something like this, if you have the font license. Then let <i>novel</i> do the rest:</p>
 <p class="code"><code>\SetParentFont{Adobe Garamond Pro} &nbsp; % WORKS!</code></p>
-<p><b>It's that simple.</b> But TeX being what it is, there are complicated ways to customize things. The rest of this page shows you how to do it. You will be using Open&nbsp;Type fonts, or perhaps TrueType fonts. Forget the old Type 1 fonts.</p> 
+<p><b>It's that simple.</b> But TeX being what it is, there are complicated ways to customize things. The rest of this part shows you how to do it. You will be using Open&nbsp;Type fonts, or perhaps TrueType fonts. Forget the old Type 1 fonts.</p> 
 
 <h3 id="h5.1">5.1. &nbsp; The Parent Font and Descendants</h3>
 <div class="d3" id="d5.1">
@@ -1041,8 +1049,8 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <p>The <em>parentfont</em> has TeX ligatures and kerning, applied by default. All of the descendant fonts will also have TeX ligatures and kerning. (Note: TeX ligatures allow you to type `` to get &ldquo; and so forth.)</p>
 <p>If you specify any optional features for the <em>parentfont</em>, they will automatically be applied to descendants: <em>textfont</em>, <em>chapterfont</em>, <em>subchfont</em>, and <em>headfont</em>.</p>
 <p>If you do not set the <em>parentfont</em> yourself, then the following will be used as default, in order of priority: <em>Libertinus&nbsp;Serif</em>, <em>Linux&nbsp;Libertine&nbsp;O</em>, <em>Latin&nbsp;Modern&nbsp;Roman</em>.
-<p>The <em>Libertinus Serif</em> fonts are well-suited to fiction. If in doubt, use them. They can be downloaded as TeX <i>libertinus</i> package, but do not write \usepackage{libertinus} in your Preamble. Those fonts are a more up-to-date fork of the <em>Linux Libertine O</em> fonts, which are in the <i>libertine</i> package. Alas, even though <em>Latin&nbsp;Modern&nbsp;Roman</em> is a fine font, its style and weight are not well-suited to fiction; the only reason they are a last-choice default, is because just about every TeX system has them.</p>
-<p style="font-size:small">Note: In class version 1.0.10 and earlier, the <em>parentfont</em> was known as the <em>masterfont</em>, and the <em>textfont</em> was known as the <em>mainfont</em>. For backwards compatibility, both will work.</p>
+<p>The <em>Libertinus Serif</em> fonts are well-suited to fiction. If in doubt, use them. They can be downloaded as TeX <i>libertinus</i> package, but do not write \usepackage{libertinus} in your Preamble. Those fonts are a more up-to-date fork of the <em>Linux Libertine O</em> fonts, which are in the <i>libertine</i> package.</p>
+<p>Alas, even though <em>Latin&nbsp;Modern&nbsp;Roman</em> is a fine font, its style and weight are not well-suited to fiction; the only reason they are a last-choice default, is because just about every TeX system has them.</p>
 
 <h4 id="h5.1.1">5.1.1. &nbsp; Where Fonts Are Used</h4>
 <div class="d4" id="d5.1.1">
@@ -1053,42 +1061,46 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 
 <h4 id="h5.1.2">5.1.2. &nbsp; The Text Font</h4>
 <div class="d4" id="d5.1.2">
-<p class="noindent">The text font, or <em>textfont</em>, is the default main font used used for ordinary, flowing text. It uses the <em>parentfont</em>, with added features: common ligatures, and oldstyle numbers.</p>
-<p>Common ligatures (the Open Type <em>liga</em> feature) are such things as replacing f<span style="position:relative; left:2px">f</span> with the single character ff. Oldstyle numbers are designed to blend with surrounding text. Not every font has these features; if they are missing, then whatever the font actually has, is used instead.</p>
+<p class="noindent"><p>The text font, or <em>textfont</em>, is the default main font used used for ordinary, flowing text. It uses the <em>parentfont</em>, with added features: common ligatures, and oldstyle numbers. Thus, you do not set or customize the <i>textfont</i> by itself.</p>
+<p>Common ligatures (the Open Type <em>liga</em> feature) are such things as replacing f<span style="position:relative; left:2px">f</span> with the single character ff. Oldstyle numbers (<i>onum</i>) are designed to blend with surrounding text. Not every font has these features; if they are missing, then whatever the font actually has, is used instead.</p>
 <p>Normally, you do not need to call the <em>textfont</em> explicity, because it is the default for ordinary text. But in the event that you have a small passage in <em>textfont</em>, within a passage in some other font, you can do this:</p>
 <p class="code"><code>{\textfont <em>text</em>}</code></p>
 <p>Note that {\textfont <em>text</em>} and {\rmfamily <em>text</em>} mean the same thing.</p>
-<p>You do not set the <em>textfont</em> itself. It inherits from the <em>parentfont</em>.</p>
+<p>Local font changes are described in sections <a href="#h7.2.6">7.2.6</a> and <a href="#h7.2.7">7.2.7</a>.</p>
 </div>
 
 <h4 id="h5.1.3">5.1.3. &nbsp; The Chapter Title Font</h4>
 <div class="d4" id="d5.1.3">
-<p class="noindent">The <i>novel</i> command \ChapterTitle{<em>text</em>} automatically styles its text in the <em>chapterfont</em>.</p>
-<p>If you write custom code for chapter titles, then whether or not you use this font is your choice. It is not automatic. If you wish to use it:</p>
-<p class="code"><code>{\chapterfont <em>text</em>}</code></p>
+<p class="noindent">The <i>novel</i> command \ChapterTitle{<em>text</em>} automatically styles its text in the <em>chapterfont</em> by default.</p>
+<p>The <i>chapterfont</i> inherits from the <i>parentfont</i>. Then, by default it is set to a larger font size (Scale=1.6), and uses Lining numbers if available (Open Type feature <i>lnum</i>).</p>
 <p>You may customize the <em>chapterfont</em>:</p>
 <p class="code"><code>\SetChapterFont[optional,features]{Font Family} % Note command case!</code></p>
-<p>If you do not use the above command to customize the <em>chapterfont</em>, then by default it will be the <em>parentfont</em> with added features: Lining numbers, and 1.6 scale.</p>
+<p>If you write chapter titles by means other than the \ChapterTitle command, then whether or not you use <i>chapterfont</i> is your choice.</p>
+<p>Outside of \ChapterTitle (where <i>chapterfont</i> is automatic), you may use this font anywhere in your document:</p>
+<p class="code"><code>{\chapterfont <em>text</em>}</code></p>
 </div>
 
 <h4 id="h5.1.4">5.1.4. &nbsp; The Chapter Subtitle Font</h4>
 <div class="d4" id="d5.1.4">
-<p class="noindent">The <i>novel</i> commands \ChapterSubtitle{<em>text</em>} and \QuickChapter{<em>text</em>} automatically style their text in the <em>subchfont</em>.</p>
-<p>If you write custom code for chapter subtitles or quick chapters, then whether or not you use this font is your choice. It is not automatic. If you wish to use it:</p>
-<p class="code"><code>{\subchfont <em>text</em>}</code></p>
-<p>You may customize the subchfont:</p>
+<p class="noindent">The <i>novel</i> commands \ChapterSubtitle{<em>text</em>} and \QuickChapter{<em>text</em>} automatically style their text in the <em>subchfont</em> by default.</p>
+<p>The <i>subchfont</i> inherits from the <i>parentfont</i>. Then, by default it is set to a slightly larger font size (Scale=1.2), and uses Lining numbers if available (Open Type feature <i>lnum</i>).</p>
+<p>You may customize the <em>subchfont</em>:</p>
 <p class="code"><code>\SetSubchFont[optional,features]{Font Family} % Note command case!</code></p>
-<p>If you do not use the above command to customize the <em>subchfont</em>, then by default it will be the <em>parentfont</em> with added features: Lining numbers, and 1.2 scale.</p>
+<p>If you write chapter subtitles by means other than the \ChapterSubtitle command, then whether or not you use <i>subchfont</i> is your choice. Same applies regarding \QuickChapter.</p>
+<p>Outside of \ChapterSubtitle and \QuickChapter (where <i>subchfont</i> is automatic), you may use this font anywhere in your document:</p>
+<p class="code"><code>{\subchfont <em>text</em>}</code></p>
 </div>
 
 <h4 id="h5.1.5">5.1.5. &nbsp; The Header/Footer Font</h4>
 <div class="d4" id="d5.1.5">
-<p class="noindent">The <i>novel</i> pre-configured header/footer layouts automatically style their text in the <em>headfont</em>.
-<p>If you write a customer header/footer layout (using <code>fancyhdr</code> syntax), then whether or not you use this font is your choice. It is not automatic. If you wish to use it:</p>
-<p class="code"><code>{\headfont <em>text</em>}</code></p>
-<p>You may customize the headfont:</p>
+<p class="noindent">The <i>novel</i> pre-configured header/footer layouts automatically style their text in the <em>headfont</em> by default.
+<p>The <i>headfont</i> inherits from the <i>parentfont</i>. Then, by default it is set to a slightly smaller font size (Scale=0.92), and uses Lining numbers if available (Open Type feature <i>lnum</i>).</p>
+<p>You may customize the <em>headfont</em>:</p>
 <p class="code"><code>\SetHeadFont[optional,features]{Font Family} % Note command case!</code></p>
-<p>If you do not use the above command to customize the <em>headfont</em>, then by default it will be the <em>parentfont</em> with added features: Lining numbers, and 0.92 scale.</p>
+<p>If you use <i>fancyhdr</i> syntax to write your own header/footer content, then whether or not you use <i>headfont</i> is your choice.</p>
+<p>If you write chapter titles by means other than the \ChapterTitle command, then whether or not you use <i>chapterfont</i> is your choice.</p>
+<p>Outside of headers and footers (where <i>headfont</i> is automatic), you may use this font anywhere in your document:</p>
+<p class="code"><code>{\headfont <em>text</em>}</code></p>
 </div>
 </div><!-- end class="d3" -->
 
@@ -1098,7 +1110,7 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 
 <h4 id="h5.2.1">5.2.1. &nbsp; Sans and Mono Fonts</h4>
 <div class="d4" id="d5.2.1">
-<p class="noindent">You probably do not need a sans-serif or monospaced font in a work of fiction. The most prominent exception might be headers/footers, where the use of a light sans-serif font is fashionable. But in that case, set the <em>headfont</em> to the desired sans-serif font, instead of inheriting from <em>parentfont</em>.</p>
+<p class="noindent">You probably do not need a sans-serif or monospaced font in a work of fiction. The most prominent exception might be headers/footers, where the use of a light sans-serif font is fashionable. But in that case, <a href="#h5.1.5">set</a> the <em>headfont</em> to the desired sans-serif font, instead of inheriting from <em>parentfont</em>.</p>
 <p>The <i>novel</i> class does not have its own commands for setting or using sans-serif or monospaced fonts. If you wish, you may use ordinary <i>fontspec</i> syntax to set them:</p>
 <p class="code"><code>
 \setsansfont[optional,features]{Font Family}<br/>
@@ -1124,17 +1136,21 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <p class="noindent">The <i>novel</i> class ships with its own custom font, <em>NovelDeco.otf</em>. This Open Type font is specifically designed to provide a number of decorative glyphs, and some other characters. It is <em>not</em> a general-purpose font, and can <em>not</em> be replaced by any other font, except by a modified version of <em>NovelDeco</em>.</p>
 <p>The <em>decofont</em> is automatically configured. You do not need to set it. However, if you use a font editor to create a modified version, then your modification must have a different font name (to avoid confusion with the original). In such a rare case, you may point to your modified font like this:</p>
 <p class="code"><code>\SetDecoFont[optional,features]{YourDecoFont}</code></p>
-<p>The <em>decofont</em> is automatically called by other commands, such as \decoglyph{} and \acronym{}. Normally you do not request <em>decofont</em> directly. But if you wish to do so:</p>
+<p>The <em>decofont</em> is automatically called by other commands, such as \decoglyph and \acronym. Normally you do not request <em>decofont</em> directly. But if you wish to do so:</p>
 <p class="code"><code>{\decofont <em>text</em>}</code></p>
-<p>The decorative glyphs in this font (not including its ordinary characters) are shown in file <i>NovelDeco-glyphs.pdf</i>, which can be found in these docs in the documentation <i>extras</i> folder.</p>
+<p>The decorative glyphs in this font (not including its ordinary characters) are shown in file <i>NovelDeco-glyphs.pdf</i>, which can be found in the documentation <i>extras</i> folder.</p>
 </div>
 </div><!-- end class="d3" -->
 
 <h3 id="h5.3">5.3. &nbsp; Defining New Fonts</h3>
 <div class="d3" id="d5.3">
 <p class="noindent">You can define new font commands. The syntax depends on whether the new font is part of a family (where you might have bold and italic variants), or just a single file (no variants). If part of a family, use \NewFontFamily. If alone, use \NewFontFace.</p>
+<p>The \NewFontFamily command (or \NewFontFace) takes three arguments: First, the name you assign to the new font command is required. Second, font features are optional. Third, the font name is required (this is tricky; see <a href="#h5.4">section 5.4</a>).</p>
+<p class="code"><code>
+\NewFontFamily<em>\pickaname</em>[<em>optional,features</em>]{<em>Font Family</em>}<br/>
+\NewFontFace<em>\pickaname</em>[<em>optional,features</em>]{<em>Individual Font File</em>}
+</code></p>
 <p>Note that if you define a font <em>family</em> when you should have just defined a font <em>face</em>, there will be complaints in the log file, because the font loaded cannot find the (nonexistent) other members of the family. But the document will compile. On the other hand, if you define a font <em>face</em> when you should have defined a font <em>family</em>, then commands for bold or italic will have no effect, since the other family members were not loaded. Again, the document will compile.</p>
-<p>The \NewFontFamily command (or \NewFontFace) takes three arguments: First, the name of the new font command is required. Second, font features are optional. Third, the font name is required.</p>
 <p style="margin-top:16px"><b>Example:</b> Suppose your work is science fiction, and one if its characters is a talking robot. You wish to depict its utterances in a robotic-looking font, which will be called using a new \robovoice command. You shop around, and find that the <em>Orbitron</em> font suits your purpose, except that it is too large compared to your <em>textfont</em>. So, you scale it.</p>
 <p>In the Preamble, you define the new font command:</p>
 <p class="code"><code>\NewFontFace\robovoice[Scale=0.8]{Orbitron} % not part of a family</code></p>
@@ -1165,17 +1181,17 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 Nonexistent Publications • Portland, Oregon\par<br/>
 \end{center}
 </code></p>
-<p style="clear:both; margin-top:16px; font-size:small">Note: Command \NewFontFamily is identical to \newfontfamily, and command \NewFontFace is identical to \newfontface.</p>
 </div><!-- end class="d3" -->
 
 <h3 id="h5.4">5.4. &nbsp; Font Customization Syntax</h3>
 <div class="d3" id="d5.4">
-<p class="noindent">You will be using <code>fontspec</code> syntax to select your own fonts. Much of what follows is a digested portion of the full <code>fontspec</code> documentation. There are many more features, and ways to use them, than will be described below.</p>
+<p class="noindent">You will be using <i>fontspec</i> syntax to select your own fonts. Much of what follows is a digested portion of the full <i>fontspec</i> package documentation. There are many more features, and ways to use them, than will be described below.</p>
 
 <h4 id="h5.4.1">5.4.1. &nbsp; Font (Family) Name vs. Font File Name</h4>
 <div class="d4" id="d5.4.1">
 <p class="noindent">A <em>font file</em> is an individual file, with its own <em>file name</em>, including file extension. For example, libertinusserif-regular.otf and libertinusserif-italic.otf are two different font files. This much is obvious.</p>
-<p>A <em>font family name</em>, often merely called <em>font name</em>, refers to one or more font files that are variations of the same basic font. Some fonts are so unique that the family consists of just one file. For example, the NovelDeco font family consists of the one file NovelDeco.otf. Typically, a font family has four files, consisting of Regular, Italic, Bold, and BoldItalic variants. Even though there are four font files, there is a single font family name. Many font families have more than four files, including Semibold and Light weights, and Condensed tracking. It is up to the font designer to decide whether a Condensed variation of the "Bubble Turble" font should be treated as a member of the "Burble Turble" family, or as a separate "Burble Turble Condensed" family.</p>
+<p>A <em>font family name</em>, often merely called <em>font name</em>, refers to one or more font files that are variations of the same basic font. Some fonts are so unique that the family consists of just one file. For example, the <i>NovelDeco</i> font family consists of the one file <i>NovelDeco.otf</i>. Typically, a font family has four files, consisting of Regular, Italic, Bold, and BoldItalic variants. Even though there are four font files, there is a single font family name.</p>
+<p>Many font families have more than four files, including Semibold and Light weights, and Condensed tracking. It is up to the font designer to decide whether a Condensed variation of the "Bubble Turble" font should be treated as a member of the "Burble Turble" family, or as a separate "Burble Turble Condensed" family.</p>
 <p>The font (family) name can be learned by opening font files in your system font viewer. Currently, the Windows 10 font viewer uses "Font name" and the Ubuntu font viewer puts the font name in more prominent type. A font (family) name may contain more than one word, with or without spaces, and may contain a general classification such as <em>serif</em>, <em>sans</em>, or <em>mono</em>, because those are actually different families. But it will not contain words such as <em>regular</em>, <em>medium</em>, <em>semibold</em>, <em>bold</em>, or <em>italic</em>; those are for individual members of the same family. Within TeX, some of the older PostScript fonts have been re-worked as newer TrueType and Open Type fonts. The family names are slightly different, so pay attention.</p>
 <p class="centerimg">
 <img src="html-resources/win10libser.png" width="268" height="184" alt="Windows 10 font viewer"/> &nbsp;
@@ -1192,8 +1208,8 @@ Nonexistent Publications • Portland, Oregon\par<br/>
 <p class="code" style="clear:both"><code>\NewFontFamily\rway{Raleway}</code></p>
 <p>Document Body:</p>
 <p class="code"><code>{\rway I came, \textbf{I saw}, \emph{I conquered}, \textsc{I left}.}</code></p>
-<p style="margin-top:10px"><b>By file names:</b></p>
-<p><img class="floatright" style="padding-top:12px" src="html-resources/fontbyfilenamei.png" width="335" height="44" alt="font file defined"/> However, if you specify the <em>font file name</em>, then <em>only</em> that font file will be used, regardless of requests for bold or italic. Small caps will be honored, if the specific file has them:</p>
+<p style="margin-top:10px"><b>By file name:</b></p>
+<p><img class="floatright" style="padding-top:12px" src="html-resources/fontbyfilenamei.png" width="335" height="44" alt="font file defined"/> However, if you specify a single <em>font file name</em>, then <em>only</em> that font file will be used, regardless of requests for bold or italic. Small caps will be honored, if the specific file has them:</p>
 <p>Preamble:</p>
 <p class="code" style="clear:both"><code>\NewFontFamily\rwayi{Raleway-Regular-Italic.otf}</code></p>
 <p>Document Body:</p>
@@ -1219,7 +1235,7 @@ Nonexistent Publications • Portland, Oregon\par<br/>
 
 <h4 id="h5.4.3">5.4.3 Open Type Features</h4>
 <div class="d4" id="d5.4.3">
-<p class="noindent">Features are variations, contained within a single font file. In the bad old days, when you wanted true small caps, you had to load a separate font file that had them (and did not have ordinary lowercase letters). Now, if an Open Type font file has the "smcp" feature, you obtain the small caps from within the same file, by asking for them. Requests for the feature may be made on-the-fly, or pre-loaded for global use.</p>
+<p class="noindent">Features are variations, contained within a single font file. In the bad old days, when you wanted true small caps, you had to load a separate font file that had them (and did not have ordinary lowercase letters). Now, if an Open Type font file has the <i>smcp</i> feature (most do), you obtain the small caps from within the same file, by asking for them. Requests for the feature may be made on-the-fly, or pre-loaded for global use.</p>
 <p>Here are several of the most frequently-used features, relevant to fiction writing. There are many more, and most fonts have only a few of them. Even when a font has a feature, it may be limited to some portion of the characters. For example, it is common for small caps to be available only for Latin-1 letters, even though the font also contains Greek and Cyrillic. To put this another way: The availability of a feature does not tell you its breadth of coverage. Unless the font has documentation showing coverage of its features, the only way to find out is to create and print a test page.</p>
 <table class="preconf">
 <caption>
@@ -1270,16 +1286,17 @@ Some Frequently-Used Open Type Features
 </tr>
 </tbody>
 </table>
-<p>&bull; Kerning is the automatic adjustment of spacing between letters, so that they fit together nicely. Common ligatures are substitutions, such as a combined <i>ff</i> character for two consecutive <i>f</i> characters. It is up to the font designer to determine which ligatures, if any, are common.</p>
+<p>&bull; Kerning is the automatic adjustment of spacing between letters, so that they fit together nicely. The values are read from tables within the font.</p>
+<p>&bull; Common ligatures are substitutions, such as a combined <i>ff</i> character for two consecutive <i>f</i> characters. It is up to the font designer to determine which ligatures, if any, are common.</p>
 <p>&bull; TeX ligatures (such as replacing `` with “ and --- with &mdash;) are not actually an Open Type feature, but they are treated that way by the software. All of these are enabled by default. The <i>fontspec</i> manual explains how to disable them, if necessary.</p>
 <p>&bull; The SmallCaps feature applies only to lowercase letters; ordinary capitals remain ordinary capitals. UppercaseSmallCaps deals only with converting ordinary capitals to small caps. If you want both, use both. In most fonts that have them, small caps are slightly taller than lowercase, and slightly more widely spaced. What distinguishes real small caps from fake ones (obtained by scaling ordinary capitals) is that the weight and spacing are more compatible with surrounding text.</p>
 <p class="centerimg"><img src="html-resources/smallcapsrealfake.png" width="478" height="43" alt="real vs fake small caps"/></p>
-<p>&bull; Lining numerals are the ones most familiar to you, from math or accounting. They sit on the baseline and have the height of capital letters. That's just right for doing calculations, and doesn't look bad for things such as page numbers and chapter numbers.</p>
+<p>&bull; Lining numerals are the ones most familiar to you, from math or accounting. They sit on the baseline and have the height of capital letters. That's just right for doing calculations, and is acceptable for things such as page numbers and chapter numbers.</p>
 <p>&bull; When lining numerals are mingled with flowing text, they may stand out too much. OldStyle numerals are more like flowing text: Most of the numerals are at lowercase height, with ascenders and descenders. Compare the first number as OldStyle, the second as Lining:</p>
 <p class="centerimg"><img src="html-resources/jollybeers.png" width="499" height="52" alt="oldstyle vs lining numerals"/></p>
 <p>Most fonts use Lining numerals as their default. A few default to OldStyle numerals. Thus, you should explicitly call for the kind of numerals you wish to use.</p>
-<p>&bull; True OldStyle numerals have a flat top on <em>one</em>, and a very round <em>zero</em>: <img src="html-resources/10trueold.png" width="37" height="13" alt="true oldstyle 10"/> This may be a bit distracting. Some fonts use a transitional form, where the one has a tilted top (like big 1) and the zero is not so round: <img src="html-resources/10transold.png" width="37" height="13" alt="transitional oldstyle 10"/> Others offer you a choice, via an Open Type "style set." See the <code>fontspec</code> manual for how to code style sets.</p>
-<p>&bull; There are many more Open Type features, most of which are not useful in ordinary fiction writing. Fonts rarely have more than a few features. Some features (such as the ones shown above) have a specific meaning. Other features, such as "style sets", have whatever meaning the font designer assigns them; Thus the "ss03" feature of one font may do something very different from "ss03" in a different font.</p>
+<p>&bull; True OldStyle numerals have a flat top on <em>one</em>, and a very round <em>zero</em>: <img src="html-resources/10trueold.png" width="37" height="13" alt="true oldstyle 10"/> This may be a bit distracting. Some fonts use a transitional form, where the one has a tilted top (like big 1) and the zero is not so round: <img src="html-resources/10transold.png" width="37" height="13" alt="transitional oldstyle 10"/> Others offer you a choice, via an Open Type "style set." See the <i>fontspec</i> manual for how to code style sets.</p>
+<p>&bull; There are many more Open Type features, most of which are not useful in ordinary fiction writing. Fonts rarely have more than a few features. Some features (such as the ones shown above) have a specific meaning. Other features, such as "style sets", have whatever meaning the font designer assigns them; Thus the <i>ss03</i> feature of one font may do something very different from <i>ss03</i> in a different font.</p>
 </div>
 
 <h4 id="h5.4.4">5.4.4. &nbsp; Scale as Pseudo-Feature</h4>
@@ -1300,6 +1317,7 @@ Some Frequently-Used Open Type Features
 <p>When you use the <i>graytext</i> class option, you may write text in grayscale, using commands from the included <i>xcolor</i> package. You should only do this for text that is in special locations. For example, if you begin each chapter with a number that is very large, you might wish to make that number gray, so that it does not overpower the main text.</p>
 <p>To avoid possible conflicts, the color specification should be chosen from a limited list of names. In order from dark to light: black, blue, violet, darkgray, purple, red, teal, olive, magenta, gray, brown, green, orange, cyan, lightgray, lime, pink, yellow, white. They will all be rendered in <em>shades of gray</em> (of course, black and white will be themselves). You may also choose from this more convenient list: black, gray1, gray2, gray3, gray4, gray5, gray6, gray7, gray8, gray9, white.</p>
 <p>If <i>graytext</i> is not chosen as class option, then any color (even white) will be rendered as black.</p>
+<p>&bull; Placing light text over a dark background may produce unexpected results in print, even if it looks good in PDF. If you need this effect, it is better to build the text into the background, as a single image.</p>
 </div>
 
 <h4 id="h5.4.6">5.4.6. &nbsp; \CreateFeature{<em>code</em>}{<em>substitutions</em>}</h4>
@@ -1316,7 +1334,7 @@ Some Frequently-Used Open Type Features
 <h4 id="h5.4.7">5.4.7. &nbsp; Local Modifications to Open Type Features</h4>
 <div class="d4" id="d5.4.7">
 <p class="noindent">If you specify a particular Open Type feature, it will be generally used for that font command. So if you define a new font command with <i>Letters=SmallCaps</i> as a feature (and if the font actually has them), then small caps will be used for that font, whether or not you locally request them with a command such as \textsc.</p>
-<p>Often, you can add (or sometimes remove) features on a local basis. For example, suppose that you defined the font without using is <i>ss03</i> style set. You can locally add that feature to some text, using a command that looks like this:</p>
+<p>Often, you can add (or sometimes remove) features on a local basis. For example, suppose that you defined the font without using its <i>ss03</i> style set. You can locally add that feature to some text, using a command that looks like this:</p>
 <p class="code"><code>{\addfontfeature{<em>which feature</em>} <em>applied to this text</em>}</code></p>
 <p>The above code assumes that you are already using the font in that location. You cannot apply <i>ss03</i> from one font to an entirely different font!</p>
 <p>See the <i>fontspec</i> documentation for details of \addfontfeature.</p>
@@ -1336,17 +1354,17 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 <div class="d3" id="d5.5">
 <p class="noindent">In <i>novel</i>, superscripts and subscripts are called "markers." Most book-quality Open Type fonts have markers in style sets (<i>sups</i>, <i>sinf</i>, <i>subs</i>).</p>
 <p>In professional fonts, marker glyph weights are adjusted for consistent appearance compared to ordinary glyphs. However, many free fonts do not adjust marker glyph weights, so the markers may appear too small, or too light. You may choose whether to use a font's own markers, or allow <i>novel</i> to generate markers, depending on whichever you think looks better.</p>
+<p>&bull; <i>real</i> markers attempt to use the Open Type feature <i>sups</i> for superscripts, and the feature <i>sinf</i> (preferred) or <i>subs</i> (alternate) for subscripts. If the requested feature is not available for the font, then it will be automatically faked, by scaling/raising/lowering ordinary characters from the basefont (lining numerals will be used).</p>
+<p>&bull; <i>fake</i> markers ignore whether the Open Type features are available, and simply fakes them.</p>
 
 <h4 id="h5.5.1">5.5.1 &nbsp; \SetMarkers[<em>real,fake</em>]{<em>asterisk, dagger, number</em>}</h4>
 <div class="d4" id="d5.5.1">
-<p>This command is used only in the Preamble. Default is <i>real</i> and <i>asterisk</i>.</p>
-<p>&bull; The option <i>real</i> (default) attempts to use the Open Type feature <i>sups</i> for superscripts, and the feature <i>sinf</i> (preferred) or <i>subs</i> (alternate) for subscripts. If the requested feature is not available, then it will be automatically faked, by scaling/raising/lowering ordinary characters from the basefont (lining numerals will be used).</p>
-<p>&bull; Option <i>fake</i> ignores whether the Open Type features are available, and simply fakes them.</p>
-<p>Thus, you may choose whether real or fake markers look better, depending on the font you are using. What looks better in one font may not look better in another.</p>
-<p>&bull; The required argument applies only to markers created by the \footnote command. It does not apply to endnotes, or to manually placed superscripts and subscripts.</p>
-<p><i>asterisk</i> (default) uses symbolic footnote markers. The symbols rotate in order * † ‡ § ** †† ‡‡ §§ until reset.</p>
-<p><i>dagger</i> uses symbolic footnote markers, but without asterisks. The symbols rotate in order † ‡ § †† ‡‡ §§ until reset.</p>
-<p><i>number</i> uses numerical markers. Due to possible conflict, the log file will have a "Big Bad Warning" if you use a numerical footnote marker in a document that also has endnotes, since endnotes alays have numerical markers.</p>
+<p>This command may only be used in the Preamble. It globally sets the kind of marker to be used. Default is <i>real</i> and <i>asterisk</i>.</p>
+<p>The optional argument applies real or fake markers, as described above.</p>
+<p>The required argument applies only to markers created by the \footnote command. It does not apply to endnotes, or to manually placed superscripts and subscripts.</p>
+<p>&bull; <i>asterisk</i> (default) uses symbolic footnote markers. The symbols rotate in order * † ‡ § ** †† ‡‡ §§ until reset.</p>
+<p>&bull; <i>dagger</i> uses symbolic footnote markers, but without asterisks. The symbols rotate in order † ‡ § †† ‡‡ §§ until reset.</p>
+<p>&bull; <i>number</i> uses numerical footnote markers. Due to possible conflict, the log file will have a "Big Bad Warning" if you use a numerical footnote marker in a document that also has endnotes, since endnotes always have numerical markers.</p>
 </div>
 
 <h4 id="h5.5.2">5.5.2 &nbsp; \realmarker, \fakemarker</h4>
@@ -1375,7 +1393,7 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 
 <h4 id="h6.1.1">6.1.1. &nbsp; <code>\SetHeadJump{<em>number</em>}</code>, <code>\SetFootJump{<em>number</em>}</code></h4>
 <div class="d4" id="d6.1.1">
-<p class="noindent">These two commands control the separation between the header/footer and the main text. Since they pertain to page layout, rather than style, their usage is described above, in the layout section.</p>
+<p class="noindent">These two commands control the separation between the header/footer and the main text. Since they pertain to page layout, rather than style, their usage is described above, in layout <a href="#h4.2.6">section 4.2.6</a>.</p>
 </div>
 
 <h4 id="h6.1.2">6.1.2. &nbsp; <code>\SetHeadFootStyle{<em>number</em>}</code></h4>
@@ -1443,7 +1461,7 @@ Default author verso, title recto.</p>
 <p>&bull; In the Preamble, use one of the above \SetHeadFootStyle{<em>integer</em>} to pick a starting point, in terms of whether or not there is a header and/or footer. <em>This is required, so that the layout engine knows how to calculate space.</em> After that, write the <i>fancyhdr</i> code for your custom header/footer in the Preamble. It will over-ride the numerical style in terms of appearance, but occupy the same space.</p>
 <p>&bull; You cannot use a header or footer with more than one line. No exceptions.</p>
 <p>&bull; See the file <i>novel-HeadFootStyles.sty</i> for how it is done in the pre-configured styles. In the file, the relevant portion follows <em>Look here for the pre-defined styles, for use as models.</em></p>
-<p>&bull; Particularly note that your own style will not automatically use the headfont, or loose tracking, unless you include the necessary code in your own definition. Do not use the \textls command.</p>
+<p>&bull; Particularly note that your own style will not automatically use the <i>headfont</i>, or add extra space between letters, unless you include the necessary code in your own definition. Do not use the \textls command.</p>
 <p>&bull; No cheating! If you choose a numerical style that does not have a header, then do not attempt to write a custom style that includes a header. Same with footer. Also, if you you choose a numerical style with both header and footer, then you cannot only customize one of them; you must customize both.</p>
 </div></div><!-- end class="d4" -->
 
@@ -1466,9 +1484,9 @@ Default author verso, title recto.</p>
 \SetEmblems{\InlineImage[0pt,b]{spy.png}}%<br/>
 {\InlineImage[0pt,b]{spy.png}}
 </code></p>
-<p>&bull; At the small size of an emblem, it is difficult to use detailed artwork. A black/white image at 600dpi will print similarly to a font dingbat. Grayscale at 300dpi will probably not be satisfactory unless the emblem is a single shade of gray. For the above example, a character from the "Fontawesome" font was converted to a png image at mid-gray. It is less distracting than a black character from the font, but hard to discern. Note that there is no "gray ink" for directly writing text in gray.</p>
+<p>&bull; At the small size of an emblem, it is difficult to use detailed artwork. A black/white image at 600dpi will print similarly to a font dingbat. Grayscale at 300dpi will probably not be satisfactory unless the emblem is a single shade of gray. For the above example, a character from the <i>Fontawesome</i> font was converted to a png image at mid-gray. It is less distracting than a black character from the font, but hard to discern. Note that there is no "gray ink" for directly writing text in gray.</p>
 <p>&bull; Ask your print service whether the presence of a small image in each page header will affect production costs. Probably not, but if there is a different per-page charge when pages have an image... Oops!</p>
-<p>&bull; The layout calculation does not care whether emblems intrude into the margins. You will have to inspect your PDF to determine whether a header emblem is too tall, or a footer emblem too deep, for the allowed top and bottm margin clearance. Class option <i>shademargins</i> (in draft mode only) is helpful.</p>
+<p>&bull; The layout calculation does not care whether emblems intrude into the margins. You will have to inspect your PDF to determine whether a header emblem is too tall, or a footer emblem too deep, for the allowed top and bottom margin clearance. Class option <i>shademargins</i> (in draft mode only) is helpful.</p>
 </div>
 
 <h4 id="h6.1.4">6.1.4. &nbsp; <code>\SetPageNumberStyle{<em>code using \thepage</em>}</code></h4>
@@ -1482,7 +1500,7 @@ Default author verso, title recto.</p>
 
 <h4 id="h6.1.5">6.1.5. &nbsp; <code>\SetHeadFont[<em>features</em>]{<em>font</em>}</code></h4>
 <div class="d4" id="d6.1.5">
-<p class="noindent">This setting is described earlier on this page.</p>
+<p class="noindent">This setting is described in <a href="#h5.1.5">section 5.1.5</a>.</p>
 </div>
 
 <h4 id="h6.1.6">6.1.6. &nbsp; <code>\SetLooseHead{<em>number</em>}</code></h4>
@@ -1493,12 +1511,12 @@ Default author verso, title recto.</p>
 <p class="centerimg"><img src="html-resources/looseheads.png" width="400" height="76" alt="loosehead 50 and 100"/></p>
 <p>The argument of \SetLooseHead is a number from 0 to 1000. At 0 there is no extra space between the letters. Values from 50 (default) to 200 are most useful. Higher values are unusual.</p>
 <p>Page number tracking will be clamped at a maximum of 50, even when a larger (looser) tracking is applied to text.</p>
-<p>The looseness applies to inter-letter spacing, but not to inter-word spacing. To increase inter-word spacing, use extra code such as \, (which is a LaTeX thin space) as needed.</p>
+<p>The looseness applies to inter-letter spacing, but not to inter-word spacing. To increase inter-word spacing, use extra code such as \, (backslash comma, which is a LaTeX thin space) as needed.</p>
 </div>
 
 <h4 id="h6.1.7">6.1.7. &nbsp; <code>\SetChapterStart{<em>choice</em>}</code></h4>
 <div class="d4" id="d6.1.7">
-<p class="noindent">This command is only applied if you begin new chapters with the ChapterStart environment. You may pick one of the \thispagestyle choices, described in the next section. For example:</p>
+<p class="noindent">This command is only applied if you begin new chapters with the <a href="#h11.1">ChapterStart</a> environment. You may pick one of the \thispagestyle choices, described in the <a href="#h6.2.2">section 6.2.2</a>. For example:</p>
 <p class="code"><code>\SetChapterStart{dropfolioinside}</code></p>
 <p>Then, that choice will be applied to each page that uses ChapterStart, without you having to write \thispagestyle each time.</p>
 <p>The default is <i>footer</i>. This allows a ChapterStart page to show its footer (only if it has one), but not header.</p>
@@ -1512,11 +1530,11 @@ Default author verso, title recto.</p>
 
 <h4 id="h6.2.1">6.2.1. &nbsp; <code>\SetVersoHeadText{<em>text</em>}</code><code>\SetRectoHeadText{<em>text</em>}</code></h4>
 <div class="d4" id="d6.2.1">
-<p class="noindent">If you are using style 1, 4, 5, or 6, the header text can be dynamically changed from page to page. This feature is useful if your wish to include chapter titles in the header. It is also useful if your work is a collection of stories with different titles, perhaps by different authors. But before you use this feature, speak with your print service! Many print-on-demand services will insist that the content of headers must not vary from place to place, because different headers may be confused with portions of different books, during the assembly process.</p>
+<p class="noindent">If you are using <a href="#h6.1.2">head/foot style</a> 1, 4, 5, or 6, the header text can be dynamically changed from page to page. This feature is useful if you wish to include chapter titles in the header, since they change throughout the book. It is also useful if your work is a collection of stories with different titles, perhaps by different authors. But before you use this feature, speak with your print service! Many print-on-demand services will insist that the content of headers must not vary from place to place, because different headers may be confused with portions of different books, during the assembly process.</p>
 <p class="code"><code>\SetVersoHeadText{New Verso Head}</code><br/><code>\SetRectoHeadText{New Recto Head}</code></p>
 <p>These two commands may be used at any time, in the Preamble or document body. When a command is used, it stores its argument in \versoheadtext or \rectoheadtext. In turn, the current value of \versoheadtext or \rectoheadtext is immediately used for the header, and will remain in effect until changed again by \SetVersoHeadText or \SetRectoHeadText.<p>
 <p>If you do not use these commands in the Preamble, then at the beginning of the document body they will be automatically set to the author (verso) and the title (recto). However, you may find that the inter-word space is closer than you would like.<p>
-<p>For improved inter-word space, use \, (the LaTeX thin space) in addition to ordinary space. You may use as many as you need.</p>
+<p>For improved inter-word space, use \, (backslash comma, the LaTeX thin space) in addition to ordinary space. You may use as many as you need.</p>
 <p>You may use ordinary LaTeX styling commands for the text:</p>
 <p class="code"><code>\SetRectoHeadText{The \,\emph{Bad \,Boy} \,Chronicles}</code></p>
 <p>The most popular styling uses lowercase to small caps:</p>
@@ -1527,10 +1545,10 @@ Default author verso, title recto.</p>
 
 <h4 id="h6.2.2">6.2.2. &nbsp; <code>\thispagestyle{<em>choice</em>}</code></h4>
 <div class="d4" id="d6.2.2">
-<p class="noindent">When you choose a style with header, then space is allocated above the text block, where the header will be placed. That space will be allocated whether or not the header is full or empty. The same applies to the footer. This allocation is global, and cannot be changed in your document body. All standard books work this way, not just with TeX.</p>
+<p class="noindent">When you choose a <a href="#h6.1.2">head/foot style</a> with header, then space is allocated above the text block, where the header will be placed. That space will be allocated whether or not the header is full or empty. The same applies to the footer. This allocation is global, and cannot be changed in your document body. All standard books work this way, not just with TeX.</p>
 <p>However, on a per-page basis you can change whether or not a header or footer has visible content. This is routinely done for blank pages, title page, copyright page, and some others. It is also the norm for pages that begin a new chapter.</p>
 <p>&bull; The word "folio" has several meanings: It may refer to a particular paper size, or to a folded piece of paper at any size, or simply to a page number. Below, "folio" means page number.</p>
-<p>&bull; When you use the \thispagestyle command, your choice is applied only to the one page on which the command is written. It is best to use this command at or towards the top of the affected page. If the page uses the ChapterStart environment, and you use \thispagestyle, then you <em>must</em> place \thispagestyle before \begin{ChapterStart}.</p>
+<p>&bull; When you use the \thispagestyle command, your choice is applied only to the one page on which the command is written (usally does not have to be at the top of the page). But if the page uses the <a href="#h11.1">ChapterStart</a> environment, and you use \thispagestyle, then you <em>must</em> place \thispagestyle before \begin{ChapterStart}.</p>
 <p>&bull; The following choices are allowed: <i>fancy</i>, <i>empty</i>, <i>footer</i>, <i>forcenumber</i>, <i>dropfoliobeneath</i>, and <i>dropfolioinside</i>.</p>
 <p>For compatibility reasons, <i>plain</i> and <i>fancyplain</i> are also allowed, and have the same effect as <i>footer</i>.</p>
 <p>&nbsp; <b>\thispagestyle{fancy}</b></p>
@@ -1564,7 +1582,7 @@ Default author verso, title recto.</p>
 <h2 id="h7">7. &nbsp; Text Sizes and Styling</h2>
 <div class="d2" id="d7">
 <p class="noindent">This section describes how to change the size of text, how to style text (such as italics), and how to move it around. It also describes some miscellaneous commands that are intended to modify text.</p>
-<p>Information about how to choose the main text point size is described earlier on this page. Information about choosing fonts and font features is also described earlier on this page.</p>
+<p>Information about how to choose the main text point size is described in <a href="#h4.2.3">section 4.2.3</a>. Information about choosing fonts and font features was <a href="#h5">previously described</a> on this page.</p>
 <p>There is no direct setting for normal baselineskip; it is automatically calculated from the size of the textblock and lines per page.</p>
 
 <h3 id="h7.1">7.1. &nbsp; Text Sizes</h3>
@@ -1575,14 +1593,13 @@ Default author verso, title recto.</p>
 <div class="d4" id="d7.1.1">
 <p class="noindent">Ah, the simplicity of TeX font size commands, such as \small and \LARGE. But in <i>novel</i>, they don't work. If you write {\LARGE text}, then the incuded text appear at normal size. This is by design.</p>
 <p>Why? In <i>novel</i>, the focus is on maintaining a constant baselineskip, so that facing pages have text aligned. This is impossible with the standard TeX commands. In particular, commands to increase font size will change the baselineskip, whether you like it or not, even if you try to code for a constant baselineskip. That's just the way TeX works.</p>
-<p>The one exception is that footnotes will appear with smaller than normal size and skip. But this is done automatically. You cannot manipulate it with a size command.</p>
+<p>The one exception is that <a href="#h12.1">footnotes</a> will appear with smaller than normal size and skip. But this is done automatically. You cannot manipulate it with a size command.</p>
 <p>Fortunately, there are not a lot of occasions where fiction needs to change font size. In <i>novel</i>, there are new commands to address each situation.</p>
 </div>
 
 <h4 id="h7.1.2">7.1.2. &nbsp; \charscale[<em>scale,hoffset,voffset</em>]{<em>text</em>}, \charscale*[<em>scale,hoffset,voffset</em>]{<em>text</em>}</h4>
 <div class="d4" id="d7.1.2">
-<p class="noindent">The \charscale command may be used for a short amount of text, where there is no line break. The command will throw an error if the included text has \\ or \par or any other command that breaks the line. You may not place an image in \charscale.</p>
-<p>This command is built into some other <i>novel</i> commands, such as \ChapterTitle.</p>
+<p class="noindent">The \charscale command may be used for a short amount of text, where there is no line break. The command will throw an error if the included text has \\ or \par or any other command that breaks the line. Text within \charscale does not wrap. You may not place an image in \charscale.</p>
 <p>When used without the option, \charscale echoes the included text. However, the text gains the magical ability to extend above or below the normal line of text, without pushing apart the baselines. This is useful if the text has some unusual character that is extraordinarily tall or deep.</p>
 <p>Using the option, you may uniformly scale the text by any amount, and displace it horizontally and vertically. The text can overlie other text, or any previously-placed image.</p>
 <p>With the unstarred command, the scaled width of the text will occupy horizontal space, even if the text is displaced far away. But with the starred command, the text does not occupy any horizontal space.</p>
@@ -1667,7 +1684,7 @@ The \allsmcp{NATO} alliance...\par
 <h4 id="h7.2.5">7.2.5. &nbsp; Local Tracking Adjustment</h4>
 <div class="d4" id="d7.2.5">
 <p class="noindent"><b>\squeeze{<em>text</em>}</b> narrows the text by one percent.</p>
-<p><b>\crush{<em>text</em>}</b> narrows the text by two percent.</p>
+<p class="noindent"><b>\crush{<em>text</em>}</b> narrows the text by two percent.</p>
 <p>These commands are for emergency use only. They temporarily apply a horizontal scale to the letters, so that they are very slightly narrower than usual. Inter-word spacing is not necessarily changed (it can even grow larger), because spacing is calculated during paragraph layout. The enclosed text may span paragraphs.</p>
 <p>The commands do not compound. That is, placing one crush inside another will not narrow the text by four percent. But any adjustments made by <i>microtype</i> will still apply, and may compound with these commands.</p>
 <p>The only application for these commands is when a paragraph does not quite fit where you would like it to be. For example: Perhaps one short word, or part of a word, dangles to an extra line. Try \squeeze first, then \crush, for all or most of the paragraph. These do not always produce a useful effect, since the actual paragraph layout depends on other factors. But <em>if you are lucky,</em> then the paragraph re-flows to a better layout.</p>
@@ -1676,7 +1693,7 @@ The \allsmcp{NATO} alliance...\par
 
 <h4 id="h7.2.6">7.2.6. &nbsp; Local Font Selection</h4>
 <div class="d4" id="d7.2.6">
-<p class="noindent"><b>{\<em>fontcode</em> <em>text</em>}</b> where <i>fontcode</i> is a previously-defined font command.</p>
+<p class="noindent"><b>{\<em>fontcode</em> <em>text</em>}</b> where <i>fontcode</i> is a previously-defined <a href="#h5.1">built-in</a> or <a href="#h5.3">user-defined</a> font command.</p>
 <p>You locally change the font in use, by calling its font command. For example, \subchfont is a built-in command, automatically used in certain macros. You can use it yourself:</p>
 <p class="code"><code>{\subchfont <em>text</em>} % Note that the braces go on the outside.</code></p>
 <p>Likewise, if you used \NewFontFamily or \NewFontFace to define your own font, giving it the command name \mynewfont, then you would use it like this:</p>
@@ -1686,7 +1703,7 @@ The \allsmcp{NATO} alliance...\par
 <h4 id="h7.2.7">7.2.7. &nbsp; Local Feature Changes</h4>
 <div class="d4" id="d7.2.7">
 <p class="noindent"><b>{\addfontfeature{<em>feature</em>} <em>text</em>}</b> for changing Open Type features.</p>
-<p>If a font is already defined, you can locally add one or more features. For example, suppose that you defined \mynewfont without using its Open Type feature <i>ss03</i> (we will assume that the font actually has this feature). In a particular place, you wish to activate <i>ss03</i>. The code looks like this:</p>
+<p>If a font is already defined, you can locally add one or more <a href="#h5.4.3">features</a>. For example, suppose that you defined \mynewfont without using its Open Type feature <i>ss03</i> (we will assume that the font actually has this feature). In a particular place, you wish to activate <i>ss03</i>. The code looks like this:</p>
 <p class="code"><code>{\mynewfont\addfontfeature{RawFeature=+ss03} <em>text</em>}</code> % Note + sign. Braces outside.</p>
 <p>That limits the scope of the feature to the included group, in TeX terminology.</p>
 <p>You can modify features used by any defined font, whether you defined it yourself or it is one of the <i>novel</i> built-in font commands. You can add more than one feature. If the requested feature does not exist in the font, then your request will be ignored.</p>
@@ -1695,7 +1712,7 @@ The \allsmcp{NATO} alliance...\par
 
 <h4 id="h7.2.8">7.2.8. &nbsp; Color Text (actually, grayscale)</h4>
 <div class="d4" id="d7.2.8">
-<p class="noindent"><b>graytext</b> class option must be used, or any color command will be ignored, and its included text will be rendered in black (even if the requested color is white). Images are unaffected.</p>
+<p class="noindent">For this effect, the <a href="#h2.2"><i>graytext</i></a> class option must be used, or any color command will be ignored, and its included text will be rendered in black (even if the requested color is white). Images are unaffected.</p>
 <p><b>\color{<em>name</em>}</b> or <b>\color[gray]{<em>scale</em>}</b> is used within a group. All text will be in grayscale, from where the command is placed, until the group ends. If the command is not at the beginning of the group, it does not affect prior text. Example:</p>
 <p class="code"><code>
 \begingroup<br/>
@@ -1723,15 +1740,15 @@ This text is in lightgray, until the group ends.<br/>
 
 <h4 id="h7.3.1">7.3.1. &nbsp; What to Avoid</h4>
 <div class="d4" id="d7.3.1">
-<p class="noindent">&bull; The \raisebox command does not play well with novel. It can be used, but there is the great risk of disturbing the line grid. Use \charscale instead.</p>
+<p class="noindent">&bull; The \raisebox command does not play well with novel. It can be used, but there is the great risk of disturbing the line grid. Use <a href="#h7.1.2">\charscale</a> instead.</p>
 <p>&bull; If you must use the \vspace command (or its relative, \vskip) be sure to measure the space in units of \nbs (normal baseline skip).</p>
 <p>&bull; Avoid the minipage and parbox environments. These are likely to disrupt the line grid. When that happens, restoring the grid is your own responsibility. You may find the adjustwidth environment to be a useful alternative.</p>
 <p>&bull; In most cases, do not use the center environment. You may use {\centering ... \par} instead, for a single paragraph. The center environment may cause the text to go off-grid. That's not a problem on some stand-alone pages where you don't care about the grid, but it is ugly in the middle of running text.</p>
-<p>&bull; Avoid positioning via the textblock or textblock* environments (package <i>textpos</i>). Actually, novel uses that code internally. But if not handled with more care than usual, positioned text can disrupt the baseline and position of surrounding text. You may use \charscale to position small amounts of text safely, but not on a paragraph basis. Images have built-in positioning arguments, which may also be useful for positioned text.</p>
+<p>&bull; Avoid positioning via the textblock or textblock* environments (package <i>textpos</i>). Actually, novel uses that code internally. But if not handled with more care than usual, positioned text can disrupt the baseline and position of surrounding text. You may use <a href="#h7.1.2">\charscale</a> to position small amounts of text safely, but not on a paragraph basis. Images have built-in positioning arguments, which may also be useful for positioned text.</p>
 <p>&bull; Do not use floats. If you try, then <i>novel</i> may intercept them with a nasty message.</p>
-<p>&bull; Do not use tables. Nasty message will result. But <i>novel</i> has its own provision for a Table of Contents, and the code may be used for other purposes as well.</p>
-<p>&bull; If you use images, then use only the image commands provided by novel: \InlineImage and \BlockImage.<p>
-<p>&bull; There is no built-in provision for a two-column environment. However, you can place text alongside an image.</p>
+<p>&bull; Do not use tables. Nasty message will result. But <i>novel</i> has its <a href="#h9.3.5">own provision</a> for a Table of Contents, and the code may be used for other purposes as well.</p>
+<p>&bull; If you use images, then use only the image commands provided by novel: <a href="#h8.4.2">\InlineImage</a> and <a href="#h8.4.4">\BlockImage</a>.<p>
+<p>&bull; There is no built-in provision for a two-column environment. However, you can place text <a href="#h8.4.5">alongside</a> an image.</p>
 </div>
 
 <h4 id="h7.3.2">7.3.2. &nbsp; Some Useful Commands</h4>
@@ -1882,7 +1899,7 @@ This text is in lightgray, until the group ends.<br/>
 
 <h4 id="h8.3.3">8.3.3. &nbsp; Scaling Images after \Rework.</h4>
 <div class="d4" id="d8.3.3">
-<p class="noindent">When you use one or both of the \Rework commands (Appendix F), the font size and/or the baselineskip will change. However, it does not scale images. In many cases, there is no problem. But in some cases, an un-scaled image will disrupt the previous flow of text or pagination. See Appendix F.5 for how to re-work images.</p>
+<p class="noindent">When you use one or both of the \Rework commands (<a href="#hF">Appendix F</a>), the font size and/or the baselineskip will change. However, it does not scale images. In many cases, there is no problem. But in some cases, an un-scaled image will disrupt the previous flow of text or pagination. See <a href="#hF.5">Appendix F.5</a> for how to re-work images.</p>
 </div>
 <!-- end class="d3" -->
 
@@ -1897,13 +1914,13 @@ This text is in lightgray, until the group ends.<br/>
 <h4 id="h8.4.1">8.4.1. &nbsp; \charscale[<em>scale,hoffset,voffset</em>]{<em>text</em>}, \charscale*[<em>scale,hoffset,voffset</em>]{<em>text</em>}</h4>
 <div class="d4" id="d8.4.1">
 <p class="noindent">The \charscale command pertains to text, not images. It is mentioned here because it can place text almost anywhere on a page, even overlapping other text or previously-placed images. Thus, it provides an image-like effect.</p>
-<p>The command is documented earlier on this page.</p>
+<p>The command is documented <a href="#h7.1.2">earlier</a> on this page.</p>
 </div>
 
 <h4 id="h8.4.2">8.4.2 &nbsp; \InlineImage[<em>hoffset,voffset</em>]{<em>imageFile.png or .jpg</em>} and starred version</h4>
 <div class="d4" id="d8.4.2">
 <p class="noindent">This command places the image as an inline element, at 100% scale. The use of <i>png</i> or <i>jpg</i> images, with file extension, is required.<p>
-<p>You may offset the image horizontally or vertically. Positive direction is to the right and up. If you use one offset, then you must use both (if necessary, <i>0em</i>). Any units of length may be used, but the preferred units are <i>em</i> or <i>\textwidth</i> for horizontal, and <i>em</i> or <i>\nbs</i> for vertical, because these are most compatible with the \Rework commands.</p>
+<p>You may offset the image horizontally or vertically. Positive direction is to the right and up. If you use one offset, then you must use both (if necessary, <i>0em</i>). Any units of length may be used, but the preferred units are <i>em</i> or <i>\textwidth</i> for horizontal, and <i>em</i> or <i>\nbs</i> for vertical, because these are most compatible with the <a href="#hF">\Rework</a> commands.</p>
 <p>By default, the <em>top</em> of the image is at the text baseline. If you prefer that the <em>bottom</em> of the image be at the text baseline, use voffset <i>b</i>. Example:</p>
 <p class="code"><code>\InlineImage[0em,b]{imageFile.png}</code></p>
 <p>Thanks to the included <i>calc</i> package, offsets may use \widthof{<em>text</em>} and/or \heightof{<em>text</em>} as lengths. The most useful of these is when you wish to align the top of an image at the X-height of surrounding text:</p>
@@ -1920,7 +1937,7 @@ This text is in lightgray, until the group ends.<br/>
 <p>With the un-starred \InlineImage command, the image occupies its natural horizontal width. That is, text following the image will (if it fits) continue from the right edge of the image. But with the starred \InlineImage* command, the image occupies zero width. In this case, text following the image will continue from the left of the image, and overlie the image.</p>
 <p>Having text overlie the image is allowable, and can create some interesting special effects. But when your print service sees what you have done, they may think that it is a mistake. Be sure that you discuss this with them.</p>
 <p>If you do allow text to overlie an image, be sure that the image is very light. Repeat: <em>very light</em>. Depending on the printing technology, an image may print darker than you see on your computer screen, and that would make text hard to read. At low print volume, your print service will probably use a technology that is like an industrial-strength home inkjet printer, which can make very sharp text over images. However, if your book goes to volume production, then the technology will be different. Volume printing will use halftoned images, and the text overlay may also become halftoned, which will reduce its sharpness considerably.</p>
-<p>Note that an image may be placed in a way that prints some of the image in the margin. That's allowable if your margin is wider than the minimum required for printing clearance. But even if it is not allowable, there will be no complaint or warning from TeX.</p>
+<p>Note that an image may be placed in a way that prints some of the image in the margin. That's allowable if your margin is wider than the minimum required for printing clearance. But even if it is not allowable, there will be no complaint or warning from TeX. Use the <a href="#h2.3">shademargins</a> class option to ascertain position.</p>
 <p>Do not place an image so that it approaches or goes beyond the page edge. That requires a "bleed box" which is not part of <i>novel</i> capabilities. If your book needs that kind of image handling, use a page layout program instead.</p>
 <p>Do not place images so that they overlap. Although that is allowed in the PDF, it is likely to be flagged as an error by your print service.</p>
 </div>
@@ -1931,7 +1948,7 @@ This text is in lightgray, until the group ends.<br/>
 <p>When text overlies an image, it retains its identity as vector paths, as far as the PDF is concerned. In some printing processes, particularly those for very low volume production, the result will be as sharp and dark as ordinary text. However, if your book sells well (or is being prepared to sell well), the image will be converted to halftone, and the text that lies above it may also be converted to halftone. This will reduce the sharpness of the text. It is not necessarily a problem, unless your text is very small or has fine details.</p>
 <p>If the text-over-image is part of a title, then the text is naturally large and dark, and will easily withstand halftoning.</p>
 <p>Be aware that not all print services will accept text over images. It's not that they <em>cannot</em> do it; after all, your home and office printers can easily do it. The reason they object is because the pages of your book will be handled in small volume by persons who are unfamiliar with the book. Text over an image may be flagged as a printing error or a bug in the PDF. In the advertising world, text over image is routine. But in the world of fictional novels, it is unusual. Don't imagine that they will decide what you meant to do, by reading your book. Also, very sharp image/text, at low printing volume, will not appear as sharp when the technology changes for higher volume production. They know that, but are not sure if <em>you</em> know that.</p>
-<p>An inline image occupies zero vertical space. If you place its top near the bottom of the textblock, then the image will happily flow into the lower margin and perhaps off the bottom of the page, without an error (but the print service will reject it). The reason that TeX does not provide an error message is quite simple: Technically, it is not an error! It is just not what you meant to do. The software cannot read your mind.</p>
+<p>An inline image occupies zero vertical space. If you place its top near the bottom of the textblock, then the image will happily flow into the lower margin and perhaps off the bottom of the page, without an error (but the print service will reject it). The reason that TeX does not provide an error message is quite simple: Technically, it is not an error! It is just not what you meant to do. The software cannot read your mind. This is where the <a href="#h2.3">shademargins</a> class option helps.</p>
 <p>Example:</p>
 <p class="code"><code>
 \noindent\InlineImage*[0pt,1.2\nbs]{gavel.png} Lord Withens took a seat at the rear of the courtroom, attempting to be inconspicuous. Yet his effort was in vain, as he was the only person there with a riding crop and spurs.\par<br/>
@@ -1976,7 +1993,7 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 <h2 id="h9">9. &nbsp; Front Matter</h2>
 <div class="d2" id="d9">
 <p class="noindent">The <b>\frontmatter</b> command must be written immediately after \begin{document}. This sets page numbering to lowercase roman, and performs some other actions.</p>
-<p>A book's front matter is <em>about the book</em>. It is not part of the story. The only mandatory front matter is the Title Page and its verso, the Copyright Page. On a practical basis, six pages of front matter are the minimum, and this minimum is often used, even by major publshers. See Appendix B for how to construct basic six-page front matter.</p>
+<p>A book's front matter is <em>about the book</em>. It is not part of the story. The only mandatory front matter is the Title Page and its verso, the Copyright Page. On a practical basis, six pages of front matter are the minimum, and this minimum is often used, even by major publishers. See <a href="#hB">Appendix B</a> for how to construct basic six-page front matter.</p>
 
 <h3 id="h9.1">9.1. &nbsp; Useful Commands in Front Matter</h3>
 <div class="d3" id="d9.1">
@@ -2013,7 +2030,7 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 <p class="code"><code>\SetVersoHeadText{\allsmcp{Preface}}<br/>
 \SetRectoHeadText{\allsmcp{Preface}}</code></p>
 <p>In the above case, small caps were chosen as style. Then, instead of the author and title of your book, the word <small>PREFACE</small> will appear in headings. Page numbers will be lowercase roman, because those were set by the \frontmatter command.</p>
-<p>Note: If your book is of the genre that pretends to be a "lost manuscript," with the main story being a transcription or translation of the manuscript, then your own explanation of its finding should go in main matter, not front matter. That's because your explanation is fictional, and is part of the total story. Something like that might be titled "Author's Note" or "About the Manuscript," or maybe "Prologue," and be designed like a chapter.</p>
+<p>Note: If your book is of the genre that pretends to be a "lost manuscript," with the main story being a transcription or translation of the manuscript, then your own explanation of its finding may go in front matter or main matter. If it pretends to be "about the book" with litle to say, then it can go in front matter (probably as an "Author's Note"). If it is a chapter-length tale of the adventure finding the rest of the book, then is should go in main matter (probably as an "Introduction" or possibly "Prologue"). I doubt if there is a bright line.</p>
 </div><!-- end class="d3" -->
 
 <h3 id="h9.3">9.3. &nbsp; Examples of Front Matter Pages</h3>
@@ -2021,7 +2038,7 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 
 <h4 id="h9.3.1">9.3.1. &nbsp; Sample Title Page</h4>
 <div class="d4" id="d9.3.1">
-<p class="noindent">Below is a sample title page. The <code>\orbitron</code> command would be defined in Preamble using \NewFontFace. It calls for the font <i>Orbitron-Medium.otf</i>, which is not part of the TeX distribution. The \decoglyph command calls for a decorative element from the <i>NovelDeco.otf</i> font, which comes with the <i>novel</i> class. The length \nbs is the normal baseline skip of the book's main font. The \stake commands place an invisible zero-width reference point, for the use of adjacent commands. Here is the code:</p>
+<p class="noindent">Below is a sample title page. The <code>\orbitron</code> command would be defined in Preamble using <a href="#h5.3">\NewFontFace</a>. It calls for the font <i>Orbitron-Medium.otf</i>, which is not part of the TeX distribution. The \decoglyph command calls for a decorative element from the <i>NovelDeco.otf</i> font, which comes with the <i>novel</i> class. The length \nbs is the normal baseline skip of the book's main font. The \stake commands place an invisible zero-width reference point, for the use of adjacent commands. Here is the code:</p>
 <p class="code"><img class="floatright" src="html-resources/starsmash.png" width="263" height="410" alt="sample title page"/>
 <code><small>
 \clearpage<br/>
@@ -2048,6 +2065,7 @@ Eschwege • Merthyr Tydfil • Lethbridge\par<br/>
 <h4 id="h9.3.2">9.3.2. &nbsp; Sample Copyright Page</h4>
 <div class="d4" id="d9.3.2">
 <p class="noindent">The Copyright Page should be styled differently from the main text. Note that you may past the copyright symbol © from a Unicode character map.</p>
+<p>The simplest Copyright Page begins with \null\vfill so that the following text sinks to the bottom of the page. Ensure that the text is not hyphenated. One way to do that is to use the <i>legalese</i> environment, which prevents hyphenation and sets text ragged-right instead of justified. The <a href="#h7.1.3"><i>parascale</i></a> environment is helpful for setting the text size to something other than normal.</p>
 <p>&nbsp;</p>
 <p class="noindent"><img class="floatright" style="padding-top:2em" src="html-resources/copyrightcentered.png" width="264" height="408" alt="sample copyright page, centered"/> First Example: centered italics, limited width. This design is most effective when you don't have a lot to say.</p>
 <p class="code"><code><small>
@@ -2141,7 +2159,8 @@ Let me tell you, there's nothing more exciting than the brouhaha at Mickey's Pub
 
 <h4 id="h9.3.5">9.3.5. &nbsp; Sample Table of Contents</h4>
 <div class="d4" id="d9.3.5">
-<p class="noindent">Most fiction does not have, and does not need, a Table of Contents. It is more useful when the story consists of discrete episodes with distinctive names, not just numbers. Or, if the book is a collection of short stories, a table of contents is mandatory. If your book is a critical edition, with sections by different authors, then a Table of Contents is appropriate. Avoid any of the table environments that come with TeX or its packages. These do not provide the most attractive presentation for fiction, without a lot of work on your part.</p>
+<p class="noindent">Most fiction does not have, and does not need, a Table of Contents. It is more useful when the story consists of discrete episodes with distinctive names, not just numbers. Or, if the book is a collection of short stories, a table of contents is mandatory. If your book is a critical edition, with sections by different authors, then a Table of Contents is appropriate.</p>
+<p>Avoid any of the table environments that come with TeX or its packages. These do not provide the most attractive presentation for fiction, without a lot of work on your part.</p>
 <p>A Table of Contents has no header or footer, and no printed page number. Use \thispagestyle{empty}. If it continues to a second page, add \thispagestyle{empty} at the end, if you don't know where the page breaks.</p>
 <p>If you use a Table of Contents, it must begin on a recto page.</p>
 <p>The Table of Contents does not include itself, Dedication, or Epigraph.</p>
@@ -2156,7 +2175,7 @@ Let me tell you, there's nothing more exciting than the brouhaha at Mickey's Pub
 <p>Note that the optional argument only applies to \tocitem entries, not to any other text within the environment.</p>
 <p>&bull; The required argument is a length, which will be the amount of extra margin added at left and right of the table (using adjustwidth). A value of 0em allows the table to occupy the full width of the textblock. A value of 2em adds 2em to the margin on each side, so that the width of the table is 4em less than the width of the textblock.</p>
 <p>It is best to specify horizontal lengths in units of <i>em</i> or the proportional <i>\parindent</i> or <i>\textwidth</i>.</p>
-<p>&bull; Place at least empty line above the Table, using \null or \vspace*. This will prevent the Table's title (which is normally anlarged using \charscale) from encroaching into the top margin.</p>
+<p>&bull; Place at least empty line above the Table, using \null or \vspace*. This will prevent the Table's title (which is normally enlarged using \charscale) from encroaching into the top margin.</p>
 </div>
 
 <h5 id="h9.3.5.2">9.3.5.2. &nbsp; \tocitem and \tocitem* Entries</h5>
@@ -2279,7 +2298,7 @@ By the time I returned home...\par<br/>
 <p class="noindent">Many works of fiction have a map or other diagram. It might be the map of a real or fictional geographic area. It might be the map of a crime scene. It might be an inheritance chart. Even though fictional, it may be placed in front matter.</p>
 <p>A map may be placed verso or recto, as long as it does not visually interfere with material on the facing page. In particular, do not place a map on the verso that faces the opening of your story.</p>
 <p>Typically, a map appears late in front matter, but I have sometimes seen it early in front matter. I have not seen an authoritative guide to placement. A single map, or maybe two, need not be mentioned in a table of contents or illustrations. If you have a lot of them strewn around the book, then they should be listed in such a table; but this is very rare in fiction.</p>
-<p>As with all images in <i>novel</i>, a map must be raster png or jpg (not vector artwork), of correct resolution, placed using <i>novel's</i> own image placement commands. These are described elsewhere in this documentation.</p>
+<p>As with all images in <i>novel</i>, a map must be raster png or jpg (not vector artwork), of correct resolution, placed using <i>novel's</i> own image placement commands. These are described <a href="#h8">elsewhere</a> in this documentation.</p>
 <p>Normally, a map in front matter has no header/footer. For example:</p>
 <p class="code"><img class="floatright" src="html-resources/map.png" width="178" height="274" alt="sample map"/>
 <code><small>
@@ -2302,6 +2321,15 @@ By the time I returned home...\par<br/>
 </small></code></p>
 <div style="clear:both"></div>
 </div>
+
+<h4 id="h9.3.10">9.3.10. &nbsp; Cast of Characters, Synopsis, etc.</h4>
+<div class="d4" id="d9.3.10">
+<p class="noindent">Some authors like to provide a page or two that names the characters who will appear in the story, with a quick description. This seems fashionable in murder mysteries.</p>
+<p>Example: "Lord Withens: Master of his ancestral estate, fond of horses and bridge. Who knew what he kept in that distant farmer's cottage?" (Plus a few other characters.)</p>
+<p>Or, if your book is part of a series where this book begins where another left off, you may have a short Synopsis reminding the reader what came before. Example: "Space Captain Withens and his robo-sidekick are on a quest to find the lost Frgltz stone. After intercepting a secret message, they hastily sped to planet Wkertx, only to discover that it was a trap. They are now hiding in an abandoned mine, with a squad of Qltprs patrolling the skies above."</p>
+<p>The Cast of Characters, or Synopsis, begins recto. It is placed very late in front matter, just before main matter begins.</p>
+<p>What's the difference between a Synopsis and a Prologue? A Synopsis is very brief, rarely more than a page, and does not reveal anything that an avid reader would not already know, from previous books in the series. It belongs in front matter. A Prologue is brief (but may be a few pages), and does reveal something that the reader would not already know. It belongs in main matter. I cannot think of any occasion for using both.</p>
+</div>
 </div><!-- end class="d3" -->
 
 
@@ -2316,7 +2344,8 @@ By the time I returned home...\par<br/>
 <p class="noindent">Main matter always begins with the \mainmatter command, immediately following \clearpage or \cleartorecto. The \mainmatter command sets page numbering to Arabic 1.</p>
 <p>There is no middle-matter between front matter and main matter. So, it is necessary to decide whether a page belongs in one or the other. The final page of front matter is verso, with a lowercase roman page number that is almost never printed. The first page of main matter has Arabic page number 1, which may or may not be printed, depending on layout.</p>
 <p>In general, anything that is "about the book" is meta-information that belongs in front matter. "The story itself," and any aftermath, belongs in main matter. This section provides a guide to determining which is which.</p>
-<p>Some situations are judgement calls. Where I provide an opinion, it is based on my obervations of popular fiction books, or the <i>Chicago Manual of Style, 16th Edition (CMoS)</i>, favoring actual books when there is room for disagreement. Opinions offered by non-authoritative web sites have been disregarded.</p>
+<p>Some situations are judgement calls. Where I provide an opinion, it is based on my obervations of popular fiction books, or the <i>Chicago Manual of Style, 16th Edition (CMoS)</i>, favoring actual books when there is room for disagreement. Opinions offered by non-authoritative web sites have been disregarded. It's not that I am more authoritative; take my advice, or leave it, as you see fit.</p>
+<p>Just the other day, I was looking at a famous book by a famous author, reprinted by a famous publisher in hard cover. Its page numbers began with 1 at the Half-Title and ran continuously. No separate numbering for front matter. Why bother thinking about it, when the book will sell the same number of copies anyway?</p>
 
 <h3 id="h10.1">10.1. &nbsp; Introduction in Front Matter</h3>
 <div class="d3" id="d10.1">
@@ -2354,7 +2383,7 @@ In the chapters pertaining to transmontane trade and cultural exchange, I have t
 <h3 id="h10.3">10.3. &nbsp; Second Half-Title in Front Matter</h3>
 <div class="d3" id="d10.3">
 <p class="noindent">If a second Half-Title is used, <i>CMoS</i> acknowledges that theory and practice often differ. Here, I will go with the common practice in fiction.</p>
-<p>If front matter is short, a second Half-Title is sometimes used to prevent verso front matter from clashing with recto main matter. This is one of the possibilities discussed in the basic six-page front matter (Appendix B). In this case, the second Half-Title is front matter, and so is its verso. Main matter begins at the following recto.</p>
+<p>If front matter is short, a second Half-Title is sometimes used to prevent verso front matter from clashing with recto main matter. This is one of the possibilities discussed in the basic six-page front matter (<a href="#hB">Appendix B</a>). In this case, the second Half-Title is front matter, and so is its verso. Main matter begins at the following recto.</p>
 <p>You can also do this for more than the basic six pages of front matter, if you wish. However, there are situations where a second Half-Title should be the start of main matter. See below.</p>
 </div><!-- end class="d3" -->
 
@@ -2362,10 +2391,10 @@ In the chapters pertaining to transmontane trade and cultural exchange, I have t
 <div class="d3" id="d10.4">
 <p class="noindent">Some books are partitioned into distinct sub-books. A sub-book is of substantial length, not individual short stories.</p>
 <p>If your book has distinct sub-books, then each of them has its own recto cover page, known as a Part Separator. Its verso is blank or Epigraph. Then the accompanying story begins recto.</p>
-<p>A Part Separator is always main matter. So, the first Part Separator is page 1. Its text begins on page 3. Do not re-initalize the page count when you get to the next Part Separator.</p>
-<p>The simplest Part Separator is <i>Part I</i>, followed by <i>Part II</i>. You could also call them <i>Book I</i> and <i>Book II</i>, or perhaps <i>First Invasion</i> and <i>Second Invasion</i>. These are not chapters; each of them occupies a substantial portion of the entire book, and contains its own chapters.</p>
+<p>A Part Separator is always main matter. So, the first Part Separator is page 1. Its text begins on page 3. Do not re-initialize the page count when you get to the next Part Separator.</p>
+<p>The simplest Part Separator is <i>Part I</i>, followed by <i>Part II</i>. You could also call them <i>Book I</i> and <i>Book II</i>, or perhaps <i>First Invasion</i> and <i>Second Invasion</i>. These are not chapters; each part occupies a substantial portion of the entire book, and contains its own chapters.</p>
 <p>Sometimes a Part Separator has a brief description of its purpose, as in <i>Book I. On Earth</i> followed by <i>Book II. On Mars</i>.</p>
-<p>Unless your book has a very complex structure, do not use both a second Half-Title and a Part Separator. Combine them as the recto main matter page 1: <i>The Withens Chronicles. Part I</i>. Then the next Part Separator might simply be <i>Part II</i>.</p>
+<p>Unless your book has a very complex structure, do not use both a second Half-Title and a Part Separator. Combine them as the recto main matter page 1: <i>The Withens Chronicles. Part I</i>. Then the next Part Separator might simply be <i>Part II</i>. No particular rule.</p>
 </div><!-- end class="d3" -->
 
 <h3 id="h10.5">10.5. &nbsp; Second Half-Title in Main Matter</h3>
@@ -2426,7 +2455,7 @@ In the chapters pertaining to transmontane trade and cultural exchange, I have t
 <p>In all cases, the height must be an integer, greater than or equal to 4.</p>
 <p>You can put almost anything you like within this environment. Its height does not shrink or expand with content. However, if you put too much for the reserved space, then the excess will flow out the bottom of the reserved area, and mingle with the main text below. That is usually undesirable. If you do put too much, no error or warning is generated (because it might have been by intent).</p>
 <p>Note that ChapterStart does not, by itself, begin a new page. You have to issue the \clearpage (or \cleartorecto) command before ChapterStart. This is to allow for exotic designs with small ChapterStart space, and more than one chapter per page. But if that is the nature of your book, have a look at the \QuickChapter command.</p>
-<p>If the header/footer style for this particular chapter is <i>not</i> the same as the ChapterStart default style, then locally over-ride the default using \thispagestyle <i>prior to</i> ChapterStart. See below.</p>
+<p>If the header/footer style for a particular chapter is <i>not</i> the same as the ChapterStart default style, then locally over-ride the default using \thispagestyle <i>prior to</i> ChapterStart. See below.</p>
 <p>In some books that have headers, their content varies from chapter to chapter. Commands \SetVersoHeadText and \SetRectoheadText control that content. Once issued, they do not expire at the end of a chapter, but remain in effect until re-issued.</p>
 
 <h4 id="h11.1.1">11.1.1. &nbsp; Chapter Title, Subtitle, Deco</h4>
@@ -2464,8 +2493,9 @@ In the chapters pertaining to transmontane trade and cultural exchange, I have t
 <p>The above choice is the same as \thispagestyle{footer}, if the layout has a footer. Otherwise, it is very tricky. It reduces the height of the ChapterStart environment by one line. Then, the text on that page is moved upward by one line, leaving a vacancy where the last line would normally be. The page number is centered there. This does not intrude into the lower margin.</p>
 <p>The following image shows three pages of a Foreword, from a book that uses header but no footer. On its start page, the folio has been dropped inside. Color added for illustration.</p>
 <p class="centerimg"><img src="html-resources/dfi.png" width="534" height="267" alt="example of inside drop folio"/></p>
+<p>Note that the placement of page number does not honor \SetFootJump. The number is sized a little smaller than main text, but it is right where another line of text would be.</p>
 <p class="code"><code>\thispagestyle{forcenumber}</code></p>
-<p>The above choice is the same as \thispagestyle{footer}, if the layout has a footer. Otherwise, it assumes that the page number is located at the outside of a header, and prints only that outside header portion. This is a very rare situation that I have only seen in some nonfiction, where the number of each new chapter (usually by different authors) must be printed somewhere on the page. Avoid it unless you are certain that you need it.</p>
+<p>The above choice is the same as \thispagestyle{footer}, if the layout has a footer. Otherwise, it assumes that the page number is located at the outside of a header, and prints only that outside header portion. This is a very rare situation that I have only seen in some nonfiction, where the page number of each new chapter (usually by different authors) must be printed somewhere on the page. Avoid it unless you are certain that you need it.</p>
 </div>
 
 <h4 id="h11.1.4">11.1.4. &nbsp; ChapterStart With Image</h4>
@@ -2494,7 +2524,7 @@ In the chapters pertaining to transmontane trade and cultural exchange, I have t
 
 <h3 id="h11.2">11.2. &nbsp; QuickChapter and Scene Breaks</h3>
 <div class="d3" id="d11.2">
-<p class="noindent">These commands are used for indicating a break, without the formality ChapterStart.</p>
+<p class="noindent">These commands are used for indicating a break, without the formality of ChapterStart.</p>
 <p>You will need to inspect your layout, to ensure that the break does not occur at an inconvenient location, such as at the bottom of the page. This is not automated. If the break occurs in a bad place, you will simply have to re-write so that it occurs elsewhere.</p>
 
 <h4 id="h11.2.1">11.2.1. &nbsp; \QuickChapter[<em>linelength</em>]{<em>chapter title</em>}</h4>
@@ -2502,7 +2532,7 @@ In the chapters pertaining to transmontane trade and cultural exchange, I have t
 <p class="noindent">If your novel is the kind of story that consists of numerous short chapters in rapid succession, then you probably do not wish to begin each chapter on its own page, with a block of whitespace at the top. The \QuickChapter command provides an alternative to ChapterStart.</p>
 <p>\QuickChapter inserts two blank lines. In the gap, the chapter title is left-justified using <i>subchfont</i> (not <i>chapterfont</i>). It is slightly raised from the normal baseline, because this looks better; but the following text is back on-grid. By default, the start of the following text will be un-indented.</p>
 <p>If the optional <i>linelength</i> is provided, then a dash will be written after the title, at the position and thickness typical of the em dash in <i>subchfont</i>. If <i>linelength</i> is specified in units of length, then that will be the length of the line. But if <i>linelength</i> is an asterisk, then the line will fill to the right margin.</p>
-<p>Note that this command is too obstrusive for mere scene changes within a chapter.</p>
+<p>Note that this command is too obtrusive for mere scene changes within a chapter.</p>
 <p>Example:</p>
 <p class="code"><code><small>Then he looked at me with a sneer, and barked, ``You better haul your can over to Vinny's joint, before the Boss finds out.''\par<br/>
 \QuickChapter[3em]{16. At Vinny's}<br/>
@@ -2532,7 +2562,7 @@ Who could blame them? It's not like they lived in Italy.\par<br/>
 Ah, such ill fortune haunted the Withens!\par<br/>
 Unfortunately, novelists of that era had so little to write about, or they would have chosen another family to pursue.\par
 </small></code></p>
-<p>If you are using \scenebreak and the gap occurs at the very bottom or top of a page, then manually substitute \sceneline or \scenestars there. This is a standard way to indicate that the gap is intentional. The subtitution is not automatic.</p>
+<p>If you are using \scenebreak and the gap occurs at the very bottom or top of a page, then manually substitute \sceneline or \scenestars there. This is a standard way to indicate that the gap is intentional. The substitution is not automatic.</p>
 </div>
 
 <h4 id="h11.2.3">11.2.3. &nbsp; \IndentAfterScenebreak</h4>
@@ -2552,10 +2582,10 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <div class="d4" id="d11.2.5">
 <p class="noindent">The <i>novel</i> class applies virtually no penalty to widows and orphans (clubs). There are good reasons for this.</p>
 <p>In many other document classes, different pages can have different numbers of lines, to avoid widows and orphans. This is accomplished by stretching inter-line or inter-paragraph spaces. That kind of strategy is unacceptable in a novel, which is expected to have an identical line grid on facing pages.</p>
-<p>Also, a novel typically has many short paragraphs, often consisting of dialog. It become problematic to deal with them, without causing excess hyphenation and other unpleasant results.</p>
-<p>So, <i>novel</i> lets widows and orphans happen. This is actually common practice for the typesetting of many actual novels by major authors, with major publishers, as seen in the library.</p>
+<p>Also, a novel typically has many short paragraphs, often consisting of dialog. It becomes problematic to deal with them, without causing excess hyphenation and other unpleasant results.</p>
+<p>So, <i>novel</i> lets widows and orphans happen. This is common practice for the typesetting of many actual novels by major authors, with major publishers, as seen in the library.</p>
 <p>But do inspect your own work for widows and (especially) orphans that result in poor typesetting. Usually widows are not the problem, since they fill a line at the end of a page. But an orphan may only occupy a small part of its line at the top of a page, possibly as little as one word. There are also "paragraph orphans," where the final word (maybe even just a hyphenated syllable) is on a line by itself.</p>
-<p>Sinc you are writing your own book, you have the liberty to edit your text, so that problematic paragraph layouts disappear. Really, that's the only way to do it. TeX cannot read your mind.</p>
+<p>Since you are writing your own book, you have the liberty to edit your text, so that problematic paragraph layouts disappear. Really, that's the only way to do it. TeX cannot read your mind.</p>
 </div>
 </div><!-- end class="d3" -->
 
@@ -2569,7 +2599,7 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <h2 id="h12">12. &nbsp; Footnotes, Endnotes, Back Matter</h2>
 <div class="d2" id="d12">
 <p class="noindent">The <i>novel</i> class has <em>limited</em> support for footnotes, because they are rarely used in fiction. Nevertheless, I have seen them. The notes may be factual or imaginary.</p>
-<p>If there are more than a handful of notes, then use endnotes to avoid a constant disruption of the text flow. You may use both footnores and endnotes.</p>
+<p>If there are more than a handful of notes, then use endnotes to avoid a constant disruption of the text flow. You may use both footnotes and endnotes.</p>
 <p>Footnotes and endnotes use superscripts at the appropriate point in the main text. The actual footnote or endnote begins with ordinary text, not a superscript. You can control the appearance of superscripts using \SetMarkers and related commands. See the section regarding fonts, earlier in this document.</p>
 
 <h3 id="h12.1">12.1 &nbsp; Footnotes</h3>
@@ -2586,7 +2616,7 @@ Unfortunately, novelists of that era had so little to write about, or they would
 
 <h3 id="h12.2">12.2 &nbsp; Endnotes</h3>
 <div class="d3" id="d12.2">
-<p class="noindent">Endnotes are sometimes used in fiction. For example, J.R.R. Tolkien's <i>Lord of the Rings</i> trilogy has a large number of them.</p>
+<p class="noindent">Endnotes are sometimes used in fiction. In general, the endnotes are also fictional.</p>
 <p>You may use both footnotes and endnotes, if you wish. However, if endnotes are used, then footnotes must be marked by symbols, rather than by numbers, to avoid confusion. The counts for endnotes and footnotes are independent.</p>
 
 <h4 id="h12.2.1">12.2.1 &nbsp; \endnote, \ResetEndnote, \memo{}</h4>
@@ -2617,11 +2647,15 @@ Unfortunately, novelists of that era had so little to write about, or they would
 
 <h3 id="h12.3">12.3 &nbsp; Regarding Back Matter</h3>
 <div class="d3" id="d12.3">
-<p class="noindent">TeX has a do-nothing \backmatter command. No different with <i>novel</i> class, from version 1.40. Earlier versions tried to do something with that command, but the tactic was abandoned.</p>
+<p class="noindent">The \backmatter command is an alias for \cleartorecto. It does nothing else. In particular, it does not change the page number style, or reset the page number. Back matter is rare nowadays, in fiction and nonfiction alike.</p>
 <p>Anything following the end of your story is still treated as main matter. Epilogue, Conclusion, Endnotes, Appendix, whatever: all of them continue the Arabic page numbers. This is recommended by <i>CMoS</i> and is also best on a practical basis. For example, J.R.R. Tolkien's <i>The Return of the King</i> has very extensive post-story material, such as a history of the Elves, some linguistics, and notes. Nevertheless, the page numbering is Arabic, continued from the main story without reset.</p>
 <p>Of course, you may add anything you wish, after your story ends. Call it what you wish. Such material must begin recto, and may have its own cover page.</p>
 <p>If your book is available in both hardcover and softcover, then the dust jacket of the hardcover may have "About the Author" on its interior flap. This information is not present on the soft cover, which has no flap. You may, if you wish, place it as an About the Author section, recto, after your story ends. However, I sugest that such material is better on a web site, where you can change or remove it.</p>
-<p>The last command of the document body must be \cleartoend. This ensures that the final page will be a blank verso, if necessary preceded by a blank recto.</p>
+</div><!-- end class="d3" -->
+
+<h3 id="h12.4">12.4 &nbsp; \cleartoend</h3>
+<div class="d3" id="d12.4">
+<p class="noindent">The last command of the document body must be \cleartoend. This ensures that the final page will be a blank verso, if necessary preceded by a blank recto.</p>
 </div><!-- end class="d3" -->
 
 
@@ -2656,10 +2690,9 @@ Unfortunately, novelists of that era had so little to write about, or they would
 
 <h3 id="h13.2">13.2. &nbsp; Get Some Software</h3>
 <div class="d3" id="12.2">
-<p class="noindent">Get the 238% total ink limit color profile from <a href="http://www.newselfpublishing.com/TotalInkLimit.html" rel="external" target="new">Aaron Shepard</a>. This does the magic of ensuring that you comply with the 240% ink limit (the profile provides a little headroom, which seems useful). It can also be used for softproofing, if you know how to do that. This is not the only possible profile, but it seems to me that it is the best of several available. A good alternative s from <a class="external" rel="external" target="new" href="https://indesignsecrets.com/force-color-images-cmyk-240-ink-limit.php">David Blatner</a> (find "Here's a simple one") on that page).</p>
+<p class="noindent">Get the 238% total ink limit color profile from <a href="http://www.newselfpublishing.com/TotalInkLimit.html" rel="external" target="new">Aaron Shepard</a>. This does the magic of ensuring that you comply with the 240% ink limit (the profile provides a little headroom, which seems useful). It can also be used for softproofing, if you know how to do that. This is not the only possible profile, but it seems to me that it is the best of several available. A good alternative s from <a class="external" rel="external" target="new" href="https://indesignsecrets.com/force-color-images-cmyk-240-ink-limit.php">David Blatner</a> (find "Here's a simple one" on that page).</p>
 <p>Included in the <i>novel</i> documentation <i>extras</i> folder is an open-source color profile for sRGB (file <i>srgb.icc</i>). There is also an open-source Equivalent to AdobeRGB (file <i>crgb.icc</i>). You will be using these when you convert your PNG image to a JPG in CMYK color space. I can think of no technical need to use the "real" profiles that may be lurking somewhere in your computer. These profiles are cross-platform.</p>
 <p>Get GraphicsMagick or ImageMagick. On Linux, you can install it via your system package manager. On Windows, get GraphicsMagick Q16 binaries for your system (32 or 64 bit) from <a href="https://sourceforge.net/projects/graphicsmagick/files/graphicsmagick-binaries/" rel="external" target="new">SourceForge</a>. I am told that versions for Mac are available via homebrew and macports, but again, I do not have a Mac, so I cannot check that. Or, get ImageMagick Q16 for various platforms from <a href="https://www.imagemagick.org/script/download.php" rel="external" target="new">here</a>.</p>
-<p>You might or might not (probably will) need an sRGB color profile, because that's likely to be the default for images not prepared in a color-managed workflow. Your system has one, somewhere. Copy it, and rename the copy as "srgb.icc" (note extension icc, if necessary changed from icm).</p>
 </div><!-- end class="d3" -->
 
 <h3 id="h13.3">13.3. Convert Your Image to CMYK at 240% (or less) Ink Limit</h3>
@@ -2710,13 +2743,13 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <div class="d3" id="12.4">
 <p class="noindent">Up to now, you did not need TeX. Now you do. Be sure that you have a working TeX installation, with the <em>novel</em> document class package.</p>
 <p>In folder (your TeX root)/doc/lualatex/novel/extras you will find file "novel-cover-template.tex". Place a copy in the same working folder as your image, and modify it as needed.</p>
-<p><code>\SetMediaSize</code> refers to the full size of the image, with units (usually in). This includes the bleed box. For the example image, <code>\SetMediaSize{11.87in}{8.75in}</code>.</p>
-<p><code>\SetTrimSize</code> refers to the trimmed image, without bleed. For the example image, <code>\SetTrimSize{11.62in}{8.5in}</code>.</p>
-<p><code>\SetPDFX[CGATSTR001]{X-1a:2001}</code> will get you "Us Web Coated SWOP v2" output intent (most common the USA), and PDF/X-1a:2001 compliance. The Output Intent *.icc color profile will NOT be embedded, because this is almost always the way that print services want it. The PDF contains a code identifying the intent, so there is no need to embed the color profile (and disadvantages to embedding it). In the unlikely event that they demand the Output Intent color profile embedded, put an asterisk on the command.</p>
+<p><code>\SetMediaSize</code> refers to the full size of the image, with units (usually in). This includes the bleed box. For example, <code>\SetMediaSize{11.87in}{8.75in}</code>.</p>
+<p><code>\SetTrimSize</code> refers to the trimmed image, without bleed. For example, <code>\SetTrimSize{11.62in}{8.5in}</code>.</p>
+<p><code>\SetPDFX[CGATSTR001]{X-1a:2001}</code> will get you "US Web Coated SWOP v2" output intent (most common the USA), and PDF/X-1a:2001 compliance. The Output Intent *.icc color profile will NOT be embedded, because this is almost always the way that print services want it. The PDF contains a code identifying the intent, so there is no need to embed the color profile (and disadvantages to embedding it). In the unlikely event that they demand the Output Intent color profile embedded, put an asterisk on the command.</p>
 <p>For compliance you need to use <code>\SetTitle</code>. The title for this file might not be the title of your book, because this file isn't your book. Ask you print service what they want. Same with <code>\SetAuthor</code>.</p>
 <p>You can use <code>\SetApplication</code> and <code>\SetProducer</code> to change internal identifiers. Don't use these unless you have a reason.</p>
 <p><code>\SetCoverImage</code> is self-explanatory. Must have file extension jpg, jpeg, JPG, or JPEG. Must be CMYK. Note that TeX cannot verify whether the image is in correct color space. It will compile, even if the image is wrong. Beware!</p>
-<p>Do not attempt to write anything between <code>\begin{document}</code> and <code>\end{document}</code>. If you erroneously put some text there, the document will probably compile, and it may even be a valid PDF/X file. However, the resulting text color will almost surely be wrong. If so, the problem will be detected when you submit your file (wrong ink limit or color space). However, this is not a fundamental limit. It is possible to place TeX text over the image, but this documentation (as of version 1.32) does not show you how to do that.</p>
+<p>Do not attempt to write anything between <code>\begin{document}</code> and <code>\end{document}</code>. If you erroneously put some text there, the document will probably compile, and it may even be a valid PDF/X file. However, the resulting text color will almost surely be wrong. If so, the problem will be detected when you submit your file (wrong ink limit or color space).</p>
 <p>Compiling may take a little longer than expected. If your TeX system opens a PDF viewer automatically, the image might be missing (or partial) until a few seconds after the viewer opens. Be patient. The file size is large.</p>
 </div><!-- end class="d3" -->
 
@@ -2788,7 +2821,7 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <h3 id="hA.6">A.6 &nbsp; Paper and Cover Materials</h3>
 <div class="d3" id="dA.6">
 <p class="noindent">The interior paper may be white or "creme" (off-white). White paper is generally used for nonfiction, and must be used if there are interior color images. Creme paper is generally used for fiction. The idea is that white paper creates an air of authority, whereas creme paper is more comfortable for lengthy reading. I agree. I recently read a novel that was (mis-) printed on white paper, and it was hard to read in a bright area. So, for your novel, choose creme paper.</p>
-<p>The cover of a Perfect-Binding softcover book may be produced with a glossy or a matte finish. The fashion is to use glossy for nonfiction, matte for fiction. Again, the idea is authority versus comfort. But you may choose what you wish. "Instant Best-Seller" paperbacks mass-market publishers often have an embossed teture, and maybe even metal foil. In the print-on-demand market, forget it. Don't even think about it.</p>
+<p>The cover of a Perfect-Binding softcover book may be produced with a glossy or a matte finish. The fashion is to use glossy for nonfiction, matte for fiction. Again, the idea is authority versus comfort. But you may choose what you wish. "Instant Best-Seller" mass-market paperbacks  often have an embossed texture, and maybe even metal foil. In the print-on-demand market, forget it. Don't even think about it.</p>
 <p>If you do request a hardcover edition, then it may or may not have a dust jacket (costs extra). The general rule is that books for libraries have a dust jacket, which will be encased in plastic by the library. Books for documentation generally have no dust jacket, with the title and other info embossed in the cover material, for permanance.</p>
 </div><!-- end class="d3" -->
 
@@ -2876,7 +2909,7 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <p>You have numerous fonts already installed in your operating system, and perhaps others that came bundled with a particular application. If you intend to use those fonts, carefully read their licenses. It is often the case that fonts bundled with an application may <em>only</em> be used for documents created within, or processed by, that application. Or, the fonts may be OK to use for printing directly by your own home printer, but not for embedding in a PDF that will go to a commercial printer.</p>
 <p>Although it does not pertain to TeX, another issue can arise if you later publish an ebook version. Fonts licensed for printing are often not licensed for an ebook. Indeed, the ebook distributor may ban them.</p>
 <p>Always look for a Copyright notice, which can be identified with a particular person or organization. Copyright is good! It means that someone is claiming authorship of the font software. Only the Copyright owner has the right to give the font away for free, or license it to you after payment (often through an intermediary).</p>
-<p>If you prefer free fonts, the most widely accepted license is the <em>SIL Open Font License</em>. This allows you to use the font for commercial purposes, embed it in PDF, modify it to suit your needs (if you change the font name), and even re-distribute the modifications. The recommended default <i>Libertinus</i> bears this font license.</p>
+<p>If you prefer free fonts, the most widely accepted license is the <em>SIL Open Font License</em>. This allows you to use the font for commercial purposes, embed it in PDF, modify it to suit your needs (if you change the font name), and even re-distribute the modifications. The recommended default <i>Libertinus Serif</i> bears this font license.</p>
 </div><!-- end class="d3" -->
 
 <h3 id="hC.2">C.2 &nbsp; Technical Issues</h3>
@@ -2906,7 +2939,7 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <p class="noindent">The <i>gamut</i>, or range of available colors, is not the same for your computer monitor as it is for a printer. Obviously that depends on the technology of your monitor, and the technology of the printer. By and large, a good CMYK commercial printer can provide blue-greens that your monitor cannot accurately display. And, your monitor can display purple-violet colors that cannot accurately be printed. The monitor's advantage in purple-violet largely disappears for inexpensive LCD flat panels, which is what most of us have.</p>
 <p>However, the full CMYK gamut is only realized when each ink channel can act independently. That is, each spot on the paper must be able to retain as much as a full dose of each ink. At 0%-100% ink per channel, a spot of paper would have to hold up to 400% ink. For a variety of reasons, most printing technologies cannot apply that much ink. Or rather, if they did try to apply that much, the resulting print might smear, fail to dry, lift off, or soak through to the opposite side of the paper. Subsequent lamination might fail to adhere.</p>
 <p>Quality books and magazines, using coated paper, can typically hold 300%-360% ink (the technical name is TAC, Total Area Coverage). However, the color cover of a print-on-demand book might be produced by a method that holds less ink. The operative word is "might." Common P.O.D. printers are industrial-strength inkjet machines, capable of very high quality when used with suitable paper. However, the print job will be sent out to any number of different print shops, who may use other technology. Therefore, P.O.D. services may require that the color gamut be limited to those printable by a "lowest common denominator" process. One widely-used "lowest common denominator" is 240% ink limit.</p>
-<p>At 240% ink limit, brightly colored areas are generally unaffected. Deep, rich colors cannot be produced, since they would require too much ink. You will be required to provide an image with colors that fit within the ink limit, or the P.O.D. service may quietly do it for you.</p>
+<p>At 240% ink limit, brightly colored areas are generally unaffected. Deep, rich colors cannot be produced, since they would require too much ink. You will be required to provide an image with colors that fit within the ink limit, or the P.O.D. service may quietly alter your image for you.</p>
 <p>Print simulation, or <i>softproofing</i>, is a method of viewing an image on your computer, "as if it were printed" to some standard. GIMP can do this, as long as you provide the necessary *.icc color profile for the printer. Then you can decide whether or not the result is acceptable. The actual CMYK image is produced by the methods described in <a href="#h13">Chapter 13</a>, above.</p>
 
 <h3 id="hD.1">D.1. &nbsp; Example: Bright Colors Preserved</h3>
@@ -2923,7 +2956,7 @@ Unfortunately, novelists of that era had so little to write about, or they would
 
 <h3 id="hD.3">D.3. &nbsp; Example: Dark, Rich Colors Lost</h3>
 <div class="d3" id="dD.3">
-<p>The biggest problem occurs when the artwork is naturally dark. That might occur in night scenes, or with dark-skinned humans. For copyright reasons I cannot show you the original image by Hyacinthe Rigaud, on display in a European museum. But if it is reduced to a map of 256 colors (as with GIF images), you can see the effect. The original, at left, has many rich browns and reddish-browns. When softproofed, those become nearly gray. The original image still is attractive when softproofed, but is colors might be surprising if you were unaware of the ink limit effect.</p>
+<p>The biggest problem occurs when the artwork is naturally dark. That might occur in night scenes, or with dark-skinned humans. For copyright reasons I cannot show you the original image by Hyacinthe Rigaud, on display in a European museum. But if it is reduced to a map of 256 colors (as with GIF images), you can see the effect. The original, at left, has many rich browns and reddish-browns. When softproofed, those become nearly gray. The original image still is attractive when softproofed, but its muted dark colors might be surprising if you were unaware of the ink limit effect.</p>
 <p class="centerimg"><img src="html-resources/colormap-brown.jpg" width="674" height="305" title="Medieval Painting, monitor and softproof" alt="Dark color map, monitor and softproof"/></p>
 <p>You might wonder why the ink limit caused rich browns to appear <i>darker</i>. That's because a blend of yellow, magenta, and black (with too much ink) was changed to one with much less yellow and magenta, but more black (and not too much ink).</p>
 </div><!-- end class="d3" -->
@@ -2998,7 +3031,7 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <p class="overhang"><code>\SetSansFont[features]{font family}</code> &nbsp; Advanced. Default:&nbsp;Libertinus&nbsp;Sans. Alternate:&nbsp;Linux&nbsp;Biolinum&nbsp;O. Last&nbsp;Choice:&nbsp;Latin&nbsp;Modern&nbsp;Sans.</p>
 <p class="overhang"><code>\SetMonoFont[features]{font family}</code> &nbsp; Advanced. Default:&nbsp;Libertinus&nbsp;Mono. Alternate:&nbsp;Linux&nbsp;Libertine&nbsp;Mono&nbsp;O. Last&nbsp;Choice:&nbsp;Latin&nbsp;Modern&nbsp;Mono.</p>
 <p class="overhang"><code>\NewFontFamily\<i>yourfontcommand</i>[features]{font family}</code>. Advanced. Uses <i>fontspec</i> notation.</p>
-<p class="overhang2">\NewFontFace\<i>yourfontcommand</i>[features]{font}. Advanced. Uses <i>fontspec</i> notation.</p>
+<p class="overhang"><code>\NewFontFace\<i>yourfontcommand</i>[features]{font}</code>. Advanced. Uses <i>fontspec</i> notation.</p>
 </div>
 
 <h4 id="hE.1.5">E.1.5 &nbsp; Other Preamble Configuration</h4>
@@ -3022,8 +3055,8 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <h4 id="hE.2.1">E.2.1 &nbsp; Book Divisions</h4>
 <div class="d4" id="dE.2.1">
 <p class="overhang"><code>\frontmatter</code> &nbsp; Page numbering (if shown) is lowercase roman.</p>
-<p class="overhang"><code>\mainmatter</code> &nbsp; Page numbering re-starts at 1, and is Arabic.</p>
-<p class="noindent">From version 1.40, \backmatter commands are ignored. Page numbering continues in Arbaic, as main matter. This is standard style. If your book must have back matter with different numbering, you must code it yourself.</p>
+<p class="overhang"><code>\mainmatter</code> &nbsp; Forces recto, if necessary inserting blank verso. Page numbering re-starts at 1, and is Arabic.</p>
+<p class="overhang"><code>\backmatter</code> &nbsp; Forces recto, if necessary inserting blank verso. Page numbering continues Arabic, without reset. If you need something else, you must code it yourself.</p>
 </div>
 
 <h4 id="hE.2.2">E.2.2 &nbsp; Page Management</h4>
@@ -3159,13 +3192,13 @@ Unfortunately, novelists of that era had so little to write about, or they would
 
 <h3 id="hF.1">F.1. &nbsp; \ReworkTrimSize{<em>width</em>}{<em>height</em>}</h3>
 <div class="d3" id="dF.1">
-<p>This command changes the <em>existing</em> Trim Size. If you do not use the <code>\SetTrimSize</code> command, then the existing Trim Size is the default. But if you do use <code>\SetTrimSize</code>, then you must leave that command as-is, and place <code>\ReworkTrimSize</code> later in the Preamble.</p>
-<p>If you used <code>\SetMediaSize</code>, you may leave that command as-is, or change it if you wish; the Trim Size does not care.</p>
+<p>This command changes the <em>existing</em> Trim Size. If you do not use the \SetTrimSize command, then the existing Trim Size is the default. But if you do use \SetTrimSize, then you must leave that command as-is, and place \ReworkTrimSize later in the Preamble.</p>
+<p>If you used \SetMediaSize, you may leave that command as-is, or change it if you wish; the Trim Size does not care.</p>
 </div><!-- end class="d3" -->
 
 <h3 id="hF.2">F.2. &nbsp; \ReworkMargins{<em>top</em>}{<em>outside</em>}{<em>bottom</em>}{<em>inside</em>}</h3>
 <div class="d3" id="dF.2">
-<p>This command changes the <em>existing</em> margins. If you do not use the <code>\SetMargins</code> command, then the existing margins are the defaults. But if you do use <code>\SetMargins</code>, then you must leave that command as-is, and place <code>\ReworkMargins</code> later in the Preamble.</p>
+<p>This command changes the <em>existing</em> margins. If you do not use the \SetMargins command, then the existing margins are the defaults. But if you do use \SetMargins, then you must leave that command as-is, and place \ReworkMargins later in the Preamble.</p>
 </div><!-- end class="d3" -->
 
 <h3 id="hF.3">F.3. &nbsp; Example of Rework</h3>
@@ -3189,21 +3222,21 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <div class="d3" id="dF.4">
 <p>&bull; The technique has been tested, but it might not always work. Be sure to inspect the result carefully.</p>
 <p>&bull; If you use Rework to make a radical size change, then the resulting font size or line skip might be unattractive.</p>
-<p>&bull; If the reworked pages have one less line than expected (or one more), this is due to roundoff in the calculations. It can usually be fixed by adding or substracting as little as <code>0.001\nbs</code> from the top or bottom rework margin.</p>
-<p>&bull; The biggest obstacle occurs when you specify some internal length in terms of absolute units (such as pt). It is always best to use relative units (such as <code>em</code>, or sometimes <code>\nbs</code>), so that they can be scaled along with the text:</p>
+<p>&bull; If the reworked pages have one less line than expected (or one more), this is due to roundoff in the calculations. It can usually be fixed by adding or substracting as little as 0.001\nbs from the top or bottom rework margin.</p>
+<p>&bull; The biggest obstacle occurs when you specify some internal length in terms of absolute units (such as pt). It is always best to use relative units (such as <i>em</i>, or sometimes <i>\nbs</i>), so that they can be scaled along with the text:</p>
 <p class="code">
 Bad: <code>\hspace{6pt}</code> &nbsp; Good: <code>\hspace{0.5em}</code><br/>
 Bad: <code>\kern1pt</code> &nbsp; Good: <code>\kern.08em</code><br/>
 Bad: <code>\vspace{0.5in}</code> &nbsp; Good: <code>\vspace{2.4\nbs}</code>
 </p>
-<p>&bull; When you use <code>\Rework</code>, images are <em>not</em> scaled. Thus, they will have a different relationship to the surrounding text than they did before. In many cases, this is not a problem. However, an un-scaled image may disrupt the flow of text, or the number of lines in a page, or overlap text that was previously cleared. Look in the log file for an Alert message, which suggests an appropriate image scale, depending on how an image was placed. Problem areas can often be fixed be scaling the related image(s) in an external graphics program (see <a href="noveldocs-08-images.html#a8.3.3">Page 8</a>) then re-compiling with the scaled image(s).</p>
+<p>&bull; When you use Rework, images are <em>not</em> scaled. Thus, they will have a different relationship to the surrounding text than they did before. In many cases, this is not a problem. However, an un-scaled image may disrupt the flow of text, or the number of lines in a page, or overlap text that was previously cleared. Look in the log file for an Alert message, which suggests an appropriate image scale, depending on how an image was placed. Problem areas can often be fixed be scaling the related image(s) in an external graphics program (see <a href="noveldocs-08-images.html#a8.3.3">Page 8</a>) then re-compiling with the scaled image(s).</p>
 <p>&bull; Note that you may see the Alert whether or not there are problem images, so scaling images will not make the Alert go away. It is a friendly message.</p>
 <div style="clear:both"></div>
 </div><!-- end class="d3" -->
 
 <h3 id="hF.5">F.5. &nbsp; Scaling Images after \Rework.</h3>
 <div class="d3" id="dF.5">
-<p>When you use one or both of the \Rework commands, the font size and/or the baselineskip will change. However, it does not scale images. In many cases, there is no problem. But in some cases, an un-scaled image will disrupt the previous flow of text or pagination. If you look in the log file, you will see an Alert message, which suggests (only suggests) appropriate values for scaling problem images, depending on whether they are placed inline or block. Then, you should re-work the image in an external image editor. When you scale the image, be sure that the revised version is at the correct resolution of 300dpi or 600dpi, or whatever is necessary.</p>
+<p>When you use one or both of the Rework commands, the font size and/or the baselineskip will change. However, it does not scale images. In many cases, there is no problem. But in some cases, an un-scaled image will disrupt the previous flow of text or pagination. If you look in the log file, you will see an Alert message, which suggests (only suggests) appropriate values for scaling problem images, depending on whether they are placed inline or block. Then, you should re-work the image in an external image editor. When you scale the image, be sure that the revised version is at the correct resolution of 300dpi or 600dpi, or whatever is necessary.</p>
 <p>It is best to go back to your copy of the original artwork, before you exported it to <i>png</i> or <i>jpg</i>. But what if you do not have anything but the 1-bit or grayscale images that you created earlier? Then do this (in GIMP):</p>
 <p>(1) If the image is 1-bit, change to Color&gt;Mode grayscale.</p>
 <p>(2) Use Image&gt;Scale Image to get new dimensions, at 600 or 300 pixels per inch. Careful: Sometimes when you change size, it auto-changes resolution, or vice-versa. Click back and forth in the dialog box, to ensure that both the dimensions and resolution are correct. Use Cubic interpolation or better.</p>

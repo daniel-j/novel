@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/09/20 v1.40.1 LaTeX file (layout settings)]
+[2017/09/20 v1.40.2 LaTeX file (layout settings)]
 %%
 
 
@@ -701,7 +701,9 @@
 }
 %
 \def\@backmatterns{%
-  \ClassWarning{novel}{Command \string\backmatter\ ignored. Do not use.^^J}%
+  \cleartorecto% v. 1.40.2
+  \ClassWarning{novel}{Command \string\backmatter\ merely clears to recto.^^J}% v. 1.40.2
+%
 }
 %
 \def\Backmatter{\@ifstar\@Backmatterst\@Backmatterns} % obsolete from v. 1.40.

@@ -59,6 +59,7 @@ p.overhang {margin-left:32px; text-indent:-16px;}
 @media print {
   #toc {display:none;}
   #main {width:auto; float:none;}
+  div.codeblock p {text-indent:0px;}
 }
 </style>
 
@@ -386,11 +387,13 @@ function showul(thisul){
           </li>
         </ul>
       </li><!-- end 11.1 -->
-      <li><p><img id="i11.2" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIAAAUAAeImBZsAAAAASUVORK5CYII=" class="nodisplaynav" onclick="plusminus(this.id);" title="open/close" alt=""/><a href="#h11.2">11.2 \QuickChapter and Scene Breaks</a></p>
+      <li><p><img id="i11.2" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIAAAUAAeImBZsAAAAASUVORK5CYII=" class="nodisplaynav" onclick="plusminus(this.id);" title="open/close" alt=""/><a href="#h11.2">11.2 \QuickChapter and Breaks</a></p>
         <ul id="u11.2">
           <li><p class="noimg"><a href="#h11.2.1">11.2.1 \QuickChapter</a></p></li>
           <li><p class="noimg"><a href="#h11.2.2">11.2.2 \scenebreak and Others</a></p></li>
           <li><p class="noimg"><a href="#h11.2.3">11.2.3 \IndentAfterScenebreak</a></p></li>
+          <li><p class="noimg"><a href="#h11.2.4">11.2.4 \linebreak</a></p></li>
+          <li><p class="noimg"><a href="#h11.2.5">11.2.5 Widows, Orphans, Clubs</a></p></li>
         </ul>
       </li><!-- end 11.2 -->
     </ul>
@@ -503,7 +506,8 @@ function showul(thisul){
 <!-- **************************************************************************************** -->
 
 <h1 id="h0">Document class <i>novel</i> - documentation</h1>
-<p class="noindent">Version: 1.40, 2017/09/14. This is a complete re-write of the documentation, with the HTML in a single file, and many improvements.</p>
+<p class="noindent">Version: 1.40, 2017/09/14. This is a complete re-write of the documentation, with the HTML in a single file, and many improvements. Version 1.40.1: Minor doc changes, especially correction to code for converting cover image to CMYK.</p>
+<p>A complete example novel, text and cover, can be found at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/">GitHub project page</a>, in the "other" folder.</p>
 <p>&nbsp;</p>
 
 
@@ -2417,7 +2421,9 @@ In the chapters pertaining to transmontane trade and cultural exchange, I have t
 % contents of chapter start<br/>
 \end{ChapterStart
 </code></p>
-<p>The environment reserves a block of space, 10 lines high. The number may be changed (for an individual chapter) with the optional <i>lines</i> argument. Its minimum value is 4.</p>
+<p>The environment reserves a block of space, default 10 lines high. You may globally change that value in the Preamble, using the \SetChapterStartHeight{<em>lines</em>} command.</p>
+<p>On a per-chapter basis, the height may be changed using the optional <i>lines</i> argument of the ChapterStart environment. For example, sometimes that is helpful if a chapter has only one or two lines on its final page; then, you can effectively move all lines forward, by reducing the height of its ChapterStart.</p>
+<p>In all cases, the height must be an integer, greater than or equal to 4.</p>
 <p>You can put almost anything you like within this environment. Its height does not shrink or expand with content. However, if you put too much for the reserved space, then the excess will flow out the bottom of the reserved area, and mingle with the main text below. That is usually undesirable. If you do put too much, no error or warning is generated (because it might have been by intent).</p>
 <p>Note that ChapterStart does not, by itself, begin a new page. You have to issue the \clearpage (or \cleartorecto) command before ChapterStart. This is to allow for exotic designs with small ChapterStart space, and more than one chapter per page. But if that is the nature of your book, have a look at the \QuickChapter command.</p>
 <p>If the header/footer style for this particular chapter is <i>not</i> the same as the ChapterStart default style, then locally over-ride the default using \thispagestyle <i>prior to</i> ChapterStart. See below.</p>
@@ -2534,6 +2540,23 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <p class="noindent">This global command may only be used in the Preamble.</p>
 <p>Normally, text begins without a paragraph indent, after each scene break. This is standard in fiction. If you prefer that each new scene begins indented, use this command. It works with \scenebreak, \sceneline, and \scenestars.</p>
 </div>
+
+<h4 id="h11.2.4">11.2.4. &nbsp; \linebreak</h4>
+<div class="d4" id="d11.2.4">
+<p class="noindent">The general method for breaking a line, without creating a new paragraph, is to use the double backslash \\. The break will be ragged-right. This is suitable for such things as poetry, and other places where the break does not need to be justified.</p>
+<p>In some cases, you need the break to be justified. Command \linebreak does that. Use with caution, since lines earlier in the paragraph will not reflow! Instead, the broken line will justify by itself, possibly resulting in excessive stretch.</p>
+<p>One possible use of \linebreak is when layout places something very short at the calculated break. This often happens in English first-person narration, where the word "I" is common. Then, placing \linebreak just before the "I" is likely to result in better appearance. But you will need to inspect the result, both before and after the manually inserted break.</p>
+</div>
+
+<h4 id="h11.2.5">11.2.5. &nbsp; Widows and Orphans (Clubs)</h4>
+<div class="d4" id="d11.2.5">
+<p class="noindent">The <i>novel</i> class applies virtually no penalty to widows and orphans (clubs). There are good reasons for this.</p>
+<p>In many other document classes, different pages can have different numbers of lines, to avoid widows and orphans. This is accomplished by stretching inter-line or inter-paragraph spaces. That kind of strategy is unacceptable in a novel, which is expected to have an identical line grid on facing pages.</p>
+<p>Also, a novel typically has many short paragraphs, often consisting of dialog. It become problematic to deal with them, without causing excess hyphenation and other unpleasant results.</p>
+<p>So, <i>novel</i> lets widows and orphans happen. This is actually common practice for the typesetting of many actual novels by major authors, with major publishers, as seen in the library.</p>
+<p>But do inspect your own work for widows and (especially) orphans that result in poor typesetting. Usually widows are not the problem, since they fill a line at the end of a page. But an orphan may only occupy a small part of its line at the top of a page, possibly as little as one word. There are also "paragraph orphans," where the final word (maybe even just a hyphenated syllable) is on a line by itself.</p>
+<p>Sinc you are writing your own book, you have the liberty to edit your text, so that problematic paragraph layouts disappear. Really, that's the only way to do it. TeX cannot read your mind.</p>
+</div>
 </div><!-- end class="d3" -->
 
 
@@ -2611,6 +2634,7 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <h2 id="h13">13. &nbsp; Cover Artwork</h2>
 <div class="d2" id="12">
 <p class="noindent">This portion serves a limited purpose. It is for the benefit of those who need to submit color print cover artwork in the form of a PDF/X-1a:2001 file, with the artwork as CMYK and 240% ink limit. This is the format required by some American print-on-demand services. It is also generally acceptable to others, whose requirements are less restrictive.</p>
+<p>Example cover artwork can be found at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/">GitHub project page</a>, in the "other" folder.</p>
 <p><b>Before you begin:</b> Do you really need to do this? Many print-on-demand services are perfectly happy to accept something such as an ordinary RGB jpeg image, as long as it has the correct size (with bleed area). They can easily process it for print production in a few moments, using professional software. If they do it, then whether or not you are surprised by the resulting colors, will depend on whether or not your original image is within the printer gamut. In other cases, the print service prefers (or insists) that you do the image print production processing yourself. Then, you get to see an emulation of the print colors <em>before</em> you submit the file, and can change your artwork if the resulting colors are disappointing.</p>
 <p>The <em>novel</em> document class does not provide any support for creating the original artwork, either image or text. In fact, TeX is not the best way to do that. Use a graphics program (such as the free GIMP) to do your artwork, including text. In the end, your text will be rasterized, just like any background image. For this reason, avoid using small text, or consider using a sans-serif typeface on the cover (even though there is no sans-serif in the book itself).</p>
 <p>DO NOT PLACE A BARCODE. If your print service requests a white rectangle where the barcode will go, then include it in your image. Almost every print service is willing to create the barcode from your ISBN, and place the barcode image into your PDF during post-processing. Most of them even demand that they do it themselves. Do-it-yourself barcodes are incompatible with the following instructions.</p>
@@ -2632,17 +2656,18 @@ Unfortunately, novelists of that era had so little to write about, or they would
 
 <h3 id="h13.2">13.2. &nbsp; Get Some Software</h3>
 <div class="d3" id="12.2">
-<p class="noindent">Get the 238% total ink limit color profile from <a href="http://www.newselfpublishing.com/TotalInkLimit.html" rel="external" target="new">Aaron Shepard</a>. This does the magic of ensuring that you comply with the 240% ink limit (the profile provides a little headroom, which seems necessary). It can also be used for softproofing, if you know how to do that. This is not the only possible profile, but it seems to me that it is the best of several available.</p>
-<p>You might (or might not) need the <a href="https://www.adobe.com/support/downloads/iccprofiles/iccprofiles_win.html" rel="external" target="new">Adobe icc profiles</a> (for end users). This link works for Windows or Linux (even though it says "for Windows"). I am told that there is a different link for Mac, but I don't have a Mac.</p>
+<p class="noindent">Get the 238% total ink limit color profile from <a href="http://www.newselfpublishing.com/TotalInkLimit.html" rel="external" target="new">Aaron Shepard</a>. This does the magic of ensuring that you comply with the 240% ink limit (the profile provides a little headroom, which seems useful). It can also be used for softproofing, if you know how to do that. This is not the only possible profile, but it seems to me that it is the best of several available. A good alternative s from <a class="external" rel="external" target="new" href="https://indesignsecrets.com/force-color-images-cmyk-240-ink-limit.php">David Blatner</a> (find "Here's a simple one") on that page).</p>
+<p>Included in the <i>novel</i> documentation <i>extras</i> folder is an open-source color profile for sRGB (file <i>srgb.icc</i>). There is also an open-source Equivalent to AdobeRGB (file <i>crgb.icc</i>). You will be using these when you convert your PNG image to a JPG in CMYK color space. I can think of no technical need to use the "real" profiles that may be lurking somewhere in your computer. These profiles are cross-platform.</p>
 <p>Get GraphicsMagick or ImageMagick. On Linux, you can install it via your system package manager. On Windows, get GraphicsMagick Q16 binaries for your system (32 or 64 bit) from <a href="https://sourceforge.net/projects/graphicsmagick/files/graphicsmagick-binaries/" rel="external" target="new">SourceForge</a>. I am told that versions for Mac are available via homebrew and macports, but again, I do not have a Mac, so I cannot check that. Or, get ImageMagick Q16 for various platforms from <a href="https://www.imagemagick.org/script/download.php" rel="external" target="new">here</a>.</p>
+<p>You might or might not (probably will) need an sRGB color profile, because that's likely to be the default for images not prepared in a color-managed workflow. Your system has one, somewhere. Copy it, and rename the copy as "srgb.icc" (note extension icc, if necessary changed from icm).</p>
 </div><!-- end class="d3" -->
 
 <h3 id="h13.3">13.3. Convert Your Image to CMYK at 240% (or less) Ink Limit</h3>
 <div class="d3" id="12.3">
-<p class="noindent"><img src="html-resources/example-cmyk238.png" class="floatright" width="445" height="328" alt="example cmyk238 image, back to rgb"/> At right, you can see an emulation of cover artwork, softproofed to CMYK at 238% ink limit. It is not the CMYK file itself, but an RGB image that is supposed to help you visualize what happens during conversion. You will notice that the colors are less intense, because the original image contained colors that didn't fit the gamut of the printing process. Colors don't always change; I could have planned ahead, and selected from a palette of colors that fit within the gamut.</p>
-<p><b>Get ready:</b> Make a copy of the above 238% ink limit color profile, and re-name the copy as "238.icc".
-<p>I will call your original PNG image "yourimage.png". Put this image, the 238.icc file, and (if necessary) the AdobeRGB1998.icc file in a single working folder.</p>
-<p>I will also assume that the image resolution is 300dpi. If it is something else, then modify 300 to the other number, when you see it below.</p>
+<p class="noindent"><img src="html-resources/example-cmyk238.png" class="floatright" width="445" height="328" alt="example cmyk238 image, back to rgb"/> At right, you can see an emulation of the above image, softproofed to CMYK at 238% ink limit. It is not the CMYK file itself, but an RGB image that is supposed to help you visualize what happens during conversion. The original image contained colors that didn't fit the gamut of the printing process. Nevertheless, it is very close, because (in the original) I avoided using much color that I knew would not convert well.</p>
+<p><b>Get ready:</b> Make a copy of the above 238% (or 240%) ink limit color profile, and re-name the copy as <i>240.icc</i>. I will call your original PNG image <i>yourimage.png</i>. Put this image, the <i>240.icc</i> file, and files <i>srgb.icc</i> and <i>crgb.icc</i> in a single working folder.</p>
+<p>I will also assume that the image resolution is <i>300dpi</i>. If it is something else, then modify <i>300</i> to the other number, when you see it below.</p>
+<p><i>Note: Each of the following boxed commands is a single command line. You may need to scroll the box to the right, or the text may wrap, depending on how you view this file.</i></p>
 <p style="margin-top:16px"><b>Step 1:</b> Open a Terminal (Command Prompt) and navigate to that folder.</p>
 <p>In the following commands, the initial "gm" calls GraphicsMagick (same code Linux and Windows). If you prefer ImageMagick, then eliminate the initial "gm" on Linux, or change the "gm" to "magick" on Windows.</p>
 <div class="codeblock">
@@ -2656,15 +2681,15 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <p style="margin-top:16px"><b>Step 3:</b> At this point, there are three possibilities:</p>
 <p><b>(a)</b> You have a non-zero embedded.icc file. In this case:</p>
 <div class="codeblock">
-<p><code>gm convert -profile embedded.icc -profile 238.icc yourimage-stripped.tif yourimage-temp.tif</code></p>
+<p><code>gm convert -profile embedded.icc -profile 240.icc yourimage-stripped.tif yourimage-temp.tif</code></p>
 </div>
 <p><b>(b)</b> No embedded.icc, but you know that the artwork was create using AdobeRGB1998 workspace, or equivalent. Then:</p>
 <div class="codeblock">
-<p><code>gm convert -profile AdobeRGB1998.icc -profile 238.icc yourimage-stripped.tif yourimage-temp.tif</code></p>
+<p><code>gm convert -profile crgb.icc -profile 240.icc yourimage-stripped.tif yourimage-temp.tif</code></p>
 </div>
-<p><b>(c)</b> Neither of the above. The image is probably sRGB (default), so:</p>
+<p><b>(c)</b> Neither of the above. The image is probably sRGB (default). Then:</p>
 <div class="codeblock">
-<p><code>gm convert -profile 238.icc yourimage-stripped.tif yourimage-temp.tif</code></p>
+<p><code>gm convert -profile srgb.icc -profile 240.icc yourimage-stripped.tif yourimage-temp.tif</code></p>
 </div>
 <p style="margin-top:16px"><b>Step 4:</b> Now, regardless of which possibility you used above:</p>
 <div class="codeblock">

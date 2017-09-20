@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/09/14 v1.40 LaTeX file (layout settings)]
+[2017/09/20 v1.40.1 LaTeX file (layout settings)]
 %%
 
 
@@ -289,7 +289,21 @@
 % default setting when chapters begin with ChapterStart environment:
 \gdef\SetChapterStart#1{\gdef\@setchapterstart{#1}}
 \SetChapterStart{footer} % default
-%
+% New in version 1.40.1:
+\gdef\SetChapterStartHeight#1{%
+  \FPifint{#1}\else%
+    \ClassError{novel}{\string\SetChapterStartHeight\space must be integer GTE 4}%
+    {Height of ChapterStart must be integer, greater than or equal to 4}%
+  \fi%
+  \FPiflt{#1}{4}%
+    \ClassError{novel}{\string\SetChapterStartHeight\space must be integer GTE 4}%
+    {Height of ChapterStart must be integer, greater than or equal to 4}%
+  \else\fi%
+  \gdef\@setchapterstartheight{#1}%
+}
+\SetChapterStartHeight{10} % default
+
+
 % See novel.cls for the accompanying AtBeginDocument routine.
 %
 %% End reserve space for header/footer and set default ChapterStart
@@ -673,6 +687,7 @@
     \ClassError{novel}{\string\mainmatter\ used more than once}%
     {You issued \string\mainmatter\ more than once.}%
   \fi
+  \cleartorecto % added v. 1.40.1
   \WithinFrontmatterfalse\WithinMainmattertrue
   \setcounter{frontmatterpages}{\value{page}}
   \addtocounter{frontmatterpages}{-1}

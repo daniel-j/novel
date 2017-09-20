@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-ChapterScene.sty}%
-[2017/09/14 v1.40 LaTeX file (chapter and scene macros)]
+[2017/09/20 v1.40.1 LaTeX file (chapter and scene macros)]
 %%
 
 
@@ -82,9 +82,17 @@
 \newif \if@csalignok \@csalignokfalse
 \newlength\@oldparindent
 %
-% The argument is the number of normal baselineskips high:
-\newenvironment{ChapterStart}[1][10]
+% The argument is the number of normal baselineskips high (integer GTE 4).
+\newenvironment{ChapterStart}[1][\@setchapterstartheight] % default 10
 {%
+  \FPifint{#1}\else%
+    \ClassError{novel}{\string\SetChapterStartHeight\space must be integer GTE 4}%
+    {Height of ChapterStart must be integer, greater than or equal to 4}%
+  \fi%
+  \FPiflt{#1}{4}%
+    \ClassError{novel}{\string\SetChapterStartHeight\space must be integer GTE 4}%
+    {Height of ChapterStart must be integer, greater than or equal to 4}%
+  \else\fi%
   \setlength\@oldparindent{\parindent}%
   \global\@oldparindent=\@oldparindent%
   \setlength\parindent{0pt}%
@@ -232,20 +240,15 @@
   \fi
 }
 \gdef\cleartoend{
+  \clearpage
   \ifodd\c@page
-    \clearpage
-    \thispagestyle{empty}
-    \null
-    \clearpage
-  \else
-    \clearpage
-    \thispagestyle{empty}
-    \null
-    \clearpage
     \thispagestyle{empty}
     \null
     \clearpage
   \fi
+  \thispagestyle{empty}
+  \null
+  \clearpage
 }
 %
 

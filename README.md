@@ -4,7 +4,7 @@ LuaLaTeX document class for fiction, such as novels and short story collections.
 
 ## Version
 
-The current stable version is 1.40, 2017/09/14. It is available via TeX package managers, or from CTAN. Note that this package is not (yet) distributed in default TeX installations. You have to request it.
+The current stable version is 1.40.1, 2017/09/20. It is available via TeX package managers, or from CTAN. Note that this package is not (yet) distributed in default TeX installations. You have to request it.
 
 The *novel* class requires TeXLive 2016 or later, or recent MiKTeX.
 
@@ -15,7 +15,7 @@ Folders *doc*, *tex*, and *fonts* contain development versions of code that may 
 
 The *archive* folder contains one or more zip files of prior stable code. This may be useful if you are in the middle of a project, and a package update causes problems.
 
-The *non-tex* folder may contain material that is not part of the TeX package, but might be useful.
+The *other* folder may contain material that is not part of the TeX package, but might be useful. In particular, it contains a complete novel, with cover artwork, as source and PDF.
 
 
 #### Help Wanted

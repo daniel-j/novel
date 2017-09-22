@@ -235,7 +235,7 @@ function showul(thisul){
           <li><p class="noimg"><a href="#h5.4.3">5.4.3 Open Type Features</a></p></li>
           <li><p class="noimg"><a href="#h5.4.4">5.4.4 Scale Pseudo-Feature</a></p></li>
           <li><p class="noimg"><a href="#h5.4.5">5.4.5 Color and Opacity</a></p></li>
-          <li><p class="noimg"><a href="#h5.4.6">5.4.6 \CreateFeature{}{}</a></p></li>
+          <li><p class="noimg"><a href="#h5.4.6">5.4.6 \CreateFontFeature{}{}</a></p></li>
           <li><p class="noimg"><a href="#h5.4.7">5.4.7 Local Feature Changes</a></p></li>
         </ul>
       </li><!-- end 5.4 -->
@@ -1321,13 +1321,13 @@ Some Frequently-Used Open Type Features
 <p>&bull; Placing light text over a dark background may produce unexpected results in print, even if it looks good in PDF. If you need this effect, it is better to build the text into the background, as a single image.</p>
 </div>
 
-<h4 id="h5.4.6">5.4.6. &nbsp; <code>\CreateFeature{<em>code</em>}{<em>substitutions</em>}</code></h4>
+<h4 id="h5.4.6">5.4.6. &nbsp; <code>\CreateFontFeature{<em>code</em>}{<em>substitutions</em>}</code></h4>
 <div class="d4" id="d5.4.6">
 <p class="noindent">Once in a while, a font has a glyph that you would like to use, but it is not included in any of the font's Open Type feature sets. So, how to you grab that particular glyph? For example: One well-known font has a glyph named <em>emdash.alt</em>, which is not as long as the font's ordinary <em>emdash</em> glyph, and looks better in text. Unfortunately, <em>emdash.alt</em> is not in any of the font's style sets. Without some trickery, only a program such as InDesign can grab that glyph.</p>
-<p>Thanks to <i>fontspec</i>, <i>novel</i> has the necessary trickery. Command <code>\CreateFeature</code> creates a fake Open Type feature code, and assigns your list of substitutions to that code. Use comma-separated entries if there are multiple substitutions. For the case in question:</p>
-<p class="code"><code>\CreateFeature{myem}{emdash=emdash.alt}</code></p>
+<p>Thanks to <i>fontspec</i>, <i>novel</i> has the necessary trickery. Command <code>\CreateFontFeature</code> creates a fake Open Type feature code, and assigns your list of substitutions to that code. Use comma-separated entries if there are multiple substitutions. For the case in question:</p>
+<p class="code"><code>\CreateFontFeature{myem}{emdash=emdash.alt}</code></p>
 <p>The code <i>myem</i> was randomly chosen as something that is not already defined among Open Type feature codes. Once specified, the fake feature may be used in any font definition, such as this:</p>
-<p class="code"><code>\SetMasterFont[RawFeature=+myem]{Adobe Garamond Pro}</code></p>
+<p class="code"><code>\SetParentFont[RawFeature=+myem]{Adobe Garamond Pro}</code></p>
 <p>Of course, the fake feature has no effect if the font does not have the substitution character.</p>
 <p>This technique may be used for more complicated features, but that is beyond the scope of this documentation. See the <i>fontspec</i> manual if you need to do more.</p>
 </div>

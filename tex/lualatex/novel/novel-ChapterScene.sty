@@ -36,11 +36,26 @@
 %   \sceneline centers a line, about 1/3 textwidth.
 %   \scenestars centers three widely-spaced asterisks.
 %   Default behavior is \noindent for following paragraph.
-%   Use \IndentAfterScenebreak in preamble to change this globally.
+%   Use \AfterScenebreak{indent or noindent} in preamble to change this globally.
 %   Either way, the local behavior can be changed using \indent or \noindent.
-%   Note: The indent behavior is activated AtBeginDocument.
 \newif\if@indentAfterScenebreak \@indentAfterScenebreakfalse
-\newcommand\IndentAfterScenebreak{\@indentAfterScenebreaktrue}
+\newcommand\IndentAfterScenebreak{\@indentAfterScenebreaktrue} % deprected from v. 1.40.2
+\newcommand\AfterScenebreak[1]{% indent or noindent. From v. 1.40.2
+  \def\ngoodarg{false}
+  \ifthenelse{\equal{#1}{indent}}{%
+    \def\ngoodarg{true}
+    \@indentAfterScenebreaktrue
+  }{}%
+  \ifthenelse{\equal{#1}{noindent}}{%
+    \def\ngoodarg{true}
+    \@indentAfterScenebreakfalse
+  }{}%
+  \ifthenelse{\equal{\ngoodarg}{false}}{%
+    \ClassError{novel}{Bad argument for \string\AfterScenebreak\space}%
+    {\string\AfterScenebreak\space argument must be indent or noindent.}%
+  }{}%
+}
+\AfterScenebreak{noindent} % default
 %
 \newcommand\scenebreak{\null}
 %

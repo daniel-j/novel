@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/09/21 v1.40.2 LaTeX document class]
+\ProvidesClass{novel}[2017/09/25 v1.40.3 LaTeX document class]
 %%
 
 %% Version 1.40: removed `debug' option (was not useful). Major docs rewrite.
@@ -109,7 +109,7 @@
 % fontspec -- in novel-LayoutSettings.sty
 % unicode-math -- in novel-LayoutSettings.sty
 % eso-pic -- in novel-CalculateLayout.sty
-% polyglossia -- in novel-FontDefaults.sty
+% polyglossia -- in novel-LayoutSettings.sty
 % microtype -- in novel-FontDefaults.sty
 % hyperref -- in novel-pdfx.sty
 % fancyhdr -- in novel.HeadFootStyles.sty
@@ -337,6 +337,9 @@
 %% -----------------------------------------------------------------------------
 %
 \AtEndPreamble{
+  % If user did not choose language, default is here. Sorry, Brits:
+  % Macro \xpg@main@language is gdef'd by \setdefaultlanguage in polyglossia.
+  \@ifundefined{xpg@main@language}{\setdefaultlanguage[variant=american]{english}}{}
   \RequirePackage{novel-CalculateLayout}
   \RequirePackage{novel-FontDefaults}
   \renewcommand\textls[2][]{#2%

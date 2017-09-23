@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/09/21 v1.40.2 LaTeX file (layout settings)]
+[2017/09/25 v1.40.3 LaTeX file (layout settings)]
 %%
 
 
@@ -287,9 +287,10 @@
 } % end \@reserveHFspace
 % Each new chapter generally has its own header/footer style. This allows a
 % default setting when chapters begin with ChapterStart environment:
-\gdef\SetChapterStart#1{\gdef\@setchapterstart{#1}}
-\SetChapterStart{footer} % default
-% New in version 1.40.1:
+\gdef\SetChapterStartStyle#1{\gdef\@setchapterstart{#1}} % from v1.40.3.
+\gdef\SetChapterStart#1{\gdef\@setchapterstart{#1}} % deprecated from v1.40.3.
+\SetChapterStartStyle{footer} % default
+% New in version 1.40.2:
 \gdef\SetChapterStartHeight#1{%
   \FPifint{#1}\else%
     \ClassError{novel}{\string\SetChapterStartHeight\space must be integer GTE 4}%
@@ -302,9 +303,28 @@
   \gdef\@setchapterstartheight{#1}%
 }
 \SetChapterStartHeight{10} % default
-
-
 % See novel.cls for the accompanying AtBeginDocument routine.
+% Scene breaks:
+\newif\if@indentAfterScenebreak \@indentAfterScenebreakfalse
+\newcommand\IndentAfterScenebreak{\@indentAfterScenebreaktrue} % deprected from v. 1.40.3
+% \SetScenebreakIndent controls whether line after \scenebreak, \sceneline, or \scenestars
+%   will be indented. Set true or false, default false.
+\newcommand\SetScenebreakIndent[1]{% true or false, default false. From v. 1.40.3
+  \def\ngoodarg{no}
+  \ifthenelse{\equal{#1}{true}}{%
+    \def\ngoodarg{yes}
+    \@indentAfterScenebreaktrue
+  }{}%
+  \ifthenelse{\equal{#1}{false}}{%
+    \def\ngoodarg{yes}
+    \@indentAfterScenebreakfalse
+  }{}%
+  \ifthenelse{\equal{\ngoodarg}{no}}{%
+    \ClassError{novel}{Bad argument for \string\SetScenebreakIndent\space}%
+    {\string\SetScenebreakIndent\space argument must be true or false.}%
+  }{}%
+}
+\SetScenebreakIndent{false} % default
 %
 %% End reserve space for header/footer and set default ChapterStart
 
@@ -326,11 +346,11 @@
 %%
 
 
-%%
+%% Markers (superscript, subscripts):
 \newtoggle{@usesymbolmark} % true when footnote markers are symbolic
 \newtoggle{@realmarker} % true when OT features sups, sinf, subs requested
 %
-% \SetMarkers does two things.
+% \SetMarkerStyle does two things.
 % Option real: OT features sups, sinf, subs requested. Fake if not available.
 % Option fake: Always fake OT features sups, sinf, subs.
 % Mandatory: asterisk, dagger, number. Pertains to footnote markers only.
@@ -357,6 +377,7 @@
     {Optional: real, fake. Required: asterisk, dagger, number.}%
   }{}
 }
+\LetLtxMacro{\SetMarkers}{\SetMarkerStyle} % backwards compatibilty pre-v1.40.3.
 %
 \SetMarkerStyle[real]{asterisk} % default
 %%
@@ -620,41 +641,6 @@
 %% end definition of parent and other fonts.
 
 
-%% FAKE POLYGLOSSIA COMMANDS
-%% --------------------------------------------------------------------------
-% The polyglossia package is not loaded until \AtEndPreamble.
-% So, its commands are not directly available in the Preamble.
-% These fake commands store the data. Later, the commands will be relaxed,
-% then the real polyglossia commands can work, and the data will be passed
-% to the real commands at that time.
-% Default main language will be set to english by novel-FontDefaults.sty.
-\newcommand\SetMainLanguage[2][]{
-  \gdef\@setmainlangopt{#1}
-  \gdef\@setmainlang{#2}
-}
-\let\setmainlanguage\SetMainLanguage\relax
-\newcommand\SetDefaultLanguage[2][]{
-  \gdef\@setmainlangopt{#1}
-  \gdef\@setmainlang{#2}
-}
-\let\setdefaultlanguage\SetDefaultLanguage\relax
-\SetMainLanguage[]{} % if not user-specified, defaults to english
-\newcommand\SetOtherLanguage[2][]{
-  \gdef\@setotherlangopt{#1}
-  \gdef\@setotherlang{#2}
-}
-\let\setotherlanguage\SetOtherLanguage\relax
-\SetOtherLanguage[]{} % default empty
-\newcommand\SetOtherLanguages[2][]{
-  \gdef\@setotherlangsopt{#1}
-  \gdef\@setotherlangs{#2}
-}
-\let\setotherlanguages\SetOtherLanguages\relax
-\SetOtherLanguages[]{} % default empty
-%
-%% end fake polyglossia commands.
-
-
 %% FRONTMATTER, MAINMATTER. BUT NO BACKMATTER!
 %% --------------------------------------------------------------------------
 %
@@ -762,6 +748,12 @@
 \long\gdef\listoffigures\@nodocommand{listoffigures}
 %
 %% end disable or neutralize.
+
+
+%% polyglossia
+% Language-specific settings:
+\RequirePackage{polyglossia} % loading order changed in v. 1.40.3.
+%% end polyglossia
 
 
 %%

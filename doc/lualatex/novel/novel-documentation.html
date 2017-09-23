@@ -241,7 +241,7 @@ function showul(thisul){
       </li><!-- end 5.4 -->
       <li><p><img id="i5.5" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIAAAUAAeImBZsAAAAASUVORK5CYII=" class="nodisplaynav" onclick="plusminus(this.id);" title="open/close" alt=""/><a href="#h5.5">5.5 Superscripts, Subscripts</a></p>
         <ul id="u5.5">
-          <li><p class="noimg"><a href="#h5.5.1">5.5.1 \SetMarkers[]{}</a></p></li>
+          <li><p class="noimg"><a href="#h5.5.1">5.5.1 \SetMarkerStyle[]{}</a></p></li>
           <li><p class="noimg"><a href="#h5.5.2">5.5.2 \realmarker, \fakemarker</a></p></li>
         </ul>
       </li><!-- end 5.5 -->
@@ -259,7 +259,7 @@ function showul(thisul){
           <li><p class="noimg"><a href="#h6.1.4">6.1.4 \SetPageNumberStyle{}</a></p></li>
           <li><p class="noimg"><a href="#h6.1.5">6.1.5 \SetHeadFont[]{}</a></p></li>
           <li><p class="noimg"><a href="#h6.1.6">6.1.6 \SetLooseHead{}</a></p></li>
-          <li><p class="noimg"><a href="#h6.1.7">6.1.7 \SetChapterStart{}</a></p></li>
+          <li><p class="noimg"><a href="#h6.1.7">6.1.7 \SetChapterStartStyle{}</a></p></li>
         </ul>
       </li><!-- end 6.1 -->
       <li><p><img id="i6.2" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQI12NgAAIAAAUAAeImBZsAAAAASUVORK5CYII=" class="nodisplaynav" onclick="plusminus(this.id);" title="open/close" alt=""/><a href="#h6.2">6.2 Local Header/Footer Settings</a></p>
@@ -508,7 +508,7 @@ function showul(thisul){
 <!-- **************************************************************************************** -->
 
 <h1 id="h0">Document class <i>novel</i> - documentation</h1>
-<p class="noindent">Version: 1.40, 2017/09/14. This is a complete re-write of the documentation, with the HTML in a single file, and many improvements. Version 1.40.1: Minor doc changes, especially correction to code for converting cover image to CMYK. Version 1.40.2: More minor doc changes.</p>
+<p class="noindent">Version: 1.40, 2017/09/14. This is a complete re-write of the documentation, with the HTML in a single file, and many improvements. Version 1.40.1: Minor doc changes, especially correction to code for converting cover image to CMYK. Versions 1.40.2, 1.40.3: More minor doc changes.</p>
 <p class="noindent" style="position:relative"><span style="position:absolute; top:-.1em; font-size:150%; color:#008000">&#9786;</span>&nbsp; &nbsp; &nbsp; An example novel, text and cover, can be found at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/">GitHub project page</a>, in the "other" folder. You will find its TeX source and the resulting PDF. The PDF text and cover meet submission standards for major American print-on-demand services.</p>
 <p>A smaller example document is <i>novel-example.tex</i>, which can be found in the <i>extras</i> folder within this documentation.</p>
 <p>&nbsp;</p>
@@ -969,7 +969,7 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 
 <h4 id="h4.2.3">4.2.3. <code>\SetFontSize{<em>length</em>}</code></h4>
 <div class="d4" id="d4.2.3">
-<p class="noindent">In the <i>novel</i> document class, you do not set point size as a class option. Instead you use \SetFontSize in the Preamble.</p>
+<p class="noindent">In the <i>novel</i> document class, you do not set point size as a class option. Instead you use <code>\SetFontSize</code> in the Preamble.</p>
 <p>The size may be any units TeX understands, including decimal values. So, <i>12.8bp</i> and <i>13.1pt</i> are acceptable. This is because you will be using scalable, Open&nbsp;Type and TrueType fonts throughout your document. They do not need TeX metrics.<p>
 <p>If you insist on using ancient TeX fonts, then you may need to specify a convenient integer font size such as 11pt or 12pt. But why? Forget those fonts! Welcome to the Twenty-First Century.</p>
 <p>The minimum normal font size is 8pt, and the maximum is 18bp. On a local basis, text may be larger or smaller than this.</p>
@@ -1050,7 +1050,7 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <p>The <em>parentfont</em> has TeX ligatures and kerning, applied by default. All of the descendant fonts will also have TeX ligatures and kerning. (Note: TeX ligatures allow you to type `` to get &ldquo; and so forth.)</p>
 <p>If you specify any optional features for the <em>parentfont</em>, they will automatically be applied to descendants: <em>textfont</em>, <em>chapterfont</em>, <em>subchfont</em>, and <em>headfont</em>.</p>
 <p>If you do not set the <em>parentfont</em> yourself, then the following will be used as default, in order of priority: <em>Libertinus&nbsp;Serif</em>, <em>Linux&nbsp;Libertine&nbsp;O</em>, <em>Latin&nbsp;Modern&nbsp;Roman</em>.
-<p>The <em>Libertinus Serif</em> fonts are well-suited to fiction. If in doubt, use them. They can be downloaded as TeX <i>libertinus</i> package, but do not write <code>\usepackage{libertinus}</code> in your Preamble. Those fonts are a more up-to-date fork of the <em>Linux Libertine O</em> fonts, which are in the <i>libertine</i> package.</p>
+<p>The <em>Libertinus Serif</em> fonts are well-suited to fiction. If in doubt, use them. They can be downloaded as TeX <i>libertinus</i> package, but <b>do not</b> write <code>\usepackage{libertinus}</code> in your Preamble. Those fonts are a more up-to-date fork of the <em>Linux Libertine O</em> fonts, which are in the <i>libertine</i> package.</p>
 <p>Alas, even though <em>Latin&nbsp;Modern&nbsp;Roman</em> is a fine font, its style and weight are not well-suited to fiction; the only reason they are a last-choice default, is because just about every TeX system has them.</p>
 
 <h4 id="h5.1.1">5.1.1. &nbsp; Where Fonts Are Used</h4>
@@ -1358,7 +1358,7 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 <p>&bull; <i>real</i> markers attempt to use the Open Type feature <i>sups</i> for superscripts, and the feature <i>sinf</i> (preferred) or <i>subs</i> (alternate) for subscripts. If the requested feature is not available for the font, then it will be automatically faked, by scaling/raising/lowering ordinary characters from the basefont (lining numerals will be used).</p>
 <p>&bull; <i>fake</i> markers ignore whether the Open Type features are available, and simply fakes them.</p>
 
-<h4 id="h5.5.1">5.5.1 &nbsp; <code>\SetMarkers[<em>real,fake</em>]{<em>asterisk, dagger, number</em>}</code></h4>
+<h4 id="h5.5.1">5.5.1 &nbsp; <code>\SetMarkerStyle[<em>real,fake</em>]{<em>asterisk, dagger, number</em>}</code></h4>
 <div class="d4" id="d5.5.1">
 <p>This command may only be used in the Preamble. It globally sets the kind of marker to be used. Default is <i>real</i> and <i>asterisk</i>.</p>
 <p>The optional argument applies real or fake markers, as described above.</p>
@@ -1515,10 +1515,10 @@ Default author verso, title recto.</p>
 <p>The looseness applies to inter-letter spacing, but not to inter-word spacing. To increase inter-word spacing, use extra code such as <code>\,</code> (backslash comma, which is a LaTeX thin space) as needed.</p>
 </div>
 
-<h4 id="h6.1.7">6.1.7. &nbsp; <code>\SetChapterStart{<em>choice</em>}</code></h4>
+<h4 id="h6.1.7">6.1.7. &nbsp; <code>\SetChapterStartStyle{<em>choice</em>}</code></h4>
 <div class="d4" id="d6.1.7">
 <p class="noindent">This command is only applied if you begin new chapters with the <a href="#h11.1">ChapterStart</a> environment. You may pick one of the <code>\thispagestyle</code> choices, described in the <a href="#h6.2.2">section 6.2.2</a>. For example:</p>
-<p class="code"><code>\SetChapterStart{dropfolioinside}</code></p>
+<p class="code"><code>\SetChapterStartStyle{dropfolioinside}</code></p>
 <p>Then, that choice will be applied to each page that uses ChapterStart, without you having to write <code>\thispagestyle</code> each time.</p>
 <p>The default is <i>footer</i>. This allows a ChapterStart page to show its footer (only if it has one), but not header.</p>
 <p>If you use this command, you may still over-ride it on a particular page, by using <code>\thispagestyle{<em>choice</em>}</code> <em>before</em> <code>\begin{ChapterStart}</code>.</p>
@@ -1553,7 +1553,7 @@ Default author verso, title recto.</p>
 <p>&bull; The following choices are allowed: <i>fancy</i>, <i>empty</i>, <i>footer</i>, <i>forcenumber</i>, <i>dropfoliobeneath</i>, and <i>dropfolioinside</i>.</p>
 <p>For compatibility reasons, <i>plain</i> and <i>fancyplain</i> are also allowed, and have the same effect as <i>footer</i>.</p>
 <p>&nbsp; <b><code>\thispagestyle{fancy}</code></b></p>
-<p>This applies the default (fancy) page style, so it is not normally needed. Only use this command to over-ride some other \thispagestyle command, or to over-ride the <code>\SetChapterStart</code> setting.</p>
+<p>This applies the default (fancy) page style, so it is not normally needed. Only use this command to over-ride some other \thispagestyle command, or to over-ride the <code>\SetChapterStartStyle</code> setting.</p>
 <p>&nbsp; <b><code>\thispagestyle{empty}</code></b></p>
 <p>Header and footer are both blank.</p>
 <p>&nbsp; <b><code>\thispagestyle{footer}</code></b></p>
@@ -2477,14 +2477,14 @@ In the chapters pertaining to transmontane trade and cultural exchange, I have t
 <div class="d4" id="d11.1,2">
 <p>By default, <i>novel</i> automatically uses <code>\thispagestyle{footer}</code> when it sees the ChapterStart environment. Then, no header will print above the chapter start. However, if there is a footer, it will print.</p>
 <p>If you wish to use a different default behavior for ChapterStart, then write this command <i>in the Preamble</i>:</p>
-<p class="code"><code>\SetChapterStart{<em>choice</em>}</code></p>
+<p class="code"><code>\SetChapterStartStyle{<em>choice</em>}</code></p>
 <p>In the above, <i>choice</i> is one of the choices available for <code>\thispagestyle</code>, as listed below.</p>
 </div>
 
 <h4 id="h11.1.3">11.1.3. &nbsp; <code>\thispagestyle</code> at Chapter Start</h4>
 <div class="d4" id="d11.1.3">
 <p>No matter whether a book is fiction or nonfiction,the first page of a chapter almost never has a header. However, it may have a footer if the book design normally has one (typically the page number).</p>
-<p>If the setting provided by <code>\SetChapterStart</code> is inappropriate for a particular chapter (or anything using ChapterStart environment), then locally over-ride it using one of these choices:</p>
+<p>If the setting provided by <code>\SetChapterStartStyle</code> is inappropriate for a particular chapter (or anything using ChapterStart environment), then locally over-ride it using one of these choices:</p>
 <p class="code"><code>\thispagestyle{footer}</code></p>
 <p>The above choice actually means, &ldquo;footer, if normally available.&rdquo; It does not create a footer that would not otherwise be present in your general book layout. This is the built-in default.</p>
 <p class="code"><code>\thispagestyle{empty}</code></p>
@@ -2567,9 +2567,9 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <p>If you are using \scenebreak and the gap occurs at the very bottom or top of a page, then manually substitute \sceneline or \scenestars there. This is a standard way to indicate that the gap is intentional. The substitution is not automatic.</p>
 </div>
 
-<h4 id="h11.2.3">11.2.3. &nbsp; <code>\IndentAfterScenebreak</code></h4>
+<h4 id="h11.2.3">11.2.3. &nbsp; <code>\SetScenebreakIndent{<em>true</em> or <emfalse</em>}</code></h4>
 <div class="d4" id="d11.2.3">
-<p class="noindent">This global command may only be used in the Preamble.</p>
+<p class="noindent">This global command may only be used in the Preamble. Default is <i>false</i>.</p>
 <p>Normally, text begins without a paragraph indent, after each scene break. This is standard in fiction. If you prefer that each new scene begins indented, use this command. It works with <code>\scenebreak</code>, <code>\sceneline</code>, and <code>\scenestars</code>.</p>
 </div>
 
@@ -2602,7 +2602,7 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <div class="d2" id="d12">
 <p class="noindent">The <i>novel</i> class has <em>limited</em> support for footnotes, because they are rarely used in fiction. Nevertheless, I have seen them. The notes may be factual or imaginary.</p>
 <p>If there are more than a handful of notes, then use endnotes to avoid a constant disruption of the text flow. You may use both footnotes and endnotes.</p>
-<p>Footnotes and endnotes use superscripts at the appropriate point in the main text. The actual footnote or endnote begins with ordinary text, not a superscript. You can control the appearance of superscripts using <code>\SetMarkers</code> and related commands. See the section regarding fonts, earlier in this document.</p>
+<p>Footnotes and endnotes use superscripts at the appropriate point in the main text. The actual footnote or endnote begins with ordinary text, not a superscript. You can control the appearance of superscripts using <code>\SetMarkerStyle</code> and related commands. See the section regarding fonts, earlier in this document.</p>
 
 <h3 id="h12.1">12.1 &nbsp; Footnotes</h3>
 <div class="d3" id="d12.1">
@@ -3042,10 +3042,11 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <p class="overhang"><code>\SetEmblems{<em>verso</em>}{<em>recto</em>}</code> &nbsp; Advanced. Default: empty. Applies decoration near page number, only for selected header/footer styles.</p>
 <p class="overhang"><code>\SetPageNumberStyle{<em>code using \thepage</em>}</code> &nbsp; Advanced. Default: <code>\thepage</code>.</p>
 <p class="overhang"><code>\SetLooseHead{number}</code> &nbsp; Advanced. Default: 50. Adjusts header tracking.</p>
-<p class="overhang"><code>\SetChapterStart{<em>choice</em>}</code> &nbsp; Advanced. Default: footer (if present).</p>
-<p class="overhang"><code>\SetIndentAfterScenebreak</code> &nbsp; Advanced. Default: no indent after scenebreak.</p>
+<p class="overhang"><code>\SetChapterStartStyle{<em>choice</em>}</code> &nbsp; Advanced. Default: footer (if present).</p>
+<p class="overhang"><code>\SetChapterStartHeight{<em>integer</em>}</code> &nbsp; Number of lines.</p>
+<p class="overhang"><code>\SetScenebreakIndent{<em>true</em> or <em>flase</em>}</code> &nbsp; Advanced. Default: no indent after scenebreak.</p>
 <p class="overhang"><code>\SetMarkerStyle[real/fake]{asterisk/dagger/number}</code> &nbsp; Advanced. Default: [real][asterisk].</p>
-<p class="overhang"><code>\microtypesetup{<em>see microtype package docs</em>}</code> &nbsp; Advanced.<br/>Default: config=novel-microtype,stretch=20,shrink=20,final,tracking.</p>
+<p class="overhang"><code>\microtypesetup{<em>see microtype package docs</em>}</code> &nbsp; Advanced.<br/>Default: config=novel-microtype,stretch=20,shrink=20,final.</p>
 <p class="overhang"><code>\setmainlanguage{<em>language</em>}</code> &nbsp; Advanced. Default: english.</p>
 </div>
 </div><!-- end class="d3" -->

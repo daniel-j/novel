@@ -13,16 +13,18 @@
 %% 
 %%
 \ProvidesFile{novel-HeadFootStyles.sty}%
-[2017/09/21 v1.40.2 LaTeX file (header and footer styles)]
+[2017/09/25 v1.40.3 LaTeX file (header and footer layouts and styles)]
 %% 
 
 
 
 %% File `novel-LayoutSettings.sty' reserved space for header/footer,
 %% but did not place anything there. In this file, `fancyhdr' syntax
-%% defines the standard styles. These styles are not activated until
-%% \AtEndPreamble, and only if the user did not already define the styles
+%% defines the layout. The layout are not activated until
+%% \AtEndPreamble, and only if the user did not already define the layout
 %% in the Preamble.
+
+%% Note that `style' sometimes means `layout`.
 
 
 % @isVerso true = even page, false = odd page. Only accurate during shipout.
@@ -56,10 +58,12 @@
   \gdef\@@loosehead{#1}
   \FPdiv{\@loosehead}{\@@loosehead}{10} % change in method of using fontspec with microtype
   \FPmin{\@looseheadnum}{\@loosehead}{50} % Don't want numbers too loose.
+  \FPdiv{\@looseheadword}{\@loosehead}{30} % new in v. 1.40.3.
+  \FPadd{\@looseheadword}{\@looseheadword}{1}
 }
 \SetLooseHead{50}
 % Create flags to know if \fancyhead and \fancyfoot have been defined by user,
-%   somewhere in the Preamble. If not, then pre-defined styles based on trimsize
+%   somewhere in the Preamble. If not, then pre-defined layout based on trimsize
 %   will be applied \AtEndPreamble.
 \LetLtxMacro{\@tempFancyhead}{\fancyhead} % from package `letltxmacro'
 \renewcommand\fancyhead[2][]{%
@@ -79,7 +83,7 @@
 }
 %
 \LetLtxMacro{\@myTempTPS}{\thispagestyle}
-% Re-define \thispagestyle based on layout. When style requests only the page
+% Re-define \thispagestyle based on layout. When it requests only the page
 % number, decide what to do based on this command and whether footer is used:
 \newif \if@thispagestyleset \@thispagestylesetfalse
 %
@@ -153,15 +157,15 @@
   % \versoheadtext is initialized to \theauthor
   % \rectoheadtext is initialized to \thetitle
   \@ifundefined{versoheadtext}{
-    \NewVersoHeadText{\smcp{\StrSubstitute{\theauthor}{\space}{ \,}}}
+    \NewVersoHeadText{\theauthor} % revised in v. 1.40.3
   }{}
   \@ifundefined{rectoheadtext}{
-    \NewRectoHeadText{\smcp{\StrSubstitute{\thetitle}{\space}{ \,}}}
+    \NewRectoHeadText{\thetitle} % revised in v. 1.40.3
   }{}
   %
   % ----------------------------------------------------------------------------
-  % IF YOU ARE WRITING YOUR OWN HEADER/FOOTER STYLE:
-  % Look here for the pre-defined styles, for use as models.
+  % IF YOU ARE WRITING YOUR OWN HEADER/FOOTER LAYOUT:
+  % Look here for the pre-defined layouts, for use as models.
   % Note that if you write \fancyhead or \fancyfoot in the Preamble,
   % that sets the \@styledHeader flag, so these codes do not over-ride yours.
   \ifthenelse{\equal{\my@HeadFootStyle}{1}}{ % default
@@ -236,7 +240,7 @@
   }{}
   %
   %
-  % END PRE-DEFINED STYLES.
+  % END PRE-DEFINED LAYOUTS AND STYLES.
   % ----------------------------------------------------------------------------
   %
   % Substitute for \thispagestyle{plain}
@@ -281,10 +285,12 @@
     \widthof{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}%
   \if@offcenterTrim%
     \setlength\temp@pgnumraise{%
-      \New@BottomMargin+\New@MediaHeight-\New@TrimHeight}%
+      \dimexpr\New@BottomMargin+\New@MediaHeight-\New@TrimHeight}%
+    \global\temp@pgnumraise=\temp@pgnumraise%
   \else%
     \setlength\temp@pgnumraise{%
-      \New@BottomMargin+0.5\New@MediaHeight-0.5\New@TrimHeight}%
+      \dimexpr\New@BottomMargin+0.5\New@MediaHeight-0.5\New@TrimHeight}%
+    \global\temp@pgnumraise=\temp@pgnumraise%
   \fi%
   \check@IsVerso%
   \if@isVerso%
@@ -342,7 +348,7 @@
 \gdef\NewVersoHeadText#1{
   \FPdiv{\@myk}{\@loosehead}{500}
   \setlength\@mykem{\@myk em}
-  \gdef\versoheadtext{\gdef~{\kern\@mykem\space}#1\gdef~{\nobreakspace {}}}
+  \gdef\versoheadtext{#1}
 }
 \let\SetVersoHeadText\NewVersoHeadText\relax % for convenience
 \let\RenewVersoHeadText\NewVersoHeadText\relax % for convenience
@@ -350,7 +356,7 @@
 \gdef\NewRectoHeadText#1{
   \FPdiv{\@myk}{\@loosehead}{500}
   \setlength\@mykem{\@myk em}
-  \gdef\rectoheadtext{\gdef~{\kern\@mykem\space}#1\gdef~{\nobreakspace {}}}
+  \gdef\rectoheadtext{#1}
 }
 \let\SetRectoHeadText\NewRectoHeadText\relax % for convenience
 \let\RenewRectoHeadText\NewRectoHeadText\relax % for convenience

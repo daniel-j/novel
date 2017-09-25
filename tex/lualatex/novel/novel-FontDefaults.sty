@@ -134,7 +134,7 @@
 %%
 \newif \if@headfontdefault
 \if@headfontset\else
-  \SetHeadFont[\@parentfontfeatures,Scale=0.92]{\@parentfontname}
+  \SetHeadFont[Letters=SmallCaps,\@parentfontfeatures,Scale=0.92]{\@parentfontname}
   \global\@headfontdefaulttrue
 \fi
 \newfontfamily\headfont[\@headfontfeatures]{\@headfontname}

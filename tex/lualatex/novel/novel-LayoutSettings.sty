@@ -234,11 +234,11 @@
   \gdef\SetHeadStyle#1{\gdef\my@HeadFootStyle{0}} % deprecated
   \SetHeadFootStyle{0}
 \else
-  % See docs part 7 for available style choices:
+  % See docs for available layout choices:
   \gdef\SetHeadFootStyle#1{\gdef\my@HeadFootStyle{#1}}
   \gdef\SetHeadStyle#1{\gdef\my@HeadFootStyle{#1}} % deprecated
 \fi
-% See docs part 7 for what these emblems do, if used:
+% See docs for what these emblems do, if used:
 \newcommand\SetEmblems[2]{ % verso, recto
   \gdef\my@VersoEmblem{{\headfont #1}}
   \gdef\my@RectoEmblem{{\headfont #2}}
@@ -288,7 +288,7 @@
 % Each new chapter generally has its own header/footer style. This allows a
 % default setting when chapters begin with ChapterStart environment:
 \gdef\SetChapterStartStyle#1{\gdef\@setchapterstart{#1}} % from v1.40.3.
-\gdef\SetChapterStart#1{\gdef\@setchapterstart{#1}} % deprecated from v1.40.3.
+\let\SetChapterStart\SetChapterStartStyle\relax % deprecated from v1.40.3.
 \SetChapterStartStyle{footer} % default
 % New in version 1.40.2:
 \gdef\SetChapterStartHeight#1{%
@@ -496,20 +496,29 @@
 %% Prior to v. 1.1, parentfont was known as masterfont. Backwards compatible.
 %
 \providecommand\rmdefault{lmr} % should be lmr anyway, at this point.
-\let\@noveloldrmdefault\rmdefault % stored for later comparison.
+\LetLtxMacro\@noveloldrmdefault\rmdefault\relax % stored for later comparison.
 % The `no-math' option prevents fontspec from tracking certain font changes.
 % This is probably necessary, since novel does some of its own font tracking:
 \RequirePackage[no-math]{fontspec} % For LuaLaTeX. NOT package `fontenc'.
-\defaultfontfeatures{} % reset
-% User-created fonts (not standard, not novel-specific defaults:
-\defaultfontfeatures{%
-  SmallCapsFeatures={Renderer=Basic},Kerning=On,%
-  Ligatures=TeX,%
-}%
 % You shouldn't be doing math! You can use \setmathfont, if you wish.
 % If you must load a math font package, it should be done using
 %  \RequirePackage before (yes, before) calling the document class.
 \RequirePackage{unicode-math}
+%
+% Math font no kern:
+\defaultfontfeatures{SmallCapsFeatures={Renderer=Basic},Ligatures=TeX,}
+%
+\IfFontExistsTF{Libertinus Math}
+{\setmathfont{Libertinus Math}}
+{\IfFontExistsTF{Asana Math}
+  {\setmathfont{Asana Math}}
+  {\IfFontExistsTF{STIX Math}
+    {\setmathfont{STIX Math}}
+    {\setmathfont{Latin Modern Math}} % last choice
+  }
+}% end \IfFontExistsTF nest.
+% For user-created font commands:
+\defaultfontfeatures{SmallCapsFeatures={Renderer=Basic},Kerning=On,Ligatures=TeX,}%
 %%
 %% This could have been easier, but fontspec allows mandatory and optional
 %   arguments to appear in either order. We wish to store the fontnames
@@ -562,7 +571,7 @@
 \gdef\@headfontname{}
 \DeclareDocumentCommand \SetHeadFont { O{} m O{} } {%
   \novel@checkfeatures{#1,#3}
-  \gdef\@headfontfeatures{#1,#3}
+  \gdef\@headfontfeatures{WordSpace=\@looseheadword,LetterSpace=\@loosehead,#1,#3} % revised in v. 1.40.3.
   \gdef\@headfontname{#2}
   \global\@headfontsettrue
 }%
@@ -624,7 +633,7 @@
 %   In the document body: {\addfontfeature{myfs} text}
 \DeclareDocumentCommand \CreateFontFeature { m m } {%
   \IfEndWith{#1}{,}{\StrGobbleRight{#1}{1}[\@fakezero]}{\def\@fakezero{#1}}
-  \def\@fakeone{"\@fakezero"} %%%%%
+  \def\@fakeone{"\@fakezero"}
   \StrSubstitute{\@fakeone}{=}{"]="}[\@fakeone]
   \StrSubstitute{\@fakeone}{,}{",\space["}[\@fakeone]
   \directlua{

@@ -21,6 +21,7 @@
 %%
 
 %% Version 1.40: removed `debug' option (was not useful). Major docs rewrite.
+%% Versions 1.40.x: Incremental changes, leading to 1.42.
 
 %% Version 1.38: corrected offset in cover artwork; some docs modified.
 
@@ -450,18 +451,15 @@
   \ifthenelse{\equal{\@setchapterstart}{forcenumber}}{%
     \def\@setchapterstartOK{true}%
   }{}%
-  \ifthenelse{\equal{\@setchapterstart}{dropfolio}}{% no footnote there
+  \ifthenelse{\equal{\@setchapterstart}{dropfolioinside}}{%
     \def\@setchapterstartOK{true}%
   }{}%
-  \ifthenelse{\equal{\@setchapterstart}{dropfoliolater}}{% footnote(s) there
-    \def\@setchapterstartOK{true}%
-  }{}%
-  \ifthenelse{\equal{\@setchapterstart}{foliobeneath}}{%
+  \ifthenelse{\equal{\@setchapterstart}{dropfoliobeneath}}{%
     \def\@setchapterstartOK{true}%
   }{}%
   \ifthenelse{\equal{\@setchapterstartOK}{true}}{}{%
-    \ClassError{novel}{\string\SetChapterStart\space bad argument}%
-    {\string\SetChapterStart\space only allows certain choices.^^J}%
+    \ClassError{novel}{\string\SetChapterStartStyle\space bad argument}%
+    {\string\SetChapterStartStyle\space only allows certain choices.^^J}%
   }%
   %%
   %% Pertains to novel-TextMacros.sty:

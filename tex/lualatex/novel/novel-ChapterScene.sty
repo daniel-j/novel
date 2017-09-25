@@ -79,7 +79,59 @@
 \newlength\@oldparindent
 %
 % The argument is the number of normal baselineskips high (integer GTE 4).
-\newenvironment{ChapterStart}[1][\@setchapterstartheight] % default 10
+\ExplSyntaxOn
+\DeclareDocumentEnvironment {ChapterStart} { O{\@setchapterstartheight} O{\@setchapterstart} }
+{%
+  \gdef\@thiscsstyle{#2}%
+  \thispagestyle{\@thiscsstyle}%
+  \setlength\@oldparindent{\parindent}%
+  \global\@oldparindent=\@oldparindent%
+  \setlength\parindent{0pt}%
+  \global\parindent=\parindent%
+  \ResetFootnoteSymbol% resets symbolic markers, but not numerical markers
+  \IfStrEq{#1}{*}{\gdef\@thiscsheight{\@setchapterstartheight}}{\gdef\@thiscsheight{#1}}%
+  \FPsub{\@fixlines}{\@thiscsheight}{2}%
+  \FPsub{\@fixlines}{\@fixlines}{0.001}% fudge to avoid rounding problems
+  \FPround{\@thiscsheight}{\@thiscsheight}{0}%
+  \FPiflt{\@thiscsheight}{4}%
+    \IfStrEq{\@thiscsstyle}{dropfolioinside}{%
+      \ClassError{novel}{ChapterStart~ height~ insufficient~ for~ dropfolioinside}%
+        {With~ dropfolioinside,~ the~ ChapterStart~ height~ must~ be~ at~ least~ 4.}%
+    }{}%
+  \else\fi%
+  \FPiflt{\@thiscsheight}{3}%
+    \ClassError{novel}{ChapterStart~ height~ must~ be~ at~ least~ 3}%
+      {If~ you~ need~ height~ less~ than~ 3,~ consider~ \string\QuickChapter\space~ instead.}%
+  \else\fi%
+  \null% always a line above the first thing to appear within the environment
+  \setcounter{@linequarter}{0}%
+  \begin{textblock*}{\textwidth}[0,0](0pt,0pt)%
+}{% close the environment:
+  \ifthenelse{%
+    \equal{\value{@linequarter}}{1} \OR \equal{\value{@linequarter}}{5}%
+    \OR \equal{\value{@linequarter}}{9} \OR \equal{\value{@linequarter}}{13}%
+  }{\vspace{0.75\nbs}}{}%
+  \ifthenelse{%
+    \equal{\value{@linequarter}}{2} \OR \equal{\value{@linequarter}}{6}%
+    \OR \equal{\value{@linequarter}}{10} \OR \equal{\value{@linequarter}}{14}%
+  }{\vspace{0.5\nbs}}{}%
+  \ifthenelse{%
+    \equal{\value{@linequarter}}{3} \OR \equal{\value{@linequarter}}{7}%
+    \OR \equal{\value{@linequarter}}{11} \OR \equal{\value{@linequarter}}{15}%
+  }{\vspace{0.25\nbs}}{}%
+  \end{textblock*}%
+  \vspace{\@fixlines\nbs}%
+  \if@addCTline\null\fi%
+  \setlength\parindent{\@oldparindent}%
+  \global\parindent=\parindent%
+  \nov@AfterGroup\NoIndentAfterThis% etextools and noindentafter
+}
+\ExplSyntaxOff % end ChapterStart environment
+
+
+
+%%%%%
+\newenvironment{OldChapterStart}[1][\@setchapterstartheight] % default 10
 {%
   \setlength\@oldparindent{\parindent}%
   \global\@oldparindent=\@oldparindent%
@@ -112,6 +164,13 @@
   \global\parindent=\parindent%
   \nov@AfterGroup\NoIndentAfterThis% etextools and noindentafter
 }
+%%%%%
+
+
+
+
+
+
 %%
 \LetLtxMacro\ChapterDisplay\ChapterStart\relax % deprecated
 \LetLtxMacro\endChapterDisplay\endChapterStart\relax % deprecated

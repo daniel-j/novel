@@ -3,7 +3,10 @@
 %
 % EXAMPLE OF NOVEL DOCUMENT CLASS
 % Uses mostly default layout.
-\documentclass{novel} % v. 1.40.2 or later
+% IF YOU COMPILE THIS DOCUMENT: Be sure that this file, and its generated PDF,
+%   have read/write permissions for any user. If they don't, then
+%   compile will fail at the point where files are written.
+\documentclass{novel} % v. 1.42 or later
 \SetTitle{Dark and Stormy}
 \SetSubtitle{A Tale of Nights}
 \SetAuthor{Dirk Hardcase}
@@ -54,6 +57,7 @@ Anytown • Anyplace • Anywhere}\par
 \itshape{
 \null
 \vfill
+\textsc{Dark and Stormy}\par
 Copyright ©2017 Dirk Hardcase.\par % Whichever year, copyright holder.
 All Rights Reserved.\par % Usually no need to be elaborate.
 \null
@@ -69,7 +73,7 @@ Printed in the United States of America.\par % Or whichever nation.
 ISBN 0-12345678-9\par % Whatever it is. No barcode, just number.
 \null
 
-Published by Dirk Hardcase,\par % Publisher is you, not the print/distribution service.
+Independently Published by Dirk Hardcase,\par % Publisher is you, not the print/distribution service.
 Anytown, Anystate USA\par % Publisher's location.
 www.example.com/dhardcase/publications/\par % Contact for publisher or author.
 \null

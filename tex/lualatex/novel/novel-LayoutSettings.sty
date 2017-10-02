@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/09/25 v1.40.3 LaTeX file (layout settings)]
+[2017/10/02 v1.41 LaTeX file (layout settings)]
 %%
 
 
@@ -690,14 +690,14 @@
   \setcounter{page}{1}
 }
 %
-\def\backmatter{\@ifstar\@backmatterst\@backmatterns} % obsolete from v. 1.40.
+\def\backmatter{\@ifstar\@backmatterst\@backmatterns} % asterisk obsolete from v. 1.40.
 \def\@backmatterst{%
   \ClassWarning{novel}{Command \string\backmatter*\ ignored. Do not use.^^J}%
 }
 %
 \def\@backmatterns{%
   \cleartorecto% v. 1.40.2
-  \ClassWarning{novel}{Command \string\backmatter\ merely clears to recto.^^J}% v. 1.40.2
+  \typeout{Class `novel' Alert: \string\backmatter\space merely clears to recto. See docs.^^J}% v. 1.42
 %
 }
 %

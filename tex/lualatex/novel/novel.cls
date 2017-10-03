@@ -68,6 +68,7 @@
 %% These are not user settings.
 %
 \RequirePackage{ifluatex} % LuaTeX is required. Not XeTeX, dvips, or pdfTeX.
+\RequirePackage{ifxetex} % For occasional hacks (hiss, boo).
 \RequirePackage{luatex85} % Needed for compatibility when using LuaTeX 0.95 etc.
 \RequirePackage{pdftexcmds} % compatibility
 \ifluatex

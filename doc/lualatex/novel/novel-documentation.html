@@ -5,7 +5,7 @@
 <title>Document class "novel" - documentation</title>
 
 <style type="text/css">
-body {font-family:sans-serif; line-height:150%; font-size:14pt; color:#203310; background:#cccccc none;}
+body {font-family:sans-serif; line-height:150%; font-size:14pt; color:#000000; background:#ffffff none;}
 p {font-family:sans-serif,sans-serif; font-size:1em; margin:0px 16px 0px 16px; text-indent:16px;}
 ol, ul {list-style-type:none; margin:0px; padding:0px;}
 li {margin:3px 8px 3px 16px; padding:0px;}
@@ -30,7 +30,6 @@ div.d5 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-rig
 div.d6 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
 div.page {padding:16px 0px 16px 0px; border-top:4px solid #505050;}
 div.codeblock {overflow:auto; margin:16px; padding: 8px; border: 1px solid #000000;}
-div.codeblock p {text-indent:0px; white-space:nowrap;}
 code {font-family:monospace,monospace; font-size:92%; color:#200050; background:transparent none; padding:0px 3px 0px 3px;}
 *.smaller {font-weight:normal; font-size:88%;}
 *.noindent {text-indent:0px;}
@@ -57,17 +56,26 @@ b em {font-weight:normal;}
 hr.newpage {margin-top:2em; margin-bottom:2em; height:4px; color:#505050; background:#505050;}
 p.overhang {margin-left:32px; text-indent:-16px;}
 #master {position:relative;}
-#toc {display:block; font-size:14pt; width:30%; background:#ffffff none; position:fixed; overflow:scroll; height:98%;}
-#main {float:right; background:#ffffff none; width:68%; padding-bottom:40px;}
 #finish {clear:both;}
-@media print {
-  #toc {display:none;}
-  #main {width:auto; float:none;}
-  div.codeblock p {text-indent:0px;}
+#toc {display:none;}
+#main {width:auto; float:none; background:#ffffff none;}
+div.codeblock p {text-indent:0px;}
+</style>
+
+<style id="screenstyle" type="text/css">
+@media screen {
+  body {color:#203310;}
+  #toc {display:block; font-size:14pt; width:30%; background:#ffffff none; position:fixed; overflow:scroll; height:98%;}
+  #main {float:right; background:#ffffff none; width:68%; padding-bottom:40px;}
+  div.codeblock p {text-indent:0px; white-space:nowrap;}
 }
 </style>
 
-<script type="text/javascript">var doprint=false;</script>
+<script type="text/javascript">
+var doprint=false;
+var mysearch = location.search;
+if(mysearch=="?print"){doprint=true; document.getElementById("screenstyle").disabled=true;}
+</script>
 
 
 <!-- IF PROBLEM PRINTING: Remove comment lines from this small block of style and script: -->
@@ -102,7 +110,7 @@ function placenav(){
 function lstartclose(whichn) {
   whichparid = nspans[whichn].parentElement.id;
   whichdiv = document.getElementById("u" + whichparid.substring(1));
-  whichdiv.style.display="none";
+  if(whichdiv) whichdiv.style.display="none";
 }
 function openclose(){
   thisparid = this.parentElement.id;

@@ -9,10 +9,10 @@ stream
    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
      <rdf:Description rdf:about=""
          xmlns:xmp="http://ns.adobe.com/xap/1.0/">
-       <xmp:ModifyDate>2017-10-02T08:08:14-07:00</xmp:ModifyDate>
-       <xmp:CreateDate>2017-10-02T08:08:14-07:00</xmp:CreateDate>
+       <xmp:ModifyDate>2017-10-02T10:44:41-07:00</xmp:ModifyDate>
+       <xmp:CreateDate>2017-10-02T10:44:41-07:00</xmp:CreateDate>
        <xmp:CreatorTool>LuaLaTeX with novel and microtype</xmp:CreatorTool>
-      <xmp:MetadataDate>2017-10-02T08:08:14-07:00</xmp:MetadataDate>
+      <xmp:MetadataDate>2017-10-02T10:44:41-07:00</xmp:MetadataDate>
      </rdf:Description>
      <rdf:Description rdf:about=""
          xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -26,7 +26,7 @@ stream
      <rdf:Description rdf:about=""
          xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/">
        <xmpMM:DocumentID>uuid:A12D98E081B6A0EC2CBA2D468474F922</xmpMM:DocumentID>
-       <xmpMM:InstanceID>uuid:9E3290C30A2A970577D060B353BE7548</xmpMM:InstanceID>
+       <xmpMM:InstanceID>uuid:EC58494BD93BAE0F253EB97A2DD82249</xmpMM:InstanceID>
        <xmpMM:RenditionClass>default</xmpMM:RenditionClass>
        <xmpMM:VersionID>1</xmpMM:VersionID>
      </rdf:Description>
@@ -750,7 +750,7 @@ endobj
 endobj
 44 0 obj
 <<
- /Title(Novel\040Document\040Class)/Creator(LuaLaTeX\040with\040novel\040and\040microtype)/CreationDate(D:20171002080814-07'00')/ModDate(D:20171002080814-07'00')/Producer(LuaLaTeX\040with\040novel-pdfx\040and\040hyperref)/Trapped/False/GTS_PDFXVersion(PDF/X-1a:2001)/GTS_PDFXConformance(PDF/X-1a:2001)
+ /Title(Novel\040Document\040Class)/Creator(LuaLaTeX\040with\040novel\040and\040microtype)/CreationDate(D:20171002104441-07'00')/ModDate(D:20171002104441-07'00')/Producer(LuaLaTeX\040with\040novel-pdfx\040and\040hyperref)/Trapped/False/GTS_PDFXVersion(PDF/X-1a:2001)/GTS_PDFXConformance(PDF/X-1a:2001)
 >>
 endobj
 xref
@@ -801,7 +801,7 @@ xref
 0000071252 00000 n 
 0000071575 00000 n 
 trailer
-<</Size 45/Root 43 0 R/Info 44 0 R/ID[<B452DAA96081975E0CCD1ED88CB8BA36> <B452DAA96081975E0CCD1ED88CB8BA36>]>>
+<</Size 45/Root 43 0 R/Info 44 0 R/ID[<ED6887D16B8F1998D634E7629D1BB23C> <ED6887D16B8F1998D634E7629D1BB23C>]>>
 startxref
 71899
 %%EOF

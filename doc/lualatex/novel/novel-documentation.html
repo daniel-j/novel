@@ -55,40 +55,35 @@ p.code {text-indent:0px; margin: 4px 16px 4px 16px; padding-left:32px;}
 b em {font-weight:normal;}
 hr.newpage {margin-top:2em; margin-bottom:2em; height:4px; color:#505050; background:#505050;}
 p.overhang {margin-left:32px; text-indent:-16px;}
+*.sampledoc {margin:1em}
+*.sampledoc em {font-size:92%; color:#666666}
 #master {position:relative;}
 #finish {clear:both;}
-#toc {display:none;}
+#toc {display:block;}
+#toc li ul li {display:none;}
 #main {width:auto; float:none; background:#ffffff none;}
+*.noshowprint {display:none;}
 div.codeblock p {text-indent:0px;}
+*.screennoscript {display:none;}
 </style>
 
 <style id="screenstyle" type="text/css">
 @media screen {
-  body {color:#203310;}
+  body {color:#203310; background:#cccccc none;}
   #toc {display:block; font-size:14pt; width:30%; background:#ffffff none; position:fixed; overflow:scroll; height:98%;}
+  #toc li ul li {display:block;}
   #main {float:right; background:#ffffff none; width:68%; padding-bottom:40px;}
   div.codeblock p {text-indent:0px; white-space:nowrap;}
+  *.screennoscript {display:inline;}
+  *.toptitle {display:none;}
 }
 </style>
 
 <script type="text/javascript">
 var doprint=false;
-var mysearch = location.search;
-if(mysearch=="?print"){doprint=true; document.getElementById("screenstyle").disabled=true;}
+var mysearch = location.href;
+if(mysearch.indexOf("print")!=-1){doprint=true; document.getElementById("screenstyle").disabled=true;}
 </script>
-
-
-<!-- IF PROBLEM PRINTING: Remove comment lines from this small block of style and script: -->
-<!-- Remove this whole line for printing.
-  <style type="text/css">
-  #toc {display:none;}
-  #main {width:auto; float:none;}
-  div.codeblock p {text-indent:0px;}
-  </style>
-  <script type="text/javascript">doprint=true</script>
-Remove this whole line for printing. -->
-<!-- END IF PROBLEM PRINTING. -->
-
 
 <script type="text/javascript">
 if(!doprint) {window.onload = loadnav;}
@@ -146,7 +141,8 @@ function closeall() {
 
 <div id="toc" class="toc">
 
-<h3><a href="#main">Contents</a> &nbsp; <span class="smaller"><a href="javascript:openall();">(open all)</a> &nbsp; <a href="javascript:closeall();">(close all)</a></span></h3>
+<h1 class="toptitle">Document class <em>novel</em> - Documentation</h1>
+<h3 class="noshowprint"><a href="#main">Contents</a> &nbsp; <span class="smaller"><a href="javascript:openall();">(open all)</a> &nbsp; <a href="javascript:closeall();">(close all)</a></span></h3>
 
 <ul><!-- master toc ul -->
 
@@ -362,6 +358,23 @@ function closeall() {
           <li><a href="#h6.3.2">6.3.2 Some Useful Commands</a></li>
         </ul>
       </li><!-- end 6.3 -->
+      <li id="l6.4"><span class="n"></span><a href="#h6.4">6.4 Superscripts, Subscripts</a>
+        <ul id="u6.4">
+          <li><a href="#h6.4.1">6.4.1 Global Marker Style</a></li>
+          <li><a href="#h6.4.2">6.4.2 Local Real or Fake</a></li>
+        </ul>
+      </li><!-- end 6.4 -->
+      <li id="l6.5"><span class="n"></span><a href="#h6.5">6.5 Footnotes, Endnotes</a>
+        <ul id="u6.5">
+          <li><a href="#h6.5.1">6.5.1 Footnotes</a></li>
+          <li id="l6.5.2"><span class="n"></span><a href="#h6.5.2">6.5.2 Endnotes</a>
+            <ul id="u6.5.2">
+              <li><a href="#h6.5.2.1">6.5.2.1 Marking the Endnote</a></li>
+              <li><a href="#h6.5.2.2">6.5.2.2 Writing the Endnote</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li><!-- end 6.5 -->
     </ul>
   </li><!-- end 6 -->
 
@@ -518,7 +531,14 @@ function closeall() {
     </ul>
   </li><!-- end E -->
 
-  <li id="lF"><span class="n" style="visibility:hidden"></span><a href="#hF"><b>F. Sample Document</b></a></li><!-- end F -->
+  <li id="lF"><span class="n" style="visibility:hidden"></span><a href="#hF"><b>F. Sample Document</b></a>
+  </li><!-- end F -->
+
+  <li id="lG"><span class="n"></span><a href="#hG"><b>G. Known Issues</b></a>
+    <ul id="uG">
+      <li><a href="#hG.1">G.1. fmtcount (solved)</a></li>
+    </ul>
+  </li><!-- end C -->
 
 </ul><!-- end master toc ul -->
 
@@ -533,10 +553,11 @@ function closeall() {
 <!-- **************************************************************************************** -->
 
 <h1 id="h0">Document class <i>novel</i> - documentation</h1>
-<p class="noindent">Version: 1.41, 2017/10/02. This is a complete re-write of the documentation, with the HTML in a single file, and many improvements.</p>
-<p class="noindent" style="position:relative"><span style="position:absolute; top:-.1em; font-size:150%; color:#008000">&#9786;</span>&nbsp; &nbsp; &nbsp; An example novel, text and cover, can be found at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/">GitHub project page</a>, in the "other" folder. You will find its TeX source and the resulting PDF. The PDF text and cover meet submission standards for major American print-on-demand services.</p>
+<p class="noindent">Version: 1.42, 2017/10/04. <span id="screennoscript" class="screennoscript"><b>For enchanced navigation of this file, turn on JavaScript.</b></span></p>
+<div><script type="text/javascript">if(document.getElementById("screennoscript")){document.getElementById("screennoscript").style.display="none";}</script></div>
+<p class="noindent" style="position:relative"><span style="position:absolute; top:-.1em; font-size:150%; color:#008000">&#9786;</span>&nbsp; &nbsp; &nbsp; An example novel, text and cover, can be found at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/">GitHub project page, https://github.com/RobtAll/novel/</a>, in the "other" folder. You will find its TeX source and the resulting PDF. The PDF text and cover meet submission standards for major American print-on-demand services.</p>
 <p>A smaller example document is <i>novel-example.tex</i>, which can be found in the <i>extras</i> folder within this documentation.</p>
-<p><b>Printing this file:</b> Some user agents have difficulty previewing this HTML file for print, or printing it. If you wish to print (to PDF or paper) then do this: Edit the HTML file, in a text editor that understands UNIX-type line endings. Look slightly below the top (around line 70) for a block of code that is commented-out. Remove the comment, so that the block is effective.</p>
+<p><b>Printing this file:</b> Some user agents have difficulty previewing this HTML file for print, or printing it. If you wish to print (to PDF or paper) then try this: Copy the HTML file, and name the copy <i style="white-space:nowrap">novel-documentation-print.html</i>. That might (or might not) help. In any case, the printable format of this file has an abbreviated list of contents at the top, not as a sidebar.</p>
 <p>&nbsp;</p>
 
 
@@ -549,7 +570,7 @@ function closeall() {
 <h3 id="h1.1">1.1. Description</h3>
 <div class="d3" id="d1.1">
 <p class="noindent">The <i>novel</i> document class is intended for writers of original fiction, such as novels and collections of short stories. For this purpose, it provides easy-to-use settings that are pre-configured for the most common book Trim Sizes, according to publishing standards.</p>
-<p>The class uses the advanced typographic features of LuaTeX, fontspec, and microtype, and has the built-in capability to produce files compliant with PDF/X. All these capabilities are accessed via simple front-end commands that do the work for you, thereby reducing the learning curve.</p>
+<p>The class uses the advanced typographic features of <i>LuaTeX</i>, <i>fontspec</i>, and <i>microtype</i>, and has the built-in capability to produce files compliant with PDF/X. All these capabilities are accessed via simple front-end commands that do the work for you, thereby reducing the learning curve.</p>
 <p>You will be using utf-8 encoding throughout, and Open Type fonts (or TrueType). That means built-in support for many languages.</p>
 <p>PDF/A and other formats pertaining to digital publication (e-books) are not supported, and never will be. If that is what you need, then this is the wrong document class for you.</p>
 <p>Bibliography, Floats, Tables, Math Mode, automatic generation of title page and table of contents... Forget them! Many of the TeX features used for academic work have reduced functionality, or are entirely disabled, in <i>novel</i> class. There is a reason for this. If you need those capabilities, find another document class. There is some support for page-bottom footnotes, but good support for raster (not vector) images.</p>
@@ -598,6 +619,11 @@ function closeall() {
 <h3 id="h1.2">1.2. Important Behavior</h3>
 <div class="d3" id="d1.2">
 <p class="noindent">There are several ways that <i>novel</i> is very different from other TeX document classes. Before you wonder why your document doesn't work, you need to understand the differences. All of these are features, not bugs. They are done with the intent of making <i>novel</i> best for its intended purpose.</p>
+<p>At the top of your *.tex main document, place these lines:</p>
+<p class="code"><code>% !TeX TS-program = LuaLaTeX<br/>
+% !TeX encoding = UTF-8
+</code></p>
+<p>Those instructions are read and understood by many TeX editors, and also serve as a reminder to yourself. However, they do nothing when the document is processed by command line.</p>
 
 <h4 id="h1.2.1">1.2.1. Always Use UTF-8, Without fontenc</h4>
 <div class="d4" id="d1.2.1">
@@ -995,6 +1021,13 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <p>In <i>novel</i> you set a parent font (<i>parentfont</i>), which is the ancestor of several pre-defined font styles, including the main text font. In Preamble:</p>
 <p class="code"><code>\SetParentFont[<em>features</em>]{<em>fontname</em>}</code><p>
 <p>The command uses <i>fontspec</i> syntax, which is reviewed in an Appendix here, and described in full detail by the <i>fontspec</i> package documentation.</p>
+<p>IMPORTANT: In all font setting commands (<code>\SetParentFont</code> and others), you may <i>not</i> use a line break anywhere in the command. If you wish to break your code into multiple lines for ease of reading in the source document, be sure to use the percent symbol % at the end of each line, so that the line return character is nullified, like this:</p>
+<p class="code"><code>
+\SetParentFont[%<br/>
+Feature=Setting,%<br/>
+AnotherFeature=Setting,%<br/>
+]{fontname}
+</code></p>
 <p><b>Don't be intimidated.</b> If you don't use this command, then <i>novel</i> will attempt to use <i>Libertinus Serif</i> as the parent font family. It carries the SIL Open Font License, and was carefully chosen for its suitability in free-flowing text, such as a novel. It is a recent fork of the <i>Linux Libertine O</i> font family, which will be used as second choice default if <i>Libertinus Serif</i> is not installed.</p>
 <p>The last-choice default is <i>Latin Modern Roman</i>, which really is not suitable for novels; but surely your TeX installation has it.</p>
 <p>If you have the proper license, you can use a commercial font. For example:</p>
@@ -1374,7 +1407,7 @@ In this context, "folio" means page number. The header (if any) is blank. If the
 <h5 id="h5.1.2.1">5.1.2.1. <code>\SetChapterStartStyle{<em>choice</em>}</code></h5>
 <div class="d5" id="d5.1.2.1">
 <p class="noindent">This command may be used in Preamble. Its default setting is <i>footer</i>.</p>
-<p>In most cases, a <i>ChapterStart</i> page has a head/foot style that differs from the global default. Instead of writing <code>\thispagestyle</code> commands for every chapter, use <code>\SetChapterStartStyle</code> to pick a style that will be applied wherever <i>ChapterStart</i> is used. The available choices are: fancy, footer, empty, dropfoliobeneath, dropfolioinside, forcenumber.</p>
+<p>In most cases, a <i>ChapterStart</i> page has a head/foot style that differs from the global default. Instead of writing <code><a href="#h4.3.5.1">\thispagestyle</a></code> commands for every chapter, use <code>\SetChapterStartStyle</code> to pick a style that will be applied wherever <i>ChapterStart</i> is used. The available choices are: fancy, footer, empty, dropfoliobeneath, dropfolioinside, forcenumber.</p>
 <p>Regardless of the global header/footer style, and regardless of this setting, you can over-ride the style on a per-chapter basis, via an optional argument at the beginning of the <i>ChapterStart</i> environment.</p>
 </div><!-- end 5.1.2.1 -->
 
@@ -1568,7 +1601,10 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <div class="d2" id="d6">
 <p class="noindent">This section describes how to change the size of text, how to style text (such as italics), and how to move it around. It also describes some miscellaneous commands that are intended to modify text.</p>
 <p>Information about how to choose the global, main text point size is described in <a href="#h4.2.1.2">section 4.2.1.2</a>. General information about choosing fonts and font features is in <a href="#hC">Appendix C</a> and <a href="#hE">Appendix E</a>.</p>
-<p>There is no direct setting for normal baselineskip; it is automatically calculated from the size of the textblock and lines per page.</p>
+<p>There is no direct setting for normal baselineskip; it is automatically calculated from the size of the textblock (using Trim Size, Margins, and header/footer layouts) and <a href="#h4.3.2">lines per page</a>.</p>
+<p>The included <i>microtype</i> package is pre-configured, using these settings:</p>
+<p class="code"><code>\microtypesetup{config=novel-microtype,stretch=20,shrink=20,final}</code></p>
+<p>File <i>novel-microtype.cfg</i> uses settings typical of the kind of book-weight font that you are likely to use. The stretch and shrink factors are moderate. Calculation is always final, so that you see the same effect whether or not you use the <i>draft</i> class option. If you wish to change any of these, see the <i>microtype</i> package documentation. Note that since you are compiling with LuaLaTeX, some features of <i>microtype</i> may not be available.</p>
 
 <h3 id="h6.1">6.1. Text Sizes</h3>
 <div class="d3" id="d6.1">
@@ -1638,7 +1674,7 @@ Bada \charscale[1.25]{Bang} Bam\par
 <div class="d4" id="d6.2.2">
 <p class="noindent"><code><b>\textbf{<em>text</em>}</b></code> puts the text in whatever font you specified as the Bold font, when you defined the currently-used font family. If the text is in more than one paragraph, use <code><b>\bfshape{<em>text</em>}</b></code> instead.</p>
 <p>If the font family has no Bold font, then it will <em>not</em> be faked.</p>
-<p>The default main font used by <i>novel</i>, namely <i>Libertinus Serif</i>, has both Bold and Semibold weights. Given this choice, <i>novel</i> explicitly calls for the Semibold weight. If you intend to use a font such as Adobe Garamond Pro, which also has a Semibold weight, then you can request it instead of Bold when you define the font family.</p>
+<p>The default main font used by <i>novel</i>, namely <i>Libertinus Serif</i>, has both Bold and Semibold weights. Given this choice, <i>novel</i> explicitly calls for the Semibold weight. If you intend to use a font such as Adobe Garamond Pro, which also has a Semibold weight, then you can request it instead of Bold when you define the font family, using <i>fontspec</i> syntax.</p>
 <p>What if you want both Bold and Semibold, or maybe even a Light weight? Only one can be assigned as the bold weight when you define the font. For the others, use <code>\NewFontFace</code> to assign the desired weight to its own font command, which you will use (but inside the braces) instead of <code>\textbf</code>.</p>
 <p>Actually, you should not be using Bold in fiction. It <em>might</em> be the case that this weight is useful for titles, but you ought to consider a fancy-looking font for that purpose, rather than mere Bold. Or, make the letters big and bold, but balance the effect by using gray.</p>
 </div><!-- end 6.2.2 -->
@@ -1646,6 +1682,7 @@ Bada \charscale[1.25]{Bang} Bam\par
 <h4 id="h6.2.3">6.2.3. Underlining</h4>
 <div class="d4" id="d6.2.3">
 <p class="noindent">Underlining is inappropriate for fiction. Don't do it. Besides, there are some issues regarding line grid and appearance, which are not a problem in academic works, but are noticeable in fiction.</p>
+<p>If you are using a line for its graphic effect, the <code><a href="#bigemdash">\bigemdash</a></code> command might be helpful.</p>
 </div><!-- end 6.2.3 -->
 
 <h4 id="h6.2.4">6.2.4. Small Caps and Acronyms</h4>
@@ -1691,7 +1728,7 @@ The \allsmcp{NATO} alliance...\par
 <h4 id="h6.2.7">6.2.7. Local Feature Changes</h4>
 <div class="d4" id="d6.2.7">
 <p class="noindent"><code><b>{\addfontfeature{<em>feature</em>} <em>text</em>}</b></code> for changing Open Type features.</p>
-<p>If a font is already defined, you can locally add one or more <a href="#E.2">features</a>. For example, suppose that you defined <code>\mynewfont</code> without using its Open Type feature <i>ss03</i> (we will assume that the font actually has this feature). In a particular place, you wish to activate <i>ss03</i>. The code looks like this:</p>
+<p>If a font is already defined, you can locally add one or more <a href="#hE.2">features</a>. For example, suppose that you defined <code>\mynewfont</code> without using its Open Type feature <i>ss03</i> (we will assume that the font actually has this feature). In a particular place, you wish to activate <i>ss03</i>. The code looks like this:</p>
 <p class="code"><code>{\mynewfont\addfontfeature{RawFeature=+ss03} <em>text</em>}</code> % Note + sign. Braces outside.</p>
 <p>That limits the scope of the feature to the included group, in TeX terminology.</p>
 <p>You can modify features used by any defined font, whether you defined it yourself or it is one of the <i>novel</i> built-in font commands. You can add more than one feature. If the requested feature does not exist in the font, then your request will be ignored.</p>
@@ -1734,7 +1771,7 @@ This text is in lightgray, until the group ends.<br/>
 <p>&bull; In most cases, do not use the center environment. You may use <code>{\centering ... \par}</code> instead, for a single paragraph. The center environment may cause the text to go off-grid. That's not a problem on some stand-alone pages where you don't care about the grid, but it is ugly in the middle of running text.</p>
 <p>&bull; Avoid positioning via the <i>textblock</i> or <i>textblock*</i> environments (package <i>textpos</i>). Actually, <i>novel</i> uses that code internally. But if not handled with more care than usual, positioned text can disrupt the baseline and position of surrounding text. You may use <code><a href="#h6.1.2">\charscale</a></code> to position small amounts of text safely, but not on a paragraph basis. Images have built-in positioning arguments, which may also be useful for positioned text.</p>
 <p>&bull; Do not use floats. If you try, then <i>novel</i> may intercept them with a nasty message.</p>
-<p>&bull; Do not use tables. Nasty message will result. But <i>novel</i> has its <a href="#h8.2.1.7">own provision</a> for a Table of Contents, and the code may be used for other purposes as well.</p>
+<p>&bull; Do not use tables. Nasty message will result. But <i>novel</i> has its <a href="#h8.3.2.7">own provision</a> for a Table of Contents, and the code may be used for other purposes as well.</p>
 <p>&bull; If you use images, then use only the image commands provided by novel: <code><a href="#h7.3.2">\InlineImage</a></code> and <code><a href="#h7.3.4">\BlockImage</a></code>.<p>
 <p>&bull; There is no built-in provision for a two-column environment. However, you can place text <a href="#h7.3.5">alongside</a> an image.</p>
 </div><!-- end 6.3.1 -->
@@ -1766,7 +1803,7 @@ This text is in lightgray, until the group ends.<br/>
 <p>Tweaks the spacing between consecutive letters. A tricky command, as it is always used without braces, and makes the surrounding text illegible in your source code. If you use it, the units of length should always be <i>em</i>, rather than <i>pt</i>. Example:</p>
 <p class="code"><code>It wa\kern-.02ems a da\kern.03emrk and stormy ni\kern-.004emght.</code></p>
 <p>The <code>\kern</code> command is not useful for globally changing kern values.</p>
-<p style="margin-top:10pt"><code>\bigemdash[<em>yoffset,thickness</em>]</code></p>
+<p id="bigemdash" style="margin-top:10pt"><code>\bigemdash[<em>yoffset,thickness</em>]</code></p>
 <p>Simulates a "big emdash" of variable length. Horizontal width is from command to end of line marked by <code>\par</code>, or limited by a fixed width such as created by <code>\makebox</code>. If placed in other situations, the line may be missing or too long.</p>
 <p>The line's normal position is at the typical height of an emdash, which is slightly above half the height of lowercase x. Its normal width is typical of an emdash width. Thus, the line is like an extended emdash.</p>
 <p>You can tweak the line using its optional argument. The first value tweaks the vertical position by a scale factor, where 1 equals its normal position (so that 0.9 places it a little lower). The second argument, if used, is separated from the first by a comma. It tweaks the line thickness by a scale factor (so that 0.9 makes it a little thinner).</p>
@@ -2066,7 +2103,7 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 <p>Then, the image is 0.125 + 5.5 + 0.62 + 5.5 + 0.125 = 11.87in wide.</p>
 <p>The image is 0.125 + 8.5 + 0.125 = 8.75in high.</p>
 <p>At 300dpi resolution (a typical value) the image must be 11.87 x 300 = 3561 pixels wide, and 8.75 x 300 = 2625 pixels high. In case of fractional pixels, round upward. The exact pixel count is important.</p>
-<p style="margin-top:8px"><img src="html-resources/example-adobergb.png" class="floatright" width="445" height="328" alt="example rgb image"/> It is best to use the AdobeRGB1998 color workspace, or equivalent. But you can also use sRGB, or equivalent, and in many cases you will not notice much difference. It is helpful to attach (embed) the workspace color profile in your PNG image, especially if it is something other than AdobeRGB1998 or sRGB. Note that the workspace is NOT the color profile of your monitor (if you have it). If you do not attach (embed) the workspace color profile, then remember whether you were using AdobeRGB1998 or sRGB. If you make a mistake here, it is not fatal. It merely means that some colors (particularly bright greens and blue-greens) will print somewhat brighter or duller than you were expecting.</p>
+<p style="margin-top:8px">It is best to use the AdobeRGB1998 color workspace, or equivalent. But you can also use sRGB, or equivalent, and in many cases you will not notice much difference. It is helpful to attach (embed) the workspace color profile in your PNG image, especially if it is something other than AdobeRGB1998 or sRGB. Note that the workspace is NOT the color profile of your monitor (if you have it). If you do not attach (embed) the workspace color profile, then remember whether you were using AdobeRGB1998 or sRGB. If you make a mistake here, it is not fatal. It merely means that some colors (particularly bright greens and blue-greens) will print somewhat brighter or duller than you were expecting.</p>
 <p>When done, export it as a flattened PNG.</p>
 <p>If you are provided with an image other than PNG, you have to convert it to PNG. No alternative. It is easy enough to use GIMP to convert most image formats. If you have a PDF (which is not already in the required format), GIMP can probably open it as an image. Be sure you import it with the correct resolution. Again, the pixel width and height are important.</p>
 <p><b>Cover Text:</b> These instructions assume that your cover text is rasterized, and is part of the image rather than vector text. In many cases your graphics program has enough text capability to do what you need.</p>
@@ -2082,7 +2119,7 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 
 <h4 id="h7.4.3">7.4.3. Convert Your Image to CMYK at 240% (or less) Ink Limit</h4>
 <div class="d4" id="d7.4.3">
-<p class="noindent"><img src="html-resources/example-cmyk238.png" class="floatright" width="445" height="328" alt="example cmyk238 image, back to rgb"/> At right, you can see an emulation of the above image, softproofed to CMYK at 238% ink limit. It is not the CMYK file itself, but an RGB image that is supposed to help you visualize what happens during conversion. The original image contained colors that didn't fit the gamut of the printing process. Nevertheless, it is very close, because (in the original) I avoided using much color that I knew would not convert well.</p>
+<p class="noindent">The effect of conversion is explained in <a href="#hD">Appendix D</a>.</p>
 <p><b>Get ready:</b> Make a copy of the above 238% (or 240%) ink limit color profile, and re-name the copy as <i>240.icc</i>. I will call your original PNG image <i>yourimage.png</i>. Put this image, the <i>240.icc</i> file, and files <i>srgb.icc</i> and <i>crgb.icc</i> in a single working folder.</p>
 <p>I will also assume that the image resolution is <i>300dpi</i>. If it is something else, then modify <i>300</i> to the other number, when you see it below.</p>
 <p><i>Note: Each of the following boxed commands is a single command line. You may need to scroll the box to the right, or the text may wrap, depending on how you view this file.</i></p>
@@ -2173,7 +2210,7 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 <p><img class="floatright" src="html-resources/page-leaf.png" width="490" height="155" alt="page, leaf"/> In a finished book, a <b>page</b> is one side of a <b>leaf</b>. Thus, there are always exactly twice as many pages are there are leaves. From the manufacturer's point of view, a 240-page (double-sided printing) book has 120 leaves, regardless of whether or not anything is printed on the pages, or how they are numbered.</p>
 </div><!-- end 8.1.1 -->
 
-<h4 id="h8.1.2">8.1.2. Folio, Spine</h3>
+<h4 id="h8.1.2">8.1.2. Folio, Spine</h4>
 <div class="d4" id="d8.1.2">
 <p class="noindent">Imagine a single sheet of US Letter 8.5"Wx11"H paper. It has two pages, since you can print on both sides (even if one is empty).</p>
 <p>If you fold that sheet in half across its width, it is still one sheet. But now you have a <b>folio</b>, consisting of two leaves of size 5.5"Wx8.5"H. Each leaf has two pages, so you now have four pages. The fold is at the <b>spine</b>.</p>
@@ -2191,7 +2228,7 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 
 <h3 id="h8.2">8.2. Book Manufacture</h3>
 <div class="d3" id="d8.2">
-<p class="noindent">In many cases, when you choose how your book will be manufactured, you will have <at most</i> these choices: Trim Size, interior b/w or color, paper, binding, cover finish. The <i>novel</i> class does not address the particular requirements of color interiors (grayscale is OK, since it is emulated by black and white). When you choose the Trim Size, other options may be limited.</p>
+<p class="noindent">In many cases, when you choose how your book will be manufactured, you will have <i>at most</i> these choices: Trim Size, interior b/w or color, paper, binding, cover finish. The <i>novel</i> class does not address the particular requirements of color interiors (grayscale is OK, since it is emulated by black and white). When you choose the Trim Size, other options may be limited.</p>
 
 <h4 id="h8.2.1">8.2.1 Perfect Binding</h4>
 <div class="d4" id="d8.2.1">
@@ -2208,16 +2245,15 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 <p><img class="floatright" src="html-resources/smythsewn.png" width="177" height="141" alt="perfect binding"/> The best hardcovers, suitable for library use, are made using the <b>Smyth Sewing</b> process. A Smyth Sewn book has signatures of (typically) 12 or 16 folios. But instead of removing the creases after folding, each signature is sewn through its crease using strong thread, onto a durable spine material. The pages will remain attached, even with hard usage. If the spine material is sufficiently flexible, then the book will lie flat when opened.</p>
 <p>Be sure to ask about spine flexibility. The most flexible methods have a soft, curved spine, and are best suited to thick novels. There is also a variety that has a square (flat) spine, which will not quite lie flat when opened. Square-spine Smyth Sewn books seem to be the fashion for documenting intellectual property.</p>
 <p>If a major publisher is producing a book that is sure to be ordered by many libraries, due to its author's popularity or maybe a movie tie-in, then it is likely to be released as a Smyth Sewn hardcover. That's because the production method is affordable in quantity. But on a P.O.D. basis, it is a significant expense.</p>
-<p>Different bindings must have different ISBNs, because they are different products. If you need to change the dimensions of Trim Size or Margins, the <a href="#hA"><code>\Rework</code></a> commands are your friends.</p>
+<p>Different bindings must have different ISBNs, because they are different products. If you need to change the dimensions of Trim Size or Margins, the <code><a href="#hA">\Rework</a></code> commands are your friends.</p>
 </div><!-- end 8.2.2 -->
 
 <h4 id="h8.2.3">8.2.3 Other Bindings</h4>
 <div class="d4" id="d8.2.3">
 <p class="noindent">A Perfect Bound softcover cannot be retroactively converted to a Smyth Sewn, Library Bound hardcover. However, it is possible to convert a softcover book to some other kinds of hardcover.</p>
-<p>In the simplest method, the soft cover is removed, and a hard cover is glued on. The pages may be shaved in size, so that they don't edge beyond the new cover; or the new cover may be slightly over-sized. Part of the soft cover may be pasted onto the hard cover. That won't look the same as original manufacture, but it avoids creating a dust jacket. Such a hard cover book is no more durable than the softcover, no more flexible at the spine, and no more resistant to losing pages. It simply has a harder cover.</p>
+<p>In the simplest method, the soft cover is removed, and a hard cover is glued on. The pages may be shaved in size, so that they don't edge beyond the new cover; or the new cover may be slightly over-sized. Part of the soft cover may be pasted onto the hard cover. That won't look the same as original manufacture, but it avoids creating a dust jacket. Such a hard cover book is no more durable than the softcover, no more flexible at the spine, and perhaps no more resistant to losing pages. But it has a harder cover.</p>
 <p>A more advanced method involves adding strength to the glued spine, by sewing it <em>sideways</em>, before adding the hard cover. This results in a book that is less flexible at the spine, but less likely to lose pages. Sometimes, small (page count) books are made this way, when there are a limited number stored for archival purposes, rather than reading. In other words, it does not concern novels.</p>
-<p>I only mention this because there are services that will create a hardcover book from an existing softcover copy. This is how they do it. Not very useful to you, except possibly as a personal souvenir. If you want a "real" hardcover book, you want a Smyth Sewn Library Binding with hard cover and curved (flexible) spine. Those must be made directly from PDF, not by re-working an existing book.</p>
-<p>Also, the original ISBN is not valid for a book with changed binding.</p>
+<p>I only mention this because there are services that will create a hardcover book from an existing softcover copy. That is how they do it. Not very useful to you, except possibly as a personal souvenir. If you want a "real" hardcover book, you want a Smyth Sewn Library Binding with hard cover and curved (flexible) spine. Those must be made directly from PDF, not by re-working an existing book. There are services that will do it (not cheaply), but you must remove the ISBN from wherever it appears, because it does not apply to the book in any binding but its original.</p>
 </div><!-- end 8.2.3 -->
 
 <h4 id="h8.2.4">8.2.4. Paper and Cover Materials</h4>
@@ -2239,7 +2275,9 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 <h5 id="h8.3.1.1">8.3.1.1. Display Pages</h5>
 <div class="d5" id="d8.3.1.1">
 <p class="noindent">A <em>Display Page</em> has its own design, and stands by itself. Examples are Half-Title, Title, Copyright, Dedication, Epigraph, Table of Contents, Map, Part Separator, and of course Blank.</p>
-<p>Half-Title, Title, Dedication, and Part Separators are always single-page recto. A Table of Contents begins recto, but may continue verso. An Epigraph is single-page, and may be recto or verso. Maps are one per page, and may be recto or verso. If you intend to create a large map that spreads verso-recto, be aware that the technology you will be using does not allow continuous image through the spine area; there will be inside margins that break the image into two separate maps. A Blank page is almost always verso; the only exception is when multiple blanks appear at the very end of the book.</p>
+<p>Half-Title, Title, Dedication, and Part Separators are always single-page recto. A Table of Contents begins recto, but may continue verso. An Epigraph is single-page, and may be recto or verso.</p>
+<p>Maps are one per page, and may be recto or verso. If you intend to create a large map that spreads verso-recto, be aware that the technology you will be using does not allow continuous image through the spine area. Instead, you must create two separate maps, one per page. There will be the usual inside margins.</p>
+<p>A Blank page is almost always verso; the only exception is when multiple blanks appear at the very end of the book.</p>
 <p>Each kind of display page has its own style, and position. What they have in common is that all of them lack a header or footer (and thus, lack a printed page number). Use <code>\thispagestyle{empty}</code>.</p>
 <p>If a display page extends to a second page (such as Table of Contents), then use <code>\thispagestyle{empty}</code> at its begining and end, to ensure that both pages omit header and footer.</p>
 </div><!-- end 8.3.1.1 -->
@@ -2247,10 +2285,10 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 <h5 id="h8.3.1.2">8.3.1.2. Chapter-Like Sections</h5>
 <div class="d5" id="d8.3.1.2">
 <p>A <em>Chapter-Like Section</em> includes things that are styled like a chapter. This includes Foreword, Preface, Introduction, Author's Note, Acknowledgements, Prologue, Chapters, Epilogue, Conclusion, Endnotes.</p>
-<p>A Chapter-Like Section begins recto, with one exception: Chapter One must begin recto, but any subsequent Chapter may begin recto or verso.</p>
-<p>The first page of a Chapter-Like Section section has no header, but <i>may</i> have a footer with page number. See the available choices for <code><a href="#h4.3.5.1">\thispagestyle</code></a>.</p>
+<p>A Chapter-Like Section begins recto. However, chapters <i>after</i> Chapter One may begin recto or verso. If there is subsequent material (Epilogue, Conclusion, Endnotes, etc.) then the begin-recto rule applies.</p>
+<p>The first page of a Chapter-Like Section section has no header, but <i>may</i> have a footer with page number. See the available choices for <code><a href="#h4.3.5.1">\thispagestyle</a></code>.</p>
 <p>Remaining pages in the section will have such header/footer style as pertains to ordinary chapters in the book. Exception: If a Chapter-Like Section in front matter is only two pages long, then you may optionally omit the header, or footer, on both pages. Then, use <code>\thispagestyle</code> at the end of the section, with choice that matches its beginning.</p>
-<p>When a Chapter-Like Section appears in front matter, its page headers (if any) do <em>not</em> show the author and title of the book, the way they would appear in main matter. Instead, they show the name of the section (such as Author's Note) both verso and recto. Commands <code><a href="#h4.3.4.6">\SetVersoHeadText</a></code> and <a href="#h4.3.4.6">\SetRectoheadText</a></code> are your friends, as they permit you to dynamically change header text as you move through the book.</p>
+<p>When a Chapter-Like Section appears in front matter, its page headers (if any) do <em>not</em> show the author and title of the book, the way they would appear in main matter. Instead, they show the name of the section (such as Author's Note) both verso and recto. Commands <code><a href="#h4.3.4.6">\SetVersoHeadText</a></code> and <code><a href="#h4.3.4.6">\SetRectoheadText</a></code> are your friends, as they permit you to dynamically change header text as you move through the book.</p>
 </div><!-- end 8.3.1.2 -->
 </div><!-- end 8.3.1 -->
 
@@ -2262,13 +2300,13 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 <h5 id="h8.3.2.1">8.3.2.1. Half-Title, page i</h5>
 <div class="d5" id="d8.3.2.1">
 <p class="noindent"><p>Some book manufacturers (particulary in hardcover) place a blank or decorative <em>flyleaf</em> before any part of the book interior. A flyleaf (if present) is added at the bookbinding factory, and is not part of your book's interior PDF file.</p>
-<p>Your book's first interior recto page is a Half-Title. It is a <a href="#F.1">Display Page</a>. Historically it was a protective page for the full title page, in the era when a printed interior was not immediately bound. That tradition lives on.</p>
+<p>Your book's first interior recto page is a Half-Title. It is a <a href="#h8.3.1.1">Display Page</a>. Historically it was a protective page for the full title page, in the era when a printed interior was not immediately bound. That tradition lives on.</p>
 <p>The Half-Title contains nothing but the book's title. No subtitle. It should be styled in the same manner as is used on the full Title Page, but typically smaller. You can place the title anywhere it looks good. It is almost never placed upper left.</p>
 </div><!-- end 8.3.2.1 -->
 
 <h5 id="h8.3.2.2">8.3.2.2. Blank, page ii</h5>
 <div class="d5" id="d8.3.2.2">
-<p class="noindent">Verso page ii is a <a href="#F.1">Display Page</a>. In most cases, it will be blank. This is achieved by using <code>\cleartorecto</code> at the end of the Half-Title page. But if you wish to manually create a blank page, verso or recto:</p>
+<p class="noindent">Verso page ii is a <a href="#h8.3.1.1">Display Page</a>. In most cases, it will be blank. This is achieved by using <code>\cleartorecto</code> at the end of the Half-Title page. But if you wish to manually create a blank page, verso or recto:</p>
 <p class="code"><code>
 \clearpage\thispagestyle{empty}\null\clearpage</code></p>
 <p>Instead of blank, prolific authors may show a list of their books. However, even if you wrote other books, many print services won't allow you to list them, unless the same service exclusively carries all of them.</p>
@@ -2277,7 +2315,7 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 
 <h5 id="h8.3.2.3">8.3.2.3. Title Page, iii</h5>
 <div class="d5" id="d8.3.2.3">
-<p class="noindent">The Title Page is a recto <a href="#F.1">Display Page</a> It shows the title, subtitle (if any), and author. These elements are often very decorative, and may involve imagery. They must exactly match the information you provided when you obtained the book's ISBN. Exception: Some services allow the author's name to use initials.</p>
+<p class="noindent">The Title Page is a recto <a href="#h8.3.1.1">Display Page</a> It shows the title, subtitle (if any), and author. These elements are often very decorative, and may involve imagery. They must exactly match the information you provided when you obtained the book's ISBN. Exception: Some services allow the author's name to use initials.</p>
 <p>If there is a publisher's imprint, it goes at the base. This is achieved by using <code>\vfill</code> just above it.</p>
 <p>Remember that a self-publishing service is not the publisher; <em>you are</em>. That's why it is called self-publishing. If you don't have anything else to put there, and don't like leaving the base of the page empty, you might use "Independently Published in Your City, YourState" or something similar.</p>
 <p>&bull; Note: Others have written (and I agree) that the surest sign that a book was written by an amateur, is when the Title Page simply uses the book's main text font (perhaps bold and larger). That has "term paper" written all over it. Instead, be creative.</p>
@@ -2285,7 +2323,7 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 
 <h5 id="h8.3.2.4">8.3.2.4. Copyright Page, iv</h5>
 <div class="d5" id="8.3.2.4">
-<p class="noindent">The Copyright Page is a verso <a href="#F.1">Display Page</a>. It is primarily legalistic in nature, providing essential details about the book, as an item in commerce.</p>
+<p class="noindent">The Copyright Page is a verso <a href="#h8.3.1.1">Display Page</a>. It is primarily legalistic in nature, providing essential details about the book, as an item in commerce.</p>
 <p>Some nations require specific information to appear on a Copyright Page. That is your responsibility to know, and is beyond the scope of this documentation.</p>
 <p>At least in the U.S.A., the nation where the book is printed must be indicated, either on the Copyright Page or some other allowed location (such as the final verso). Many print-on-demand services use multiple printers, which may be in various nations, depending on who purchases your book. With the services I have used, this is solved by omitting "Printed in the United States of America" on the Copyright page, because it may not be true. At the printing factory, the necessary information is added by them, as a Colophon on the final verso page. This is one reason why that final verso page must be blank (in your PDF). Ask your P.O.D. service.</p>
 <p>A Copyright Page is in ordinary text, perhaps using minimal styling such as italics or small caps. In all cases, its overall page style must differ from the page style of main text. Almost always, the content of the Copyright Page is forced downward, so that excess white space is on top, and the final line appears at the base of the textblock. This is achieved using <code>\null\vfill</code> at the beginning of the page.</p>
@@ -2303,14 +2341,14 @@ Lord Withens was taken aback. How dare this mere gnome speak to him in such a to
 
 <h5 id="h8.3.2.5">8.3.2.5. Dedication</h5>
 <div class="d5" id="d8.3.2.5">
-<p class="noindent">If you use a Dedication, it is a recto <a href="#F.1">Display Page</a>, and must be placed immediately facing the Copyright Page.</p>
+<p class="noindent">If you use a Dedication, it is a recto <a href="#h8.3.1.1">Display Page</a>, and must be placed immediately facing the Copyright Page.</p>
 <p>A Dedication is not required. But sadly, nowadays many authors write a frivolous Dedication, which detracts from the book. If you feel that you need a Dedication, why not put it on your web site? Then you can always edit or remove it, if the subject of your affection runs off with someone else (or, you do). Keep it simple.</p>
 <p>A Dedication is centered. If it is more than a few words, use the <i>adjustwidth</i> environment to keep it bounded, as you would for an Epigraph.</p>
 </div><!-- end 8.3.2.5 -->
 
 <h5 id="h8.3.2.6">8.3.2.6. Epigraph</h5>
 <div class="d5" id="d8.3.2.6">
-<p class="noindent">If you use an Epigraph, it is a <a href="#F.1">Display Page</a>, which may be placed verso or recto.</p>
+<p class="noindent">If you use an Epigraph, it is a <a href="#h8.3.1.1">Display Page</a>, which may be placed verso or recto.</p>
 <p>An Epigraph is optional. It is a short quotation, traditionally from a work by someone else. Its purpose is to set the tone of your own book, or shamelessly imply that your own talents resemble that of the person quoted. However, even though it is short, do not place copyrighted material there, unless you have the necessary legal permission. You probably don't, so forget about quoting a famous contemporary author or performer. Quotations from the Bible, Shakespeare, and Nineteenth-Century authors are popular; but even then, a more recent translation may be still under copyright.</p>
 <p>Alternatively, you can quote from your own book, or make up something entirely new. One famous Epigraph is used in J.R.R. Tolkien's <i>Lord of the Rings</i> trilogy, in which each book uses the long form of the Ring's incantation as its Epigraph.</p>
 <p>One possible use of an Epigraph is on recto page v, in books that lack a Dedication, a Table of Contents, or other important front matter beyond the Copyright Page. Alternatively, if a book has both Dedication and Table of Contents, an Epigraph may be placed on the otherwise-blank verso page vi between them. Or, an Epigraph may appear in some later convenient place in front matter.</p>
@@ -2355,7 +2393,7 @@ Let me tell you, there's nothing more exciting than the brouhaha at Mickey's Pub
 
 <h5 id="h8.3.2.7">8.3.2.7. Table of Contents</h5>
 <div class="d5" id="d8.3.2.7">
-<p class="noindent">If you use a Table of Contents, it is a <a href="#F.1">Display Page</a>, beginning recto. If a second page is needed, add <code>\thispagestyle{empty}</code> after the table completes, but before you clear that page.</p>
+<p class="noindent">If you use a Table of Contents, it is a <a href="#h8.3.1.1">Display Page</a>, beginning recto. If a second page is needed, add <code>\thispagestyle{empty}</code> after the table completes, but before you clear that page.</p>
 <p>Most fiction does not have, and does not need, a Table of Contents. It is more useful when the story consists of discrete episodes with distinctive names, not just numbers. Or, if the book is a collection of short stories, a table of contents is suggested. If your book is a critical edition, or has sections by different authors, then a Table of Contents is mandatory.</p>
 <p>Avoid any of the table environments that come with TeX or its packages. These do not provide the most attractive presentation for fiction, without a lot of work on your part.</p>
 <p>A Table of Contents has no header or footer, and no printed page number. Use <code>\thispagestyle{empty}</code>. If it continues to a second page, add <code>\thispagestyle{empty}</code> at the end, if you don't know where the page breaks.</p>
@@ -2419,27 +2457,28 @@ Let me tell you, there's nothing more exciting than the brouhaha at Mickey's Pub
 
 <h5 id="h8.3.2.8">8.3.2.8. Foreword, Preface, Introduction</h5>
 <div class="d5" id="d8.3.2.8">
-<p class="noindent">A Foreword, Preface, or Introduction is a <a href=#h8.3.1.2">Chapter-Like Section</a>, beginning recto.</p>
+<p class="noindent">A Foreword, Preface, or Introduction is a <a href="#h8.3.1.2">Chapter-Like Section</a>, beginning recto.</p>
 <p>A <i>Foreword</i> is written by someone other than the author. It is essentially a marketing tool, by which the publisher addes credence to the work, or mere publicity, by having an expert or celebrity write something in front matter. Introductions are common in nonfiction, but extremely rare (I have never seen one) in fiction, except for critical editions of older works (where the new, original material is essentially nonfiction).</p>
 <p>A <i>Preface</i> is written by the author, speaking as author, and may include a general discussion of this and that about how the author came to write the book. It may also include acknowledgements, if they are not in a separate section. A Preface is rather formal, and very rare in popular fiction. If you wish to address the reader, the less-formal <i>Author's Note</i> is better for your purpose.</p>
 <p>An <i>Introduction</i>, when used in front matter, is written by the author. Its purpose is to provide sufficient background for understanding the material that is to follow. Thus, an Introduction is sometimes seen in the front matter of historical or technical nonfiction.</p>
 <p>An Introduction in front matter is inappropriate for popular fiction, but I suppose it <i>might</i> be used for the purpose of world-building in that genre, where the main story assumes that the reader is familiar with the setting. In such a case, the setup is described by the author (as author), but <i>not</i> by a character in the story. Also see <i>Author's Note</i>.</p>
-<p>A Foreword, Preface, or Introduction is a "chapter-like" section. That is, its style is the same as if it were a chapter, in terms of how it is titled, and the use of page header/footer. But there is a significant exception: If your book design uses header text, you do <i>not</i> write the author and title in headers. Instead, you use <code>\SetVersoHeadText</code> and <code>\SetRectoHeadText</code> to write Foreword, Preface, or Introduction in both. See the example Author's Note, below, for how this is done.</p>
+<p>A Foreword, Preface, or Introduction is a "chapter-like" section. That is, its style is the same as if it were a chapter, in terms of how it is titled, and the use of page header/footer. But there is a significant exception: If your book design uses header text, you do <i>not</i> write the author and title in headers. Instead, you use <code>\SetVersoHeadText</code> and <code>\SetRectoHeadText</code> to write Foreword, Preface, or Introduction in both. See the example <a href="#h8.3.2.10">Author's Note</a>, below, for how this is done.</p>
 <p>A Foreword or Preface is often signed at the end by its writer, with place and date. A lengthy Foreword might instead place its writer's name and credentials under the Foreword title.</p>
 </div><!-- end 8.3.2.8 -->
 
 <h5 id="h8.3.2.9">8.3.2.9. Acknowledgements</h5>
 <div class="d5" id="d8.3.2.9">
-<p class="noindent">If you use Acknowledgements, it begins recto. If very short, style it as a <a href=#h8.3.1.1">Display Page</a>, possibly even using limited text width (as with an Epigraph, above). Otherwise, it is a <a href=#h8.3.1.2">Chapter-Like Section</a>.</p>
+<p class="noindent">If you use Acknowledgements, it begins recto. If very short, style it as a <a href="#h8.3.1.1">Display Page</a>, possibly even using limited text width (as with an <a href="#h8.3.2.6">Epigraph</a>, above). Otherwise, it is a <a href="#h8.3.1.2">Chapter-Like Section</a>.</p>
 <p>Most fiction doesn't need acknowledgements. Don't write Acknowledgements just because you can. Acknowledgements are for those who provided real assistance. If you want to provide a shout-out to your friends for their encouragement, consider doing it on a web page.</p>
 <p>If you have a Preface or Author's Note, you can often include acknowledgements there (if you wish), rather than in separate Acknowledgements.</p>
 <p>If styled like a chapter, in a book that has page headers, the verso and recto head text is set to Acknowledgements, not the author and title. See the Author's Note, below, for how this is done.</p>
 </div><!-- end 8.3.2.9 -->
 
 <h5 id="h8.3.2.10">8.3.2.10. Author's Note</h5>
-<div class="d5" id="d83..2.10">
-<p class="noindent">If you use an Author's Note, it begins recto. If very short, style it as a <a href=#h8.3.1.1">Display Page</a>, possibly even using limited text width (as with an Epigraph, above). Otherwise, it is a <a href=#h8.3.1.2">Chapter-Like Section</a>.</p>
-<p>An Author's Note directly addresses the reader, from the author. It is often signed with name, place, and date at the end. There is no particular content. Some authors point out that a particular element of the story, which seems fictional, is actually based on a real historical event. Others babble their life stories, and how they came to write the book. Others use it as a catch-all, including acknowledgements and whatever else fits. In the "lost manuscript" genre, authors may (fictionally) tell how the manuscript came into their hands; but a lengthy tale of discovery is better placed in mainmatter, as an Introduction.</p>
+<div class="d5" id="d8.3.2.10">
+<p class="noindent">If you use an Author's Note, it begins recto. If very short, style it as a <a href="#h8.3.1.1">Display Page</a>, possibly even using limited text width (as with an Epigraph, above). Otherwise, it is a <a href="#h8.3.1.2">Chapter-Like Section</a>.</p>
+<p>An Author's Note directly addresses the reader, from the author. It is often signed with name, place, and date at the end. There is no particular content. Some authors point out that a particular element of the story, which seems fictional, is actually based on a real historical event. Others babble their life stories, and how they came to write the book. Others use it as a catch-all, including acknowledgements and whatever else fits.</p>
+<p>There is some wiggle room regarding whether the Author's note is fact or fancy. For example, in the "lost manuscript" genre, authors may (fictionally) tell how the manuscript came into their hands; but a lengthy tale of discovery is better placed in main matter, as a fictional Introduction.</p>
 <p>If an Author's Note is two pages long, then on the second page use the same page style that you would ordinary use to start a chapter. Normally, this is <code>\thispagestyle{footer}</code>.</p>
 <p>If an Author's Note is three or more pages long, then a header is permitted (if the book's main style has header). You may allow author and title to appear in header text, but it is better to indicate that this is <em>not</em> the main story, using <code>\SetVersoHeadText{Author's&nbsp;Note}</code> and <code>\SetRectoHeadText{Author's&nbsp;Note}</code>.</p>
 
@@ -2472,7 +2511,7 @@ Finally, I would like to thank... \lipsum[1]<br/>
 
 <h5 id="h8.3.2.11">8.2.1.11. Map</h5>
 <div class="d5" id="d8.3.2.11">
-<p class="noindent">A Map is a <a href=#h8.3.1.1">Display Page</a>, which may be verso or recto. You may use more than one Map, but be aware that in the printing technology available to you via <i>novel</i> class, a single Map cannot be continued as a spread across the spine; you must break it into two independent Maps, allowing for the inside margins.</p>
+<p class="noindent">A Map is a <a href="#h8.3.1.1">Display Page</a>, which may be verso or recto. You may use more than one Map, but be aware that in the printing technology available to you via <i>novel</i> class, a single Map cannot be continued as a spread across the spine; you must break it into two independent Maps, allowing for the inside margins.</p>
 <p>Many works of fiction have a map or other diagram. It might be the map of a real or fictional geographic area. It might be the map of a crime scene. It might be an inheritance chart. Even though fictional, it is usually placed in front matter, presumably because a map does not actually tell any part of the story.</p>
 <p>I have seen maps placed very early, or very late, in front matter. The general rule seems to be, "put it where it fits." However, do not place a map where some other item <i>must</i> be located, and do not place a map on the final verso that faces the beginning of main matter, due to its visual distraction.</p>
 <p>A single map, or maybe two, need not be mentioned in a table of contents or illustrations. If you have a lot of them strewn around the book, then they should be listed in such a table; but this is very rare in fiction.</p>
@@ -2509,8 +2548,8 @@ Finally, I would like to thank... \lipsum[1]<br/>
 <p class="noindent">In many cases, front matter has very little content. After the Copyright Page, there is nothing else to say. But it is visually bad practice to go directly from verso Copyright Page to the start of the story on recto page 1. This can be solved by repeating the Half-Title as recto page <i>v</i>, with blank verso page <i>vi</i>. I've seen it with major writers and major publishers.</p>
 <p>You can do the same thing with longer front matter, if it would otherwise end on a verso page.</p>
 <p>When there is a lot of front matter (no particular amount), it is customary to use a second Half-Title to mark the boundary where front matter finally ends.</p>
-<p><i style="cursor:help" title="Chicago Manual of Style">CMoS</i> recommends that a second Half-Title be the first page of main matter. Thus, it would be page 1, with the actual story beginning on page 3. But it acknowledges that a common practice is for a second Half-Title and its verso to remain part of front matter, so that main matter begins with the story on page 1. Although I have seen a few books that follow the recommendation, it appears that the great majority of them follow the common practice.</p>
-<p>If your book has Part Separators in main matter, then you can do without a second Half-Title.</p>
+<p><i style="cursor:help" title="Chicago Manual of Style">CMoS</i> recommends that a second Half-Title be the first page of main matter. Thus, it would be page 1, with the actual story beginning on page 3. But it acknowledges that a <i>common practice</i> is for a second Half-Title and its verso to remain part of front matter, so that main matter begins with the story on page 1. Although I have seen a few books that follow the <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> recommendation, it appears that the great majority of them follow the <i>common practice</i>.</p>
+<p>If your book has <a href="#h8.3.3.2">Part Separators</a> in main matter, then you can do without a second Half-Title.</p>
 </div><!-- end 8.3.2.12 -->
 </div><!-- end 8.3.2.1 -->
 
@@ -2519,7 +2558,7 @@ Finally, I would like to thank... \lipsum[1]<br/>
 <p class="noindent">Main matter begins with the <code>\mainmatter</code> command. It forces its page to recto, changes the page numbering to Arabic, and sets the count to 1.</p>
 <p>Main matter is <i>the story itself</i>. In some cases, this also includes a fictional setup (Introduction or Prologue) that leads to the longer story line. It also includes material in the aftermath of the story, such as Epilogue, Conclusion, and end notes.</p>
 
-<h5 id="h8.3.3.1">8.3.3.1. Half-Title in Main Matter</h5>
+<h5 id="h8.3.3.1">8.3.3.1. Half-Title in Main Matter ?</h5>
 <div class="d5" id="d8.3.3.1">
 <p class="noindent">The <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> prefers that a second Half-Title page (if used) mark the beginning of main matter. Thus, it would be page 1 (number not printed). Then, the story begins on page 3.</p>
 <p>However, <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> also notes that this is not the regular practice, especially with fiction. In fact, among the many popular fiction books I have inspected, when a second Half-Title is used, it is <i>almost</i> always the last recto page of front matter, followed by a blank verso; then main matter begins with page 1 of the story.</p>
@@ -2528,27 +2567,27 @@ Finally, I would like to thank... \lipsum[1]<br/>
 
 <h5 id="h8.3.3.2">8.3.3.2. Part Separator in Main Matter</h5>
 <div class="d5" id="d8.3.3.2">
-<p class="noindent">If used, a Part Separator is a recto <a href=#h8.3.1.1">Display Page</a>.</p>
+<p class="noindent">If used, a Part Separator is a recto <a href="#h8.3.1.1">Display Page</a>.</p>
 <p>Some books are partitioned into distinct sub-books. A sub-book is of substantial length, not individual chapters or short stories.</p>
 <p>If your book has distinct sub-books, then each of them has its own recto cover page, known as a Part Separator. Its verso is blank or an Epigraph. Then the accompanying story begins recto.</p>
 <p>A Part Separator is <i>always</i> main matter. So, the first Part Separator is <i>always</i> page 1 (number not printed). Then its text begins on page 3. Do not re-initialize the page count when you get to the next Part Separator.</p>
 <p>Part separators could be simply <i>Part I</i>, <i>Part II</i>, and so forth. They could be <i>Book I</i>, <i>Book II</i>. Or, they could have distinctive titles, such as <i>The Northern Front</i> and <i>The Southern Front</i>. If your book is two novelettes in one, then the Part Separators would be the title (and subtitle, if any) of the individual novelettes. Sometimes a Part Separator has a brief description of its purpose, as in <i>Book I. On Earth</i> followed by <i>Book II. On Mars</i>.</p>
-<p>Unless your book has a very complex structure, do <i>not</i> use both a second Half-Title (whehter in front matter or main matter) and a Part Separator. Combine them as the recto main matter page 1: <i>The Withens Chronicles. Part I</i>, or simply <i>Part I</i>. Then the next Part Separator would be <i>Part II</i>.</p>
-<p>In one book I recently noticed, there were five parts, each of which corresponded to one calendar day. The Part Separator showed the day, as in <i>Monday, September 25</i>. Then within each part there were several chapters, each of which took us to some different event in a different setting, all on that same day.</p>
+<p>Unless your book has a very complex structure, do <i>not</i> use both a second Half-Title (whether in front matter or main matter) and a Part Separator. Combine them as the recto main matter page 1: <i>The Withens Chronicles. Part I</i>, or simply <i>Part I</i>. Then the next Part Separator would be <i>Part II</i>.</p>
+<p>In one book I recently noticed, there were five parts, each of which corresponded to one calendar day. The Part Separator showed the day, as in <i>Monday, September 25</i>. Then within each part there were several chapters, each of which took us to some different event in a different setting, all on that same day. I also note that this book had no Table of Contents; the progress of the novel was therefore a surprise, by its author's intent.</p>
 </div><!-- end 8.3.3.2 -->
 
 <h5 id="h8.3.3.3">8.3.3.3. Introduction in Main Matter</h5>
 <div class="d5" id="d8.3.3.3">
-<p class="noindent">An Introduction is a <a href=#h8.3.1.2">Chapter-Like Section</a>. If the book is nonfiction and the Introduction is factual, it belongs in front matter, as described above. But in fiction, where an Introduction is a fictional lead-in to the larger story, it belongs in main matter.</p>
-<p>A main matter Introduction is typically used in the "lost manuscript" genre, where some fictional adventurer or archaeologist describes how the manuscript was found and translated. Usually the narration is told in the first person. Sometimes the author pretends to be the adventurer or achaeologist. Often the narrator is someone else. Following such an Introduction, the various chapters will reveal the contents of the manuscript. If the voice of the Introduction returns at the end, it is called a Conclusion, and is in main matter.</p>
+<p class="noindent">An Introduction is a <a href="#h8.3.1.2">Chapter-Like Section</a>. If the book is nonfiction and the Introduction is factual, it belongs in front matter, as described above. But in fiction, where an Introduction is a fictional lead-in to the larger story, it belongs in main matter.</p>
+<p>A main matter Introduction is typically used in the "lost manuscript" genre, where some fictional adventurer or archaeologist describes how the manuscript was found and translated. Often, the narration is a moderately lengthy adventure tale, told in the first person, by some adventurer or achaeologist. Following such an Introduction, the various chapters will reveal the contents of the manuscript. If the voice of the Introduction returns at the end, it is called a Conclusion, and is in main matter.</p>
 <p>If an Introduction is in main matter, its header text (if any) is whatever is used throughout the main story. Typically that's author verso, title recto. The reason is that such an Introduction is actually part of the overall story.</p>
 </div><!-- end 8.3.3.3 -->
 
 <h5 id="h8.3.3.4">8.3.3.4. Prologue in Main Matter</h5>
 <div class="d5" id="d8.3.3.4">
-<p class="noindent">A Prologue, even if one page, is a <a href=#h8.3.1.2">Chapter-Like Section</a>. It belongs in main matter.</p>
+<p class="noindent">A Prologue, even if one page, is a <a href="#h8.3.1.2">Chapter-Like Section</a>. It belongs in main matter.</p>
 <p>The purpose of a Prologue is to provide a quick lead-in or setting for the story, and get the reader's attention. It is confined in place and time (one scene, one perspective). The narrator may be first-person or third-person.</p>
-<p>Do not use a Prologue for the voice of the author speaking about the book, as author; that goes in front matter, as an Author's Note.</p>
+<p>Do not use a Prologue for the voice of the author speaking about the book, as author; that goes in front matter, as an <a href="#h8.3.2.10">Author's Note</a>.</p>
 <p>If a book has a Prologue, then it is likely to have an Epilogue after the main story ends. An Epilogue also belongs in main matter.</p>
 <p>I do not know of any fiction with both a fictional Introduction and a Prologue. If so, Introduction precedes Prologue.</p>
 <p>Note: I have seen some web pages advising that a Prologue should go in front matter, and be narrated by a character who appears in the following story. Based on <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> and actual books, I do not think that is correct.</p>
@@ -2556,20 +2595,20 @@ Finally, I would like to thank... \lipsum[1]<br/>
 
 <h5 id="h8.3.3.5">8.3.3.5. Chapters</h5>
 <div class="d5" id="d8.3.3.5">
-<p class="noindent">Finally, you have arrived at Chapter One! Not surprisingly, it is a <a href=#h8.3.1.2">Chapter-Like Section</a>. Chapter One is always recto, whether or not preceded by an Introduction or Prologue.</p>
+<p class="noindent">Finally, you have arrived at Chapter One! Not surprisingly, it is a <a href="#h8.3.1.2">Chapter-Like Section</a>. Chapter One is always recto, whether or not preceded by an Introduction or Prologue.</p>
 <p>Subsequent chapters may begin recto or verso. Or, the book may be designed so that each chapter always begins recto. In the majority of novels I have seen, recto/verso is used. The <code>\clearpage</code> command starts a new page (recto or verso), and the <code>\cleartorecto</code> command will (if necessary) insert a blank verso, so that the following material is always recto.</p>
 <p>In the case of short stories, especially if they are by different authors, it is customary to begin each one as recto.</p>
 </div><!-- end 8.3.3.5 -->
 
 <h5 id="h8.3.3.6">8.3.3.6. Epilogue, Conclusion</h5>
 <div class="d5" id="d8.3.3.6">
-<p class="noindent">If your book has an Epilogue or Conclusion, it begins recto as a <a href=#h8.3.1.2">Chapter-Like Section</a> in main matter.</p>
+<p class="noindent">If your book has an Epilogue or Conclusion, it begins recto as a <a href="#h8.3.1.2">Chapter-Like Section</a> in main matter.</p>
 <p>An Epilogue is structurally like a Prologue, but tells the aftermath of the story. A Conclusion is like an Introduction, in which we step outside the main story. I am not aware of any book that has both; but if so, Epilogue precedes Conclusion.</p>
 </div><!-- end 8.3.3.6 -->
 
 <h5 id="h8.3.3.7">8.3.3.7. End Notes, Appendix, etc.</h5>
 <div class="d5" id="d8.3.3.7">
-<p class="noindent">If used, End Notes begin recto, as a <a href=#h8.3.1.2">Chapter-Like Section</a> in main matter. The same applies to an Appendix and like material.</p>
+<p class="noindent">If used, End Notes begin recto, as a <a href="#h8.3.1.2">Chapter-Like Section</a> in main matter. The same applies to an Appendix and like material.</p>
 <p>Page numbering continues Arabic. It may surprise you to learn that this is still main matter, but <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> says so, and that's what was done in the few fictional books that have them, among those I have seen.</p>
 <p>The reason is that this kind of material, which is fictional, is actually the original author's writing, entwined with the main story. It was always intended to be part of the book. Never mind that it "looks like" academic material added later.</p>
 </div><!-- end 8.3.3.7 -->
@@ -2577,8 +2616,12 @@ Finally, I would like to thank... \lipsum[1]<br/>
 
 <h4 id="h8.3.4">8.3.4. At Very End</h4>
 <div class="d4" id="d8.3.4">
-<p class="noindent">Just prior to <code>\end{document}</code>, use <code>\cleartoend</code>.</p>
-<p>The final page of your book is necessarily verso. P.O.D. printers (and many others) require that it be completely blank, because they will add some manufacturing information to that page. So, if the text of your book finishes on a recto page, <code>\cleartoend</code> adds one blank page. But if the text of your book finishes on a verso page, then <code>\cleartoend</code> adds <em>two</em> blank pages, so that the final page is blank verso.</p>
+<p class="noindent">In <i>novel</i>, you must always end your document this way:</p>
+<p class="code"><code>
+\cleartoend<br/>
+\end{document}
+</code></p>
+<p>The final page of your book is necessarily verso. P.O.D. printers (and many others) require that it be completely blank, because they will add some manufacturing information to that page. So, if the text of your book finishes on a recto page, <code>\cleartoend</code> adds one blank page. But if the text finishes on a verso page, then <code>\cleartoend</code> adds <em>two</em> blank pages, so that the final page is blank verso.</p>
 
 <h5 id="h8.3.4.1">8.3.4.1. Backmatter? Not!</h5>
 <div class="d5" id="d8.3.4.1">
@@ -2586,7 +2629,7 @@ Finally, I would like to thank... \lipsum[1]<br/>
 Once upon a time, when printing was not so electronically automated, it was difficult to add material to the end of a previously-typeset section of front matter. So, if there was a subsequent printing of the book, with new material that ought to go in front matter, the problem was solved by placing the new material in "back matter." Then, the original pagination did not have to be altered. To stress that the added material was not part of the original, it would have non-Arabic page numbering, which might be a continuation of lowercase roman numerals from where the front matter left off, or might begin with uppercase Roman numerals.</p>
 <p>A similar situation applied to critical editions of earlier works, which added material from different authors. The added material was never part of the original book.</p>
 <p>That is a situation you are never likely to address. When most authors speak about "back matter," what they mean is explanatory material that follows the end of the story. That is, anything after the final Chapter, Epilogue, or Conclusion. A good example can be found in J.R.R. Tolkien's <i>The Return of the King,</i> which has quite a bit of material following the end of the story. That material discusses the language and history of the Elves, and a variety of other things. But its page numbering continues Arabic. It looks like critical commentary, but it is part of Tolkien's original, fictional structure for the book. Thus, it is main matter.</p>
-<p>So, your book is unlikely to have true back matter. If you use the <code>\backmatter</code> command, it does nothing. If you really wish to change page numbering, then you must code it manually. This is not advised for P.O.D. books, as it many confuse someone performing quality inspection; true back matter is so rare.</p>
+<p>So, your book is unlikely to have true back matter. If you use the <code>\backmatter</code> command, it does nothing. If you really wish to change page numbering, then you must code it manually. This is not advised for P.O.D. books, as it may confuse someone performing quality inspection; true back matter is so rare.</p>
 </div><!-- end 8.3.4.1 -->
 
 <h5 id="h8.3.4.2">8.3.4.2. About the Author</h5>
@@ -2658,14 +2701,14 @@ Dirk Hardcase is a former... etc.\par<br/>
 <div class="d3" id="dA.4">
 <p>&bull; The technique has been tested, but it might not always work. Be sure to inspect the result carefully.</p>
 <p>&bull; If you use Rework to make a radical size change, then the resulting font size or line skip might be unattractive.</p>
-<p>&bull; If the reworked pages have one less line than expected (or one more), this is due to roundoff in the calculations. It can usually be fixed by adding or substracting as little as <code>0.001\nbs</code> from the top or bottom rework margin.</p>
+<p>&bull; If the reworked pages have one less line than expected (or one more), this is due to roundoff in the calculations. It can usually be fixed by adding or subtracting as little as <code>0.001\nbs</code> from the top or bottom rework margin.</p>
 <p>&bull; The biggest obstacle occurs when you specify some internal length in terms of absolute units (such as pt). It is always best to use relative units (such as <i>em</i>, or sometimes <code>\nbs</code>), so that they can be scaled along with the text:</p>
 <p class="code">
 Bad: <code>\hspace{6pt}</code> &nbsp; Good: <code>\hspace{0.5em}</code><br/>
 Bad: <code>\kern1pt</code> &nbsp; Good: <code>\kern.08em</code><br/>
 Bad: <code>\vspace{0.5in}</code> &nbsp; Good: <code>\vspace{2.4\nbs}</code>
 </p>
-<p>&bull; When you use Rework, images are <em>not</em> scaled. Thus, they will have a different relationship to the surrounding text than they did before. In many cases, this is not a problem. However, an un-scaled image may disrupt the flow of text, or the number of lines in a page, or overlap text that was previously cleared. Look in the log file for an Alert message, which suggests an appropriate image scale, depending on how an image was placed. Problem areas can often be fixed be scaling the related image(s) in an external graphics program (see <a href="noveldocs-08-images.html#a8.3.3">Page 8</a>) then re-compiling with the scaled image(s).</p>
+<p>&bull; When you use Rework, images are <em>not</em> scaled. Thus, they will have a different relationship to the surrounding text than they did before. In many cases, this is not a problem. However, an un-scaled image may disrupt the flow of text, or the number of lines in a page, or overlap text that was previously cleared. Look in the log file for an Alert message, which suggests an appropriate image scale, depending on how an image was placed. Problem areas can often be fixed be scaling the related image(s) in an external graphics program (see below, and also <a href="#h7">section 7</a>) then re-compiling with the scaled image(s).</p>
 <p>&bull; Note that you may see the Alert whether or not there are problem images, so scaling images will not make the Alert go away. It is a friendly message.</p>
 <div style="clear:both"></div>
 </div><!-- end A.4 -->
@@ -2679,8 +2722,8 @@ Bad: <code>\vspace{0.5in}</code> &nbsp; Good: <code>\vspace{2.4\nbs}</code>
 <p>(3) Change View to something that puts the image at its approximate print size.</p>
 <p>(4) If desired, play with Filters&gt;Enhance&gt;Sharpen.</p>
 <p>(5) Image&gt;Flatten.</p>
-<p>(6) If the image is to be 1-bit line art, then use GaphicsMagick or ImageMagick as described in section 8.3.1.</p>
-<p>(7) Export as png, then use GraphicsMagick or Image Magick as described in section 8.3.2.</p>
+<p>(6) If the image is to be 1-bit line art, then use GraphicsMagick or ImageMagick as described in <a href="#h7.2.1">section 7.2.1</a>.</p>
+<p>(7) If the image is to be grayscale, export as png, then use GraphicsMagick or Image Magick as described in <a href="#h7.2.2">section 7.2.2</a>.</p>
 <p>The above does not take too much time, and will provide superior results. Note that when an image is placed within text, the calculation for text positioning is different than the calculation for image positioning. It is possible (although unlikely) that a <code>\Rework</code> situation will cause an unexpected page break, due to roundoff error in the placement of the final line on a page. This can be fixed by subtracting (or, in some cases, adding) as little as <code>\vspace{-0.001\nbs}</code> before or after the re-scaled image.</p>
 </div><!-- end A.5 -->
 
@@ -2756,19 +2799,19 @@ Bad: <code>\vspace{0.5in}</code> &nbsp; Good: <code>\vspace{2.4\nbs}</code>
 <h2 id="hC">Appendix C. &nbsp; Shopping for Fonts</h2>
 <div class="d2" id="dC">
 <p class="noindent1">Since the <i>novel</i> class uses only <i>LuaLaTeX</i> and <i>fontspec</i> with utf-8 encoding, you may use any Open&nbsp;Type or TrueType font, subject to licensing. You are not limited to TeX fonts.</p>
-<p>Many TeX fonts are only available in older Type 1 format (PostScript) or even as bitmap metafonts. <i>Do not use them.</i></p>
-<p>In some other cases, a TeX font package provides both the older format, and a newer Open&nbsp;Type (*.otf or *.ttf) format. The different formats will have different font names. Sometimes the difference is very slight. Carefully look at the font name for the Open&nbsp;Type format. Remember that most on-line discussions will refer to the older fonts, simply because they have been around longer. For example: <i>Linux&nbsp;Biolinum</i> is a sans-serif font available via TeX as a PostScript font. But <i>Linux&nbsp;Biolinum&nbsp;O</i> (note the O) is an Open&nbsp;Type font. If you need this font, then call for <i>Linux&nbsp;Biolinum&nbsp;O</i>, not simply <i>Linux&nbsp;Biolinum</i>.</p>
-<p><b>Important:</b> Do not attempt to load a font by the <code>\RequirePackage</code> or <code>\usepackage</code> commands. Instead, if you choose to use fonts other than the defaults, load them via the font setting commands described in this documentation. If you attempt to load a font the wrong way, you may get an error message.</p>
+<p>Many TeX fonts are only available in older Type 1 format (PostScript). Use of such fonts is <i>strongly discouraged</i>, due to possible issues in <i>novel</i> class (which will not be fixed, if they appear).</p>
+<p>In some other cases, a TeX font package provides both the older format, and a newer Open&nbsp;Type or TrueType format. The different formats will have different font names. Sometimes the difference is very slight. Carefully look at the font name for the Open&nbsp;Type format, using TrueType only as a second choice. Remember that most on-line discussions will refer to the older Type 1 PostScript fonts, simply because they have been around longer. For example: <i>Linux&nbsp;Biolinum</i> is a sans-serif font available via TeX as a PostScript font. But <i>Linux&nbsp;Biolinum&nbsp;O</i> (note the O) is an Open&nbsp;Type font. If you need this font, then call for <i>Linux&nbsp;Biolinum&nbsp;O</i>, not simply <i>Linux&nbsp;Biolinum</i>.</p>
+<p><b>Important:</b> Do not attempt to load a font by the <code>\RequirePackage</code> or <code>\usepackage</code> commands. Instead, if you choose to use fonts other than the defaults, load them via the <a href="#h4.2">font setting commands</a> described in this documentation. If you attempt to load a font the wrong way, you may get an error message, or the font may quietly fail to load.</p>
 
 <h3 id="hC.1">C.1 &nbsp; Licensing Issues</h3>
 <div class="d3" id="dC.1">
-<p class="noindent1">Presumably, you are writing your novel for commercial value, and do not intend to give anything away for free. For that reason, avoid any font licensed under the GPL (GNU Public License) unless it has the <em>font exception</em> clause. Some TeX fonts, and some non-TeX free fonts, are licensed under GPL. Be careful!</p>
+<p class="noindent1">Presumably, you are writing your novel for commercial value, and do not intend to give anything away for free. For that reason, avoid any font licensed under the GPL (GNU Public License) unless it has the <a class="external" rel="external" target="new" href="https://en.wikipedia.org/wiki/GPL_font_exception">font exception</a> clause. Many TeX fonts, and many non-TeX free fonts, are licensed under GPL, but <i>without</i> the relatively-recent font exception clause. Be careful!</p>
 <p>Beware of fonts "free for personal use" from download sites. Your commercial application is not "personal use." Of course, if you like the font, you may purchase its commercial license.</p>
 <p>Also beware of fonts generically labeled as "freeware" with no particular designer name. If you don't know who created the font, then how do you know that it can be given away for free? Even if there is a designer name, some of them had second thoughts about "freeware." They intended the fonts to be free only if you give your own work away for free. But they didn't mention it. Maybe they have no legal recourse, but you don't want them making anonymous negative reviews of your book.</p>
 <p>You have numerous fonts already installed in your operating system, and perhaps others that came bundled with a particular application. If you intend to use those fonts, carefully read their licenses. It is often the case that fonts bundled with an application may <em>only</em> be used for documents created within, or processed by, that application. Or, the fonts may be OK to use for printing directly by your own home printer, but not for embedding in a PDF that will go to a commercial printer.</p>
 <p>Although it does not pertain to TeX, another issue can arise if you later publish an ebook version. Fonts licensed for printing are often not licensed for an ebook. Indeed, the ebook distributor may ban them.</p>
 <p>Always look for a Copyright notice, which can be identified with a particular person or organization. Copyright is good! It means that someone is claiming authorship of the font software. Only the Copyright owner has the right to give the font away for free, or license it to you after payment (often through an intermediary).</p>
-<p>If you prefer free fonts, the most widely accepted license is the <em>SIL Open Font License</em>. This allows you to use the font for commercial purposes, embed it in PDF, modify it to suit your needs (if you change the font name), and even re-distribute the modifications. The recommended default <i>Libertinus Serif</i> bears this font license.</p>
+<p>If you prefer free fonts, the most widely accepted license is the <a class="external" rel="external" target="new" href="http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL">SIL Open Font License</a>. This allows you to use the font for commercial purposes, embed it in PDF, modify it to suit your needs (if you change the font name), and even re-distribute the modifications. The recommended default <i>Libertinus Serif</i> bears this font license. So does the included font <i>NovelDeco</i>.</p>
 </div><!-- end C.1 -->
 
 <h3 id="hC.2">C.2 &nbsp; Technical Issues</h3>
@@ -2781,7 +2824,8 @@ Bad: <code>\vspace{0.5in}</code> &nbsp; Good: <code>\vspace{2.4\nbs}</code>
 <h3 id="hC.3">C.3 &nbsp; Appearance Issues</h3>
 <div class="d3" id="dC.3">
 <p class="noindent1">There are general expectations for book fonts, in terms of character sizes and shapes, and weights. Many of the widely-used TeX fonts, including Latin&nbsp;Modern, are unacceptable in fiction for this reason. Times&nbsp;New&nbsp;Roman is not quite acceptable for fiction; but it is often mis-used by amateurs with a word processor.</p>
-<p>The best way to assess a font is to print it to paper. Computer screens rarely show details, except at large magnification. Depending on whom you ask for an opinion, fiction is most easily read when there are about 60 to 66 characters (including spaces) per line. To evaluate a font for the main text, print out some paragraphs about 4" to 4.25" wide, and scale the font's point size so that you get an average number of characters per line in that range. Be sure to do that: Adobe&nbsp;Garamond&nbsp;Pro at 12pt, Libertinus&nbsp;Serif at 11.4pt, and Libre&nbsp;Caslon&nbsp;Text at 9.6pt (!) provide about the same number of characters per line of text. At the proper point size, some fonts will look too dark, and others will look too light.</p>
+<p>The best way to assess a font is to print it to paper, at actual size. Use an inkjet (not laser) printer with only-black cartridge. In the print-on-demand world, your book is likely to be printed using an industrial-strength inkjet machine. Characters may be not quite as black as you would expect from the offset press technology used for larger-quantity production runs. Also, keep in mind that the paper you use at home is not like the (higher quality) paper that will be used for your book.</p>
+<p>Depending on whom you ask for an opinion, fiction is most easily read when there are about 60 to 66 characters (including spaces) per line. To evaluate a font for the main text, print out some paragraphs about 4" to 4.25" wide, and scale the font's point size so that you get an average number of characters per line in that range. Be sure to do that: Adobe&nbsp;Garamond&nbsp;Pro at 12pt, Libertinus&nbsp;Serif at 11.4pt, and Libre&nbsp;Caslon&nbsp;Text at 9.6pt (!) provide about the same number of characters per line of text. At the proper point size, some fonts will look too dark, and others will look too light.</p>
 <p>Things to look for: (1) Are the lowercase letters too tall? If they are, then it is hard for readers in many Western languages to find where sentences start, by looking for capital letters. Also, there is less white space between lines, which makes the text appear dense and harder to read. (2) Is the shape of the characters so natural that you don't notice them? That's good! It is your writing, not the font, that is to be noticed. (3) Remember that some fonts are designed for use at large size, in posters; such fonts tend to look mechanical in fiction. Other fonts are designed for computer screens; the letters will be too widely-spaced in fiction. Nearly all modern fonts have decent kerning and important ligatures, so that's not usually a decisive factor.</p>
 <p>The prevailing rule: If you notice the font, it's wrong.</p>
 </div><!-- end C.3 -->
@@ -2795,9 +2839,9 @@ Bad: <code>\vspace{0.5in}</code> &nbsp; Good: <code>\vspace{2.4\nbs}</code>
 
 <h2 id="hD">Appendix D. &nbsp; The 240% Ink Limit (TAC) Color Gamut</h2>
 <div class="d2" id="dD">
-<p class="noindent">The <i>gamut</i>, or range of available colors, is not the same for your computer monitor as it is for a printer. Obviously that depends on the technology of your monitor, and the technology of the printer. By and large, a good CMYK commercial printer can provide blue-greens that your monitor cannot accurately display. And, your monitor can display purple-violet colors that cannot accurately be printed. The monitor's advantage in purple-violet largely disappears for inexpensive LCD flat panels, which is what most of us have.</p>
+<p class="noindent">The <i>gamut</i>, or range of available colors, is not the same for your computer monitor as it is for a printer. Obviously that depends on the technology of your monitor, and the technology of the printer. By and large, a good CMYK commercial printer can provide blue-greens that your monitor cannot accurately display. And, your monitor might display purple-violet colors that cannot accurately be printed. The monitor's advantage in purple-violet largely disappears for inexpensive LCD flat panels, which is what most of us have.</p>
 <p>However, the full CMYK gamut is only realized when each ink channel can act independently. That is, each spot on the paper must be able to retain as much as a full dose of each ink. At 0%-100% ink per channel, a spot of paper would have to hold up to 400% ink. For a variety of reasons, most printing technologies cannot apply that much ink. Or rather, if they did try to apply that much, the resulting print might smear, fail to dry, lift off, or soak through to the opposite side of the paper. Subsequent lamination might fail to adhere.</p>
-<p>Quality books and magazines, using coated paper, can typically hold 300%-360% ink (the technical name is TAC, Total Area Coverage). However, the color cover of a print-on-demand book might be produced by a method that holds less ink. The operative word is "might." Common P.O.D. printers are industrial-strength inkjet machines, capable of very high quality when used with suitable paper. However, the print job will be sent out to any number of different print shops, who may use other technology. Therefore, P.O.D. services may require that the color gamut be limited to those printable by a "lowest common denominator" process. One widely-used "lowest common denominator" is 240% ink limit.</p>
+<p>Quality books and magazines, using coated paper, can typically hold 300%-360% ink (the technical name is TAC, Total Area Coverage). However, the color cover of a print-on-demand book might be produced by a method that holds less ink. The operative word is "might." Common P.O.D. printers are industrial-strength inkjet machines, capable of very high quality when used with suitable paper. The print job will be sent out on a copy-by-copy basis to any number of different print shops, who may use other technology. Therefore, P.O.D. services may require that the color gamut be limited to those printable by a "lowest common denominator" process. One widely-used "lowest common denominator" is 240% ink limit.</p>
 <p>At 240% ink limit, brightly colored areas are generally unaffected. Deep, rich colors cannot be produced, since they would require too much ink. You will be required to provide an image with colors that fit within the ink limit, or the P.O.D. service may quietly alter your image for you.</p>
 <p>Print simulation, or <i>softproofing</i>, is a method of viewing an image on your computer, "as if it were printed" to some standard. GIMP can do this, as long as you provide the necessary *.icc color profile for the printer. Then you can decide whether or not the result is acceptable. The actual CMYK image is produced by the methods described in <a href="#h7.4">section 7.4</a>.</p>
 
@@ -2815,7 +2859,7 @@ Bad: <code>\vspace{0.5in}</code> &nbsp; Good: <code>\vspace{2.4\nbs}</code>
 
 <h3 id="hD.3">D.3. &nbsp; Example: Dark, Rich Colors Lost</h3>
 <div class="d3" id="dD.3">
-<p>The biggest problem occurs when the artwork is naturally dark. That might occur in night scenes, or with dark-skinned humans. For copyright reasons I cannot show you the original image by Hyacinthe Rigaud, on display in a European museum. But if it is reduced to a map of 256 colors (as with GIF images), you can see the effect. The original, at left, has many rich browns and reddish-browns. When softproofed, those become nearly gray. The original image still is attractive when softproofed, but its muted dark colors might be surprising if you were unaware of the ink limit effect.</p>
+<p>The biggest problem occurs when the artwork is naturally dark. That might occur in night scenes, or with dark-skinned humans. For copyright reasons I cannot show you the original image of a painting by Hyacinthe Rigaud, on display in a European museum. But if it is reduced to a map of 256 colors (as with GIF images), you can see the effect. The original, at left, has many rich browns and reddish-browns. When softproofed, those become nearly gray. The original image still is attractive when softproofed, but its muted dark colors might be surprising if you were unaware of the ink limit effect.</p>
 <p class="centerimg"><img src="html-resources/colormap-brown.jpg" width="674" height="305" title="Medieval Painting, monitor and softproof" alt="Dark color map, monitor and softproof"/></p>
 <p>You might wonder why the ink limit caused rich browns to appear <i>darker</i>. That's because a blend of yellow, magenta, and black (with too much ink) was changed to one with much less yellow and magenta, but more black (and not too much ink).</p>
 </div><!-- end D.3 -->
@@ -2877,7 +2921,7 @@ Bad: <code>\vspace{0.5in}</code> &nbsp; Good: <code>\vspace{2.4\nbs}</code>
 </div><!-- end E.1.1 -->
 </div><!-- end E.1 -->
 
-<h3 id="hE.2">E.2 Open Type Features</h3>
+<h3 id="hE.2">E.2. Open Type Features</h3>
 <div class="d3" id="dE.2">
 <p class="noindent">Features are variations, contained within a single font file. In the bad old days, when you wanted true small caps, you had to load a separate font file that had them (and did not have ordinary lowercase letters). Now, if an Open Type font file has the <i>smcp</i> feature (most do), you obtain the small caps from within the same file, by asking for them. Requests for the feature may be made on-the-fly, or pre-loaded for global use.</p>
 <p>Here are several of the most frequently-used features, relevant to fiction writing. There are many more, and most fonts have only a few of them. Even when a font has a feature, it may be limited to some portion of the characters. For example, it is common for small caps to be available only for Latin-1 letters, even though the font also contains Greek and Cyrillic. To put this another way: The availability of a feature does not tell you its breadth of coverage. Unless the font has documentation showing coverage of its features, the only way to find out is to create and print a test page.</p>
@@ -2951,13 +2995,13 @@ Some Frequently-Used Open Type Features
 <p>Then in the document body, I could use it like this:</p>
 <p class="code"><code>The message was brief: {\orbitron DIE, EARTHLING.} Captain Withens smiled as he oiled his ray-gun. But ray-guns don't use oil.\par</code></p>
 <p class="centerimg"><img src="html-resources/charscaletext.png" width="522" height="63" alt="charscale text"/>
-<p>Scale is more often used for fonts that are pre-defined to have a special meaning and location, such as chapter titles or page headers. There, the font is not mingled with ordinary text, and it is OK to use a larger Scale. Then, it is not necessary to use local font scaling commands each time the font is used.</p>
+<p>Scale is more often used for fonts that are pre-defined to have a special meaning and location, such as <a href="#h5.1.3.1">chapter titles</a> or <a href="#h4.3.4.2">page headers</a>. There, the font is not mingled with ordinary text, and it is OK to use a larger Scale. Then, it is not necessary to use local font scaling commands each time the font is used.</p>
 </div><!-- end E.2.1 -->
 
-<h4 id="hE.2.2">E.2.2 Color and Opacity</h4>
+<h4 id="hE.2.2">E.2.2. Color and Opacity</h4>
 <div class="d4" id="dE.2.2">
 <p class="noindent">Even though the <i>fontspec</i> syntax allows you to set <i>Color</i> and <i>Opacity</i> as pseudo-features when you define a font, <em>the novel class blocks these features.</em> If you attempt to set them as features in a font definition, an error will result. The same applies if you attempt to add them, using <code>\addfontfeature</code>. However, you can still make use of grayscale using ordinary, local color commands.</p>
-<p>When you use the <i>graytext</i> class option, you may write text in grayscale, using commands from the included <i>xcolor</i> package. You should only do this for text that is in special locations. For example, if you begin each chapter with a number that is very large, you might wish to make that number gray, so that it does not overpower the main text.</p>
+<p>When you use the <a href="#h2.2">graytext</a> class option, you may write text in grayscale, using commands from the included <i>xcolor</i> package. You should only do this for text that is in special locations. For example, if you begin each chapter with a number that is very large, you might wish to make that number gray, so that it does not overpower the main text.</p>
 <p>To avoid possible conflicts, the color specification should be chosen from a limited list of names. In order from dark to light: black, blue, violet, darkgray, purple, red, teal, olive, magenta, gray, brown, green, orange, cyan, lightgray, lime, pink, yellow, white. They will all be rendered in <em>shades of gray</em> (of course, black and white will be themselves). You may also choose from this more convenient list: black, gray1, gray2, gray3, gray4, gray5, gray6, gray7, gray8, gray9, white.</p>
 <p>If <i>graytext</i> is not chosen as class option, then any color (even white) will be rendered as black.</p>
 <p>&bull; Placing light text over a dark background may produce unexpected results in print, even if it looks good in PDF. If you need this effect, it is better to build the text into the background, as a single image.</p>
@@ -3005,65 +3049,89 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 <p class="noindent">If you click on a command, you will be taken to its documentation.
 Default values are shown in braces and brackets, where applicable.
 There are many other commands available, but they are not specific to novel class.</p>
-<div class="sampledoc" style="margin:1em">
+<div class="sampledoc">
+<p>Non-empty default values are <em>shown like this</em>.<br/>
+&nbsp;</p>
 <p style="text-indent:0">
-<a href="#h1.2.3">% !TeX program = LuaLaTeX</a><br/>
+<a href="#h1.2.3">% !TeX TS-program = LuaLaTeX</a><br/>
 <a href="#h1.2.1">% !TeX encoding = UTF-8</a><br/>
-<a href="#h2">\documentclass{novel}</a><br/>
+<a href="#h2">\documentclass{novel}</a> % See list of class options; usually none needed.<br/>
 %%% METADATA (FILE DATA):<br/>
 <a href="#h3.3.1">\SetTitle{}</a> % Default: empty.<br/>
 <a href="#h3.3.3">\SetSubtitle{}</a> % Default: empty.<br/>
 <a href="#h3.3.2">\SetAuthor{}</a> % Default: empty.<br/>
-<a href="#h3.3.4">\SetApplication{LuaLaTeX with novel and microtype}</a><br/>
-<a href="#h3.3.4">\SetProducer{LuaLaTeX with novel-pdfx and hyperref}</a><br/>
-<a href="#h3.4">\SetPDFX{off}</a><br/>
+<a href="#h3.3.4">\SetApplication{<em>LuaLaTeX with novel and microtype</em>}</a><br/>
+<a href="#h3.3.4">\SetProducer{<em>LuaLaTeX with novel-pdfx and hyperref</em>}</a><br/>
+<a href="#h3.4">\SetPDFX{<em>off</em>}</a><br/>
 %%% DIMENSIONS:<br/>
-<a href="#h4.1.1">\SetTrimTize{5.5in}{8.5in}</a> % Sets width, height.<br/>
-% <a href="#h4.1.2">\SetMediaSize[]{}{}</a> % Normally unused. Default Media Size same as Trim Size.<br/>
-<a href="#h4.1.3">\SetCropmarkGap{0.125in}</a> % Cropmarks rarely used.<br/>
-<a href="#h4.3.1">\SetMargins{0.5in}{0.5in}{0.5in}{0.75in}</a> % Default varies with Trim Size.<br/>
+<a href="#h4.1.1">\SetTrimSize{<em>5.5in</em>}{<em>8.5in</em>}</a> % Sets width, height of your book.<br/>
+% Default Media Size equals Trim Size (possibly after \Rework).<br/>
+% Rarely-used over-ride:<br/>
+% <a href="#h4.1.2">\SetMediaSize[<em>alignment</em>]{<em>width</em>}{<em>height</em>}</a><br/>
+% Cropmark gap is ignored unless document class option cropmarks:<br/>
+<a href="#h4.1.3">\SetCropmarkGap{<em>0.125in</em>}</a><br/>
+% Default margins vary with Trim Size. Defaults for {5.5in}{8.5in}:<br/>
+<a href="#h4.3.1">\SetMargins{<em>0.5in</em>}{<em>0.5in</em>}{<em>0.5in</em>}{<em>0.75in</em>}</a><br/>
 %%% GENERAL FONTS:<br/>
-<a href="#h4.2.1.1">\SetParentFont[SmallCapsFeatures={Renderer=Basic},Kerning=On,Ligatures=TeX]{Libertinus&nbsp;Serif}</a><br/>
-% Then, the main text font automatically adds Numbers=OldStyle,Ligatures=Common.<br/>
-<a href="#h4.2.1.2">\SetFontSize{11.4pt}</a> % Default varies with Trim Size, Margins.<br/>
-% <a href="#h4.3.2">\SetLinesPerPage{}</a> % Default: command not used. Calculated from other settings.<br/>
-<a href="#h4.2.3">\SetDecoFont{NovelDeco.otf}</a><br/>
-<a href="#h4.2.4">\setsansfont{Libertinus Sans}</a><br/>
-<a href="#h4.2.4">\setmonofont{Libertinus Mono}</a><br/>
-<a href="#h4.2.4">\setmathfont{Libertinus Math}</a> % unicode-math package.<br/>
+% Percent at end of line is necessary, when writing font settings multi-line:<br/>
+<a href="#h4.2.1.1">\SetParentFont[%<br/>
+<em>SmallCapsFeatures={Renderer=Basic},</em></a>% Effective when small caps requested locally.<br/>
+<a href="#h4.2.1.1"><em>Kerning=On,</em> %<br/>
+<em>Ligatures=TeX,</em> %<br/>
+]{<em>Libertinus&nbsp;Serif</em>}</a><br/>
+% Main text font automatically adds <em>Numbers=OldStyle,Ligatures=Common</em>.<br/>
+% Default main font size is based on other layout settings.<br/>
+% Varies from 11pt to 12pt. With all default layouts, value is 11.4pt.<br/>
+% You may manually choose a different main font size:<br/>
+% <a href="#h4.2.1.2">\SetFontSize{<em>length</em>}</a><br/>
+% Default lines per page (main textblock) is calculated from other layout settings.<br/>
+% When using all defaults, the calculated value is 35.<br/>
+% If used, \SetLinesPerPage manually chooses the value:<br/>
+% <a href="#h4.3.2">\SetLinesPerPage{<em>integer</em>}</a><br/>
+<a href="#h4.2.3">\SetDecoFont{<em>NovelDeco.otf</em>}</a><br/>
+<a href="#h4.2.4">\setsansfont{<em>Libertinus Sans</em>}</a><br/>
+<a href="#h4.2.4">\setmonofont{<em>Libertinus Mono</em>}</a><br/>
+<a href="#h4.2.4">\setmathfont{<em>Libertinus Math</em>}</a> % unicode-math<br/>
 %%% HEADERS/FOOTERS:<br/>
-<a href="#h4.3.3">\SetHeadFootStyle{1}</a> % This style has headers only.<br/>
-<a href="#h4.3.4.1">\SetHeadJump{1.5}</a><br/>
-<a href="#h4.3.4.1">\SetFootJump{1.5}</a><br/>
-<a href="#h4.3.4.3">\SetLooseHead{50}</a><br/>
+<a href="#h4.3.3">\SetHeadFootStyle{<em>1</em>}</a> % This style has headers only.<br/>
+<a href="#h4.3.4.1">\SetHeadJump{<em>1.5</em>}</a><br/>
+<a href="#h4.3.4.1">\SetFootJump{<em>1.5</em>}</a><br/>
+<a href="#h4.3.4.3">\SetLooseHead{<em>50</em>}</a><br/>
 <a href="#h4.3.4.5">\SetEmblems{}{}</a> % Default blanks.<br/>
-<a href="#h4.3.4.2">\SetHeadFont[Letters=SmallCaps,Scale=0.92]{\parentfont}</a><br/>
-<a href="#h4.3.4.4">\SetPageNumberStyle{\thepage}</a><br/>
-<a href="#h4.3.4.6">\SetVersoHeadText{\theAuthor}</a><br/>
-<a href="#h4.3.4.6">\SetRectoHeadText{\theTitle}</a><br/>
+<a href="#h4.3.4.2">\SetHeadFont[<em>\parentfontfeatures,Letters=SmallCaps,Scale=0.92</em>]{<em>\parentfont</em>}</a><br/>
+<a href="#h4.3.4.4">\SetPageNumberStyle{<em>\thepage</em>}</a><br/>
+<a href="#h4.3.4.6">\SetVersoHeadText{<em>\theAuthor</em>}</a><br/>
+<a href="#h4.3.4.6">\SetRectoHeadText{<em>\theTitle</em>}</a><br/>
 %%% CHAPTERS:<br/>
-<a href="#h5.1.2.1">\SetChapterStartStyle{footer}</a> % Equivalent to empty, when style has no footer.<br/>
-<a href="#h5.1.2.2">\SetChapterStartHeight{10}</a><br/>
-<a href="#h5.1.3.1">\SetChapterFont[Numbers=Lining,Scale=1.6]{\parentfont}</a><br/>
-<a href="#h5.1.3.1">\SetSubchFont[Numbers=Lining,Scale=1.2]{\parentfont}</a><br/>
-<a href="#h5.3.1">\SetScenebreakIndent{false}</a><br/>
+<a href="#h5.1.2.1">\SetChapterStartStyle{<em>footer</em>}</a> % Equivalent to empty, when style has no footer.<br/>
+<a href="#h5.1.2.2">\SetChapterStartHeight{<em>10</em>}</a><br/>
+<a href="#h5.1.3.1">\SetChapterFont[<em>Numbers=Lining,Scale=1.6</em>]{<em>\parentfont</em>}</a><br/>
+<a href="#h5.1.3.1">\SetSubchFont[<em>Numbers=Lining,Scale=1.2</em>]{<em>\parentfont</em>}</a><br/>
+<a href="#h5.3.1">\SetScenebreakIndent{<em>false</em>}</a><br/>
 %%% CUSTOM FONTS:<br/>
-% <a href="#h4.2.5">\NewFontFamily[]{}</a> % Optional.<br/>
-% <a href="#h4.2.5">\NewFontFace[]{}</a> % Optional.<br/>
-% <a href="#">\CreateFontFeature{}</a> % Optional.<br/>
+% <a href="#h4.2.5">\NewFontFamily[]{}</a> % Optional command.<br/>
+% <a href="#h4.2.5">\NewFontFace[]{}</a> % Optional command.<br/>
+% <a href="#hE.2.3">\CreateFontFeature{}{}</a> % Optional command.<br/>
 %%% OTHER:<br/>
-<a href="#h1.2.1.1">\setdefaultlanguage[variant=american]{english}</a> % polyglossia package.<br/>
-<a href="#">\microtypesetup{config=novel-microtype,stretch=20,shrink=20,final}</a> % microtype package.<br/>
+<a href="#h1.2.1.1">\setdefaultlanguage[<em>variant=american</em>]{<em>english</em>}</a> % polyglossia<br/>
+<a href="#h6">\microtypesetup{<em>config=novel-microtype,stretch=20,shrink=20,final</em>}</a> % microtype<br/>
 %%% EMERGENCY USE:<br/>
-% <a href="#hA.1">\ReworkTrimSize{}{}</a> % Optional.<br/>
-% <a href="#hA.2">\ReworkMargins{}{}{}{}</a> % Optional.<br/>
+% <a href="#hA.1">\ReworkTrimSize{}{}</a> % Optional command.<br/>
+% <a href="#hA.2">\ReworkMargins{}{}{}{}</a> % Optional command.<br/>
 %%% BEGIN DOCUMENT:<br/>
 \begin{document}<br/>
-<a href="#h8.2.1">\frontmatter</a> % Required.<br/>
-% Typically <a href="#hB">six pages</a> of front matter. <a href="#h8.2.1">Could be more</a>.<br/>
-<a href="#h8.2.2">\mainmatter</a> % Required<br/>
-% <a href="#h5">Chapters</a> go here.<br/>
-<a href="#h5.5">\cleartoend</a><br/>
+<a href="#h8.3.2">\frontmatter</a> % Required.<br/>
+% Typically <a href="#hB">six pages</a> of front matter, but <a href="#h8.3.2">could be more</a>.<br/>
+<a href="#h8.3.3">\mainmatter</a> % Required<br/>
+% <a href="#h5">Chapters</a> go here. Sample Chapter structure:<br/>
+<a href="#h5.1.1">\clearpage</a> % or <a href="#h5.1.1">\cleartorecto</a><br/>
+<a href="#h5.1.2.3">\begin{ChapterStart}</a><br/>
+\vspace*{2\nbs} % Space above chapter title. \nbs = normal baseline skip.<br/>
+<a href="#h5.1.3">\ChapterTitle{</a>— 1 —<a href="#h5.1.3">}</a> % Perhaps also <a href="#h5.1.3">ChapterSubtitle</a>, <a href="#h5.1.3">ChapterDeco</a>.<br/>
+<a href="#h5.1.2.3">\end{ChapterStart}</a><br/>
+It was a dark and stormy night. \lipsum<br/>
+<a href="#h5.1.1">\clearpage</a> % or <a href="#h5.1.1">\cleartorecto</a><br/>
+<a href="#h8.3.4">\cleartoend</a><br/>
 \end{document}
 </p>
 </div>
@@ -3071,6 +3139,26 @@ There are many other commands available, but they are not specific to novel clas
 
 </div><!-- end F -->
 </div><!-- end Appendix F -->
+<!-- ************************************************************ -->
+<div id="pageG" class="page">
+
+
+<h2 id="hG">Appendix G. Known Issues</h2>
+<div class="d2" id="dG">
+<p class="noindent">Here is a list of known issues (and solutions, if known). Remember that "only compile with lualatex" is not an issue; it is a feature! Also remember that academic-like commands and modes are often disabled in this document class. That is also a feature, not an issue.</p>
+
+<h3 id="hG.1"><span class="n"></span>G.1. Placement of \Ordinalstring (fmtcount). Solved.</h3>
+<div class="d3" id="uG.1">
+<p class="noindent">At the time I write this (early October 2017) package <i>fmtcount</i> does not detect luatex. As a result, it incorrectly forks <i>novel</i> into code designed for the <i>pdftex</i> compiler. This may cause text placed by <code>\Ordinalstring</code> to appear in the wrong position, especially the first time the command is used.</p>
+<p>Solution: Look for file <i>fmtcount-faux.sty</i> in the "extras" folder of this documentation. In your <i>texmf-local</i> directory, create folder <i>tex/latex/fmtcount-faux</i> and place <i>fmtcount-faux.sty</i> in there. Then update your TeX file name database, using <code>mktexlsr</code> or MikTeX Update FNDB, as appropriate.</p>
+<p>In your own *.tex document, change <code>usepackage{fmtcount}</code> to <code>\usepackage{fmtcount-faux}</code>.</p>
+<p>If you use <i>polyglosia</i> language commands, such as <code>\setdefaultlanguage</code>, ensure that they are placed <i>before</i> loading <i>fmtcount-faux</i> in your Preamble. If you do not have commands in correct order, then this will not work. I believe that you must follow this rule with <i>fmtcount</i>, when it is fixed.</p>
+<p>The <i>fmtcount</i> maintainers have been informed.</p>
+</div><!-- end G.1 -->
+
+
+</div><!-- end G -->
+</div><!-- end Appendix G -->
 <!-- ************************************************************ -->
 
 

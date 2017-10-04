@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-CalculateLayout.sty}%
-[2017/10/02 v1.41 LaTeX file (layout calculations)]
+[2017/10/04 v1.42 LaTeX file (layout calculations)]
 %%
 
 %%
@@ -31,9 +31,9 @@
 % US softcover fiction, and is close to a popular British size.
 \if@TrimSizeSet\else
   \SetTrimSize{5.5in}{8.5in} % width, height
-  \if@MediaSizeSet\else
-    \SetMediaSize{5.5in}{8.5in}
-  \fi
+\fi
+\if@MediaSizeSet\else
+  \SetMediaSize[center]{\New@TrimWidth}{\New@TrimHeight} % original, or re-worked.
 \fi
 % Default margins are based on Trim Height, if user does not set margins.
 % Works for standard w/h aspect ratios, but not for exotically narrow.

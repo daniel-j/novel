@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/10/02 v1.41 LaTeX document class]
+\ProvidesClass{novel}[2017/10/04 v1.42 LaTeX document class]
 %%
 
 %% Version 1.40: removed `debug' option (was not useful). Major docs rewrite.

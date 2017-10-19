@@ -78,12 +78,27 @@ div.codeblock p {text-indent:0px;}
   *.toptitle {display:none;}
 }
 </style>
+<script type="text/javascript">var doprint=false;</script>
 
-<script type="text/javascript">
-var doprint=false;
-var mysearch = location.href;
-if(mysearch.indexOf("print")!=-1){doprint=true; document.getElementById("screenstyle").disabled=true;}
-</script>
+
+<!-- Trouble Printing? Remove the following line, and another one below: -->
+<!-- REMOVE ME
+
+<style type="text/css">
+  body {color:#000000; background:#ffffff none;}
+  #toc {display:block; font-size:1em; width:auto; background:#ffffff none; position:static; overflow:auto; height:auto;}
+  #toc li ul li {display:none;}
+  #main {float:none; background:#ffffff none; width:auto; padding-bottom:0;}
+  div.codeblock p {text-indent:0px; white-space:auto;}
+  *.screennoscript {display:none;}
+  *.toptitle {display:block;}
+  *.notprinted {display:none;}
+</style>
+<script type="text/javascript">doprint=true;</script>
+
+REMOVE ME TOO -->
+<!-- Also remove the above line, if trouble printing. Then load with JavaScript off. -->
+
 
 <script type="text/javascript">
 if(!doprint) {window.onload = loadnav;}
@@ -327,6 +342,7 @@ function closeall() {
           <li><a href="#h5.3.1">5.3.1 \SetScenebreakIndent</a></li>
         </ul>
       </li><!-- end 5.3 -->
+      <li id="l5.4"><span class="n" style="visibility:hidden"></span><a href="#h5.4">5.4 Chapter Numbering</a></li><!-- end 5.4 -->
     </ul>
   </li><!-- end 5 -->
 
@@ -534,11 +550,7 @@ function closeall() {
   <li id="lF"><span class="n" style="visibility:hidden"></span><a href="#hF"><b>F. Sample Document</b></a>
   </li><!-- end F -->
 
-  <li id="lG"><span class="n"></span><a href="#hG"><b>G. Known Issues</b></a>
-    <ul id="uG">
-      <li><a href="#hG.1">G.1. fmtcount (solved)</a></li>
-    </ul>
-  </li><!-- end C -->
+  <li id="lG"><span class="n" style="visibility:hidden"></span><a href="#hG"><b>G. Known Issues</b></a></li><!-- end G -->
 
 </ul><!-- end master toc ul -->
 
@@ -553,11 +565,12 @@ function closeall() {
 <!-- **************************************************************************************** -->
 
 <h1 id="h0">Document class <i>novel</i> - documentation</h1>
-<p class="noindent">Version: 1.42, 2017/10/04. <span id="screennoscript" class="screennoscript"><b>For enchanced navigation of this file, turn on JavaScript.</b></span></p>
+<p class="noindent">Version: 1.43, 2017/10/19. <span id="screennoscript" class="screennoscript"><b>For enchanced navigation of this file, turn on JavaScript.</b></span></p>
 <div><script type="text/javascript">if(document.getElementById("screennoscript")){document.getElementById("screennoscript").style.display="none";}</script></div>
 <p class="noindent" style="position:relative"><span style="position:absolute; top:-.1em; font-size:150%; color:#008000">&#9786;</span>&nbsp; &nbsp; &nbsp; An example novel, text and cover, can be found at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/">GitHub project page, https://github.com/RobtAll/novel/</a>, in the "other" folder. You will find its TeX source and the resulting PDF. The PDF text and cover meet submission standards for major American print-on-demand services.</p>
 <p>A smaller example document is <i>novel-example.tex</i>, which can be found in the <i>extras</i> folder within this documentation.</p>
-<p><b>Printing this file:</b> Some user agents have difficulty previewing this HTML file for print, or printing it. If you wish to print (to PDF or paper) then try this: Copy the HTML file, and name the copy <i style="white-space:nowrap">novel-documentation-print.html</i>. That might (or might not) help. In any case, the printable format of this file has an abbreviated list of contents at the top, not as a sidebar.</p>
+<p class="notprinted"><b>Printing this file:</b> A printed version (PDF or paper) has condensed Table of Contents, and inactive hyperlinks. If your user agent has trouble printing, do this: In a UNIX-compatible plain text editor, edit this file. About 83 lines from the top you will see a block of style that is commented out. Remove the comments so that the block is effective. Load the edited HTML file with JavaScript turned off.</p>
+<p class="notprinted">Some user agents have difficulty previewing this HTML file for print, or printing it. If you wish to print (to PDF or paper) then try this: Copy the HTML file, and name the copy <i style="white-space:nowrap">novel-documentation-print.html</i>. That might (or might not) help. In any case, the printable format of this file has an abbreviated list of contents at the top, not as a sidebar.</p>
 <p>&nbsp;</p>
 
 
@@ -1020,7 +1033,8 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <div class="d5" id="d4.2.1.1">
 <p>In <i>novel</i> you set a parent font (<i>parentfont</i>), which is the ancestor of several pre-defined font styles, including the main text font. In Preamble:</p>
 <p class="code"><code>\SetParentFont[<em>features</em>]{<em>fontname</em>}</code><p>
-<p>The command uses <i>fontspec</i> syntax, which is reviewed in an Appendix here, and described in full detail by the <i>fontspec</i> package documentation.</p>
+<p>The command uses <i>fontspec</i> syntax, which is reviewed in <a href="#hE">Appendix E</a>, and described in full detail by the <i>fontspec</i> package documentation.</p>
+<p>When you use <code>\SetParentFont</code>, its features and fontname are stored as strings in macros <code>\parentfontfeatures</code> and <code>\parentfontname</code>. If you don't use <code>\SetParentFont</code> then the default values will be provided. In any case, you can use <code>\parentfontfeatures</code> and <code>\parentfontname</code> as arguments to other font commands.</p>
 <p>IMPORTANT: In all font setting commands (<code>\SetParentFont</code> and others), you may <i>not</i> use a line break anywhere in the command. If you wish to break your code into multiple lines for ease of reading in the source document, be sure to use the percent symbol % at the end of each line, so that the line return character is nullified, like this:</p>
 <p class="code"><code>
 \SetParentFont[%<br/>
@@ -1061,6 +1075,7 @@ AnotherFeature=Setting,%<br/>
 <code>\SetSubchFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.1">5.1.3.1</a></em><br/>
 <code>\SetHeadFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h4.3.4.2">4.3.4.2</a></em>
 </p>
+<p>You may use <code>\parentfontfeatures</code> and/or <code>\parentfontname</code> as arguments, if you wish.</p>
 </div><!-- end 4.2.2 -->
 
 <h4 id="h4.2.3">4.2.3. Advanced: The Deco Font</h4>
@@ -1269,7 +1284,8 @@ ItalicFont=Montserrat-ExtraLightItalic.otf]%<br/>
 <p class="centerimg"><img src="html-resources/headfont-montserrat-el.png" width="419" height="81" title="Montserrat EL headfont" alt="Montserrat EL headfont"/></p>
 <p>Unless you change it, the <i>headfont</i> is the same as the parent (main) font. However, it is scaled to slightly smaller size, uses lining numbers (if available), and small caps (if available). This is a general-purpose style, widely used in fiction. It may not be the most artistic, but it is unlikely to cause visual distraction:</p>
 <p class="centerimg"><img src="html-resources/headfont-default.png" width="419" height="81" title="default headfont" alt="default headfont"/></p>
-<p>If you do <i>not</i> want SmallCaps to be automatically added, use <code>Letters=ResetAll</code> as a feature.</p>
+<p>If you do <i>not</i> want SmallCaps to be automatically added, use <code>Letters=ResetAll</code> as a feature:</p>
+<p class="code"><code>\SetHeadFont[Letters=ResetAll]{\parentfontname}</code></p>
 <div style="clear:both"></div>
 </div><!-- end 4.3.4.2 -->
 
@@ -1466,26 +1482,20 @@ Following the dark and stormy night, it was a bright and sunny day. That did not
 </small></code></p>
 </div><!-- end 5.1.3.2 -->
 
-<h5 id="h5.1.3.3">5.1.3.3. <code>\ChapterDeco[<em>alignment</em>]{<em>text</em>}</code></h5>
+<h5 id="h5.1.3.3">5.1.3.3. <code>\ChapterDeco[<em>alignment scale</em>]{<em>text</em>}</code></h5>
 <div class="d5" id="d5.1.3.3">
-<p class="noindent">Text within <code>\ChapterDeco</code> has no particular content, and no particular styling. This command is simply a way for you to remember that its content is neither the title nor subtitle of the chapter.</p>
-<p>The optional <i>alignment</i> is one of <i>l</i>, <i>c</i>, <i>r</i> (left, center, right). Default <i>c</i>.</p>
-<p>Many works of fiction have a decorative element below (or within) chapter titles. For your convenience, the <i>NovelDeco</i> font (included with <i>novel</i> has a few possibilities. they are accessed via the <code>\decoglyph</code> command. The list of available decorations, and codes to access them, are in the file <i>NovelDeco-glyphs.pdf</i>, which is in the <i>extras</i> folder within this documentation. Note that the decorations can be placed anywhere in your document, not just in <code>\ChapterDeco</code>.</p>
-<p>When you use a decoration, it will almost certainly have to be up-scaled, using the <code>\charscale</code> command. You may have to adjust its vertical position using <code>\vspace</code>.</p>
-<p>Example: More likely than not, the same decoration will be applied to any chapter that has one. Then, you can define the decoration as a macro in Preamble:</p>
-<p class="code"><code><small>\newcommand\myctdeco{%<br/>
-<span style="padding-left:2em"></span>\charscale[4]{\decoglyph{r9666}\decoglyph{n9591}\decoglyph{r9656}}<br/>
-<span style="padding-left:2em"></span>}%
-</small></code></p>
-<p>Then use it wherever needed:</p>
-<p class="code"><img class="floatright" src="html-resources/thelowdown.png" width="334" height="181" title="chapter title with decoration" alt="chapter title with decoration"/><code><small>
-\begin{ChapterStart}<br/>
+<p class="noindent">This command is simply a way for you to remember that its content is neither the title nor subtitle of the chapter. Typical usage is to place a decorative element.</p>
+<p>There is a single command option, which is parsed for a letter and/or a number, with our without comma or space. The <i>alignment</i> letter is one of <i>l</i>, <i>c</i>, <i>r</i> (left, center, right). Default <i>c</i>. The numerical <i>scale</i> (may be decimal) changes the size of the text, and tweaks its vertical position. Default scale is <i>1</i>.</p>
+<p>For your convenience, the <i>NovelDeco</i> font (included with <i>novel</i> has a few possibilities. they are accessed via the <code>\decoglyph</code> command. The list of available decorations, and codes to access them, are in the file <i>NovelDeco-glyphs.pdf</i>, which is in the <i>extras</i> folder within this documentation. Note that the decorations can be placed anywhere in your document, not just in <code>\ChapterDeco</code>.</p>
+<p><img class="floatright" src="html-resources/lowdown.png" width="300" height="141" title="chapter title with decoration" alt="chapter title with decoration"/>Most of the <code>\decoglyph</code> decorations look best when the optional <i>scale</i> is near <i>4</i>. Example:</p>
+<p class="code"><code><small>
+\begin{ChapterStart}[8]<br/>
 \vspace{2\nbs}<br/>
-\ChapterTitle{3. The Low-Down}<br/>
-\vspace{2\nbs}<br/>
-\ChapterDeco{\myctdeco}<br/>
+\ChapterTitle[l]{3}<br/>
+\ChapterSubtitle[l]{The Low-Down}<br/>
+\ChapterDeco[l4]{\decoglyph{n9591}\decoglyph{r9656}}<br/>
 \end{ChapterStart}<br/>
-I didn't hear the low-down until the following Saturday. By then, all hell had broken loose at Vinny's joint, and the boys were looking for me in trash cans, just in case that was where I was hiding. ...\par
+I didn't hear the low-down until the following Saturday. By then, all hell had broken loose at Vinny's joint, and the boys were looking for me in trash cans, just in case that was where I was hiding, or maybe dead. ...\par
 </small></code></p>
 </div><!-- end 5.1.3.3 -->
 
@@ -1590,6 +1600,34 @@ Unfortunately, novelists of that era had so little to write about, or they would
 </div><!-- end 5.3.1 -->
 </div><!-- end 5.3 -->
 
+<h3 id="h5.4">5.4. Automatic Chapter Numbering</h3>
+<div class="d3" id="d5.4">
+<p class="noindent">By popular demand, here is how to add automatic chapter numbering:</p>
+<p>Counter <i>novelcn</i> is pre-defined, and initialized to <i>1</i> (not zero). If you simply wish to print its value as a number, then increment the count, do something like this:</p>
+<p class="code"><code>
+\ChapterTitle{Chapter \the\value{novelcn}\stepcounter{novelcn}}
+</code></p>
+<p>That will print Chapter 1, Chapter 2, and so forth. Of course, only do this for real, numbered chapters, not for "chapter-like" sections. If your book has several parts, and each part re-sets its own chapter count, use \setcounter{novelcn}{1} prior to the first chapter in each part.</p>
+<p>If you would like the number to be spelled out, as in Chapter One, Chapter Two, and so forth, then try the <i>fmtcount</i> package. It can also do ordinals such as First Chapter, Second Chapter. See the <i>fmtcount</i> package documentation for details.</p>
+<p>If your document's language is other than English, use <code>\setdefaultlanguage</code> <i>before</i> you load the <i>fmtcount</i> package. If you do it later, then positioning will be incorrect.</p>
+<p><b>Caution:</b> At the time I write this, <i>fmtcount</i> does not detect <i>luatex</i>. Without some hacking, it incorrectly positions its text, when used with <i>novel</i>. The maintainer has been informed. Until such time as <i>fmtcount</i> is fixed, here is the hack. In Preamble:</p>
+<p class="code"><code>
+% if necessary, use \setdefaultlanguage first.<br/>
+\xetextrue % remove this command when <i>fmtcount</i> is fixed<br/>
+\RequirePackage{fmtcount}<br/>
+\xetexfalse % remove this command when <i>fmtcount</i> is fixed
+</code></p>
+<p>Example usage in chapter titles:</p>
+<p class="code"><code>
+\ChapterTitle{\Ordinalstring{novelcn}\stepcounter{novelcn} Robbery} %1<br/>
+\ChapterTitle{\Ordinalstring{novelcn}\stepcounter{novelcn} Robbery} %2<br/>
+\ChapterTitle{\Ordinalstring{novelcn}\stepcounter{novelcn} Robbery} %3
+</code></p>
+<p class="centerimg"><img src="html-resources/robberies.png" width="411" height="98" title="odinal chapter numbering" alt="ordinal chapter numbering"/></p>
+</div><!-- end 5.4 -->
+
+
+
 
 </div><!-- end 5 -->
 </div><!-- end page05 -->
@@ -1603,7 +1641,7 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <p>Information about how to choose the global, main text point size is described in <a href="#h4.2.1.2">section 4.2.1.2</a>. General information about choosing fonts and font features is in <a href="#hC">Appendix C</a> and <a href="#hE">Appendix E</a>.</p>
 <p>There is no direct setting for normal baselineskip; it is automatically calculated from the size of the textblock (using Trim Size, Margins, and header/footer layouts) and <a href="#h4.3.2">lines per page</a>.</p>
 <p>The included <i>microtype</i> package is pre-configured, using these settings:</p>
-<p class="code"><code>\microtypesetup{config=novel-microtype,stretch=20,shrink=20,final}</code></p>
+<p class="code"><code>\microtypesetup{config=novel-microtype,final,stretch=20,shrink=20}</code></p>
 <p>File <i>novel-microtype.cfg</i> uses settings typical of the kind of book-weight font that you are likely to use. The stretch and shrink factors are moderate. Calculation is always final, so that you see the same effect whether or not you use the <i>draft</i> class option. If you wish to change any of these, see the <i>microtype</i> package documentation. Note that since you are compiling with LuaLaTeX, some features of <i>microtype</i> may not be available.</p>
 
 <h3 id="h6.1">6.1. Text Sizes</h3>
@@ -3047,7 +3085,6 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 <h2 id="hF">Appendix F. Sample Document</h2>
 <div class="d2" id="dF">
 <p class="noindent">If you click on a command, you will be taken to its documentation.
-Default values are shown in braces and brackets, where applicable.
 There are many other commands available, but they are not specific to novel class.</p>
 <div class="sampledoc">
 <p>Non-empty default values are <em>shown like this</em>.<br/>
@@ -3057,7 +3094,7 @@ There are many other commands available, but they are not specific to novel clas
 <a href="#h1.2.1">% !TeX encoding = UTF-8</a><br/>
 <a href="#h2">\documentclass{novel}</a> % See list of class options; usually none needed.<br/>
 %%% METADATA (FILE DATA):<br/>
-<a href="#h3.3.1">\SetTitle{}</a> % Default: empty.<br/>
+<a href="#h3.3.1">\SetTitle{}</a> % Default: empty. Required for PDF/X.<br/>
 <a href="#h3.3.3">\SetSubtitle{}</a> % Default: empty.<br/>
 <a href="#h3.3.2">\SetAuthor{}</a> % Default: empty.<br/>
 <a href="#h3.3.4">\SetApplication{<em>LuaLaTeX with novel and microtype</em>}</a><br/>
@@ -3098,15 +3135,15 @@ There are many other commands available, but they are not specific to novel clas
 <a href="#h4.3.4.1">\SetFootJump{<em>1.5</em>}</a><br/>
 <a href="#h4.3.4.3">\SetLooseHead{<em>50</em>}</a><br/>
 <a href="#h4.3.4.5">\SetEmblems{}{}</a> % Default blanks.<br/>
-<a href="#h4.3.4.2">\SetHeadFont[<em>\parentfontfeatures,Letters=SmallCaps,Scale=0.92</em>]{<em>\parentfont</em>}</a><br/>
+<a href="#h4.3.4.2">\SetHeadFont[<em>\parentfontfeatures,Letters=SmallCaps,Scale=0.92</em>]{<em>\parentfontname</em>}</a><br/>
 <a href="#h4.3.4.4">\SetPageNumberStyle{<em>\thepage</em>}</a><br/>
 <a href="#h4.3.4.6">\SetVersoHeadText{<em>\theAuthor</em>}</a><br/>
 <a href="#h4.3.4.6">\SetRectoHeadText{<em>\theTitle</em>}</a><br/>
 %%% CHAPTERS:<br/>
 <a href="#h5.1.2.1">\SetChapterStartStyle{<em>footer</em>}</a> % Equivalent to empty, when style has no footer.<br/>
 <a href="#h5.1.2.2">\SetChapterStartHeight{<em>10</em>}</a><br/>
-<a href="#h5.1.3.1">\SetChapterFont[<em>Numbers=Lining,Scale=1.6</em>]{<em>\parentfont</em>}</a><br/>
-<a href="#h5.1.3.1">\SetSubchFont[<em>Numbers=Lining,Scale=1.2</em>]{<em>\parentfont</em>}</a><br/>
+<a href="#h5.1.3.1">\SetChapterFont[<em>Numbers=Lining,Scale=1.6</em>]{<em>\parentfontname</em>}</a><br/>
+<a href="#h5.1.3.1">\SetSubchFont[<em>Numbers=Lining,Scale=1.2</em>]{<em>\parentfontname</em>}</a><br/>
 <a href="#h5.3.1">\SetScenebreakIndent{<em>false</em>}</a><br/>
 %%% CUSTOM FONTS:<br/>
 % <a href="#h4.2.5">\NewFontFamily[]{}</a> % Optional command.<br/>
@@ -3123,13 +3160,13 @@ There are many other commands available, but they are not specific to novel clas
 <a href="#h8.3.2">\frontmatter</a> % Required.<br/>
 % Typically <a href="#hB">six pages</a> of front matter, but <a href="#h8.3.2">could be more</a>.<br/>
 <a href="#h8.3.3">\mainmatter</a> % Required<br/>
-% <a href="#h5">Chapters</a> go here. Sample Chapter structure:<br/>
+% <a href="#h5">Chapters</a> go here. SAMPLE Chapter structure:<br/>
 <a href="#h5.1.1">\clearpage</a> % or <a href="#h5.1.1">\cleartorecto</a><br/>
 <a href="#h5.1.2.3">\begin{ChapterStart}</a><br/>
 \vspace*{2\nbs} % Space above chapter title. \nbs = normal baseline skip.<br/>
 <a href="#h5.1.3">\ChapterTitle{</a>— 1 —<a href="#h5.1.3">}</a> % Perhaps also <a href="#h5.1.3">ChapterSubtitle</a>, <a href="#h5.1.3">ChapterDeco</a>.<br/>
 <a href="#h5.1.2.3">\end{ChapterStart}</a><br/>
-It was a dark and stormy night. \lipsum<br/>
+It was a dark and stormy night, etc.<br/>
 <a href="#h5.1.1">\clearpage</a> % or <a href="#h5.1.1">\cleartorecto</a><br/>
 <a href="#h8.3.4">\cleartoend</a><br/>
 \end{document}
@@ -3147,14 +3184,15 @@ It was a dark and stormy night. \lipsum<br/>
 <div class="d2" id="dG">
 <p class="noindent">Here is a list of known issues (and solutions, if known). Remember that "only compile with lualatex" is not an issue; it is a feature! Also remember that academic-like commands and modes are often disabled in this document class. That is also a feature, not an issue.</p>
 
-<h3 id="hG.1"><span class="n"></span>G.1. Placement of \Ordinalstring (fmtcount). Solved.</h3>
+<h3 id="hG.1"><span class="n"></span>G.1. Incorrect string placement with package <i>fmtcount</i></h3>
 <div class="d3" id="uG.1">
-<p class="noindent">At the time I write this (early October 2017) package <i>fmtcount</i> does not detect luatex. As a result, it incorrectly forks <i>novel</i> into code designed for the <i>pdftex</i> compiler. This may cause text placed by <code>\Ordinalstring</code> to appear in the wrong position, especially the first time the command is used.</p>
-<p>Solution: Look for file <i>fmtcount-faux.sty</i> in the "extras" folder of this documentation. In your <i>texmf-local</i> directory, create folder <i>tex/latex/fmtcount-faux</i> and place <i>fmtcount-faux.sty</i> in there. Then update your TeX file name database, using <code>mktexlsr</code> or MikTeX Update FNDB, as appropriate.</p>
-<p>In your own *.tex document, change <code>usepackage{fmtcount}</code> to <code>\usepackage{fmtcount-faux}</code>.</p>
-<p>If you use <i>polyglosia</i> language commands, such as <code>\setdefaultlanguage</code>, ensure that they are placed <i>before</i> loading <i>fmtcount-faux</i> in your Preamble. If you do not have commands in correct order, then this will not work. I believe that you must follow this rule with <i>fmtcount</i>, when it is fixed.</p>
-<p>The <i>fmtcount</i> maintainers have been informed.</p>
+<p class="noindent">Solved. See <a href="#h5.4">section 5.4</a>.</p>
 </div><!-- end G.1 -->
+
+<h3 id="hG.2"><span class="n"></span>G.2. Compile fails after changing default language</h3>
+<div class="d3" id="uG.2">
+<p class="noindent">Solved. If you compile a document sucessfully, then re-compile with a different <code>\setdefaultlanguage</code> setting, then compile may fail the second time. It may stop with error message "You can't use \relax after \the."<p>
+<p>This depends on which languages are involved. The solution is simple: Discard the <i>*.aux</i> and <i>*.synctex.gz</i> files generated by previous compilation. Then try again.</p>
 
 
 </div><!-- end G -->

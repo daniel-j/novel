@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2017/10/04 v1.42 LaTeX file (text macros usable within document body)]
+[2017/10/19 v1.43 LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -26,23 +26,21 @@
 
 %% The following commands were defined in other files of `novel' class:
 %% -----------------------------------------------------------------------------
-% \thetitle or \theTitle returns string set by \title{} or \SetTitle{} -- See novel-LayoutSettings.sty.
-% \theauthor or \theAuthor returns string set by \author or \SetAuthor{} -- See novel-LayoutSettings.sty.
-% \normalFontSize length of main font setting. May be tweaked during rework. -- See novel-CalculateLayout.sty.
-% \normalBaselineSkip and \nbs (calculated) length of main baselineskip. -- See novel-CalculateLayout.sty.
-% \thesubtitle or \theSubtitle returns string set by \subtitle{} or \SetSubtitle{} -- See novel-LayoutSettings.sty.
-% \InlineImage, \BlockImage, \ClearImage -- See novel-Images.sty.
+% \theTitle returns string set by \SetTitle{} -- See novel-LayoutSettings.sty.
+% \theAuthor returns string set by \SetAuthor{} -- See novel-LayoutSettings.sty.
+% \nfs normal font size. May be tweaked during rework. -- See novel-CalculateLayout.sty.
+% \nbs (calculated) normal baselineskip. May be tweaked during rework. -- See novel-CalculateLayout.sty.
+% \theSubtitle returns string set by \SetSubtitle{} -- See novel-LayoutSettings.sty.
+% \InlineImage, \BlockImage -- See novel-Images.sty.
 % \scenebreak, \sceneline, \scenestars -- See novel-ChapterScene.sty.
 % ChapterStart, \ChapterTitle{}, \ChapterSubtitle{}, \ChapterDeco{} -- See novel-ChapterScene.sty.
-% \DecoChapterTitle{}{}, \SideDecoChapterTitle{}, ModernChapterTitle[]{}{} -- See novel-ChapterScene.sty.
 % {\chapterfont text} and other pre-defined font selection commands -- See novel-LayoutSettings.sty.
 % \decoglyph{} and \acronym{} -- See novel-FontDefaults.sty.
 % \frontmatter, \mainmatter -- See novel-LayoutSettings.sty.
 % \footnote[]{}, \endnote, \endnotetext[]{} -- See novel-Footnotes.sty.
-% \thispagestyle{choice} and \dropfolio -- See novel-HeadFootStyles.sty.
-% \NewVersoHeadText{}, \NewRectoHeadText{}  Also \Set and \Renew forms. -- See novel-HeadFootStyles.sty.
+% \thispagestyle{choice} -- See novel-HeadFootStyles.sty.
+% \SetVersoHeadText{}, \SetRectoHeadText{} -- See novel-HeadFootStyles.sty.
 % \CreateFontFeature{substitutions}{feature code} fakes an Open Type feature -- See novel-LayoutSettings.sty.
-% \Epigraph[align,scale,width]{text} creates an Epigraph -- See novel-ChapterScene.sty.
 
 
 
@@ -56,13 +54,15 @@
 % parascale environment for long change in text size. Will go off-grid.
 % toc environment for table of contents.
 % \tocitem[]{}{} and \tocitem*[]{}{} for one-line entries in toc.
-% legalese environment uses ragged right, disables hyphenation, and reduces microtype tweaks.
+% legalese environment uses ragged right, disables hyphenation.
 % \showlength[round]{length}{units} returns the length, re-calculated in units, rounded.
 % \supersub{raise}{scale}{text} alternative to superscript and subscript commands.
 % \sups{text}, \subs{text}, and \sinf{text} other alternatives to super/subscripts.
 % \bigemdash[raise,thickness] provides a raised rule of flexible length, a "big em dash."
 % \stake inserts zero-width rule, 1pt thick, as placeholder.
 % \color and \textcolor (from package xcolor) have been modified to ensure black, or grayscale when permitted.
+% \hangleft{text} -- places text to left of its usual block position. Do not place text in margins!
+% \lnum{number} -- lining numbers
 % \squeeze{} and \crush{} for emergency text adjustment.
 
 
@@ -71,7 +71,7 @@
 %% They are listed here as a reminder of their existence. Not a complete list.
 %% A description is only provided here, when it is brief and simple.
 %
-% {\centering text\par} centers text. Needs the \par to finish. May also use internal \\ or \par. Avoid center environment.
+% {\centering text\par} centers text. Needs the \par to finish. May also use internal \\ or \par.
 % \makebox[length][alignment]{text}
 % \hspace{length}
 % \vspace{length}  Caution: may disrupt text line grid!
@@ -401,12 +401,7 @@
 \newenvironment{legalese}
 {\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000}
 {}
-%% poem environment. Optional argument is left margin.
-\newenvironment{poem}[1][0pt]
-{\begin{adjustwidth}{#1}{0pt}%
-\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000}
-{\end{adjustwidth}\par}
-%%
+%
 \gdef\hangleft#1{% places content to left of usual position.
   \newlength\@temphangl%
   \setlength\@temphangl{\widthof{#1}}%

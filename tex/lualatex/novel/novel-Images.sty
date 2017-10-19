@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Images.sty}%
-[2017/10/04 v1.42 LaTeX file (image placement)]
+[2017/10/19 v1.43 LaTeX file (image placement)]
 %%
 
 
@@ -250,19 +250,6 @@
 \ExplSyntaxOff
 %%
 
-
-
-% Returns 1 for monochrome, 8 for grayscale (or rgb). EXPERIMENTAL.
-% Not documented. Not used as part of any other commands.
-\gdef\imagecolordepth{%
-  \ifthenelse{\equal{\imagefilename}{unknown}}{unknown}{%
-    \directlua{%
-    img1=img.scan{filename="\imagefilename"}%
-    tex.print(tostring(img1.colordepth))%
-    }%
-  }%
-}
-%
 
 
 %%

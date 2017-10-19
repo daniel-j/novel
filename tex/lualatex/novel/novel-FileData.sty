@@ -13,47 +13,40 @@
 %% 
 %%
 \ProvidesFile{novel-FileData.sty}%
-[2017/10/04 v1.42 LaTeX file (File Data settings)]
+[2017/10/19 v1.43 LaTeX file (File Data settings)]
 %% 
 
 
-%% FILE DATA (see class documentation for technical meaning of this term).
+%% FILE DATA (PDF Metadata)
 %% -----------------------------------------------------------------------------
 %%
 % \title{} or \SetTitle{}
-% Must be used immediately after \documentclass[options]{novel}.
-% Copied to metadata at end of preamble, unless not set or over-ridden.
-% May be over-ridden in metadata using \metatitle{}.
-% May be re-set in body, but not in metadata.
-% Provides \thetitle anywhere.
+% Copied to File Data at end of Preamble, unless not set.
+% Provides \theTitle anywhere.
 % If not set, PDF cannot conform to PDF/X.
 \gdef\SetTitle#1{\gdef\@title{#1}} % for stylistic consistency
 \gdef\title#1{\gdef\@title{#1}}
-\gdef\thetitle{\@title}
+\gdef\thetitle{\@title} % for convenience
 \gdef\theTitle{\@title}
-\title{}
+\SetTitle{}
 %
 % \author{} or \SetAuthor{}
-% Copied to metadata at end of preamble, unless not set or over-ridden.
-% May be over-ridden in metadata using \metaauthor{}.
-% May be re-set in body, but not in metadata.
-% Provides \theauthor anywhere.
+% Copied to File Data at end of preamble, unless not set.
+% Provides \theAuthor anywhere.
 \gdef\SetAuthor#1{\gdef\@author{#1}} % for stylistic consistency
 \gdef\author#1{\gdef\@author{#1}}
-\gdef\theauthor{\@author}
+\gdef\theauthor{\@author} % for convenience
 \gdef\theAuthor{\@author}
-\author{}
+\SetAuthor{}
 %
 % \subtitle{}  or \SetSubtitle{}  (if any)
-% Not copied to metadata by itself, as there is no such metadata entry.
-% May appear in metadata along with title, using \metatitle{}. See below.
-% May be re-set in body.
-% Provides \thesubtitle anywhere.
+% Not copied to File Data by itself, as there is no such metadata entry.
+% Provides \theSubtitle anywhere.
 \gdef\SetSubtitle#1{\gdef\@subtitle{#1}} % for stylistic consistency
 \gdef\subtitle#1{\gdef\@subtitle{#1}}
-\gdef\thesubtitle{\@subtitle}
+\gdef\thesubtitle{\@subtitle} % compatibility
 \gdef\theSubtitle{\@subtitle}
-\subtitle{}
+\SetSubtitle{}
 %
 % \SetApplication{}  (rarely used)
 % Also known as CreatorTool.
@@ -72,6 +65,8 @@
 %
 % Although some other data fields could have been added,
 %   they do not pertain to fiction, especially if your book is print-on-demand.
+% For example, subject, keywords and description are not read from PDF metadata,
+%   you enter them in a form, when you obtain the ISBN.
 % No need to set copyright in metadata, since your book is only for use by
 %   the print service, and is not being distributed as a PDF e-book.
 %   Your copyright notice is on the printed page, where it should be.
@@ -165,7 +160,6 @@
   \fi
 } % end \@setpdfx
 %
-
 %%
 
 

@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-FontDefaults.sty}%
-[2017/10/04 v1.42 LaTeX file (default fonts)]
+[2017/10/19 v1.43 LaTeX file (default fonts)]
 %%
 
 
@@ -21,23 +21,52 @@
 %% This file is loaded \AtEndPreamble.
 %%
 
+%%%%%
 
 %% Most TeX installations will use Latin Modern or Computer Modern
 %%   as default fonts. These are unsuitable for commercial fiction.
 %% But `novel' class uses Libertinus as defaults.
 %% Change them using \SetParentFont and other fontspec commands, in Preamble.
 % Libertinus Serif has Regular, Italic, Bold, Bold Italic.
-% Here, Semibold over-rides Bold.
+%   But here, Semibold over-rides Bold.
 %
 %% Now to activate the font definitions:
-%
-\defaultfontfeatures{} % reset
-%
-% The mono font:
-\defaultfontfeatures[\ttfamily]{% monofont has no kerning or common ligatures
-  SmallCapsFeatures={Renderer=Basic},Ligatures=TeX,%
+%% The parent font, ancestor of the main font, and some others:
+\ifthenelse{\equal{\rmdefault}{lmr}}{%
+  % At this point, if \rmdefault is lmr, it means that the user did not choose
+  %   a different font. Then, Libertinus Serif or Latin Modern Roman
+  %   will be automatically set as \rmdefault:
+  \IfFontExistsTF{Libertinus Serif}{ % preferred default
+    \SetParentFont[%
+      BoldFont=libertinusserif-semibold.otf,%
+      BoldItalicFont=libertinusserif-semibolditalic.otf,%
+    ]{Libertinus Serif}
+  }{ % backup default:
+    \SetParentFont[%
+      SmallCapsFont={Latin Modern Roman Caps}%
+      ]{Latin Modern Roman}% only because it comes with LaTeX
+    \let\scshape\oldscshape % or small caps won't work
+    \let\smcp\oldscshape % ditto
+  }%
+}{% However, if \rmdefault is not lmr, it means that the user chose the font.
+  % If the choice was made via \SetParentFont, no problem. But if done by
+  %   incorrect method such as \setmainfont, \renewcommand\rmdefault,
+  %   or \usepackage{fontname}, then an error is thrown (warning prior to v 1.44):
+  \if@parentfontset\else
+    \ClassError{novel}{Wrong command used to set main font}%
+    {You attempted to define the main document font using a command such as^^J%
+    \string\renewcommand\string\rmdefault\space or \string\usepackage^^J%
+    or \string\setmainfont. These are incorrect in `novel' class.^^J%
+    Use \string\SetParentFont\space instead. See `novel' documentation.^^J}%
+  \fi
 }%
-\ifthenelse{\equal{\ttdefault}{lmtt}\OR\equal{\ttdefault}{cmtt}}{% over-ride:
+% Now we are ready to set the main font:
+\setmainfont[\parentfontfeatures]{\parentfontname}
+\let\mainfont\rmfamily\relax % compatibility
+%%
+
+% The mono font:
+\ifthenelse{\equal{\ttdefault}{lmtt}}{% over-ride:
   \IfFontExistsTF{Libertinus Mono}{
     \setmonofont[%
       ItalicFont={},% Doesn't have these.
@@ -45,104 +74,44 @@
       BoldItalicFont={},%
     ]{Libertinus Mono}
   }{
-    \IfFontExistsTF{Linux Libertine Mono O}{
-      \setmonofont{Linux Libertine Mono O}
-    }{
-      \setmonofont{Latin Modern Mono}% Eeek! Only because you have it!
-    }
+    \setmonofont{Latin Modern Mono}% Eeek! Only because you have it!
   }
 }{} % User \setmonofont, so leave alone.
 %%
-\defaultfontfeatures{} % reset
-% Main and sans fonts: kerning, ligatures, and OldStyle numbers if available:
-\defaultfontfeatures[\rmfamily,\sffamily]{%
-  SmallCapsFeatures={Renderer=Basic},Kerning=On,Numbers=OldStyle,%
-  Ligatures=Common,Ligatures=TeX,%
-}%
 % The sans font:
-\ifthenelse{\equal{\sfdefault}{lmss}\OR\equal{\sfdefault}{cmss}}{ % override:
+\ifthenelse{\equal{\sfdefault}{lmss}}{ % override:
   \IfFontExistsTF{Libertinus Sans}{
     \setsansfont{Libertinus Sans}
   }{
-    \IfFontExistsTF{Linux Biolinum O}{
-      \setsansfont{Linux Biolinum O}
-    }{
-      \setsansfont{Latin Modern Sans}% Eeek! Only because you have it!
-    }
+    \setsansfont{Latin Modern Sans}% Eeek! Only because you have it!
   }
 }{} % User \setsansfont, so leave alone.
 %%
-% At this point, if \rmdefault is something other than lmr, it means
-%   that the user attempted to set the main font using ordinary TeX commands,
-%   or via fontspec's \setmainfont. But those are ineffective in this class,
-%   because without \SetParentFont the prior command will be over-written.
-\ifthenelse{\equal{\rmdefault}{\@noveloldrmdefault}}{}{%
-  \ClassWarning{novel}{^^JBIG BAD WARNING:^^J%
-  You attempted to define the main document font using a command such as^^J%
-  \string\renewcommand\string\rmdefault\space or \string\usepackage{font}^^J%
-  or \string\setmainfont. These are incorrect in `novel' class.^^J%
-  Use \string\SetParentFont\space instead. See `novel' documentation.^^J}%
-}%
-% The parentfont: (from v.1.1. Known as masterfont in prior versions)
-\if@parentfontset\else
- \IfFontExistsTF{Libertinus Serif}{
-    \SetParentFont[%
-      BoldFont=libertinusserif-semibold.otf,%
-      BoldItalicFont=libertinusserif-semibolditalic.otf,%
-    ]{Libertinus Serif}
- }{
-   \IfFontExistsTF{Linux Libertine O}{
-     \SetParentFont[%
-       BoldFont=LinLibertine_RZ.otf,%
-       BoldItalicFont=LinLibertine_RZI.otf,%
-     ]{Linux Libertine O}
-   }{
-     \SetParentFont[%
-      SmallCapsFont={Latin Modern Roman Caps}%
-     ]{Latin Modern Roman}% Eeek! Only because you have it!
-     \let\scshape\oldscshape % or small caps won't work
-     \let\smcp\oldscshape % ditto
-   }
- }
-\fi
-% Now we are ready to set the main font:
-\setmainfont[\@parentfontfeatures]{\@parentfontname}
-\let\textfont\rmfamily\relax % compatibility
-\let\mainfont\rmfamily\relax % compatibility
-%
+
 %%
-\defaultfontfeatures{} % reset
 % New in version 1.38, \straightquote and \straightdblquote:
 \gdef\straightquote{{\addfontfeature{Ligatures=ResetAll}'}}
 \gdef\straightdblquote{{\addfontfeature{Ligatures=ResetAll}"}}
-%
-% The novel-specific display fonts use these defaults:
-\defaultfontfeatures{%
-  SmallCapsFeatures={Renderer=Basic},Kerning=On,%
-  Ligatures=TeX,Ligatures=CommonOff,Numbers=Lining,%
-}%
+%%
+
 %% The novel-specific fonts:
 \if@chapterfontset\else
-  \SetChapterFont[\@parentfontfeatures,Scale=1.6]{\@parentfontname}
+  \SetChapterFont[\parentfontfeatures,Scale=1.6]{\parentfontname}
 \fi
 \newfontfamily\chapterfont[\@chapterfontfeatures]{\@chapterfontname}
 %%
 \if@subchfontset\else
-  \SetSubchFont[\@parentfontfeatures,Scale=1.2]{\@parentfontname}
+  \SetSubchFont[\parentfontfeatures,Scale=1.2]{\parentfontname}
 \fi
 \newfontfamily\subchfont[\@subchfontfeatures]{\@subchfontname}
 %%
 \newif \if@headfontdefault
 \if@headfontset\else
-  \SetHeadFont[Letters=SmallCaps,\@parentfontfeatures,Scale=0.92]{\@parentfontname}
+  \SetHeadFont[Letters=SmallCaps,\parentfontfeatures,Scale=0.92]{\parentfontname}
   \global\@headfontdefaulttrue
 \fi
 \newfontfamily\headfont[\@headfontfeatures]{\@headfontname}
 %%
-\defaultfontfeatures{} % reset
-\defaultfontfeatures{% for decofont
-  SmallCapsFeatures={Renderer=Basic},Kerning=On,Ligatures=TeX,%
-}%
 %% The decofont must be NovelDeco.otf or a user modification of that font:
 \if@decofontset\else
   \IfFontExistsTF{NovelDeco.otf}{
@@ -196,17 +165,18 @@
   %
 \fi% end \if@gotdeco
 %
-%
-%%
-% Any other fonts will use these defaults:
-\defaultfontfeatures{} % reset
-% The novel-specific display fonts use these defaults:
-\defaultfontfeatures{%
-  SmallCapsFeatures={Renderer=Basic},%
-  Ligatures=TeX,
-  Kerning=On,%
+% Math font is not needed, because `novel' does not typeset math.
+% If you have the Libertinus fonts installed, might as will specify for math.
+% Then Latin Modern Math if installed.
+% If not, NovelDeco.otf "fakes" math capability, just to fool the fontloader:
+\IfFontExistsTF{Libertinus Math}{
+  \setmathfont[BoldFont={libertinusmath-regular.otf}]{libertinusmath-regular.otf}
+}{
+  \IfFontExistsTF{Latin Modern Math}{}{% already set as default by unicode-math.
+  }{
+    \setmathfont[BoldFont={NovelDeco.otf}]{NovelDeco.otf}
+  }
 }%
-%
 %%
 
 
@@ -219,13 +189,15 @@
     \gdef\@mymicrotypeset{\@mymicrotypesetup}
   }{ % default to novel's config file
     \gdef\@mymicrotypeset{%
-      config=novel-microtype,\@mymicrotypesetup}
+      config=novel-microtype,final,\@mymicrotypesetup}
   }
 \else % user did not write \microtypesetup{} in Preamble
   \gdef\@mymicrotypeset{%
-    config=novel-microtype,stretch=20,shrink=20,final}
+    config=novel-microtype,final,stretch=20,shrink=20}
 \fi
-\RequirePackage[\@mymicrotypeset,final,tracking]{microtype}
+\if@mtoff\else
+  \RequirePackage[\@mymicrotypeset]{microtype}
+\fi
 %
 %%
 

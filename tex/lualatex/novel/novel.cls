@@ -17,29 +17,27 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/10/04 v1.42 LaTeX document class]
+\ProvidesClass{novel}[2017/10/19 v1.43 LaTeX document class]
 %%
-
+%% Version 1.44: General cleanup of docs and code, for improved readbaility.
+%% Version 1.42: Greatly improved HTML documentation.
+%% Version 1.41: Improved HTML documentation.
+%% Versions 1.40.x: Incremental minor changes, leading to 1.42.
 %% Version 1.40: removed `debug' option (was not useful). Major docs rewrite.
-%% Versions 1.40.x: Incremental changes, leading to 1.42.
-
+%%   This version was successfully used for a P.O.D. novel, with cover.
 %% Version 1.38: corrected offset in cover artwork; some docs modified.
-
 %% Version 1.36: minor documentation correction.
-
 %% Version 1.34: Added debug class option and related code. [Later removed.]
-
 %% Version 1.32 includes a minor documentation fix, and a major bug fix
-%% concerning looose text tracking. The bug occasionally appeared when
-%% page headings were compiled, but gave a cryptic error message
-%% about MT@res@a. The fix is expected to be permanent.
-
+%%   concerning looose text tracking. The bug occasionally appeared when
+%%   page headings were compiled, but gave a cryptic error message
+%%   about MT@res@a. The fix is expected to be permanent.
 %% Version 1.2: Added capability for cover artwork.
-
-%% Versions 1.1.x: First general release, occasional documantation changes.
+%% Versions 1.1.x: First general release, occasional documentation changes.
 
 
 %% DESCRIPTION:
+%% -----------------------------------------------------------------------------
 %% Class `novel' is designed for print fiction: novels or short stories.
 %% It cannot be used for e-books or for journal publication.
 %% It is not suitable for most non-fiction, because routine academic features
@@ -86,7 +84,7 @@
 \FPmessagesfalse % eliminates numerous friendly messages from the log
 %
 \pdfminorversion=3 % might be reset later, depending on settings
-\gdef\thepdfminorversion{\pdfminorversion}
+\gdef\thepdfminorversion{\pdfminorversion} % compatibility
 %
 \RequirePackage{silence} % Used here:
 % hyperref draft mode is always on, even when novel is not in draft mode:
@@ -98,11 +96,10 @@
 \RequirePackage[relative]{textpos} % for inserting images
 \RequirePackage{noindentafter} % for unindented chapter and scene starts
 \RequirePackage{calc} % allows length expression calculations
-\RequirePackage{changepage} % block indents, etc.
+\RequirePackage{changepage} % provides block indents, etc. Do not use strict!
 \RequirePackage{atbegshi} % for one-page header changes. Also used by hyperref.
 \RequirePackage{letltxmacro} % for re-defining some macros
 \RequirePackage{magaz} % special treatment of first lines
-\RequirePackage{changepage} % for adjusted text widths. Do not use strict!
 \RequirePackage{xparse} % for writing cool-looking commands
 %
 % In addition, the following packages are required, but they are not loaded now.
@@ -110,7 +107,6 @@
 % with suitable arguments, when the time comes:
 % fontspec -- in novel-LayoutSettings.sty
 % unicode-math -- in novel-LayoutSettings.sty
-% eso-pic -- in novel-CalculateLayout.sty
 % polyglossia -- in novel-LayoutSettings.sty
 % microtype -- in novel-FontDefaults.sty
 % hyperref -- in novel-pdfx.sty
@@ -118,7 +114,7 @@
 % xcolor -- lower in this page
 % adjustbox -- lower on this page
 % eso-pic -- lower on this page
-% lipsum -- later on this page
+% lipsum -- lower on this page
 %%
 
 
@@ -127,7 +123,8 @@
 % Allowed option list:
 %   draft xml shademargins graytext greytext cropmarks cropview closecrop
 %   coverart unblock
-% Yes, I realize that this could have been done another way:
+% Yes, I realize that this could have been done another way, but I want
+%   to issue error messages from `novel' rather than (say) `keyval':
 \gdef\@mycol{\@classoptionslist}
 \StrDel{\@mycol}{ }[\@mycol]
 \StrDel{\@mycol}{,}[\@mycol]
@@ -140,15 +137,16 @@
 \StrDel{\@mycol}{cropview}[\@mycol]
 \StrDel{\@mycol}{closecrop}[\@mycol]
 \StrDel{\@mycol}{coverart}[\@mycol]
-\StrDel{\@mycol}{debug}[\@mycol] % obsolete
 \StrDel{\@mycol}{unblock}[\@mycol]
+\StrDel{\@mycol}{mtoff}[\@mycol]
+\StrDel{\@mycol}{polyoff}[\@mycol]
 %
 \ifthenelse{\equal{\@mycol}{}}{}{
   \ClassWarning{novel}{Unrecognized class option: \@mycol^^J%
    The unrecognized option was ignored!^^J%
    If `debug' it is obsolete from v.1.40.^^J%
-   Note that font point size and document size^^J%
-   are not novel class options. See documentation.}%
+   Note that font size, document size, and language^^J%
+   are not `novel' class options. See documentation.}%
 }
 %
 % If used, option `draft' shows overflow rule.
@@ -161,7 +159,8 @@
 }
 % If used, option `xml' creates a file `\jobname-XMPasXML.xml` that contains
 % the XMP metadata with an xml declaration and comments at top.
-% Only works when \SetPDFX is not `off'.
+% Only works when \SetPDFX is not `off'. Note that you do not need to use
+% this option to get PDF/X. It is only for your own usage.
 \newif \if@wantXMPasXML
 \DeclareOption{xml}{
   \@wantXMPasXMLtrue
@@ -186,19 +185,21 @@
 \DeclareOption{greytext}{
   \@graytexttrue
 }
-% Usually you do NOT want crop (trim) marks. Configurable by \SetCropMarks[]{}.
+% Usually you do NOT want crop (trim) marks!
+% Configurable by \SetCropMarks[]{}.
 \newif \if@cropmarks
 \DeclareOption{cropmarks}{
   \@cropmarkstrue
 }
-% The cropview sets PDF CropBox equal to TrimBox instead of MediaBox.
+% PDF viewers display CropBox, which normally is identical to MediaBox.
+% Option `cropview', sets CropBox to TrimBox instead, so that's all you see.
 % Only makes a difference when MediaBox is larger than TrimBox.
 % Ignored unless in draft mode.
 \newif \if@cropview
 \DeclareOption{cropview}{
   \@cropviewtrue
 }
-% With closecrop, the TrimSize and margins are re-sized, to preserve the
+% With `closecrop', the TrimSize and margins are re-sized, to preserve the
 % live area, but with reduced margins on all sides (same for verso/recto).
 % This option is available only in draft mode, and disables shademargins.
 % The purpose is to create a PDF that is more easily read on a handheld device,
@@ -208,9 +209,9 @@
 \DeclareOption{closecrop}{
   \@cropviewtrue\@closecroptrue
 }
-% New in version 1.2: coverart option. See documentation page 10.
+% New in version 1.2: `coverart' option. See documentation.
 % This is used to create a 1-page file with no text, just an image.
-% Intended purpose is PDF/X for novel cover. See docs page 10.
+% Intended purpose is PDF/X for novel cover.
 \newif \if@coverart
 \DeclareOption{coverart}{
   \@coverarttrue
@@ -224,6 +225,19 @@
 \newif \if@novelunblock % For developer use.
 \DeclareOption{unblock}{
   \@novelunblocktrue
+}
+% New in version 1.44: mtoff option, primarily for developer use.
+% With mtoff, the microtype package is not loaded.
+\newif \if@mtoff
+\DeclareOption{mtoff}{
+  \@mtofftrue
+}
+% New in version 1.44: polyoff option, primarily for developer use.
+% With polyoff, the polyglossia package is not loaded.
+% You may need to load babel, or not, via \RequirePackage[options]{babel}.
+\newif \if@polyoff
+\DeclareOption{polyoff}{
+  \@polyofftrue
 }
 %% Note that document size and normal font size are not class options.
 %% They are set by commands in the Preamble, and have default values.
@@ -258,12 +272,13 @@
 
 %% Activate xcolor, adjustbox, and eso-pic:
 %% -----------------------------------------------------------------------------
-% The final book must be monochrome (black and white only) for all text
-%   and vector graphics, unless option `graytext' is used.
-% Vector graphics are discouraged, in any case. See Page 9.
-% You can use grayscale (single channel, not RGB gray) raster images.
-% In draft mode only, the `shademargins' option
-%   requires grayscale, so it is temporarily enabled.
+% The final book must be monochrome (black and white only) for all text,
+%   unless option `graytext' is used. Then, grayscale text is permitted.
+% Interior images must be raster monochrome or grayscale, whether or not
+%   the `graytext' option is used. See documentation.
+%   Vector graphics are strongly discouraged, in any case.
+% In draft mode only, the `shademargins' option requires `grayscale',
+%   which will be temporarily enabled, even if not specifically requested.
 \newif \if@grayenabled
 %
 \if@useDraftMode
@@ -288,6 +303,8 @@
 %% -----------------------------------------------------------------------------
 %% This normalsize is temporary, so that packages can load without complaint.
 %% It will be modified later, during layout calculations.
+%% Actual default font size will be 11pt-12pt, with 11.4pt average.
+%% But that is for typical book-weight fonts. The closest LMR eqivalent is 10pt.
 \def\Current@FontSizeNum{10}
 \def\Current@BaselineSkipNum{13}
 \renewcommand\normalsize{%
@@ -295,7 +312,7 @@
 }
 \normalsize
 %
-\RequirePackage{lipsum} % for examples
+\RequirePackage{lipsum} % generates dummy text for examples
 %
 %% end temporary normal point size and baselineskip
 
@@ -303,50 +320,47 @@
 %% Define commands used for File Data, including PDF/X Settings.
 %% -----------------------------------------------------------------------------
 %% As used here, `File Data' refers to PDF metadata as found in PDF/Info
-%% and in XMP. This class does not write it to the Catalog.
-%% Defines commands such as \title{}, not necessarily the same as other TeX.
+%% and in XMP. This class does not write it to the PDF Catalog.
 \RequirePackage{novel-FileData}
-%
 %%
 
 
 %% Physical Layout Commands and Settings.
 %% -----------------------------------------------------------------------------
-%% Define commands that over-ride the class option pre-configured settings.
-%% Variety of miscellaneous layout settings such as \parsep, \parindent, etc.
+%% Define user commands that over-ride the class option pre-configured settings.
+%% Also sets a variety of miscellaneous lengths:s \parsep, \parindent, etc.
 \RequirePackage{novel-LayoutSettings}
-%
 %%
 
 
 %% Additional Preamble Settings and Commands.
 %% -----------------------------------------------------------------------------
-%%
 % Macros for use in document body:
-\RequirePackage{novel-TextMacros} % part of novel class
-% Standard `fancyhdr' header footer styles:
-\RequirePackage{novel-HeadFootStyles} % part of novel class
+\RequirePackage{novel-TextMacros}
+% Standard header footer styles, based on `fancyhdr':
+\RequirePackage{novel-HeadFootStyles}
 % Chapter and Scene styles:
 \RequirePackage{novel-ChapterScene}
 % Image placement:
-\RequirePackage{novel-Images} % part of novel class
+\RequirePackage{novel-Images}
 % Footnotes and endnotes:
-\RequirePackage{novel-Footnotes} % part of novel class
+\RequirePackage{novel-Footnotes}
 %%
-
 
 %% \AtEndPreamble sets defaults and calculates layout
 %% -----------------------------------------------------------------------------
-%
 \AtEndPreamble{
+  % New in v. 1.44. Sets default resolution for images without internal dpi:
+  \pdfimageresolution=\@novimgres % from \SetFlexResolution. Default 300.
   % If user did not choose language, default is here. Sorry, Brits:
   % Macro \xpg@main@language is gdef'd by \setdefaultlanguage in polyglossia.
-  \@ifundefined{xpg@main@language}{\setdefaultlanguage[variant=american]{english}}{}
+  \if@polyoff\else % polyoff v 1.44.
+    \@ifundefined{xpg@main@language}{\setdefaultlanguage[variant=american]{english}}{}
+  \fi
   \RequirePackage{novel-CalculateLayout}
   \RequirePackage{novel-FontDefaults}
-  \renewcommand\textls[2][]{#2%
-    \typeout{Class `novel' Alert: \string\textls\space ignored on pg \thepage.}%
-  } % nullifies this microtype command (problems)
+  \providecommand\textls[2][]{#2} % when mtoff option
+  \renewcommand\textls[2][]{#2} % nullifies this microtype command (problems)
   \RequirePackage{novel-pdfx}%
 }
 %%
@@ -354,15 +368,7 @@
 
 %% \AtBeginDocument finishes the setup
 %% -----------------------------------------------------------------------------
-%
 \AtBeginDocument{ %
-  \defaultfontfeatures{} % reset
-  % Any other fonts will use these defaults:
-  \defaultfontfeatures{%
-    SmallCapsFeatures={Renderer=Basic},Kerning=On,%
-    Ligatures=TeX,%
-  }%
-  %
   % Find some useful measurements:
   \gdef\@normalxheight{\heightof{x}}
   \setlength\normalxheight{\@normalxheight}
@@ -397,7 +403,7 @@
       }{}%
     }
   \fi
-  %
+  % List of blocked packages (not exhaustive, since TeX has so many):
   \sorry@no{pdfx}
   \sorry@no{xmpincl}
   \sorry@no{hyperxmp}
@@ -425,8 +431,6 @@
   \sorry@no{nth}
   \sorry@no{engord}
   \sorry@no{endnotes}
-  %%
-
   %%
   %% Pertains to novel-LayoutSettings.sty:
   \ifcsname pagenumberstyle\endcsname\else
@@ -509,19 +513,19 @@
   \ifthenelse{\equal{\@myfnsymbols}{†}}{\setcounter{@maxfnsymbol}{6}}{}
   %%
 }
-%%
+%% end AtBeginDocument
 
 
-%% New in version 1.2, coverart option. See docs page 10.
+%% New in version 1.2, coverart option. See documentation.
 \AfterEndPreamble{
-    \if@coverart
-      \AddToShipoutPictureBG{%
-        \AtPageUpperLeft{%
-          \InlineImage{\novelcoverimage}% Version 1.38 corrected erroneous starred command here.
-        }%
-      }
-      \null% without this, page has no "content"
-    \fi
+  \if@coverart
+    \AddToShipoutPictureBG{%
+      \AtPageUpperLeft{%
+        \InlineImage{\novelcoverimage}%
+      }%
+    }
+    \null% without this, page has no "content"
+  \fi
 }
 %%
 

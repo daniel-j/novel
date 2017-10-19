@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-HeadFootStyles.sty}%
-[2017/10/04 v1.42 LaTeX file (header and footer layouts and styles)]
+[2017/10/19 v1.43 LaTeX file (header and footer layouts and styles)]
 %% 
 
 
@@ -27,27 +27,14 @@
 %% Note that `style' sometimes means `layout`.
 
 
-% @isVerso true = even page, false = odd page. Only accurate during shipout.
-% Not to be used in commands that are inserted in main text!
-\newif \if@isVerso \@isVersofalse
-\def\check@IsVerso{%
-  \def\my@PageNum{\arabic{page}}%
-  \FPdiv{\my@HalfPageNum}{\my@PageNum}{2}%
-  \FPifint{\my@HalfPageNum}%
-    \global\@isVersotrue%
-  \else%
-    \global\@isVersofalse%
-  \fi%
-}
-%
-\newtoggle{@inheadfoot} % true in header or footer
-%%
-
 
 %% INITIALIZE FANCYHDR
 %% -----------------------------------------------------------------------------
 %% Before now now, space was reserved for header/footer.
 % Start by loading package `fancyhdr' and blanking everything:
+%
+\newtoggle{@inheadfoot} % true in header or footer
+%
 \RequirePackage{fancyhdr}
   \renewcommand\headrulewidth{0pt}
   \renewcommand\footrulewidth{0pt}
@@ -292,16 +279,15 @@
       \dimexpr\New@BottomMargin+0.5\New@MediaHeight-0.5\New@TrimHeight}%
     \global\temp@pgnumraise=\temp@pgnumraise%
   \fi%
-  \check@IsVerso%
-  \if@isVerso%
-    \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
-     \hspace{\dimexpr\Trim@Lx+\New@OutsideMargin+0.5\textwidth-0.5\temp@pgnumwidth}\raisebox{%
-      \temp@pgnumraise}{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
-  \else%
+  \ifodd\c@page%
     \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
      \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%
       \charscale[1,0.5\textwidth,\temp@pgnumraise]{%
        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
+  \else%
+    \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
+     \hspace{\dimexpr\Trim@Lx+\New@OutsideMargin+0.5\textwidth-0.5\temp@pgnumwidth}\raisebox{%
+      \temp@pgnumraise}{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
   \fi%
 } % end \@dropfolioinside
 %
@@ -320,16 +306,15 @@
     \setlength\temp@pgnumraise{%
       \New@BottomMargin-\nbs+0.5\New@MediaHeight-0.5\New@TrimHeight}%
   \fi%
-  \check@IsVerso%
-  \if@isVerso%
-    \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
-     \hspace{\dimexpr\Trim@Lx+\New@OutsideMargin-0.5\temp@pgnumwidth}\raisebox{%
-      \temp@pgnumraise}{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
-  \else%
+  \ifodd\c@page%
     \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
      \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%
       \charscale[1,0.5\textwidth,\temp@pgnumraise]{%
        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
+  \else%
+    \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
+     \hspace{\dimexpr\Trim@Lx+\New@OutsideMargin-0.5\temp@pgnumwidth}\raisebox{%
+      \temp@pgnumraise}{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
   \fi%
 } % end \@dropfoliobeneath
 %%

@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-CalculateLayout.sty}%
-[2017/10/04 v1.42 LaTeX file (layout calculations)]
+[2017/10/19 v1.43 LaTeX file (layout calculations)]
 %%
 
 %%
@@ -20,7 +20,7 @@
 %%
 
 
-\newlength\normalFontSize % becomes 1em in normal text.
+\newlength\normalFontSize % becomes 1em in normal text, also abbreviated as \nfs
 \newlength\normalBaselineSkip % also abbreviated as \nbs
 
 
@@ -28,7 +28,7 @@
 %% -----------------------------------------------------------------------------
 %%
 % Default Trim Size, if user does not set it. This is a popular size for
-% US softcover fiction, and is close to a popular British size.
+% USA softcover fiction, and is close to a popular British size.
 \if@TrimSizeSet\else
   \SetTrimSize{5.5in}{8.5in} % width, height
 \fi
@@ -118,24 +118,30 @@
 
 %% OLD, NEW, CURRENT, LIVE, TEXT MACRO DEFINITIONS
 %% -----------------------------------------------------------------------------
-%%
-% The `novel' class has a \Rework feature. This allows the user to compile
-% a document using "old" settings" then re-compile using some "new" settings,
-% without changing the paragraph structure or pagination. Not for everyone!
-% The rework is done all at once, without requiring an additional pass.
-% Here, the old and new values are compared, and the effect predicted.
-% The reworked document has will have font size and baselineskip changed
-% to meet the new size requirements.
+% The \Rework commands are special to `novel' class.
+% Situation: You compile the book with certain settings. Looks good.
+%   But then you need to change the Trim Size and/or Margins, without affecting
+%   paragraphs or pagination from what you had before.
+% Solution: Retain your existing settings for Trim Size and Margins.
+%   Then, add \Rework commands, which instruct the layout engine to manipulate
+%   font size (and, if necessary, baseline skip) so that paragraphs and
+%   pagination remain as before. This is done dynamically, in a single pass.
+% How it works: Paragraph layout depends on ratio of text width to font size.
+%   So, when text width changes, simply change font size in proportion.
+%   Then, pagination simply depends on lines per page, unchanged.
+%   But if the lines don't fit due any more, then both text width and font size
+%   are further shrunk, to retain paragraphs and also allow enough line space.
 %
-% "Old" values come from preset values, depending on class Trim Size option.
-%   Or, the presets may be over-ridden using \Set---- commands.
+% "Old" values are pre-configured values, depending on class Trim Size option.
+%   However, the presets are over-ridden by user with using \Set---- commands.
 % "New" values are initialized to "Old" or \Set---- as above.
-%   Then, they can be over-ridden using \Rework---- commands.
-% "Current" values are the latest and greatest, as calculations progress.
-%   They are initialized to "Old" values."
+%   Then, they can be over-ridden by user with \Rework---- commands.
+% "Current" values are initialized to "Old" values. Then they change,
+%   as calculations progress.
 % Widths and Heights are lengths, stored by \setlength.
-% Expression ending in "Num" are pure numbers, suitable for FP calculations.
+% Expressions ending in "Num" are pure numbers, suitable for FP calculations.
 % "Live" refers to the area available to text (including header/footer).
+%   That is, the "live area" is the Trim Size, excluding the Margins.
 %
 % Find the Old and New Live Width and Height, and initialize
 % Text Width and Height to Old Live. Initialize Font Size.
@@ -176,7 +182,6 @@
 
 %% PRELIMINARY CALCULATION OF BASELINESKIP
 %% -----------------------------------------------------------------------------
-%%
 % Get values of \@gotHeader and \@gotFooter booleans:
 \@reserveHFspace % defined in `novel-LayoutSettings.sty'.
 % Adjusted LinesPerPage will include header, footer, and added separations:
@@ -216,7 +221,6 @@
 
 %% FIT CurrentTextWidth TO NewLiveWidth
 %% -----------------------------------------------------------------------------
-%%
 \FPdiv{\my@TextRescaleNum}{\New@LiveWidthNum}{\Current@TextWidthNum}
 \FPmul{\Current@FontSizeNum}{\Current@FontSizeNum}{\my@TextRescaleNum}
 \setlength\Current@FontSize{\Current@FontSizeNum pt}
@@ -228,7 +232,6 @@
 
 %% ADJUST CurrentBaselineSkip TO FIT NewLiveHeight
 %% -----------------------------------------------------------------------------
-%%
 % Test if New Text Height fits within New Live Height:
 \FPifgt{\Current@TextHeightNum}{\New@LiveHeightNum} % does not fit, so fix it
   \FPdiv{\my@NBSrescaleNum}{\New@LiveHeightNum}{\Current@TextHeightNum}
@@ -270,7 +273,6 @@
 
 %% SET TEXTWIDTH, FONT SIZE, BASELINESKIP
 %% -----------------------------------------------------------------------------
-%
 \setlength\textwidth{\Current@TextWidthNum pt}
 %
 \setlength\normalFontSize{\Current@FontSizeNum pt}
@@ -347,7 +349,6 @@
 
 %% BEGIN LAYOUT CALCULATIONS
 %% -----------------------------------------------------------------------------
-%
 \if@gotHeader
   \setlength\headheight{\nbs}
   \FPsub{\@headsepmul}{\@headjump}{1}
@@ -363,8 +364,6 @@
 %
 \setlength\paperwidth{\New@MediaWidth} % MediaWidth
 \setlength\paperheight{\New@MediaHeight} % MediaHeight
-
-
 %% The `closecrop' class option calculates layout, then removes most of the
 %%  margins. Draft mode only. Purpose is to create a file with just enough white
 %%  space around the text to be readable on a handheld device. Not an E-book!
@@ -372,9 +371,6 @@
 \if@closecrop
   \setlength\paperwidth{\textwidth+0.2in}
 \fi
-%%
-
-
 %
 % Standard TeX \hoffset and \voffset is not relative to the MediaBox, but is
 % relative to 1in from the top left corner of the MediaBox. Ouch.
@@ -408,14 +404,10 @@
   \setlength\oddsidemargin{%
     \New@InsideMargin+0.5\New@MediaWidth-0.5\New@TrimWidth-72.27pt}
 \fi
-
-%%
+%
 \if@closecrop
   \setlength\oddsidemargin{-0.9in}
 \fi
-%%
-
-
 %
 % \evensidemargin is at the left (outside edge) of verso pages.
 % Calculation as above, but using \New@OutsideMargin
@@ -425,14 +417,10 @@
   \setlength\evensidemargin{%
     \New@OutsideMargin+0.5\New@MediaWidth-0.5\New@TrimWidth-72.27pt}
 \fi
-
-%%
+%
 \if@closecrop
   \setlength\evensidemargin{-0.9in}
 \fi
-%%
-
-
 %
 % \topmargin is measured from 1in below the top of the MediaBox, to the top of
 % whatever comes first (header or textblock). May be negative.
@@ -445,8 +433,6 @@
     \New@TopMargin+0.5\New@MediaHeight-0.5\New@TrimHeight-72.27pt}
 \fi
 %
-
-%%
 \if@closecrop
   \if@gotHeader
     \setlength\topmargin{-1in}
@@ -455,8 +441,6 @@
   \fi
 \fi
 %%
-
-
 % Vertical position of the textblock is measured to the "top" of the first line
 % of text. But that could be an X height, or an accented character height,
 % an ascender, or something else, depending on the line's content.
@@ -466,15 +450,12 @@
 % line start, it doesn't affect the height, since it is "smashed."
 \setlength\topskip{\normalFontSize}
 %
-% In `novel' class, footers are done in an unusal manner. The position of
+% In `novel' class, footers are done in an unusual manner. The position of
 % the footer baseline is fixed, regardless of the desired jump between text
 % and footer. Then, the content (if any) of the footer is relatively positioned
 % using \smash and \raisebox.
 \setlength\footskip{\nbs}
 %
-
-
-%%
 \if@closecrop
   \if@gotFooter
     \if@gotHeader
@@ -488,11 +469,20 @@
     \setlength\paperheight{\textheight+\headsep+\headheight+0.1in}
   \fi
 \fi
-%%
-
-
+%
 %% End layout calculations.
 
+
+%% Sanity check:
+\ifthenelse{%
+  \dimtest{\New@TrimWidth}{>}{\New@MediaWidth} %
+  \OR \dimtest{\New@TrimHeight}{>}{\New@MediaHeight}%
+}{%
+  \ClassError{novel}{Media Size too small for TrimSize}%
+  {You wrote \string\SetMediaSize\space with length(s) too small^^J%
+   for the default Trim Size or your values in \string\SetTrimSize.}%
+}{}
+%% end sanity check
 
 
 
@@ -539,15 +529,14 @@
 \setlength\adj@NewLiveHeight{\New@LiveHeight+0.3\normalFontSize}
 %
 \gdef\@getPageXY{
-  \check@IsVerso % defined in novel-HeadFootStyles.sty
-  \if@isVerso
-    \setlength\Trim@Lx{\evensidemargin-\New@OutsideMargin+72.27pt}
-    \setlength\Trim@Rx{\Trim@Lx+\New@TrimWidth}
-    \setlength\Live@Lx{\evensidemargin+72.27pt}
-  \else
+  \ifodd\c@page
     \setlength\Trim@Lx{\oddsidemargin-\New@InsideMargin+72.27pt}
     \setlength\Trim@Rx{\Trim@Lx+\New@TrimWidth}
     \setlength\Live@Lx{\oddsidemargin+72.27pt}
+  \else
+    \setlength\Trim@Lx{\evensidemargin-\New@OutsideMargin+72.27pt}
+    \setlength\Trim@Rx{\Trim@Lx+\New@TrimWidth}
+    \setlength\Live@Lx{\evensidemargin+72.27pt}
   \fi
   \if@offcenterTrim
     \setlength\Trim@By{\New@MediaHeight-\New@TrimHeight}
@@ -612,48 +601,47 @@
 % in Preamble using \SetCropmarkGap{length}.
 \if@cropmarks
   \if@offcenterTrim
-  \check@IsVerso
-    \if@isVerso
-  % H bottom left:
-  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-  \hspace{\dimexpr\Trim@Lx-0.5in}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
-  % V bottom left:
-  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-  \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
+    \ifodd\c@page
+      % H bottom right:
+      \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+      \hspace{\dimexpr\Trim@Rx+\@mygap}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
+      % V bottom right:
+      \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+      \hspace{\Trim@Rx}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
     \else
-  % H bottom right:
-  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-  \hspace{\dimexpr\Trim@Rx+\@mygap}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
-  % V bottom right:
-  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-  \hspace{\Trim@Rx}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
+      % H bottom left:
+      \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+      \hspace{\dimexpr\Trim@Lx-0.5in}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
+      % V bottom left:
+      \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+      \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
     \fi
   \else
-  % H top left:
-  \AddToShipoutPictureBG{\@getPageXY%
-  \AtPageLowerLeft{%
-  \hspace{\dimexpr\Trim@Lx-0.5in}\rule[\Trim@Ty]{0.5in-\@mygap}{0.5pt}}}
-  % H bottom left:
-  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-  \hspace{\dimexpr\Trim@Lx-0.5in}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
-  % H top right:
-  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-  \hspace{\dimexpr\Trim@Rx+\@mygap}\rule[\Trim@Ty]{0.5in-\@mygap}{0.5pt}}}
-  % H bottom right:
-  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-  \hspace{\dimexpr\Trim@Rx+\@mygap}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
-  % V top left:
-  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-  \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@Ty+\@mygap]{0.5pt}{0.5in-\@mygap}}}
-  % V bottom left:
-  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-  \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
-  % V top right:
-  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-  \hspace{\Trim@Rx}\rule[\Trim@Ty+\@mygap]{0.5pt}{0.5in-\@mygap}}}
-  % V bottom right:
-  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-  \hspace{\Trim@Rx}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
+    % H top left:
+    \AddToShipoutPictureBG{\@getPageXY%
+    \AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Lx-0.5in}\rule[\Trim@Ty]{0.5in-\@mygap}{0.5pt}}}
+    % H bottom left:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Lx-0.5in}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
+    % H top right:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Rx+\@mygap}\rule[\Trim@Ty]{0.5in-\@mygap}{0.5pt}}}
+    % H bottom right:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Rx+\@mygap}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
+    % V top left:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@Ty+\@mygap]{0.5pt}{0.5in-\@mygap}}}
+    % V bottom left:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
+    % V top right:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\Trim@Rx}\rule[\Trim@Ty+\@mygap]{0.5pt}{0.5in-\@mygap}}}
+    % V bottom right:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\Trim@Rx}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
   \fi
 \fi
 %

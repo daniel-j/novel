@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/11/01 v1.44 LaTeX document class]
+\ProvidesClass{novel}[2017/11/04 v1.43.5 LaTeX document class]
 %%
 %% Version 1.44 is probably very stable.
 %% Version 1.44: General cleanup of docs and code, pre-configured lettrine.

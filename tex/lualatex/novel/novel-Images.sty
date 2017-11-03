@@ -88,7 +88,6 @@
 % The unstarred command occupies the width of the image.
 % The starred command occupies zero width.
 %
-\ExplSyntaxOn
 \DeclareDocumentCommand \InlineImage { s O{0pt} m }{%
   \newif\if@imgExtOK%
   \IfEndWith{#3}{png}{\@imgExtOKtrue}{}%
@@ -155,7 +154,6 @@
   \iftoggle{@inheadfoot}{}{\setlength\imagehoffset{\@imagehoffset}}%
   \iftoggle{@inheadfoot}{}{\setlength\imagevoffset{\@imagevoffset}}%
 } % end DeclareDocumentCommand \InlineImage
-\ExplSyntaxOff
 %
 %%
 
@@ -177,7 +175,6 @@
 % \forceindent or \backindent may be needed. Text may have several paragraphs.
 % Subsequent text (after all that) will clear the image bottom, and also
 % be at the baseline grid. Beware of using this command near bottom of page.
-\ExplSyntaxOn
 \DeclareDocumentCommand \BlockImage { O{c} m +O{} }{
   \iftoggle{@inheadfoot}{%
     \ClassError{novel}{Cannot~use~BlockImage~in~header~or~footer}%
@@ -229,25 +226,23 @@
   }{}
   % portion here, inspired by post from user Killian Foth,
   % at stackoverflow.com, license CC-by-sa-3.0.
-  \@sbsheight=\ht0 \advance\@sbsheight by \dp0
-  \def\@sbsheightnum{\strip@pt\@sbsheight}
-  \FPdiv{\@roughlines}{\@sbsheightnum}{\nbsnum}
+  \@sbsheight=\ht0 \advance\@sbsheight by \dp0 %
+  \def\@sbsheightnum{\strip@pt\@sbsheight}%
+  \FPdiv{\@roughlines}{\@sbsheightnum}{\nbsnum}%
   \FPadd{\@roughlines}{\@roughlines}{0.5} % round up, not down
-  \FPround{\@roughlines}{\@roughlines}{0}
-
+  \FPround{\@roughlines}{\@roughlines}{0}%
   \gdef\@imageheightnum{\strip@pt\@imageheight}%
   \FPdiv{\@imagelines}{\@imageheightnum}{\nbsnum}%
   \FPadd{\@imagelines}{\@imagelines}{0.5}% round up to integer, not down
   \FPround{\@imagelines}{\@imagelines}{0}%
   \FPclip{\@imagelines}{\@imagelines}%
   \gdef\imagelineskip{\@imagelines}%
-  \FPclip{\@roughlines}{\@roughlines}
+  \FPclip{\@roughlines}{\@roughlines}%
   \FPadd{\@adjimagelines}{\imagelineskip}{1} % \imagelineskip from \InlineImage*
-  \FPsub{\@skipme}{\@adjimagelines}{\@roughlines}
-  \FPmax{\@skipme}{\@skipme}{0}
-  \vspace{\@skipme\nbs}
+  \FPsub{\@skipme}{\@adjimagelines}{\@roughlines}%
+  \FPmax{\@skipme}{\@skipme}{0}%
+  \vspace{\@skipme\nbs}%
 }
-\ExplSyntaxOff
 %%
 
 

@@ -50,9 +50,15 @@
 \newif \if@FontSizeSet
 \newif \if@ReworkTrimSet
 \newif \if@ReworkMarginsSet
-%
+% For summary Info:
 \newlength\normalxheight
+\newlength\normalSCxheight
 \newlength\normalXheight
+\newlength\normalAringheight
+\newlength\normaldescender
+\newlength\normalMwidth
+\newlength\normalOwidth
+\newlength\normalWwidth
 %%
 
 
@@ -189,7 +195,7 @@
       {You requested less than one line per page. Naughty!^^J}%
   \else\fi %
   \FPround{\temp@IntegerLines}{#1}{0}
-  \def\my@LinesPerPage{\temp@IntegerLines}
+  \gdef\my@LinesPerPage{\temp@IntegerLines}
 }
 % \SetFontSize{} may be in any units, even decimals: 12.2pt, 11.5bp, etc.
 % When packages load, the font size is temporarily set to 11pt at 15pt skip,
@@ -342,22 +348,6 @@
   }%
 }
 %%
-
-
-%% New in version 1.44: flexible images (without built-in resolution dpi)
-\gdef\@novimgres{300} % default (can only be set once)
-\gdef\@novereserror{%
-  \ClassError{novel}{\string\SetFlexResolution\space bad value}%
-  {Resolution must be integer from 200 to 9600. Default 300.}%
-}
-\newcommand\SetFlexResolution[1]{
-  \IfInteger{#1}{ %
-    \FPiflt{#1}{200}\@novereserror\else\fi %
-    \FPifgt{#1}{9600}\@novereserror\else\fi %
-    \gdef\@novimgres{#1} %
-  }{\@novreserror}
-}
-%
 
 
 %% Markers (superscript, subscripts):
@@ -595,7 +585,7 @@
   \newfontface\decofont[#1,#3]{#2}
 }%
 %% For syntax consistency:
-\ExplSyntaxOn
+\ExplSyntaxOn % necessary
 \cs_new_eq:NN \NewFontFamily \newfontfamily
 \cs_new_eq:NN \NewFontFace \newfontface
 \cs_new_eq:NN \SetSansFont \setsansfont
@@ -604,7 +594,7 @@
 \cs_new_eq:NN \SetMathFont \setmathfont
 \cs_new_eq:NN \AddFontFeatures \addfontfeatures
 \cs_new_eq:NN \AddFontFeature \addfontfeatures
-\ExplSyntaxOff
+\ExplSyntaxOff % necessary
 %%
 %% \CreateFontFeature{substitutions}{feature code}
 % Problem: Font has one or more alternate glyphs that you would like to use,

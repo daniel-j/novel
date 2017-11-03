@@ -165,7 +165,15 @@
   %
 \fi% end \if@gotdeco
 %
-% Math font is not needed, because `novel' does not typeset math.
+%% Used with \dropcap (defined in novel-ChapterScene.sty):
+\gdef\novdcvar#1{{\decofont\addfontfeature{StylisticSet={16},RawFeature=+hlig}#1}}
+\gdef\novdcvarlong#1{{\decofont\addfontfeature{StylisticSet={16,17},RawFeature=+hlig}#1}}
+\gdef\novdcvarshort#1{{\decofont\addfontfeature{StylisticSet={16,19},RawFeature=+hlig}#1}}
+\gdef\novdcmono#1{{\decofont\addfontfeature{StylisticSet={15,20},RawFeature=+hlig}#1}}
+\gdef\novdcmonolong#1{{\decofont\addfontfeature{StylisticSet={15,17,20},RawFeature=+hlig}#1}}
+\gdef\novdcmonoshort#1{{\decofont\addfontfeature{StylisticSet={15,18,20},RawFeature=+hlig}#1}}
+%
+% Math font is normally not needed. But TeX loads a math font anyway.
 % If you have the Libertinus fonts installed, might as will specify for math.
 % Then Latin Modern Math if installed.
 % If not, NovelDeco.otf "fakes" math capability, just to fool the fontloader:
@@ -178,7 +186,6 @@
   }
 }%
 %%
-
 
 %
 %% This provides default microtype settings, allows the user to over-ride,

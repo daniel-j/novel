@@ -4,6 +4,8 @@ LuaLaTeX document class for fiction, such as novels and short story collections.
 
 ## Version
 
+In early November 2107 I uploaded some experimental code here, not yet documented. It will hopefully be tested and ready by mid-November. Meanwhile, unless you have need of it, stay with the stable version 1.43.
+
 The current stable version is 1.43, 2017/10/19. It is available via TeX package managers, or from CTAN. Note that this package is not (yet) distributed in default TeX installations. You have to request it.
 
 The *novel* class requires TeXLive 2016 or later, or recent MiKTeX.

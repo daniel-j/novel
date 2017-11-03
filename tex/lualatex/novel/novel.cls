@@ -17,9 +17,11 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/10/19 v1.43 LaTeX document class]
+\ProvidesClass{novel}[2017/11/01 v1.44 LaTeX document class]
 %%
-%% Version 1.44: General cleanup of docs and code, for improved readbaility.
+%% Version 1.44 is probably very stable.
+%% Version 1.44: General cleanup of docs and code, pre-configured lettrine.
+%% Version 1.43: Some code cleanup. Restored math capability.
 %% Version 1.42: Greatly improved HTML documentation.
 %% Version 1.41: Improved HTML documentation.
 %% Versions 1.40.x: Incremental minor changes, leading to 1.42.
@@ -72,6 +74,7 @@
 \ifluatex
   % New with TeXlive 2016. Removes unnecessary File Data:
   \pdfvariable suppressoptionalinfo 511 % writes only ID to PDF Catalog
+  \pdfimageresolution=300 % only applies to images lacking internal resolution
 \else
   \ClassError{novel}{Must compile with LuaLaTeX 0.95+}{Sorry, LuaLaTeX only.%
     No pdfTeX, dvips, or XeTeX.}
@@ -101,6 +104,7 @@
 \RequirePackage{letltxmacro} % for re-defining some macros
 \RequirePackage{magaz} % special treatment of first lines
 \RequirePackage{xparse} % for writing cool-looking commands
+\RequirePackage{lettrine} % drop caps. New in v. 1.44.
 %
 % In addition, the following packages are required, but they are not loaded now.
 % They must wait for something else to happen first. They will be loaded
@@ -350,8 +354,6 @@
 %% \AtEndPreamble sets defaults and calculates layout
 %% -----------------------------------------------------------------------------
 \AtEndPreamble{
-  % New in v. 1.44. Sets default resolution for images without internal dpi:
-  \pdfimageresolution=\@novimgres % from \SetFlexResolution. Default 300.
   % If user did not choose language, default is here. Sorry, Brits:
   % Macro \xpg@main@language is gdef'd by \setdefaultlanguage in polyglossia.
   \if@polyoff\else % polyoff v 1.44.
@@ -370,12 +372,39 @@
 %% -----------------------------------------------------------------------------
 \AtBeginDocument{ %
   % Find some useful measurements:
-  \gdef\@normalxheight{\heightof{x}}
+  \gdef\@normalxheight{\heightof{x}} % backwards compatibility
   \setlength\normalxheight{\@normalxheight}
   \global\normalxheight=\normalxheight
-  \gdef\@normalXheight{\heightof{X}}
+  \setlength\normalSCxheight{\heightof{\scshape{x}}}
+  \global\normalSCxheight=\normalSCxheight
+  \gdef\@normalXheight{\heightof{X}} % backwards compatibility
   \setlength\normalXheight{\@normalXheight}
   \global\normalXheight=\normalXheight
+  \setlength\normalAringheight{\heightof{Å}}
+  \global\normalAringheight=\normalAringheight
+  \setlength\normaldescender{\depthof{gjpqy}}
+  \global\normaldescender=\normaldescender
+  \setlength\normalMwidth{\widthof{M}}
+  \global\normalMwidth=\normalMwidth
+  \setlength\normalOwidth{\widthof{O}}
+  \global\normalOwidth=\normalOwidth
+  \setlength\normalWwidth{\widthof{W}}
+  \global\normalWwidth=\normalWwidth
+  \typeout{%
+    ..............................................................^^J%
+    Class `novel' Info: Summary of text sizes:^^J%
+    \string\nbs (normal baseline skip) = \the\nbs ^^J%
+    \string\nfs (normal font size) = \the\nfs ^^J%
+    \string\normalxheight (normal lowercase x height) = \the\normalxheight ^^J%
+    \string\normalSCxheight (normal small cap x height) = \the\normalSCxheight ^^J%
+    \string\normalXheight (normal uppercase X height) = \the\normalXheight ^^J%
+    \string\normalAringheight (normal uppercase Å height) = \the\normalAringheight ^^J%
+    \string\normaldescender (normal depth of lowercase gjpqy) = \the\normaldescender ^^J%
+    \string\normalMwidth (normal width of M) = \the\normalMwidth ^^J%
+    \string\normalOwidth (normal width of O) = \the\normalOwidth ^^J%
+    \string\normalWwidth (normal width of W) = \the\normalWwidth ^^J%
+    ..............................................................^^J%
+  }
   % Activate user choice of whether or not to indent after scenebreak commands:
   \if@indentAfterScenebreak\else
     \NoIndentAfterCmd{\scenebreak}
@@ -511,7 +540,23 @@
   % Must wait to see how \SetFootnoteMarker was used:
   \ifthenelse{\equal{\@myfnsymbols}{*}}{\setcounter{@maxfnsymbol}{8}}{}
   \ifthenelse{\equal{\@myfnsymbols}{†}}{\setcounter{@maxfnsymbol}{6}}{}
-  %%
+  % Configure lettrine:
+  \global\LettrineOnGridtrue % Retains line grid.
+  \setlength{\DiscardVskip}{2\nbs} % Prevents lettrine from inserting upper blank line, unless very tall.
+  \global\DiscardVskip=\DiscardVskip
+  \gdef\normalxheightnum{\strip@pt\normalxheight}
+  \gdef\normalSCxheightnum{\strip@pt\normalSCxheight}
+  \FPifgt{\normalxheightnum}{0.1} % avoids divide by zero, just in case
+    \FPdiv{\normalscxscale}{\normalSCxheightnum}{\normalxheightnum}
+    \global\FPadd{\normalscxscale}{\normalscxscale}{0.04} % tweak to account for visual effect of thicker serifs
+  \else
+    \gdef\normalscxscale{1.1} % a likely guess
+  \fi
+  \renewcommand*{\LettrineSecondString}{\scalebox{\normalscxscale}{x}} % Emulates small caps x.
+  \setlength{\DefaultFindent}{0.2\nfs} % A small but useful gap.
+  \global\DefaultFindent=\DefaultFindent
+  \setlength{\DefaultNindent}{0pt} % Gap is uniform.
+  \global\DefaultNindent=\DefaultNindent
 }
 %% end AtBeginDocument
 

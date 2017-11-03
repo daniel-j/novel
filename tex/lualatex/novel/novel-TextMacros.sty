@@ -151,8 +151,6 @@
 %%
 % \smcp{} and \textsc{} small caps (Open Type) and \allsmcp{}:
 %
-\ExplSyntaxOn
-%
 \DeclareDocumentCommand \smcp { +m }
  {%
   {\AddFontFeature{Letters=SmallCaps}#1}%
@@ -166,8 +164,6 @@
    {\AddFontFeature{Letters=SmallCaps}\MakeLowercase{#1}}%
   }%
  }
-%
-\ExplSyntaxOff
 %
 \let\textsc\smcp\relax % unified
 \let\oldscshape\scshape\relax % in case needed later
@@ -292,7 +288,6 @@
 % Do not use \\ or \par inside \charscale, but you sometimes need \par after it.
 % If the text is in a font other than usual, place the font command
 %   outside \charscale, not inside.
-\ExplSyntaxOn
 \DeclareDocumentCommand \charscale { s O{1} m }
  {
   % Allows empty or blank to be used, and still provide default values:
@@ -313,7 +308,6 @@
     \smash{\phantom{\scalebox{\@myscale}{#3}}}%
   }
  }
-\ExplSyntaxOff
 %%
 
 
@@ -467,7 +461,6 @@
 \gdef\realmarker{\toggletrue{@realmarker}} % anywhere in text
 \gdef\fakemarker{\togglefalse{@realmarker}} % anywhere in text
 %%
-\ExplSyntaxOn
 %
 \DeclareDocumentCommand \sups { m }
  {%
@@ -503,7 +496,6 @@
   }%
  }% end \subs
 %
-\ExplSyntaxOff
 %%
 \let\textsuperscipt\sups\relax
 \let\textsubscript\subs\relax

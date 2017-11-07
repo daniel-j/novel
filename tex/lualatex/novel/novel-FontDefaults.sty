@@ -165,13 +165,14 @@
   %
 \fi% end \if@gotdeco
 %
-%% Used with \dropcap (defined in novel-ChapterScene.sty):
-\gdef\novdcvar#1{{\decofont\addfontfeature{StylisticSet={16},RawFeature=+hlig}#1}}
-\gdef\novdcvarlong#1{{\decofont\addfontfeature{StylisticSet={16,17},RawFeature=+hlig}#1}}
-\gdef\novdcvarshort#1{{\decofont\addfontfeature{StylisticSet={16,19},RawFeature=+hlig}#1}}
-\gdef\novdcmono#1{{\decofont\addfontfeature{StylisticSet={15,20},RawFeature=+hlig}#1}}
-\gdef\novdcmonolong#1{{\decofont\addfontfeature{StylisticSet={15,17,20},RawFeature=+hlig}#1}}
-\gdef\novdcmonoshort#1{{\decofont\addfontfeature{StylisticSet={15,18,20},RawFeature=+hlig}#1}}
+%% \dropcapfont new in v. 1.44:
+\if@dropcapfontset\else
+  \if@gotdeco
+    \SetDropcapFont[\@decofontfeatures,RawFeature=+dcap,RawFeature=+hlig]{\@decofontname}
+  \else
+    \SetDropcapFont[\parentfontfeatures,Numbers=Lining]{\parentfontname}
+  \fi
+\fi
 %
 % Math font is normally not needed. But TeX loads a math font anyway.
 % If you have the Libertinus fonts installed, might as will specify for math.

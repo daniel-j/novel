@@ -104,7 +104,6 @@
 \RequirePackage{letltxmacro} % for re-defining some macros
 \RequirePackage{magaz} % special treatment of first lines
 \RequirePackage{xparse} % for writing cool-looking commands
-\RequirePackage{lettrine} % drop caps. New in v. 1.44.
 %
 % In addition, the following packages are required, but they are not loaded now.
 % They must wait for something else to happen first. They will be loaded
@@ -349,6 +348,8 @@
 \RequirePackage{novel-Images}
 % Footnotes and endnotes:
 \RequirePackage{novel-Footnotes}
+% Drop Caps (new in v. 1.44):
+\RequirePackage{novel-DropCap}
 %%
 
 %% \AtEndPreamble sets defaults and calculates layout
@@ -540,23 +541,6 @@
   % Must wait to see how \SetFootnoteMarker was used:
   \ifthenelse{\equal{\@myfnsymbols}{*}}{\setcounter{@maxfnsymbol}{8}}{}
   \ifthenelse{\equal{\@myfnsymbols}{†}}{\setcounter{@maxfnsymbol}{6}}{}
-  % Configure lettrine:
-  \global\LettrineOnGridtrue % Retains line grid.
-  \setlength{\DiscardVskip}{2\nbs} % Prevents lettrine from inserting upper blank line, unless very tall.
-  \global\DiscardVskip=\DiscardVskip
-  \gdef\normalxheightnum{\strip@pt\normalxheight}
-  \gdef\normalSCxheightnum{\strip@pt\normalSCxheight}
-  \FPifgt{\normalxheightnum}{0.1} % avoids divide by zero, just in case
-    \FPdiv{\normalscxscale}{\normalSCxheightnum}{\normalxheightnum}
-    \global\FPadd{\normalscxscale}{\normalscxscale}{0.04} % tweak to account for visual effect of thicker serifs
-  \else
-    \gdef\normalscxscale{1.1} % a likely guess
-  \fi
-  \renewcommand*{\LettrineSecondString}{\scalebox{\normalscxscale}{x}} % Emulates small caps x.
-  \setlength{\DefaultFindent}{0.2\nfs} % A small but useful gap.
-  \global\DefaultFindent=\DefaultFindent
-  \setlength{\DefaultNindent}{0pt} % Gap is uniform.
-  \global\DefaultNindent=\DefaultNindent
 }
 %% end AtBeginDocument
 

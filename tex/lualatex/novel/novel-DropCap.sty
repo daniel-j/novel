@@ -1,0 +1,154 @@
+%%
+%% This is file `novel-DropCap.sty', part of the `novel' package.
+%% Copyright (c) 2017 Robert Allgeyer.
+%% It is derived from file `lettrine.sty'
+%% which is part of the `lettrine' package.
+%% The original copyright and license, shown below, also applies:
+%%
+% Copyright (C) 1999-2015 Daniel Flipo.
+%
+% This program can be distributed and/or modified under the terms
+% of the LaTeX Project Public License either version 1.3c of this
+% license or (at your option) any later version.
+% The latest version of this license is in
+%    http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%%
+
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesFile{novel-DropCap.sty}
+             [2017/11/07 v1.44 LaTeX file (drop caps)]
+\RequirePackage{keyval}
+\newcounter{NDCdefaultLines}
+\setcounter{NDCdefaultLines}{2}
+\newcounter{NDCdefaultDepth}
+\newcommand*{\NDCdefaultOversize}{0}
+\newcommand*{\NDCdefaultRaise}{0}
+\newcommand*{\NDCdefaultHang}{0}
+\newdimen\NDCdefaultGap
+\setlength{\NDCdefaultGap}{0.25em}
+\newsavebox{\NDC@lbox}
+\newsavebox{\NDC@tbox}
+\newcounter{NDC@lines}
+\newcounter{NDC@depth}
+\newdimen\NDC@Pindent
+\newdimen\NDC@Gap
+\newdimen\NDC@Kern
+\newdimen\NDC@Nindent
+\newdimen\NDC@lraise
+\newdimen\NDC@first
+\newdimen\NDC@next
+\newdimen\NDC@height
+\newcommand*{\NDC@file}{}
+\newcommand*{\NDC@hang}{}
+\newcommand*{\NDC@oversize}{}
+\newcommand*{\NDC@raise}{}
+\newcommand*{\NDC@ante}{}
+\def\Dropcap@height{%
+   \@tempdima=\baselineskip
+   \setlength{\NDC@height}{\value{NDC@lines}\@tempdima}%
+   \ifnum\value{NDC@lines}>1
+     \addtolength{\NDC@height}{-\@tempdima}%
+   \fi
+   \ifvoid\NDC@tbox
+     \sbox{\NDC@tbox}{\textsc{x}}%
+   \fi
+   \addtolength{\NDC@height}{\ht\NDC@tbox}%
+   \addtolength{\NDC@height}{\NDC@oversize\NDC@height}%
+}
+\newcommand*{\StyleDropcap}{%
+   \Dropcap@height
+   \sbox{\@tempboxa}{{\dropcapfont\fontsize{\NDC@height}{\NDC@height}%
+                     \selectfont X}}%
+   \@tempcntb=\ht\@tempboxa
+   \@tempcnta=\NDC@height
+   \multiply\@tempcnta by 100
+   \divide\@tempcntb by 100
+   \divide\@tempcnta by \@tempcntb
+   \advance\@tempcnta by -9999
+   \ifnum\@tempcnta>0
+     \def\@tempa{1.\the\@tempcnta}%
+   \else
+     \def\@tempa{1}%
+   \fi
+   \dropcapfont
+   \fontsize{\@tempa\NDC@height}{\@tempa\NDC@height}%
+   \selectfont
+}
+\define@key{NDC}{lines}{\setcounter{NDC@lines}{#1}}
+\define@key{NDC}{depth}{\setcounter{NDC@depth}{#1}}
+\define@key{NDC}{hang}{\renewcommand*{\NDC@hang}{#1}}
+\define@key{NDC}{oversize}{\renewcommand*{\NDC@oversize}{#1}}
+\define@key{NDC}{raise}{\renewcommand*{\NDC@raise}{#1}}
+\define@key{NDC}{ante}{\renewcommand*{\NDC@ante}{#1}}
+\define@key{NDC}{gap}{\setlength{\NDC@Gap}{#1}}
+\define@key{NDC}{kern}{\setlength{\NDC@Kern}{#1}}
+\newdimen\DropcapWidth
+\newdimen\DropcapHeight
+\newdimen\DropcapDepth
+%
+\DeclareDocumentCommand\dropcap { O{} m } {%
+  \setcounter{NDC@lines}{\value{NDCdefaultLines}}%
+  \setcounter{NDC@depth}{\value{NDCdefaultDepth}}%
+  \renewcommand*{\NDC@hang}{\NDCdefaultHang}%
+  \renewcommand*{\NDC@oversize}{\NDCdefaultOversize}%
+  \renewcommand*{\NDC@raise}{\NDCdefaultRaise}%
+  \renewcommand*{\NDC@ante}{}%
+  \setlength{\NDC@Gap}{\NDCdefaultGap}%
+  \setlength{\NDC@Kern}{\z@}%
+  \setlength{\NDC@Nindent}{\z@}%
+  \setkeys{NDC}{#1}%
+  \sbox{\NDC@lbox}{{\StyleDropcap #2}}%
+  \@tempdima=\baselineskip
+  \ifnum\value{NDC@lines}=1
+    \setlength{\NDC@first}{\ht\NDC@lbox}%
+    \addtolength{\NDC@first}{-\ht\NDC@tbox}%
+    \setlength{\NDC@lraise}{\z@}%
+  \else
+    \setlength{\NDC@first}{-\value{NDC@lines}\@tempdima}%
+    \addtolength{\NDC@first}{\@tempdima}%
+    \sbox{\@tempboxa}{\textsc{x}}%
+    \addtolength{\NDC@first}{-\ht\@tempboxa}%
+    \setlength{\NDC@lraise}{-\NDC@raise\NDC@first}%
+    \addtolength{\NDC@first}{\NDC@lraise}%
+    \addtolength{\NDC@first}{\ht\NDC@lbox}%
+    \addtolength{\NDC@lraise}{-\value{NDC@lines}\@tempdima}%
+    \addtolength{\NDC@lraise}{\@tempdima}%
+  \fi
+  \par
+  \setlength{\NDC@Pindent}{\wd\NDC@lbox}%
+  \addtolength{\NDC@Pindent}{-\NDC@hang\wd\NDC@lbox}%
+  \settowidth{\NDC@first}{\NDC@ante}%
+  \addtolength{\NDC@Pindent}{\NDC@first}%
+  \addtolength{\NDC@Pindent}{\NDC@Gap}%
+  \setlength{\NDC@first}{\linewidth}%
+  \addtolength{\NDC@first}{-\NDC@Pindent}%
+  \addtolength{\NDC@Nindent}{\NDC@Pindent}%
+  \setlength{\NDC@next}{\linewidth}%
+  \addtolength{\NDC@next}{-\NDC@Nindent}%
+  \addtolength{\NDC@Pindent}{\rightmargin}%
+  \addtolength{\NDC@Nindent}{\rightmargin}%
+  \setlength{\DropcapWidth}{\wd\NDC@lbox}%
+  \setlength{\DropcapHeight}{\ht\NDC@lbox}%
+  \setlength{\DropcapDepth}{\dp\NDC@lbox}%
+  \addtocounter{NDC@lines}{1}%
+  \addtocounter{NDC@lines}{\value{NDC@depth}}%
+  \def\NDC@parshape{\c@NDC@lines \the\NDC@Pindent \the\NDC@first}%
+  \@tempcnta=\tw@
+  \@whilenum \@tempcnta<\c@NDC@lines\do{%
+     \edef\NDC@parshape{\NDC@parshape \the\NDC@Nindent \the\NDC@next}%
+     \advance\@tempcnta\@ne}%
+  \edef\NDC@parshape{\NDC@parshape \rightmargin \the\linewidth}%
+  \noindent
+  \parshape=\NDC@parshape\relax
+  \smash{\llap{\mbox{\NDC@ante}\raisebox{\NDC@lraise}{\usebox{\NDC@lbox}}%
+         \hskip \the\NDC@Gap}}\hskip \the\NDC@Kern %
+} % end \dropcap
+%%
+
+
+%%
+%% End of file `novel-DropCap.sty'.
+
+

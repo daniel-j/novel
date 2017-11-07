@@ -584,6 +584,16 @@
   \global\@gotdecotrue
   \newfontface\decofont[#1,#3]{#2}
 }%
+% Used with novel-dropcap.sty (if it exists) new in v. 1.44:
+\newif \if@dropcapfontset
+\DeclareDocumentCommand \SetDropcapFont { O{} m O{} } {%
+  \novel@checkfeatures{#1,#3}
+  \gdef\@dropcapfontname{#2}
+  \global\@dropcapfontsettrue
+  \newfontface\dropcapfont[#1,#3]{#2}
+}%
+\LetLtxMacro\SetDropCapFont\SetDropcapFont\relax % compatibility
+%
 %% For syntax consistency:
 \ExplSyntaxOn % necessary
 \cs_new_eq:NN \NewFontFamily \newfontfamily

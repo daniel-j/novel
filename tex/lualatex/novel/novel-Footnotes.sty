@@ -51,8 +51,8 @@
 \newtoggle{@usenomark} % when true: no mark, no increment count
 \newtoggle{@placedfootnotenumber} % true if any numerical footnote placed
 %
-\let\my@oldfootnote\footnote\relax % copies the original definition
-\let\footnote\relax % so it can be re-defined, below
+\LetLtxMacro\my@oldfootnote\footnote\relax % copies the original definition
+\LetLtxMacro\footnote\relax % so it can be re-defined, below
 %
 \gdef\@fourem{% length of rule separating footnotes from main text
   \vspace{-\nbs}

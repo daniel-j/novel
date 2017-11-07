@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-ChapterScene.sty}%
-[2017/11/04 v1.43.5 LaTeX file (chapter and scene macros)]
+[2017/11/04 v1.43.6 LaTeX file (chapter and scene macros)]
 %%
 
 
@@ -263,84 +263,8 @@
   \null
   \clearpage
 }
-%
+%%
 
-%% \dropcap enhancements to lettrine:
-\newif \if@dchasdescender
-\DeclareDocumentCommand\@dctestdescender { m } {%
-  \global\@dchasdescenderfalse%
-  \IfSubStr{#1}{Ç}{\global\@dchasdescendertrue}{}%
-  \IfSubStr{#1}{Ą}{\global\@dchasdescendertrue}{}%
-  \IfSubStr{#1}{Ę}{\global\@dchasdescendertrue}{}%
-  \IfSubStr{#1}{Ģ}{\global\@dchasdescendertrue}{}%
-  \IfSubStr{#1}{Į}{\global\@dchasdescendertrue}{}%
-  \IfSubStr{#1}{Ķ}{\global\@dchasdescendertrue}{}%
-  \IfSubStr{#1}{Ļ}{\global\@dchasdescendertrue}{}%
-  \IfSubStr{#1}{Ņ}{\global\@dchasdescendertrue}{}%
-  \IfSubStr{#1}{Ŗ}{\global\@dchasdescendertrue}{}%
-  \IfSubStr{#1}{Ş}{\global\@dchasdescendertrue}{}%
-  \IfSubStr{#1}{Ţ}{\global\@dchasdescendertrue}{}%
-  \IfSubStr{#1}{Ų}{\global\@dchasdescendertrue}{}%
-}% end \@dctestdescender
-%%
-\newif \if@dropcapstylegood
-\gdef\SetDropcapStyle#1{%
-  \@dropcapstylegoodfalse
-  \ifthenelse{\equal{#1}{off}}{\@dropcapstylegoodtrue}{}
-  \ifthenelse{\equal{#1}{basic}}{\@dropcapstylegoodtrue}{}
-  \ifthenelse{\equal{#1}{space}}{\@dropcapstylegoodtrue}{}
-  \ifthenelse{\equal{#1}{square}}{\@dropcapstylegoodtrue}{}
-  \ifthenelse{\equal{#1}{round}}{\@dropcapstylegoodtrue}{}
-  \ifthenelse{\equal{#1}{rounded}}{\@dropcapstylegoodtrue}{} % convenience
-  \if@dropcapstylegood
-    \gdef\@dropcapstyle{#1}%
-  \else
-    \ClassError{novel}{Bad choice for \string\SetDropcapStyle}%
-    {\string\SetDropcapStyle\space one of: off, basic, space, square, round.}%
-  \fi
-}%
-\let\SetDropCapStyle\SetDropcapStyle\relax % allows spelling error
-\SetDropcapStyle{basic} % default
-%
-\DeclareDocumentCommand\dropcap { s O{} m m} {%
-  \ifthenelse{\equal{\@dropcapstyle}{off}}{{#3}{#4}}{}%
-  \@dctestdescender{#3}%
-  \IfBooleanTF{#1}{\@dchasdescenderfalse}{}
-  \ifthenelse{\equal{\@dropcapstyle}{basic}}{%
-    \if@dchasdescender%
-      \lettrine[depth=1,#2]{\novdcvarlong{#3}}{#4}%
-    \else%
-      \lettrine[#2]{\novdcvarshort{#3}}{#4}%
-    \fi%
-  }{}%
-  \ifthenelse{\equal{\@dropcapstyle}{space}}{%
-    \if@dchasdescender%
-      \lettrine[depth=1,#2]{\novdcmono{#3}}{#4}%
-    \else%
-      \lettrine[#2]{\novdcmonoshort{#3}}{#4}%
-    \fi%
-  }{}%
-  \ifthenelse{\equal{\@dropcapstyle}{square}}{%
-    \if@dchasdescender%
-      \lettrine[depth=1,#2]{\novdcmono{#3}\llap{\novdcmonolong{^^^^25a1}}}{#4}%
-    \else%
-      \lettrine[#2]{\novdcmonoshort{#3\llap{^^^^25a1}}}{#4}%
-    \fi%
-  }{}%
-  \ifthenelse{\equal{\@dropcapstyle}{round} \OR \equal{\@dropcapstyle}{rounded}}{%
-    \if@dchasdescender%
-      \lettrine[depth=1,#2]{\novdcmono{#3}\llap{\novdcmonolong{^^^^25a2}}}{#4}%
-    \else%
-      \lettrine[#2]{\novdcmonoshort{#3\llap{^^^^25a2}}}{#4}%
-    \fi%
-  }{}%
-  \ifthenelse{\equal{\@dropcapstyle}{square} \OR \equal{\@dropcapstyle}{round} \OR \equal{\@dropcapstyle}{rounded}}{%
-    \typeout{^^JClass `novel' Info: Boxed \string\dropcap\space on page \thepage\space is^^J%
-      \the\LettrineWidth\space wide/tall, and sits \the\LettrineDepth\space below baseline.^^J}%
-  }%
-  {}% breaks clear of the lettrine text.
-}% end \dropcap
-%%
 
 
 

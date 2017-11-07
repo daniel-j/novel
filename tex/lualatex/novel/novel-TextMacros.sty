@@ -193,8 +193,8 @@
   \definecolor[named]{gray8}{gray}{0.75}
   \definecolor[named]{gray9}{gray}{0.87}
 \else
-  \let\my@color\color\relax
-  \let\color\relax
+  \LetLtxMacro\my@color\color\relax
+  \LetLtxMacro\color\relax
   \DeclareDocumentCommand \color { o m }
    {%
    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.903215}}{\@undeclaredcolor[gray]{0.903215}}{}% shademargins

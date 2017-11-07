@@ -72,8 +72,8 @@
 \gdef\imagestarred{false}
 \gdef\imagefilename{unknown}
 % Neutralize \includegraphics, so it is no longer a user command:
-\let\@includegraphics\includegraphics\relax
-\let\includegraphics\relax
+\LetLtxMacro\@includegraphics\includegraphics\relax
+\LetLtxMacro\includegraphics\relax
 \newcommand\includegraphics[2][]{
   \ClassError{novel}{Cannot use \string\includegraphics\space on page \thepage}
    {The `novel' class has its own commands for placing images. See docs.^^J%

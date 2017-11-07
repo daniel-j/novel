@@ -16,6 +16,44 @@
 % version 2005/12/01 or later.
 %%
 
+%%
+% Some keys are the same as with lettrine:
+%   lines, depth, slope, ante.
+% Some keys do the same thing, with a slightly different name:
+%   hang (lhang), oversize (loversize), raise (lraise).
+% The image, realheight, grid, and novskip keys are not used.
+%   In `novel' document class: Place image using `novel' \InlineImage syntax.
+%   Otherwise: Use commands from `graphicx`.
+%   The lines are always on grid. Any vskip is ignored.
+% Lettrine's findent and nindent keys have substitutes:
+%   gap is the separation between drop cap and text at right (=findent+nindent)
+%   kern moves the first line (= -nindent)
+%%
+% The font used for the drop cap may be defined using `fontspec' syntax:
+%   \NewFontFace\dropcapfont[Open Type features]{font name}
+% You can use any scalable font. If you don't define \dropcapfont,
+%   then the surrounding main font will be used.
+% If your drop cap is within the Basic Latin, Latin-1 Supplement, or Latin Extended-A
+%   character sets (plus a few punctuation characters) then try NovelDeco.otf.
+%   This font has features `dcap' and `hlig' specifically designed for drop caps:
+%     \NewFontFace\dropcapfont[RawFeature=+dcap,RawFeature=+hlig]{NovelDeco.otf}
+%   Note that non-European, Greek, and Cyrillic are not in this font.
+%   In this font, the drop cap letters have reduced descenders, so that
+%   it is normally not necessary to use the depth key. Also, W is not very wide.
+%%
+% \dropcap[keys]{letter} does not take a second mandatory argument (unlike \lettrine).
+% If you want small caps letters to follow, do it yourself with \textsc{text}.
+% Advantage: You can manually choose enough letters to fill the first line with small caps.
+% In lettrine, that doesn't work properly, because the text argument is in a box.
+%%
+% Although this file ships with `novel' document class (based on LuaLaTeX)
+%   it probably works with other classes and compilers. Give it a try!
+%   In Preamble: \RequirePackage{novel-DropCap}
+%   In document body: \dropap[keys]{letter} text.
+%%
+% Unlike lettrine, this file does not read configuration files.
+%%
+
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesFile{novel-DropCap.sty}
              [2017/11/07 v1.44 LaTeX file (drop caps)]
@@ -28,6 +66,8 @@
 \newcommand*{\NDCdefaultHang}{0}
 \newdimen\NDCdefaultGap
 \setlength{\NDCdefaultGap}{0.25em}
+\newdimen\NDCdefaultSlope
+\setlength{\NDCdefaultSlope}{\z@}
 \newsavebox{\NDC@lbox}
 \newsavebox{\NDC@tbox}
 \newcounter{NDC@lines}
@@ -39,12 +79,14 @@
 \newdimen\NDC@lraise
 \newdimen\NDC@first
 \newdimen\NDC@next
+\newdimen\NDC@slope
 \newdimen\NDC@height
 \newcommand*{\NDC@file}{}
 \newcommand*{\NDC@hang}{}
 \newcommand*{\NDC@oversize}{}
 \newcommand*{\NDC@raise}{}
 \newcommand*{\NDC@ante}{}
+%
 \def\Dropcap@height{%
    \@tempdima=\baselineskip
    \setlength{\NDC@height}{\value{NDC@lines}\@tempdima}%
@@ -57,8 +99,13 @@
    \addtolength{\NDC@height}{\ht\NDC@tbox}%
    \addtolength{\NDC@height}{\NDC@oversize\NDC@height}%
 }
+%
 \newcommand*{\StyleDropcap}{%
    \Dropcap@height
+   \ifcsname dropcapfont \endcsname%
+   \else%
+     \let\dropcapfont\relax%
+   \fi%
    \sbox{\@tempboxa}{{\dropcapfont\fontsize{\NDC@height}{\NDC@height}%
                      \selectfont X}}%
    \@tempcntb=\ht\@tempboxa
@@ -76,6 +123,7 @@
    \fontsize{\@tempa\NDC@height}{\@tempa\NDC@height}%
    \selectfont
 }
+%
 \define@key{NDC}{lines}{\setcounter{NDC@lines}{#1}}
 \define@key{NDC}{depth}{\setcounter{NDC@depth}{#1}}
 \define@key{NDC}{hang}{\renewcommand*{\NDC@hang}{#1}}
@@ -84,6 +132,7 @@
 \define@key{NDC}{ante}{\renewcommand*{\NDC@ante}{#1}}
 \define@key{NDC}{gap}{\setlength{\NDC@Gap}{#1}}
 \define@key{NDC}{kern}{\setlength{\NDC@Kern}{#1}}
+\define@key{NDC}{slope}{\setlength{\NDC@slope}{#1}}
 \newdimen\DropcapWidth
 \newdimen\DropcapHeight
 \newdimen\DropcapDepth
@@ -98,6 +147,7 @@
   \setlength{\NDC@Gap}{\NDCdefaultGap}%
   \setlength{\NDC@Kern}{\z@}%
   \setlength{\NDC@Nindent}{\z@}%
+  \setlength{\NDC@slope}{\NDCdefaultSlope}%
   \setkeys{NDC}{#1}%
   \sbox{\NDC@lbox}{{\StyleDropcap #2}}%
   \@tempdima=\baselineskip
@@ -138,6 +188,8 @@
   \@tempcnta=\tw@
   \@whilenum \@tempcnta<\c@NDC@lines\do{%
      \edef\NDC@parshape{\NDC@parshape \the\NDC@Nindent \the\NDC@next}%
+     \addtolength{\NDC@Nindent}{\NDC@slope}%
+     \addtolength{\NDC@next}{-\NDC@slope}%
      \advance\@tempcnta\@ne}%
   \edef\NDC@parshape{\NDC@parshape \rightmargin \the\linewidth}%
   \noindent

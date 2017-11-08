@@ -23,54 +23,107 @@
 \newcounter{DefaultLines}
 \setcounter{DefaultLines}{2}
 \newcounter{DefaultDepth}
-\newcommand*{\DefaultLoversize}{0}
-\newcommand*{\DefaultLraise}{0}
 \newcommand*{\DefaultLhang}{0}
 \newcommand*{\DefaultLante}{}
-\newdimen\DefaultFindent
-\setlength{\DefaultFindent}{0.25em}
-\newdimen\DefaultNindent
-\setlength{\DefaultNindent}{\z@}
 \newdimen\DefaultSlope
+\newdimen\DefaultDCkern
+\newdimen\DefaultDCgap
+\setlength{\DefaultDCgap}{0.25em}
+\newdimen\DefaultDCtop % Default set later; must wait until begin document.
+\newdimen\DefaultDCxoffset
+\newdimen\DefaultDCyoffset
 \newcommand*{\DefaultLcolor}{black}
 \newsavebox{\L@lbox}
-\newsavebox{\L@tbox}
 \newcounter{L@lines}
 \newcounter{L@depth}
 \newdimen\L@Pindent
 \newdimen\L@Findent
 \newdimen\L@Nindent
-\newdimen\L@lraise
+\newdimen\L@kern
+\newdimen\L@gap
 \newdimen\L@first
 \newdimen\L@next
 \newdimen\L@slope
 \newdimen\L@height
-\newcommand*{\L@file}{}
+\newdimen\L@top
+\newdimen\L@xoffset
+\newdimen\L@yoffset
 \newcommand*{\L@hang}{}
-\newcommand*{\L@oversize}{}
-\newcommand*{\L@raise}{}
 \newcommand*{\L@ante}{}
 \newcommand*{\L@color}{}
+\newdimen\DropcapWidth
+\newdimen\DropcapHeight
+\newdimen\DropcapDepth
+\define@key{L}{lines}{\setcounter{L@lines}{#1}}
+\define@key{L}{depth}{\setcounter{L@depth}{#1}}
+\define@key{L}{lhang}{\renewcommand*{\L@hang}{#1}}
+\define@key{L}{ante}{\renewcommand*{\L@ante}{#1}}
+\define@key{L}{kern}{\setlength{\L@kern}{#1}}
+\define@key{L}{gap}{\setlength{\L@gap}{#1}}
+\define@key{L}{slope}{\setlength{\L@slope}{#1}}
+\define@key{L}{color}{\renewcommand*{\L@color}{#1}}
+\define@key{L}{top}{\setlength{\L@top}{#1}}
+\define@key{L}{xoffset}{\setlength{\L@xoffset}{#1}}
+\define@key{L}{yoffset}{\setlength{\L@yoffset}{#1}}
 %
 \newcommand\SetDropcapKeys[1]{%
   \gdef\@dropcapkeys{#1,}
 }
 \SetDropcapKeys{}
 %
+\newcommand\@parsedropcapstyle {%
+  \StrDel{\@dropcapkeys}{\space}[\@dropcapkeys]%
+  %
+  \StrBehind{\@dropcapkeys}{lines=}[\@myLlines]%
+  \StrBefore{\@myLlines}{,}[\@myLlines]%
+  \ifthenelse{\equal{\@myLlines}{}}{}{\global\setcounter{DefaultLines}{\@myLlines}}%
+  %
+  \StrBehind{\@dropcapkeys}{depth=}[\@myLdepth]%
+  \StrBefore{\@myLdepth}{,}[\@myLdepth]%
+  \ifthenelse{\equal{\@myLdepth}{}}{}{\setcounter{DefaultDepth}{\@myLdepth}}%
+  %
+  \StrBehind{\@dropcapkeys}{lhang=}[\@myLhang]%
+  \StrBefore{\@myLhang}{,}[\@myLhang]%
+  \ifthenelse{\equal{\@myLhang}{}}{}{\renewcommand*{\DefaultLhang}{\@myLhang}}%
+  %
+  \StrBehind{\@dropcapkeys}{ante=}[\@myLante]%
+  \StrBefore{\@myLante}{,}[\@myLante]%
+  \ifthenelse{\equal{\@myLante}{}}{}{\renewcommand*{\DefaultLante}{\@myLante}}%
+  %
+  \StrBehind{\@dropcapkeys}{kern=}[\@myDCkern]%
+  \StrBefore{\@myDCkern}{,}[\@myDCkern]%
+  \ifthenelse{\equal{\@myDCkern}{}}{}{\setlength{\DefaultDCkern}{\@myDCkern}}%
+  %
+  \StrBehind{\@dropcapkeys}{gap=}[\@myDCgap]%
+  \StrBefore{\@myDCgap}{,}[\@myDCgap]%
+  \ifthenelse{\equal{\@myDCgap}{}}{}{\setlength{\DefaultDCgap}{\@myDCgap}}%
+  %
+  \StrBehind{\@dropcapkeys}{top=}[\@myDCtop]%
+  \StrBefore{\@myDCtop}{,}[\@myDCtop]%
+  \ifthenelse{\equal{\@myDCtop}{}}{}{\setlength{\DefaultDCtop}{\@myDCtop}}%
+  %
+  \StrBehind{\@dropcapkeys}{slope=}[\@mySlope]%
+  \StrBefore{\@mySlope}{,}[\@mySlope]%
+  \ifthenelse{\equal{\@mySlope}{}}{}{\setlength{\DefaultSlope}{\@mySlope}}%
+  %
+  \StrBehind{\@dropcapkeys}{xoffset=}[\@myDCxoffset]%
+  \StrBefore{\@myDCxoffset}{,}[\@myDCxoffset]%
+  \ifthenelse{\equal{\@myDCxoffset}{}}{}{\setlength{\DefaultDCxoffset}{\@myDCxoffset}}%
+  %
+  \StrBehind{\@dropcapkeys}{yoffset=}[\@myDCyoffset]%
+  \StrBefore{\@myDCyoffset}{,}[\@myDCyoffset]%
+  \ifthenelse{\equal{\@myDCyoffset}{}}{}{\setlength{\DefaultDCyoffset}{\@myDCyoffset}}%
+  %
+  \StrBehind{\@dropcapkeys}{color=}[\@myLcolor]%
+  \StrBefore{\@myLcolor}{,}[\@myLcolor]%
+  \ifthenelse{\equal{\@myLcolor}{}}{}{\renewcommand*{\DefaultLcolor}{\@myLcolor}}%
+} % end \@parsedropcapstyle
 \def\Dropcap@height{%
-   \@tempdima=\baselineskip
-   \setlength{\L@height}{\value{L@lines}\@tempdima}%
+   \setlength{\L@height}{\value{L@lines}\baselineskip}%
    \ifnum\value{L@lines}>1
-     \addtolength{\L@height}{-\@tempdima}%
+     \addtolength{\L@height}{-\baselineskip}%
    \fi
-   \ifvoid\L@tbox
-     \sbox{\L@tbox}{X}%
-   \fi
-   \addtolength{\L@height}{\ht\L@tbox}%
-   % Slight adjustment to compensate for visual effect of
-   % thicker horizontals and serifs in the drop cap:
-   \addtolength{\L@height}{0.02\nfs}%
-   \addtolength{\L@height}{\L@oversize\L@height}%
+   \addtolength{\L@height}{\L@top}%
 } % end \Dropcap@height
 %
 \newcommand*{\CalculateDropcap}{%
@@ -93,96 +146,26 @@
    \selectfont
 }
 %
-\define@key{L}{lines}{\setcounter{L@lines}{#1}}
-\define@key{L}{depth}{\setcounter{L@depth}{#1}}
-\define@key{L}{lhang}{\renewcommand*{\L@hang}{#1}}
-\define@key{L}{loversize}{\renewcommand*{\L@oversize}{#1}}
-\define@key{L}{lraise}{\renewcommand*{\L@raise}{#1}}
-\define@key{L}{ante}{\renewcommand*{\L@ante}{#1}}
-\define@key{L}{findent}{\setlength{\L@Findent}{#1}}
-\define@key{L}{nindent}{\setlength{\L@Nindent}{#1}}
-\define@key{L}{slope}{\setlength{\L@slope}{#1}}
-\define@key{L}{color}{\renewcommand*{\L@color}{#1}}
-\newdimen\DropcapWidth
-\newdimen\DropcapHeight
-\newdimen\DropcapDepth
-%
 \DeclareDocumentCommand\dropcap { O{} m } {% Note no additional argument.
-  %
-  \StrDel{\@dropcapkeys}{\space}[\@dropcapkeys]
-  %
-  \StrBehind{\@dropcapkeys}{lines=}[\@myLlines]%
-  \StrBefore{\@myLlines}{,}[\@myLlines]%
-  \ifthenelse{\equal{\@myLlines}{}}{}{\setcounter{DefaultLines}{\@myLlines}}%
-  %
-  \StrBehind{\@dropcapkeys}{depth=}[\@myLdepth]%
-  \StrBefore{\@myLdepth}{,}[\@myLdepth]%
-  \ifthenelse{\equal{\@myLdepth}{}}{}{\setcounter{DefaultDepth}{\@myLdepth}}%
-  %
-  \StrBehind{\@dropcapkeys}{lhang=}[\@myLhang]%
-  \StrBefore{\@myLhang}{,}[\@myLhang]%
-  \ifthenelse{\equal{\@myLhang}{}}{}{\renewcommand*{\DefaultLhang}{\@myLhang}}%
-  %
-  \StrBehind{\@dropcapkeys}{loversize=}[\@myLoversize]%
-  \StrBefore{\@myLoversize}{,}[\@myLoversize]%
-  \ifthenelse{\equal{\@myLoversize}{}}{}{\renewcommand*{\DefaultLoversize}{\@myLoversize}}%
-  %
-  \StrBehind{\@dropcapkeys}{lraise=}[\@mylraise]%
-  \StrBefore{\@mylraise}{,}[\@mylraise]%
-  \ifthenelse{\equal{\@mylraise}{}}{}{\renewcommand*{\DefaultLraise}{\@mylraise}}%
-  %
-  \StrBehind{\@dropcapkeys}{ante=}[\@myLante]%
-  \StrBefore{\@myLante}{,}[\@myLante]%
-  \ifthenelse{\equal{\@myLante}{}}{}{\renewcommand*{\DefaultLante}{\@myLante}}%
-  %
-  \StrBehind{\@dropcapkeys}{findent=}[\@myFindent]%
-  \StrBefore{\@myFindent}{,}[\@myFindent]%
-  \ifthenelse{\equal{\@myFindent}{}}{}{\setlength{\DefaultFindent}{\@myFindent}}%
-  %
-  \StrBehind{\@dropcapkeys}{nindent=}[\@myNindent]%
-  \StrBefore{\@myNindent}{,}[\@myNindent]%
-  \ifthenelse{\equal{\@myNindent}{}}{}{\setlength{\DefaultNindent}{\@myNindent}}%
-  %
-  \StrBehind{\@dropcapkeys}{slope=}[\@mySlope]%
-  \StrBefore{\@mySlope}{,}[\@mySlope]%
-  \ifthenelse{\equal{\@mySlope}{}}{}{\setlength{\DefaultSlope}{\@mySlope}}%
-  %
-  \StrBehind{\@dropcapkeys}{color=}[\@myLcolor]%
-  \StrBefore{\@myLcolor}{,}[\@myLcolor]%
-  \ifthenelse{\equal{\@myLcolor}{}}{}{\renewcommand*{\DefaultLcolor}{\@myLcolor}}%
-  %
+  \setlength{\DefaultDCtop}{1.02\normalXheight}% 1.02 fudge for serif weight.
+  \@parsedropcapstyle%
   \setcounter{L@lines}{\value{DefaultLines}}%
   \setcounter{L@depth}{\value{DefaultDepth}}%
   \renewcommand*{\L@hang}{\DefaultLhang}%
-  \renewcommand*{\L@oversize}{\DefaultLoversize}%
-  \renewcommand*{\L@raise}{\DefaultLraise}%
+  \renewcommand*{\L@xoffset}{\DefaultDCxoffset}%
+  \renewcommand*{\L@yoffset}{\DefaultDCyoffset}%
   \renewcommand*{\L@ante}{\DefaultLante}%
-  \setlength{\L@Findent}{\DefaultFindent}%
-  \setlength{\L@Nindent}{\DefaultNindent}%
+  \setlength{\L@kern}{\DefaultDCkern}%
+  \setlength{\L@gap}{\DefaultDCgap}%
   \setlength{\L@slope}{\DefaultSlope}%
   \renewcommand*{\L@color}{\DefaultLcolor}%
-  %
+  \setlength{\L@top}{\DefaultDCtop}
   \setkeys{L}{#1}%
-  \sbox{\L@tbox}{X}%
+  \setlength{\L@Findent}{\L@gap+\L@kern}
+  \setlength{\L@Nindent}{-\L@kern}
   \sbox{\L@lbox}{\CalculateDropcap \textcolor{\L@color}{#2}}%
-  \sbox{\L@tbox}{X}%
-  \@tempdima=\baselineskip
-  \ifnum\value{L@lines}=1
-    \setlength{\L@first}{\ht\L@lbox}%
-    \addtolength{\L@first}{-\ht\L@tbox}%
-    \setlength{\L@lraise}{\z@}%
-  \else
-    \setlength{\L@first}{-\value{L@lines}\@tempdima}%
-    \addtolength{\L@first}{\@tempdima}%
-    \sbox{\@tempboxa}{X}%
-    \addtolength{\L@first}{-\ht\@tempboxa}%
-    \setlength{\L@lraise}{-\L@raise\L@first}%
-    \addtolength{\L@first}{\L@lraise}%
-    \addtolength{\L@first}{\ht\L@lbox}%
-    \addtolength{\L@lraise}{-\value{L@lines}\@tempdima}%
-    \addtolength{\L@lraise}{\@tempdima}%
-  \fi
   \par
+  \addtolength{\L@Nindent}{\L@xoffset}%
   \setlength{\L@Pindent}{\wd\L@lbox}%
   \addtolength{\L@Pindent}{-\L@hang\wd\L@lbox}%
   \settowidth{\L@first}{\L@ante}%
@@ -210,8 +193,9 @@
   \edef\L@parshape{\L@parshape \rightmargin \the\linewidth}%
   \noindent
   \parshape=\L@parshape\relax
-  \smash{\llap{\mbox{\L@ante}\raisebox{\L@lraise}{\usebox{\L@lbox}}%
-         \hskip \the\L@Findent}}%
+  \hspace{\L@xoffset}\smash{\llap{\mbox{\L@ante}%
+    \raisebox{\L@yoffset-\value{L@lines}\baselineskip+2\baselineskip}{\usebox{\L@lbox}}%
+    \hskip \the\L@Findent}}%
   % Note that there is no following text here.
 } % end \dropcap
 

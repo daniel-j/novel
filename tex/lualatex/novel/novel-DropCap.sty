@@ -1,115 +1,89 @@
 %%
-%% This is file `novel-DropCap.sty', part of the `novel' package.
-%% Copyright (c) 2017 Robert Allgeyer.
-%% It is derived from file `lettrine.sty'
-%% which is part of the `lettrine' package.
-%% The original copyright and license, shown below, also applies:
+%% This is file `lettrine.sty',
+%% generated with the docstrip utility.
 %%
-% Copyright (C) 1999-2015 Daniel Flipo.
-%
-% This program can be distributed and/or modified under the terms
-% of the LaTeX Project Public License either version 1.3c of this
-% license or (at your option) any later version.
-% The latest version of this license is in
-%    http://www.latex-project.org/lppl.txt
-% and version 1.3c or later is part of all distributions of LaTeX
-% version 2005/12/01 or later.
+%% The original source files were:
 %%
-
-%%
-% Some keys are the same as with lettrine:
-%   lines, depth, slope, ante.
-% Some keys do the same thing, with a slightly different name:
-%   hang (lhang), oversize (loversize), raise (lraise).
-% The image, realheight, grid, and novskip keys are not used.
-%   In `novel' document class: Place image using `novel' \InlineImage syntax.
-%   Otherwise: Use commands from `graphicx`.
-%   The lines are always on grid. Any vskip is ignored.
-% Lettrine's findent and nindent keys have substitutes:
-%   gap is the separation between drop cap and text at right (=findent+nindent)
-%   kern moves the first line (= -nindent)
-%%
-% The font used for the drop cap may be defined using `fontspec' syntax:
-%   \NewFontFace\dropcapfont[Open Type features]{font name}
-% You can use any scalable font. If you don't define \dropcapfont,
-%   then the surrounding main font will be used.
-% If your drop cap is within the Basic Latin, Latin-1 Supplement, or Latin Extended-A
-%   character sets (plus a few punctuation characters) then try NovelDeco.otf.
-%   This font has features `dcap' and `hlig' specifically designed for drop caps:
-%     \NewFontFace\dropcapfont[RawFeature=+dcap,RawFeature=+hlig]{NovelDeco.otf}
-%   Note that non-European, Greek, and Cyrillic are not in this font.
-%   In this font, the drop cap letters have reduced descenders, so that
-%   it is normally not necessary to use the depth key. Also, W is not very wide.
-%%
-% \dropcap[keys]{letter} does not take a second mandatory argument (unlike \lettrine).
-% If you want small caps letters to follow, do it yourself with \textsc{text}.
-% Advantage: You can manually choose enough letters to fill the first line with small caps.
-% In lettrine, that doesn't work properly, because the text argument is in a box.
-%%
-% Although this file ships with `novel' document class (based on LuaLaTeX)
-%   it probably works with other classes and compilers. Give it a try!
-%   In Preamble: \RequirePackage{novel-DropCap}
-%   In document body: \dropap[keys]{letter} text.
-%%
-% Unlike lettrine, this file does not read configuration files.
-%%
-
+%% lettrine.dtx  (with options: `sty')
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% For the copyright see the source file.
+%% 
+%% Any modified versions of this file must be renamed
+%% with new filenames distinct from lettrine.sty.
+%% 
+%% For distribution of the original source see the terms
+%% for copying and modification in the file lettrine.dtx.
+%% 
+%% This generated file may be distributed as long as the
+%% original source files, as listed above, are part of the
+%% same distribution. (The sources need not necessarily be
+%% in the same archive or directory.)
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesFile{novel-DropCap.sty}
-             [2017/11/07 v1.44 LaTeX file (drop caps)]
+             [2017/11/08 v1.46 (drop caps)]
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \RequirePackage{keyval}
-\newcounter{NDCdefaultLines}
-\setcounter{NDCdefaultLines}{2}
-\newcounter{NDCdefaultDepth}
-\newcommand*{\NDCdefaultOversize}{0}
-\newcommand*{\NDCdefaultRaise}{0}
-\newcommand*{\NDCdefaultHang}{0}
-\newdimen\NDCdefaultGap
-\setlength{\NDCdefaultGap}{0.25em}
-\newdimen\NDCdefaultSlope
-\setlength{\NDCdefaultSlope}{\z@}
-\newsavebox{\NDC@lbox}
-\newsavebox{\NDC@tbox}
-\newcounter{NDC@lines}
-\newcounter{NDC@depth}
-\newdimen\NDC@Pindent
-\newdimen\NDC@Gap
-\newdimen\NDC@Kern
-\newdimen\NDC@Nindent
-\newdimen\NDC@lraise
-\newdimen\NDC@first
-\newdimen\NDC@next
-\newdimen\NDC@slope
-\newdimen\NDC@height
-\newcommand*{\NDC@file}{}
-\newcommand*{\NDC@hang}{}
-\newcommand*{\NDC@oversize}{}
-\newcommand*{\NDC@raise}{}
-\newcommand*{\NDC@ante}{}
+\newcounter{DefaultLines}
+\setcounter{DefaultLines}{2}
+\newcounter{DefaultDepth}
+\newcommand*{\DefaultLoversize}{0}
+\newcommand*{\DefaultLraise}{0}
+\newcommand*{\DefaultLhang}{0}
+\newcommand*{\DefaultLante}{}
+\newdimen\DefaultFindent
+\setlength{\DefaultFindent}{0.25em}
+\newdimen\DefaultNindent
+\setlength{\DefaultNindent}{\z@}
+\newdimen\DefaultSlope
+\newcommand*{\DefaultLcolor}{black}
+\newsavebox{\L@lbox}
+\newsavebox{\L@tbox}
+\newcounter{L@lines}
+\newcounter{L@depth}
+\newdimen\L@Pindent
+\newdimen\L@Findent
+\newdimen\L@Nindent
+\newdimen\L@lraise
+\newdimen\L@first
+\newdimen\L@next
+\newdimen\L@slope
+\newdimen\L@height
+\newcommand*{\L@file}{}
+\newcommand*{\L@hang}{}
+\newcommand*{\L@oversize}{}
+\newcommand*{\L@raise}{}
+\newcommand*{\L@ante}{}
+\newcommand*{\L@color}{}
+%
+\newcommand\SetDropcapKeys[1]{%
+  \gdef\@dropcapkeys{#1,}
+}
+\SetDropcapKeys{}
 %
 \def\Dropcap@height{%
    \@tempdima=\baselineskip
-   \setlength{\NDC@height}{\value{NDC@lines}\@tempdima}%
-   \ifnum\value{NDC@lines}>1
-     \addtolength{\NDC@height}{-\@tempdima}%
+   \setlength{\L@height}{\value{L@lines}\@tempdima}%
+   \ifnum\value{L@lines}>1
+     \addtolength{\L@height}{-\@tempdima}%
    \fi
-   \ifvoid\NDC@tbox
-     \sbox{\NDC@tbox}{\textsc{x}}%
+   \ifvoid\L@tbox
+     \sbox{\L@tbox}{X}%
    \fi
-   \addtolength{\NDC@height}{\ht\NDC@tbox}%
-   \addtolength{\NDC@height}{\NDC@oversize\NDC@height}%
-}
+   \addtolength{\L@height}{\ht\L@tbox}%
+   % Slight adjustment to compensate for visual effect of
+   % thicker horizontals and serifs in the drop cap:
+   \addtolength{\L@height}{0.02\nfs}%
+   \addtolength{\L@height}{\L@oversize\L@height}%
+} % end \Dropcap@height
 %
-\newcommand*{\StyleDropcap}{%
+\newcommand*{\CalculateDropcap}{%
    \Dropcap@height
-   \ifcsname dropcapfont \endcsname%
-   \else%
-     \let\dropcapfont\relax%
-   \fi%
-   \sbox{\@tempboxa}{{\dropcapfont\fontsize{\NDC@height}{\NDC@height}%
-                     \selectfont X}}%
+   \sbox{\@tempboxa}{\dropcapfont\fontsize{\L@height}{\L@height}%
+                     \selectfont X}%
    \@tempcntb=\ht\@tempboxa
-   \@tempcnta=\NDC@height
+   \@tempcnta=\L@height
    \multiply\@tempcnta by 100
    \divide\@tempcntb by 100
    \divide\@tempcnta by \@tempcntb
@@ -120,87 +94,132 @@
      \def\@tempa{1}%
    \fi
    \dropcapfont
-   \fontsize{\@tempa\NDC@height}{\@tempa\NDC@height}%
+   \fontsize{\@tempa\L@height}{\@tempa\L@height}%
    \selectfont
 }
 %
-\define@key{NDC}{lines}{\setcounter{NDC@lines}{#1}}
-\define@key{NDC}{depth}{\setcounter{NDC@depth}{#1}}
-\define@key{NDC}{hang}{\renewcommand*{\NDC@hang}{#1}}
-\define@key{NDC}{oversize}{\renewcommand*{\NDC@oversize}{#1}}
-\define@key{NDC}{raise}{\renewcommand*{\NDC@raise}{#1}}
-\define@key{NDC}{ante}{\renewcommand*{\NDC@ante}{#1}}
-\define@key{NDC}{gap}{\setlength{\NDC@Gap}{#1}}
-\define@key{NDC}{kern}{\setlength{\NDC@Kern}{#1}}
-\define@key{NDC}{slope}{\setlength{\NDC@slope}{#1}}
+\define@key{L}{lines}{\setcounter{L@lines}{#1}}
+\define@key{L}{depth}{\setcounter{L@depth}{#1}}
+\define@key{L}{lhang}{\renewcommand*{\L@hang}{#1}}
+\define@key{L}{loversize}{\renewcommand*{\L@oversize}{#1}}
+\define@key{L}{lraise}{\renewcommand*{\L@raise}{#1}}
+\define@key{L}{ante}{\renewcommand*{\L@ante}{#1}}
+\define@key{L}{findent}{\setlength{\L@Findent}{#1}}
+\define@key{L}{nindent}{\setlength{\L@Nindent}{#1}}
+\define@key{L}{slope}{\setlength{\L@slope}{#1}}
+\define@key{L}{color}{\renewcommand*{\L@color}{#1}}
 \newdimen\DropcapWidth
 \newdimen\DropcapHeight
 \newdimen\DropcapDepth
 %
-\DeclareDocumentCommand\dropcap { O{} m } {%
-  \setcounter{NDC@lines}{\value{NDCdefaultLines}}%
-  \setcounter{NDC@depth}{\value{NDCdefaultDepth}}%
-  \renewcommand*{\NDC@hang}{\NDCdefaultHang}%
-  \renewcommand*{\NDC@oversize}{\NDCdefaultOversize}%
-  \renewcommand*{\NDC@raise}{\NDCdefaultRaise}%
-  \renewcommand*{\NDC@ante}{}%
-  \setlength{\NDC@Gap}{\NDCdefaultGap}%
-  \setlength{\NDC@Kern}{\z@}%
-  \setlength{\NDC@Nindent}{\z@}%
-  \setlength{\NDC@slope}{\NDCdefaultSlope}%
-  \setkeys{NDC}{#1}%
-  \sbox{\NDC@lbox}{{\StyleDropcap #2}}%
+\DeclareDocumentCommand\dropcap { O{} m } {% Note no additional argument.
+  %
+  \StrDel{\@dropcapkeys}{\space}[\@dropcapkeys]
+  %
+  \StrBehind{\@dropcapkeys}{lines=}[\@myLlines]%
+  \StrBefore{\@myLlines}{,}[\@myLlines]%
+  \ifthenelse{\equal{\@myLlines}{}}{}{\setcounter{DefaultLines}{\@myLlines}}%
+  %
+  \StrBehind{\@dropcapkeys}{depth=}[\@myLdepth]%
+  \StrBefore{\@myLdepth}{,}[\@myLdepth]%
+  \ifthenelse{\equal{\@myLdepth}{}}{}{\setcounter{DefaultDepth}{\@myLdepth}}%
+  %
+  \StrBehind{\@dropcapkeys}{lhang=}[\@myLhang]%
+  \StrBefore{\@myLhang}{,}[\@myLhang]%
+  \ifthenelse{\equal{\@myLhang}{}}{}{\renewcommand*{\DefaultLhang}{\@myLhang}}%
+  %
+  \StrBehind{\@dropcapkeys}{loversize=}[\@myLoversize]%
+  \StrBefore{\@myLoversize}{,}[\@myLoversize]%
+  \ifthenelse{\equal{\@myLoversize}{}}{}{\renewcommand*{\DefaultLoversize}{\@myLoversize}}%
+  %
+  \StrBehind{\@dropcapkeys}{lraise=}[\@mylraise]%
+  \StrBefore{\@mylraise}{,}[\@mylraise]%
+  \ifthenelse{\equal{\@mylraise}{}}{}{\renewcommand*{\DefaultLraise}{\@mylraise}}%
+  %
+  \StrBehind{\@dropcapkeys}{ante=}[\@myLante]%
+  \StrBefore{\@myLante}{,}[\@myLante]%
+  \ifthenelse{\equal{\@myLante}{}}{}{\renewcommand*{\DefaultLante}{\@myLante}}%
+  %
+  \StrBehind{\@dropcapkeys}{findent=}[\@myFindent]%
+  \StrBefore{\@myFindent}{,}[\@myFindent]%
+  \ifthenelse{\equal{\@myFindent}{}}{}{\setlength{\DefaultFindent}{\@myFindent}}%
+  %
+  \StrBehind{\@dropcapkeys}{nindent=}[\@myNindent]%
+  \StrBefore{\@myNindent}{,}[\@myNindent]%
+  \ifthenelse{\equal{\@myNindent}{}}{}{\setlength{\DefaultNindent}{\@myNindent}}%
+  %
+  \StrBehind{\@dropcapkeys}{slope=}[\@mySlope]%
+  \StrBefore{\@mySlope}{,}[\@mySlope]%
+  \ifthenelse{\equal{\@mySlope}{}}{}{\setlength{\DefaultSlope}{\@mySlope}}%
+  %
+  \StrBehind{\@dropcapkeys}{color=}[\@myLcolor]%
+  \StrBefore{\@myLcolor}{,}[\@myLcolor]%
+  \ifthenelse{\equal{\@myLcolor}{}}{}{\renewcommand*{\DefaultLcolor}{\@myLcolor}}%
+  %
+  \setcounter{L@lines}{\value{DefaultLines}}%
+  \setcounter{L@depth}{\value{DefaultDepth}}%
+  \renewcommand*{\L@hang}{\DefaultLhang}%
+  \renewcommand*{\L@oversize}{\DefaultLoversize}%
+  \renewcommand*{\L@raise}{\DefaultLraise}%
+  \renewcommand*{\L@ante}{\DefaultLante}%
+  \setlength{\L@Findent}{\DefaultFindent}%
+  \setlength{\L@Nindent}{\DefaultNindent}%
+  \setlength{\L@slope}{\DefaultSlope}%
+  \renewcommand*{\L@color}{\DefaultLcolor}%
+  %
+  \setkeys{L}{#1}%
+  \sbox{\L@tbox}{X}%
+  \sbox{\L@lbox}{\CalculateDropcap \textcolor{\L@color}{#2}}%
+  \sbox{\L@tbox}{X}%
   \@tempdima=\baselineskip
-  \ifnum\value{NDC@lines}=1
-    \setlength{\NDC@first}{\ht\NDC@lbox}%
-    \addtolength{\NDC@first}{-\ht\NDC@tbox}%
-    \setlength{\NDC@lraise}{\z@}%
+  \ifnum\value{L@lines}=1
+    \setlength{\L@first}{\ht\L@lbox}%
+    \addtolength{\L@first}{-\ht\L@tbox}%
+    \setlength{\L@lraise}{\z@}%
   \else
-    \setlength{\NDC@first}{-\value{NDC@lines}\@tempdima}%
-    \addtolength{\NDC@first}{\@tempdima}%
-    \sbox{\@tempboxa}{\textsc{x}}%
-    \addtolength{\NDC@first}{-\ht\@tempboxa}%
-    \setlength{\NDC@lraise}{-\NDC@raise\NDC@first}%
-    \addtolength{\NDC@first}{\NDC@lraise}%
-    \addtolength{\NDC@first}{\ht\NDC@lbox}%
-    \addtolength{\NDC@lraise}{-\value{NDC@lines}\@tempdima}%
-    \addtolength{\NDC@lraise}{\@tempdima}%
+    \setlength{\L@first}{-\value{L@lines}\@tempdima}%
+    \addtolength{\L@first}{\@tempdima}%
+    \sbox{\@tempboxa}{X}%
+    \addtolength{\L@first}{-\ht\@tempboxa}%
+    \setlength{\L@lraise}{-\L@raise\L@first}%
+    \addtolength{\L@first}{\L@lraise}%
+    \addtolength{\L@first}{\ht\L@lbox}%
+    \addtolength{\L@lraise}{-\value{L@lines}\@tempdima}%
+    \addtolength{\L@lraise}{\@tempdima}%
   \fi
   \par
-  \setlength{\NDC@Pindent}{\wd\NDC@lbox}%
-  \addtolength{\NDC@Pindent}{-\NDC@hang\wd\NDC@lbox}%
-  \settowidth{\NDC@first}{\NDC@ante}%
-  \addtolength{\NDC@Pindent}{\NDC@first}%
-  \addtolength{\NDC@Pindent}{\NDC@Gap}%
-  \setlength{\NDC@first}{\linewidth}%
-  \addtolength{\NDC@first}{-\NDC@Pindent}%
-  \addtolength{\NDC@Nindent}{\NDC@Pindent}%
-  \setlength{\NDC@next}{\linewidth}%
-  \addtolength{\NDC@next}{-\NDC@Nindent}%
-  \addtolength{\NDC@Pindent}{\rightmargin}%
-  \addtolength{\NDC@Nindent}{\rightmargin}%
-  \setlength{\DropcapWidth}{\wd\NDC@lbox}%
-  \setlength{\DropcapHeight}{\ht\NDC@lbox}%
-  \setlength{\DropcapDepth}{\dp\NDC@lbox}%
-  \addtocounter{NDC@lines}{1}%
-  \addtocounter{NDC@lines}{\value{NDC@depth}}%
-  \def\NDC@parshape{\c@NDC@lines \the\NDC@Pindent \the\NDC@first}%
+  \setlength{\L@Pindent}{\wd\L@lbox}%
+  \addtolength{\L@Pindent}{-\L@hang\wd\L@lbox}%
+  \settowidth{\L@first}{\L@ante}%
+  \addtolength{\L@Pindent}{\L@first}%
+  \addtolength{\L@Pindent}{\L@Findent}%
+  \setlength{\L@first}{\linewidth}%
+  \addtolength{\L@first}{-\L@Pindent}%
+  \addtolength{\L@Nindent}{\L@Pindent}%
+  \setlength{\L@next}{\linewidth}%
+  \addtolength{\L@next}{-\L@Nindent}%
+  \addtolength{\L@Pindent}{\rightmargin}%
+  \addtolength{\L@Nindent}{\rightmargin}%
+  \setlength{\DropcapWidth}{\wd\L@lbox}%
+  \setlength{\DropcapHeight}{\ht\L@lbox}%
+  \setlength{\DropcapDepth}{\dp\L@lbox}%
+  \addtocounter{L@lines}{1}%
+  \addtocounter{L@lines}{\value{L@depth}}%
+  \def\L@parshape{\c@L@lines \the\L@Pindent \the\L@first}%
   \@tempcnta=\tw@
-  \@whilenum \@tempcnta<\c@NDC@lines\do{%
-     \edef\NDC@parshape{\NDC@parshape \the\NDC@Nindent \the\NDC@next}%
-     \addtolength{\NDC@Nindent}{\NDC@slope}%
-     \addtolength{\NDC@next}{-\NDC@slope}%
+  \@whilenum \@tempcnta<\c@L@lines\do{%
+     \edef\L@parshape{\L@parshape \the\L@Nindent \the\L@next}%
+     \addtolength{\L@Nindent}{\L@slope}%
+     \addtolength{\L@next}{-\L@slope}%
      \advance\@tempcnta\@ne}%
-  \edef\NDC@parshape{\NDC@parshape \rightmargin \the\linewidth}%
+  \edef\L@parshape{\L@parshape \rightmargin \the\linewidth}%
   \noindent
-  \parshape=\NDC@parshape\relax
-  \smash{\llap{\mbox{\NDC@ante}\raisebox{\NDC@lraise}{\usebox{\NDC@lbox}}%
-         \hskip \the\NDC@Gap}}\hskip \the\NDC@Kern %
+  \parshape=\L@parshape\relax
+  \smash{\llap{\mbox{\L@ante}\raisebox{\L@lraise}{\usebox{\L@lbox}}%
+         \hskip \the\L@Findent}}%
+  % Note that there is no following text here.
 } % end \dropcap
-%%
 
 
 %%
 %% End of file `novel-DropCap.sty'.
-
-

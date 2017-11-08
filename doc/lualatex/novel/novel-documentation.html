@@ -1097,7 +1097,7 @@ AnotherFeature=Setting,%<br/>
 
 <h4 id="h4.2.3">4.2.3. Advanced: The Deco Font</h4>
 <div class="d4" id="d4.2.3">
-<p class="noindent">Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <i>\decoglyph</i> and <i>\acronym</i> commands.</p>
+<p class="noindent">Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <i>\decoglyph</i> and <i>\acronym</i> commands. From <i>novel</i> version 1.46, it also provides some characters for use with drop caps.</p>
 <p>Normally, you do not need to configure this font, as it is automatic. The only reason for changng it is if you are an advanced user, who wishes to use a substitute font with different decorations. However, you may <i>not</i> specify just any font! The substitute must be an edited version of <i>NovelDeco.otf</i>, with a different font name. If you don't know what that means, then don't do it.</p>
 <p class="code">
 <code>\SetDecoFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.3">5.1.3.3</a></em>
@@ -1561,9 +1561,9 @@ In the latter days of the Dorf dynasty, a marvelous apparition sent the King's g
 </div><!-- end 5.1.4.2 -->
 </div><!-- end 5.1.4 -->
 
-<h4 id="h5.1.5">5.1.5. First Lines and Drop Caps</h4>
+<h4 id="h5.1.5">5.1.5. First Lines</h4>
 <div class="d4" id="d5.1.5">
-< class="noindent">Often, the first line of chapter text is typeset with a special effect. Some or all of it may be in small caps. The first letter may be larger than the rest, extending upward. The first letter may be a "drop cap" that occupies two or more lines. It may even be an image. All of these are easily done.</p>
+<p class="noindent">Often, the first line of chapter text is typeset with a special effect. The first letter may rise above the rest, perhaps in a distinctive font. Or, the first line may be set in small caps. Both effects may be used together.</p>
 
 <h5 id="h5.1.5.1">5.1.5.1. First Letter Special</h5>
 <div class="d5" id="d5.1.5.1">
@@ -1571,8 +1571,9 @@ In the latter days of the Dorf dynasty, a marvelous apparition sent the King's g
 <p class="code"><code>
 \charscale[2]{{\alexbrush I}}t was a dark and stormy night. Lord Withens crept out the back door of his mansion, and sneaked over to the stables. Alas, he lost his way, it being dark. But you knew that.
 </code></p>
+<p class="centerimg"><img src="html-resources/firstchar.png" width="423" height="81" alt="first character special"/></p>
 <p>Whatever you do, <i>always</i> wrap the code in the <code>\charscale</code> command (even at scale 1). If you don't, then the line (and all following on that page) may be pushed off-grid.</p>
-<p>An enlarged capital letter will usually be followed by ordinary lowercase letters, so its scale will appear to be larger than you set it.</p>
+<p>An enlarged capital letter will usually be followed by ordinary lowercase letters, so its scale will appear to be larger than you set it. You may also wish to add or subtract some <code>\hspace</code> between the special letter and the following text.</p>
 </div><!-- end 5.1.5.1 -->
 
 <h5 id="h5.1.5.2">5.1.5.2. First Line as Small Caps</h5>
@@ -1581,24 +1582,35 @@ In the latter days of the Dorf dynasty, a marvelous apparition sent the King's g
 <p class="code"><code>
 \FirstLine{\charscale[1.6]{I}t was a dark and stormy night. Lord Withens crept out the back door of his mansion, and sneaked over to the stables. Alas, he lost his way, it being dark. But you knew that.}
 </code></p>
+<p class="centerimg"><img src="html-resources/firstcharandline.png" width="427" height="74" alt="first character special, first line small caps"/></p>
 </div><!-- end 5.1.5.2 -->
+</div><!-- end 5.1.5 -->
 
-<h5 id="h5.1.5.3">5.1.5.3. Drop Cap Letter (lettrine)</h5>
-<div class="d5" id="d5.1.5.3">
-<p class="noindent">The <i>lettrine</i> package is pre-loaded in <i>novel</i> class, and pre-configured with these settings:</p>
-<p class="code"<code>
-\LettrineOnGridtrue % Retains line grid. DO NOT CHANGE.<br/>
-\setlength{\DiscardVskip}{2\nbs} % Allows lettrine to protrude above first line. DO NOT CHANGE.<br/>
-\renewcommand*{\LettrineSecondString}{\scshape{x}} % Assumes first word uses small caps.<br/>
-\setlength{\DefaultFindent}{0.2\nfs}<br/>
-\setlength{\DefaultNindent}{0.2\nfs}
-</code></p>
-<p>That is done automatically. Do not over-ride the first two of the above settings, or the baseline grid will be disturbed. You may over-ride the others, if you wish; your commands must go in document body, not Preamble.</p>
-<p>To create a drop cap, see the <i>lettrine</i> package documentation, and its separate file of examples. Here is an example in <i>novel</i> class:</p>
+<h4 id="h5.1.6">5.1.6. Drop Cap Letter</h4>
+<div class="d4" id="d5.1.5.3">
+<p class="noindent">A drop cap is a letter that occupies two or more lines, causing the reaminder of the text to flow around it. This is very attractive in some books, especially those with long chapters. But if your book has numerous short chapters, the effect may be tedious. Don't do it just because you can.</p>
+<p>From version 1.46, <i>novel</i> has a built-in <code>\dropcap</code> command. It is based on the technology of the <i>lettrine</i> package, but does not load <i>lettrine</i> due to some possible incompatibilities. So, if you wish to have a drop cap, be sure to use the <code>\dropcap</code> command, not <code>\lettrine</code>. Many (but not all) of the settings are similar. Particularly notice that <code>\dropcap</code> has only one mandatory argument.</p>
+<p class="code"><code>\dropcap[<em>comma-separated keys</em>]{<em>letter</em>}</code></p>
+<p>The available keys are:</p>
 <p class="code"><code>
-\lettrine[findent=-0.5\nfs,nindent=0.8\nfs]{L}{ord Withens} dismounted his horse, and promptly stepped into a deep puddle of rainwater. That was because the night was dark and stormy. Makes sense, when you think about it.
+lines=<em>integer</em> % Number of lines in the drop cap. Default 2.<br/>
+depth=<em>integer</em> % Use 1, if the letter has a large descender. Default 0.<br/>
+gap=<em>length</em> % From drop cap to textblock at its right. Default 0.25em.<br/>
+&nbsp; &nbsp; &nbsp; <i>(novel) gap = (lettrine) findent + nindent</i><br/>
+kern=<em>length</em> % Typically &lt;=0em, moves the first line of text. Default 0em.<br/>
+&nbsp; &nbsp; &nbsp; <i>(novel) kern = (lettrine) &ndash;nindent</i><br/>
+lraise=<em>length</em> % Raises the drop cap. Default 0em.<br/>
+loversize=<em>number</em> % Applies (scale = 1 + oversize) to the drop cap. Default 0.<br/>
+slope=<em>number</em> % Serially changes the following textblock indents. Default 0.<br/>
+color=<em>colorname</em> % Requires class option graytext. Default black.<br/>
+ante=<em>letter</em> % Places the letter prior to the drop cap. Default empty.<br/>
+lhang=<em>length</em> % Moves drop cap (and ante) left or right. Default 0em.<br/>
+align=<em>length</em> % Aligns the X-height of the drop cap to <i>length</i> above upper baseline.
 </code></p>
-<p>If you do not wish to use any small caps immediately following the drop cap letter, then you must complete the <code>\lettrine</code> command with empty braces {} because it has two mandatory arguments.</p>
+<p>The <code>\dropcap</code> command does <i>not</i> use keys or settings corresponding to <i>lettrine's</i> settings of grid, DiscardVspace, realheight, or image. The drop cap will always remain on grid, and will never push the text down if the drop cap rises above the first line.</p>
+<p>If you wish to use an image, then place the image using <i>novel's</i> own method of <code>\InlineImage</code>. The drop cap image must be prepared according to the requirements in this documentation, at 100% scale and resolution. If you wish to align the bottom of the image with the last line in the drop cap:</p>
+<p class="code"><code>\dropcap{\InlineImage[0em,b]{yourimage.png}}</code></p>
+<p>To align it with the descenders of the main text, try <code>[0em,b-0.2\nfs]</code> more or less.</p>
 </div><!-- end 5.1.5.3 -->
 
 <h5 id="h5.1.5.4">5.1.5.4. Drop Cap Image (lettrine)</h5>

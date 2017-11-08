@@ -20,7 +20,7 @@
 \ProvidesClass{novel}[2017/11/04 v1.43.5 LaTeX document class]
 %%
 %% Version 1.44 is probably very stable.
-%% Version 1.44: General cleanup of docs and code, pre-configured lettrine.
+%% Version 1.44: General cleanup of docs and code, added \dropcap.
 %% Version 1.43: Some code cleanup. Restored math capability.
 %% Version 1.42: Greatly improved HTML documentation.
 %% Version 1.41: Improved HTML documentation.
@@ -461,6 +461,7 @@
   \sorry@no{nth}
   \sorry@no{engord}
   \sorry@no{endnotes}
+  \sorry@no{lettrine}
   %%
   %% Pertains to novel-LayoutSettings.sty:
   \ifcsname pagenumberstyle\endcsname\else

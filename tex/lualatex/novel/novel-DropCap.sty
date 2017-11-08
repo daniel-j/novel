@@ -23,7 +23,6 @@
 \newcounter{DefaultLines}
 \setcounter{DefaultLines}{2}
 \newcounter{DefaultDepth}
-\newcommand*{\DefaultLhang}{0}
 \newcommand*{\DefaultLante}{}
 \newdimen\DefaultSlope
 \newdimen\DefaultDCkern
@@ -48,7 +47,8 @@
 \newdimen\L@top
 \newdimen\L@xoffset
 \newdimen\L@yoffset
-\newcommand*{\L@hang}{}
+\newdimen\L@hangante
+\newif \if@hangante
 \newcommand*{\L@ante}{}
 \newcommand*{\L@color}{}
 \newdimen\DropcapWidth
@@ -56,8 +56,8 @@
 \newdimen\DropcapDepth
 \define@key{L}{lines}{\setcounter{L@lines}{#1}}
 \define@key{L}{depth}{\setcounter{L@depth}{#1}}
-\define@key{L}{lhang}{\renewcommand*{\L@hang}{#1}}
 \define@key{L}{ante}{\renewcommand*{\L@ante}{#1}}
+\define@key{L}{ante*}{\global\@hangantetrue\renewcommand*{\L@ante}{#1}} %%%%%
 \define@key{L}{kern}{\setlength{\L@kern}{#1}}
 \define@key{L}{gap}{\setlength{\L@gap}{#1}}
 \define@key{L}{slope}{\setlength{\L@slope}{#1}}
@@ -82,13 +82,13 @@
   \StrBefore{\@myLdepth}{,}[\@myLdepth]%
   \ifthenelse{\equal{\@myLdepth}{}}{}{\setcounter{DefaultDepth}{\@myLdepth}}%
   %
-  \StrBehind{\@dropcapkeys}{lhang=}[\@myLhang]%
-  \StrBefore{\@myLhang}{,}[\@myLhang]%
-  \ifthenelse{\equal{\@myLhang}{}}{}{\renewcommand*{\DefaultLhang}{\@myLhang}}%
-  %
   \StrBehind{\@dropcapkeys}{ante=}[\@myLante]%
   \StrBefore{\@myLante}{,}[\@myLante]%
-  \ifthenelse{\equal{\@myLante}{}}{}{\renewcommand*{\DefaultLante}{\@myLante}}%
+  \ifthenelse{\equal{\@myLante}{}}{}{\global\@hangantefalse\renewcommand*{\DefaultLante}{\@myLante}}%
+  %
+  \StrBehind{\@dropcapkeys}{ante*=}[\@myLantestar]%
+  \StrBefore{\@myLantestar}{,}[\@myLantestar]%
+  \ifthenelse{\equal{\@myLantestar}{}}{}{\global\@hangantetrue\renewcommand*{\DefaultLante}{\@myLantestar}}%
   %
   \StrBehind{\@dropcapkeys}{kern=}[\@myDCkern]%
   \StrBefore{\@myDCkern}{,}[\@myDCkern]%
@@ -148,10 +148,11 @@
 %
 \DeclareDocumentCommand\dropcap { O{} m } {% Note no additional argument.
   \setlength{\DefaultDCtop}{1.02\normalXheight}% 1.02 fudge for serif weight.
+  \setlength{\L@hangante}{\z@}%
+  \global\@hangantefalse% %%%%%
   \@parsedropcapstyle%
   \setcounter{L@lines}{\value{DefaultLines}}%
   \setcounter{L@depth}{\value{DefaultDepth}}%
-  \renewcommand*{\L@hang}{\DefaultLhang}%
   \renewcommand*{\L@xoffset}{\DefaultDCxoffset}%
   \renewcommand*{\L@yoffset}{\DefaultDCyoffset}%
   \renewcommand*{\L@ante}{\DefaultLante}%
@@ -159,15 +160,16 @@
   \setlength{\L@gap}{\DefaultDCgap}%
   \setlength{\L@slope}{\DefaultSlope}%
   \renewcommand*{\L@color}{\DefaultLcolor}%
-  \setlength{\L@top}{\DefaultDCtop}
+  \setlength{\L@top}{\DefaultDCtop}%
   \setkeys{L}{#1}%
-  \setlength{\L@Findent}{\L@gap+\L@kern}
-  \setlength{\L@Nindent}{-\L@kern}
+  \setlength{\L@Findent}{\L@gap+\L@kern}%
+  \setlength{\L@Nindent}{-\L@kern}%
   \sbox{\L@lbox}{\CalculateDropcap \textcolor{\L@color}{#2}}%
-  \par
+  \par%
   \addtolength{\L@Nindent}{\L@xoffset}%
   \setlength{\L@Pindent}{\wd\L@lbox}%
-  \addtolength{\L@Pindent}{-\L@hang\wd\L@lbox}%
+  \settowidth{\L@hangante}{\L@ante}%
+  \if@hangante\addtolength{\L@Pindent}{-\L@hangante}\fi%
   \settowidth{\L@first}{\L@ante}%
   \addtolength{\L@Pindent}{\L@first}%
   \addtolength{\L@Pindent}{\L@Findent}%
@@ -184,18 +186,23 @@
   \addtocounter{L@lines}{1}%
   \addtocounter{L@lines}{\value{L@depth}}%
   \def\L@parshape{\c@L@lines \the\L@Pindent \the\L@first}%
-  \@tempcnta=\tw@
+  \@tempcnta=\tw@%
   \@whilenum \@tempcnta<\c@L@lines\do{%
      \edef\L@parshape{\L@parshape \the\L@Nindent \the\L@next}%
      \addtolength{\L@Nindent}{\L@slope}%
      \addtolength{\L@next}{-\L@slope}%
      \advance\@tempcnta\@ne}%
   \edef\L@parshape{\L@parshape \rightmargin \the\linewidth}%
-  \noindent
-  \parshape=\L@parshape\relax
-  \hspace{\L@xoffset}\smash{\llap{\mbox{\L@ante}%
-    \raisebox{\L@yoffset-\value{L@lines}\baselineskip+2\baselineskip}{\usebox{\L@lbox}}%
-    \hskip \the\L@Findent}}%
+  \noindent%
+  \parshape=\L@parshape\relax%
+  \hspace{\L@xoffset}%
+    \smash{%
+      \llap{%
+        \mbox{\L@ante}%
+        \raisebox{\L@yoffset-\value{L@lines}\baselineskip+2\baselineskip}{\usebox{\L@lbox}}%
+        \hskip \the\L@Findent%
+      }%
+    }%
   % Note that there is no following text here.
 } % end \dropcap
 

@@ -1587,7 +1587,7 @@ In the latter days of the Dorf dynasty, a marvelous apparition sent the King's g
 </div><!-- end 5.1.5 -->
 
 <h4 id="h5.1.6">5.1.6. Drop Cap Letter</h4>
-<div class="d4" id="d5.1.5.3">
+<div class="d4" id="d5.1.6">
 <p class="noindent">A drop cap is a letter that occupies two or more lines, causing the reaminder of the text to flow around it. This is very attractive in some books, especially those with long chapters. But if your book has numerous short chapters, the effect may be tedious. Don't do it just because you can.</p>
 <p>From version 1.46, <i>novel</i> has a built-in <code>\dropcap</code> command. It is based on the technology of the <i>lettrine</i> package, but does not load <i>lettrine</i> due to some possible incompatibilities. So, if you wish to have a drop cap, be sure to use the <code>\dropcap</code> command, not <code>\lettrine</code>. Many (but not all) of the settings are similar. Particularly notice that <code>\dropcap</code> has only one mandatory argument.</p>
 <p class="code"><code>\dropcap[<em>comma-separated keys</em>]{<em>letter</em>}</code></p>
@@ -1611,11 +1611,10 @@ align=<em>length</em> % Aligns the X-height of the drop cap to <i>length</i> abo
 <p>If you wish to use an image, then place the image using <i>novel's</i> own method of <code>\InlineImage</code>. The drop cap image must be prepared according to the requirements in this documentation, at 100% scale and resolution. If you wish to align the bottom of the image with the last line in the drop cap:</p>
 <p class="code"><code>\dropcap{\InlineImage[0em,b]{yourimage.png}}</code></p>
 <p>To align it with the descenders of the main text, try <code>[0em,b-0.2\nfs]</code> more or less.</p>
-</div><!-- end 5.1.5.3 -->
 
-<h5 id="h5.1.5.4">5.1.5.4. Drop Cap Image (lettrine)</h5>
-<div class="d5" id="d5.1.5.4">
-<p class="noindent">If you wish to place an image as drop cap, use the <code>\lettrine</command</code> as described above. However, <i>do not use the lettrine</i> <code>image</code> <i>option</i>. Instead place <code>\InlineImage</code> inside the lettrine. Note that the image file extension (png, jpeg, or jpg) must be included; no other image format is acceptable in <i>novel</i>. Example, assuming that <i>Oimage.png</i> exists:</p>
+<h5 id="h5.1.6.1">5.1.6.1. Drop Cap Image (lettrine)</h5>
+<div class="d5" id="d5.1.6.1">
+<p class="noindent">If you wish to place an image as drop cap, use the <code>\lettrine</code> command as described above. However, <i>do not use the lettrine</i> <code>image</code> <i>option</i>. Instead place <code>\InlineImage</code> inside the lettrine. Note that the image file extension (png, jpeg, or jpg) must be included; no other image format is acceptable in <i>novel</i>. Example, assuming that <i>Oimage.png</i> exists:</p>
 <p class="code"><code>
 \lettrine[lines=3,findent=0.3\nfs,nindent=0em]{\InlineImage[0em,b-\normaldescender]{Oimage.png}}{nly} a Lord, such as Withens, would have ridden his horse through such a dark and stormy night. Maybe some other horse, but not that one, which was quite particular about its rider being a nobleman.
 </code></p>
@@ -1644,12 +1643,9 @@ fearsome knight\\
 dragon in the moat.\par
 </code></p>
 <p>Don't forget to remove any such test code from your working document!</p>
-
-
-
 <p>So, in a graphics program (such as GIMP) I created a new grayscale image, 168x168 pixels at 300dpi. It requires some experimentation to choose the font size for the O, because it is not necessarily the main document font, so the calculations in the log file do not apply.</p>
-</div><!-- end 5.1.5.4 -->
-</div><!-- end 5.1.5 -->
+</div><!-- end 5.1.6.1 -->
+</div><!-- end 5.1.6 -->
 </div><!-- end 5.1 -->
 
 <h3 id="h5.2">5.2. Continuously Running Chapters</h3>
@@ -1732,8 +1728,6 @@ Unfortunately, novelists of that era had so little to write about, or they would
 </code></p>
 <p class="centerimg"><img src="html-resources/robberies.png" width="411" height="98" title="odinal chapter numbering" alt="ordinal chapter numbering"/></p>
 </div><!-- end 5.4 -->
-
-
 
 
 </div><!-- end 5 -->

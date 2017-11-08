@@ -289,25 +289,25 @@
 % If the text is in a font other than usual, place the font command
 %   outside \charscale, not inside.
 \DeclareDocumentCommand \charscale { s O{1} m }
- {
+ {%
   % Allows empty or blank to be used, and still provide default values:
-  \ifthenelse{\equal{#2}{}\OR\equal{#2}{\space}}{\def\@myargs{1}}{\def\@myargs{#2}}
-  \StrDel{\@myargs}{\space}[\@myargsns] % needs {\space} not { }
-  \StrCut{\@myargsns}{,}{\@myscalet}{\@mycoord}
-  \ifthenelse{\equal{\@myscalet}{}}{\def\@myscale{1}}{\def\@myscale{\@myscalet}}
+  \ifthenelse{\equal{#2}{}\OR\equal{#2}{\space}}{\def\@myargs{1}}{\def\@myargs{#2}}%
+  \StrDel{\@myargs}{\space}[\@myargsns]% needs {\space} not { }
+  \StrCut{\@myargsns}{,}{\@myscalet}{\@mycoord}%
+  \ifthenelse{\equal{\@myscalet}{}}{\def\@myscale{1}}{\def\@myscale{\@myscalet}}%
   \FPmax{\@myscale}{\@myscale}{0.5}% not permitted below this scale
-  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}
-  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{\def\@myx{0pt}}{\def\@myx{\@myxt}}
-  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{\def\@myy{0pt}}{\def\@myy{\@myyt}}
-  \IfBooleanTF{#1}
+  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}%
+  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{\def\@myx{0pt}}{\def\@myx{\@myxt}}%
+  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{\def\@myy{0pt}}{\def\@myy{\@myyt}}%
+  \IfBooleanTF{#1}%
   {% starred
     \ifvmode\else\unskip\fi%
     \stake\makebox[0pt][l]{\smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}}%
   }{% unstarred
     \stake\makebox[0pt][l]{\smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}}%
     \smash{\phantom{\scalebox{\@myscale}{#3}}}%
-  }
- }
+  }%
+ }%
 %%
 
 
@@ -396,9 +396,10 @@
 {\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000}
 {}
 %
+\newlength\@temphangl%
 \gdef\hangleft#1{% places content to left of usual position.
-  \newlength\@temphangl%
   \setlength\@temphangl{\widthof{#1}}%
+  \global\@temphangl=\@temphangl%
   \stake\hspace{-\@temphangl}#1%
 }
 %%

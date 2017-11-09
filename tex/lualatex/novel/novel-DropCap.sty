@@ -20,6 +20,7 @@
              [2017/11/08 v1.46 (drop caps)]
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \RequirePackage{keyval}
+\RequirePackage{xifthen}
 \newcounter{DefaultLines}
 \setcounter{DefaultLines}{2}
 \newcounter{DefaultDepth}
@@ -33,7 +34,7 @@
 \newdimen\DefaultDCyoffset
 \newcommand*{\DefaultLcolor}{black}
 \newsavebox{\L@lbox}
-\newcounter{L@lines}
+\newcounter{DC@lines}
 \newcounter{L@depth}
 \newdimen\L@Pindent
 \newdimen\L@Findent
@@ -43,7 +44,7 @@
 \newdimen\L@first
 \newdimen\L@next
 \newdimen\L@slope
-\newdimen\L@height
+\newlength\DC@height % Height of drop cap, ultimately = (lines-1)+top.
 \newdimen\L@top
 \newdimen\L@xoffset
 \newdimen\L@yoffset
@@ -55,7 +56,7 @@
 \newdimen\DropcapHeight
 \newdimen\DropcapDepth
 \let\DCantefont\relax
-\define@key{L}{lines}{\setcounter{L@lines}{#1}}
+\define@key{L}{lines}{\setcounter{DC@lines}{#1}}
 \define@key{L}{depth}{\setcounter{L@depth}{#1}}
 \define@key{L}{ante}{\renewcommand*{\L@ante}{#1}}
 \define@key{L}{ante*}{\global\@hangantetrue\renewcommand*{\L@ante}{#1}} %%%%%
@@ -119,59 +120,74 @@
   \StrBefore{\@myLcolor}{,}[\@myLcolor]%
   \ifthenelse{\equal{\@myLcolor}{}}{}{\renewcommand*{\DefaultLcolor}{\@myLcolor}}%
 } % end \@parsedropcapstyle
-\def\Dropcap@height{%
-   \setlength{\L@height}{\value{L@lines}\baselineskip}%
-   \ifnum\value{L@lines}>1
-     \addtolength{\L@height}{-\baselineskip}%
-   \fi
-   \addtolength{\L@height}{\L@top}%
-} % end \Dropcap@height
 %
-\newlength{\DCcharheight}%%%%%
+\newlength\DC@Xheight%
+\newlength\DC@fontsize%
+\newif \ifDC@squeeze%
+\newsavebox\DC@char%
+\newlength\DC@charheight%
+\newlength\DC@chardepth%
+\newlength\DC@chartotal%
+\newsavebox\DC@maindescender%
+\sbox{\DC@maindescender}{gjpqyç}% Main font, normal size, lowercase letters with descenders in Latin-1.
+\newlength\DC@maindescenderdepth%
+\setlength\DC@maindescenderdepth{\dp\DC@maindescender}%
+\global\DC@maindescenderdepth=\DC@maindescenderdepth%
+\gdef\DC@maindescenderdepthnum{\strip@pt\DC@maindescenderdepth}%
+\newlength\DC@adjheight%
 %
 \newcommand*{\CalculateDropcap}[1]{%
-   \Dropcap@height%
-   \sbox{\@tempboxa}{\dropcapfont\fontsize{\L@height}{\L@height}%
+   % Calculate the height of drop cap area, from lowest maintext baseline
+   %   to desired top (above first maintext baseline):
+   \setlength{\DC@height}{\value{DC@lines}\baselineskip}%
+   \addtolength{\DC@height}{-\baselineskip}%
+   \addtolength{\DC@height}{\L@top}% = (lines-1)+top
+   \global\DC@height=\DC@height%
+   \def\DC@heightnum{\strip@pt\DC@height}%
+   % Find the ratio (height of dropcap area)/(height of X in dropcapfont):
+   \sbox{\@tempboxa}{\dropcapfont\fontsize{\DC@height}{\DC@height}%
                      \selectfont X}%
-   \@tempcntb=\ht\@tempboxa%
-   \@tempcnta=\L@height%
-   \multiply\@tempcnta by 100%
-   \divide\@tempcntb by 100%
-   \divide\@tempcnta by \@tempcntb%
-   \advance\@tempcnta by -9999%
-   \ifnum\@tempcnta>0%
-     \def\@tempa{1.\the\@tempcnta}%
-   \else%
-     \def\@tempa{1}%
+   \setlength\DC@Xheight{\ht\@tempboxa}%
+   \global\DC@Xheight=\DC@Xheight%
+   \def\DC@Xheightnum{\strip@pt\DC@Xheight}%
+   \FPifgt{\DC@Xheightnum}{5}\else% Sanity check. Possible missing X character in dropcapfont.
+     \FPmul{\DC@Xheightnum}{\DC@heightnum}{0.65}% Guessed value.
+     \ClassWarning{novel}{^^JThe dropcapfont does not have character X. Very unusual!^^J%
+      Proceeding with guessed value. Dropcap will probably be wrong.^^J}%
    \fi%
-   \setlength\DCcharheight{\@tempa\L@height}%%%%%
-   \global\DCcharheight=\DCcharheight%%%%%
-   \global\@DCsqueezefalse%%%%%
-   \sbox{\DC@normaldepth}{#1}%%%%%
-   \setlength\DCnormaldepth{\dp\DC@normaldepth}%%%%%
-   \global\DCnormaldepth=\DCnormaldepth\relax%%%%%
-   \ifthenelse{\dimtest{\DCnormaldepth}{>}{0.064\nfs}}%%%%
-    {\global\@DCsqueezetrue}%%%%%
-    {\global\@DCsqueezefalse}%%%%%
-   \if@DCsqueeze%
-     \dropcapfont\fontsize{0.8\DCcharheight}{\DCcharheight}\selectfont\textcolor{\L@color}{#1}%
+   % Test for character with descender, such as Ccedilla:
+   \sbox{\DC@char}{\dropcapfont\fontsize{\DC@height}{\DC@height}%
+                     \selectfont #1}%
+   \setlength\DC@chardepth{\dp\DC@char}%
+   \global\DC@chardepth=\DC@chardepth%
+   \setlength\DC@chartotal{\DC@Xheight}%
+   \addtolength\DC@chartotal{\DC@chardepth}%
+   \global\DC@chartotal=\DC@chartotal%
+   \def\DC@chartotalnum{\strip@pt\DC@chartotal}%
+   \setlength\DC@adjheight{\DC@height}%
+   \addtolength\DC@adjheight{\DC@maindescenderdepth}%
+   \global\DC@adjheight=\DC@adjheight%
+   \def\DC@adjheightnum{\strip@pt\DC@adjheight}%
+   \ifthenelse{\dimtest{\DC@chardepth}{>}{\DC@maindescenderdepth}}%
+     {\global\DC@squeezetrue}%
+     {\global\DC@squeezefalse}%
+   \ifDC@squeeze%
+     \FPdiv{\DC@Xscale}{\DC@adjheightnum}{\DC@chartotalnum}%
+     \setlength\DC@fontsize{\DC@Xscale\DC@height}%
+     \dropcapfont\fontsize{\DC@fontsize}{\DC@fontsize}\selectfont\textcolor{\L@color}{#1}%
    \else%
-     \dropcapfont\fontsize{\DCcharheight}{\DCcharheight}\selectfont\textcolor{\L@color}{#1}%
+     \FPdiv{\DC@Xscale}{\DC@heightnum}{\DC@Xheightnum}%
+     \setlength\DC@fontsize{\DC@Xscale\DC@height}%
+     \dropcapfont\fontsize{\DC@fontsize}{\DC@fontsize}\selectfont\textcolor{\L@color}{#1}%
    \fi%
 }
-%
-\newsavebox\DC@Xheight%%%%%
-\newlength\DCXheight%%%%%
-\newif \if@DCsqueeze%%%%%
-\newsavebox\DC@normaldepth%%%%%
-\newlength\DCnormaldepth%%%%%
 %
 \DeclareDocumentCommand\dropcap { O{} m } {% Note no additional argument.
   \setlength{\DefaultDCtop}{1.02\normalXheight}% 1.02 fudge for serif weight.
   \setlength{\L@hangante}{\z@}%
-  \global\@hangantefalse% %%%%%
+  \global\@hangantefalse%
   \@parsedropcapstyle%
-  \setcounter{L@lines}{\value{DefaultLines}}%
+  \setcounter{DC@lines}{\value{DefaultLines}}%
   \setcounter{L@depth}{\value{DefaultDepth}}%
   \renewcommand*{\L@xoffset}{\DefaultDCxoffset}%
   \renewcommand*{\L@yoffset}{\DefaultDCyoffset}%
@@ -185,6 +201,8 @@
   \setlength{\L@Findent}{\L@gap+\L@kern}%
   \setlength{\L@Nindent}{-\L@kern}%
   \sbox{\L@lbox}{\CalculateDropcap{#2}}%
+  \setlength{\DC@chardepth}{\dp\L@lbox}%
+  \global\DC@chardepth=\DC@chardepth%
   \par%
   \addtolength{\L@Nindent}{\L@xoffset}%
   \setlength{\L@Pindent}{\wd\L@lbox}%
@@ -203,11 +221,11 @@
   \setlength{\DropcapWidth}{\wd\L@lbox}%
   \setlength{\DropcapHeight}{\ht\L@lbox}%
   \setlength{\DropcapDepth}{\dp\L@lbox}%
-  \addtocounter{L@lines}{1}%
-  \addtocounter{L@lines}{\value{L@depth}}%
-  \def\L@parshape{\c@L@lines \the\L@Pindent \the\L@first}%
+  \addtocounter{DC@lines}{1}%
+  \addtocounter{DC@lines}{\value{L@depth}}%
+  \def\L@parshape{\c@DC@lines \the\L@Pindent \the\L@first}%
   \@tempcnta=\tw@%
-  \@whilenum \@tempcnta<\c@L@lines\do{%
+  \@whilenum \@tempcnta<\c@DC@lines\do{%
      \edef\L@parshape{\L@parshape \the\L@Nindent \the\L@next}%
      \addtolength{\L@Nindent}{\L@slope}%
      \addtolength{\L@next}{-\L@slope}%
@@ -216,11 +234,11 @@
   \noindent%
   \parshape=\L@parshape\relax%
   \hspace{\L@xoffset}%
-  \if@DCsqueeze%%%%%
+  \ifDC@squeeze%
     \smash{%
       \llap{%
         \mbox{{\DCantefont\L@ante}}%
-        \raisebox{\L@yoffset-\value{L@lines}\baselineskip+2\baselineskip+0.16\DCcharheight-0.2\baselineskip}{\usebox{\L@lbox}}%
+        \raisebox{\L@yoffset-\value{DC@lines}\baselineskip+2\baselineskip+\DC@chardepth-\DC@maindescenderdepth}{\usebox{\L@lbox}}%
         \hskip \the\L@Findent%
       }%
     }%
@@ -228,7 +246,7 @@
     \smash{%
       \llap{%
       \mbox{{\DCantefont\L@ante}}%
-      \raisebox{\L@yoffset-\value{L@lines}\baselineskip+2\baselineskip}{\usebox{\L@lbox}}%
+      \raisebox{\L@yoffset-\value{DC@lines}\baselineskip+2\baselineskip}{\usebox{\L@lbox}}%
       \hskip \the\L@Findent%
       }%
     }%

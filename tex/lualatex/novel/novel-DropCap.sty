@@ -54,6 +54,7 @@
 \newdimen\DropcapWidth
 \newdimen\DropcapHeight
 \newdimen\DropcapDepth
+\let\DCantefont\relax
 \define@key{L}{lines}{\setcounter{L@lines}{#1}}
 \define@key{L}{depth}{\setcounter{L@depth}{#1}}
 \define@key{L}{ante}{\renewcommand*{\L@ante}{#1}}
@@ -126,25 +127,44 @@
    \addtolength{\L@height}{\L@top}%
 } % end \Dropcap@height
 %
-\newcommand*{\CalculateDropcap}{%
-   \Dropcap@height
+\newlength{\DCcharheight}%%%%%
+%
+\newcommand*{\CalculateDropcap}[1]{%
+   \Dropcap@height%
    \sbox{\@tempboxa}{\dropcapfont\fontsize{\L@height}{\L@height}%
                      \selectfont X}%
-   \@tempcntb=\ht\@tempboxa
-   \@tempcnta=\L@height
-   \multiply\@tempcnta by 100
-   \divide\@tempcntb by 100
-   \divide\@tempcnta by \@tempcntb
-   \advance\@tempcnta by -9999
-   \ifnum\@tempcnta>0
+   \@tempcntb=\ht\@tempboxa%
+   \@tempcnta=\L@height%
+   \multiply\@tempcnta by 100%
+   \divide\@tempcntb by 100%
+   \divide\@tempcnta by \@tempcntb%
+   \advance\@tempcnta by -9999%
+   \ifnum\@tempcnta>0%
      \def\@tempa{1.\the\@tempcnta}%
-   \else
+   \else%
      \def\@tempa{1}%
-   \fi
-   \dropcapfont
-   \fontsize{\@tempa\L@height}{\@tempa\L@height}%
-   \selectfont
+   \fi%
+   \setlength\DCcharheight{\@tempa\L@height}%%%%%
+   \global\DCcharheight=\DCcharheight%%%%%
+   \global\@DCsqueezefalse%%%%%
+   \sbox{\DC@normaldepth}{#1}%%%%%
+   \setlength\DCnormaldepth{\dp\DC@normaldepth}%%%%%
+   \global\DCnormaldepth=\DCnormaldepth\relax%%%%%
+   \ifthenelse{\dimtest{\DCnormaldepth}{>}{0.064\nfs}}%%%%
+    {\global\@DCsqueezetrue}%%%%%
+    {\global\@DCsqueezefalse}%%%%%
+   \if@DCsqueeze%
+     \dropcapfont\fontsize{0.8\DCcharheight}{\DCcharheight}\selectfont\textcolor{\L@color}{#1}%
+   \else%
+     \dropcapfont\fontsize{\DCcharheight}{\DCcharheight}\selectfont\textcolor{\L@color}{#1}%
+   \fi%
 }
+%
+\newsavebox\DC@Xheight%%%%%
+\newlength\DCXheight%%%%%
+\newif \if@DCsqueeze%%%%%
+\newsavebox\DC@normaldepth%%%%%
+\newlength\DCnormaldepth%%%%%
 %
 \DeclareDocumentCommand\dropcap { O{} m } {% Note no additional argument.
   \setlength{\DefaultDCtop}{1.02\normalXheight}% 1.02 fudge for serif weight.
@@ -164,7 +184,7 @@
   \setkeys{L}{#1}%
   \setlength{\L@Findent}{\L@gap+\L@kern}%
   \setlength{\L@Nindent}{-\L@kern}%
-  \sbox{\L@lbox}{\CalculateDropcap \textcolor{\L@color}{#2}}%
+  \sbox{\L@lbox}{\CalculateDropcap{#2}}%
   \par%
   \addtolength{\L@Nindent}{\L@xoffset}%
   \setlength{\L@Pindent}{\wd\L@lbox}%
@@ -196,13 +216,23 @@
   \noindent%
   \parshape=\L@parshape\relax%
   \hspace{\L@xoffset}%
+  \if@DCsqueeze%%%%%
     \smash{%
       \llap{%
-        \mbox{\L@ante}%
-        \raisebox{\L@yoffset-\value{L@lines}\baselineskip+2\baselineskip}{\usebox{\L@lbox}}%
+        \mbox{{\DCantefont\L@ante}}%
+        \raisebox{\L@yoffset-\value{L@lines}\baselineskip+2\baselineskip+0.16\DCcharheight-0.2\baselineskip}{\usebox{\L@lbox}}%
         \hskip \the\L@Findent%
       }%
     }%
+  \else%
+    \smash{%
+      \llap{%
+      \mbox{{\DCantefont\L@ante}}%
+      \raisebox{\L@yoffset-\value{L@lines}\baselineskip+2\baselineskip}{\usebox{\L@lbox}}%
+      \hskip \the\L@Findent%
+      }%
+    }%
+  \fi%
   % Note that there is no following text here.
 } % end \dropcap
 

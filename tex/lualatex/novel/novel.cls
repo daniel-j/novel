@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/11/04 v1.43.5 LaTeX document class]
+\ProvidesClass{novel}[2017/11/10 v1.43.6 LaTeX document class]
 %%
 %% Version 1.44 is probably very stable.
 %% Version 1.44: General cleanup of docs and code, added \dropcap.
@@ -420,6 +420,13 @@
   \let\title\relax
   \let\author\relax
   \let\subtitle\relax
+  \@ifpackageloaded{lettrine}{%
+    \global\LettrineOnGridtrue%
+    \setlength\DiscardVskip{150pt}% practically infinite
+    \global\DiscardVskip=\DiscardVskip%
+    \ClassWarning{novel}{The `lettrine' package usually works OK, but^^J%
+     prefer the \string\dropcap\space command, native to `novel'. See docs.^^J}%
+  }{}%
   % Dealing with known incompatible packages:
   \if@novelunblock
     \gdef\sorry@no#1{} % let them be used
@@ -461,7 +468,6 @@
   \sorry@no{nth}
   \sorry@no{engord}
   \sorry@no{endnotes}
-  \sorry@no{lettrine}
   %%
   %% Pertains to novel-LayoutSettings.sty:
   \ifcsname pagenumberstyle\endcsname\else

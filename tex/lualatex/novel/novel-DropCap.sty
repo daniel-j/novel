@@ -17,7 +17,7 @@
 %%
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesFile{novel-DropCap.sty}
-             [2017/11/10 v1.46 (drop caps)]
+             [2017/11/10 v1.43.6 (drop caps)]
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \RequirePackage{keyval}
 \RequirePackage{xifthen}
@@ -26,12 +26,13 @@
 \RequirePackage{fp}
 \RequirePackage{calc}
 \RequirePackage{etoolbox}
+\RequirePackage{letltxmacro}
 %
 \newcounter{DefaultDClines}
 \setcounter{DefaultDClines}{2}
 \newcounter{DefaultDCdepth}
 \newcommand*{\DefaultDCante}{}
-\newcommand*{\DefaultDCantecol}{black} % ante color
+\newcommand*{\DefaultDCantetint}{black} % ante color
 \newdimen\DefaultDCslope
 \newdimen\DefaultDCkern
 \newdimen\DefaultDCgap
@@ -58,7 +59,7 @@
 \newdimen\DC@hangante
 \newif \if@hangante
 \newcommand*{\DC@ante}{}
-\newcommand*{\DC@antecol}{}
+\newcommand*{\DC@antetint}{}
 \newcommand*{\DC@color}{}
 \newcommand*{\DC@descender}{}
 \newdimen\DropcapWidth
@@ -78,12 +79,12 @@
 \define@key{DC}{xoffset}{\setlength{\DC@xoffset}{#1}}
 \define@key{DC}{yoffset}{\setlength{\DC@yoffset}{#1}}
 \define@key{DC}{descender}{\renewcommand*{\DC@descender}{#1}}
-\define@key{DC}{antecol}{\renewcommand*{\DC@antecol}{#1}}
+\define@key{DC}{antetint}{\renewcommand*{\DC@antetint}{#1}}
 %
 \newcommand\SetDropcapStyle[1]{% User-set general defaults.
-  \gdef\@dropcapkeys{#1,}
+  \gdef\@dropcapkeys{#1,}%
 }
-\let\SetDropCapStyle\SetDropcapStyle\relax % compatibility
+\let\SetDropCapStyle\SetDropcapStyle\relax% compatibility
 \SetDropcapStyle{}
 %
 \newcommand\@parsedropcapstyle {%
@@ -137,9 +138,9 @@
   \StrBefore{\@myDCdescender}{,}[\@myDCdescender]%
   \ifthenelse{\equal{\@myDCdescender}{}}{}{\renewcommand*{\DefaultDCdescender}{\@myDCdescender}}%
   %
-  \StrBehind{\@dropcapkeys}{antecol=}[\@myDCantecol]%
-  \StrBefore{\@myDCantecol}{,}[\@myDCantecol]%
-  \ifthenelse{\equal{\@myDCantecol}{}}{}{\renewcommand*{\DefaultDCantecol}{\@myDCantecol}}%
+  \StrBehind{\@dropcapkeys}{antetint=}[\@myDCantetint]%
+  \StrBefore{\@myDCantetint}{,}[\@myDCantetint]%
+  \ifthenelse{\equal{\@myDCantetint}{}}{}{\renewcommand*{\DefaultDCantetint}{\@myDCantetint}}%
 } % end \@parsedropcapstyle
 %
 \newlength\DC@Xheight%
@@ -218,8 +219,8 @@
   \setcounter{DC@depth}{\value{DefaultDCdepth}}%
   \renewcommand*{\DC@xoffset}{\DefaultDCxoffset}%
   \renewcommand*{\DC@yoffset}{\DefaultDCyoffset}%
-  \renewcommand*{\DC@antecol}{\DefaultDCantecol}%
-  \renewcommand*{\DC@ante}{\textcolor{\DC@antecol}{\DefaultDCante}}%
+  \renewcommand*{\DC@antetint}{\DefaultDCantetint}%
+  \renewcommand*{\DC@ante}{\textcolor{\DC@antetint}{\DefaultDCante}}%
   \setlength{\DC@kern}{\DefaultDCkern}%
   \setlength{\DC@gap}{\DefaultDCgap}%
   \setlength{\DC@slope}{\DefaultDCslope}%
@@ -227,9 +228,21 @@
   \setlength{\DC@top}{\DefaultDCtop}%
   \renewcommand*{\DC@descender}{\DefaultDCdescender}%
   \setkeys{DC}{#1}%
+  \ifnum\value{DC@lines}<2% Not really a drop cap.
+    \begingroup%
+      \renewcommand\charscale[2][]{##2}%
+      \renewcommand\textcolor[3][]{##3}%
+      \noindent\DC@ante #2% Merely echoes the arguments without further dropcap styling.
+    \endgroup%
+  \else%
+    \continue@dropcap{#2}% Really is a drop cap.
+  \fi%
+} % end\dropcap
+%
+\newcommand\continue@dropcap[1]{%
   \setlength{\DC@Findent}{\DC@gap+\DC@kern}%
   \setlength{\DC@Nindent}{-\DC@kern}%
-  \sbox{\DC@lbox}{\CalculateDropcap{#2}}%
+  \sbox{\DC@lbox}{\CalculateDropcap{#1}}%
   \setlength{\DC@chardepth}{\dp\DC@lbox}%
   \global\DC@chardepth=\DC@chardepth%
   \par%
@@ -308,7 +321,7 @@
     }%
   \fi%
   % Note that there is no following text here.
-} % end \dropcap
+} % end \continue@dropcap
 
 
 %%

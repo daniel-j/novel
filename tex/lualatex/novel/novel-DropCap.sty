@@ -80,10 +80,11 @@
 \define@key{DC}{descender}{\renewcommand*{\DC@descender}{#1}}
 \define@key{DC}{antecol}{\renewcommand*{\DC@antecol}{#1}}
 %
-\newcommand\SetDropcapKeys[1]{%
+\newcommand\SetDropcapStyle[1]{% User-set general defaults.
   \gdef\@dropcapkeys{#1,}
 }
-\SetDropcapKeys{}
+\let\SetDropCapStyle\SetDropcapStyle\relax % compatibility
+\SetDropcapStyle{}
 %
 \newcommand\@parsedropcapstyle {%
   \StrDel{\@dropcapkeys}{\space}[\@dropcapkeys]%

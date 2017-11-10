@@ -52,10 +52,12 @@
 \newif \if@hangante
 \newcommand*{\L@ante}{}
 \newcommand*{\L@color}{}
+\newcommand*{\L@descender}{}
 \newdimen\DropcapWidth
 \newdimen\DropcapHeight
 \newdimen\DropcapDepth
 \let\DCantefont\relax
+\newcommand\DefaultLdescender{up}
 \define@key{L}{lines}{\setcounter{DC@lines}{#1}}
 \define@key{L}{depth}{\setcounter{L@depth}{#1}}
 \define@key{L}{ante}{\renewcommand*{\L@ante}{#1}}
@@ -67,6 +69,7 @@
 \define@key{L}{top}{\setlength{\L@top}{#1}}
 \define@key{L}{xoffset}{\setlength{\L@xoffset}{#1}}
 \define@key{L}{yoffset}{\setlength{\L@yoffset}{#1}}
+\define@key{L}{descender}{\renewcommand*{\L@descender}{#1}}
 %
 \newcommand\SetDropcapKeys[1]{%
   \gdef\@dropcapkeys{#1,}
@@ -119,6 +122,10 @@
   \StrBehind{\@dropcapkeys}{color=}[\@myLcolor]%
   \StrBefore{\@myLcolor}{,}[\@myLcolor]%
   \ifthenelse{\equal{\@myLcolor}{}}{}{\renewcommand*{\DefaultLcolor}{\@myLcolor}}%
+  %
+  \StrBehind{\@dropcapkeys}{descender=}[\@myLdescender]%
+  \StrBefore{\@myLdescender}{,}[\@myLdescender]%
+  \ifthenelse{\equal{\@myLdescender}{}}{}{\renewcommand*{\DefaultLdescender}{\@myLdescender}}%
 } % end \@parsedropcapstyle
 %
 \newlength\DC@Xheight%
@@ -172,9 +179,15 @@
      {\global\DC@squeezetrue}%
      {\global\DC@squeezefalse}%
    \ifDC@squeeze%
-     \FPdiv{\DC@Xscale}{\DC@adjheightnum}{\DC@chartotalnum}%
-     \setlength\DC@fontsize{\DC@Xscale\DC@height}%
-     \dropcapfont\fontsize{\DC@fontsize}{\DC@fontsize}\selectfont\textcolor{\L@color}{#1}%
+     \ifthenelse{\equal{\L@descender}{up}}{%
+       \FPdiv{\DC@Xscale}{\DC@adjheightnum}{\DC@chartotalnum}%
+       \setlength\DC@fontsize{\DC@Xscale\DC@height}%
+       \dropcapfont\fontsize{\DC@fontsize}{\DC@fontsize}\selectfont\textcolor{\L@color}{#1}%
+     }{%
+       \FPdiv{\DC@Xscale}{\DC@heightnum}{\DC@Xheightnum}%
+       \setlength\DC@fontsize{\DC@Xscale\DC@height}%
+       \dropcapfont\fontsize{\DC@fontsize}{\DC@fontsize}\selectfont\textcolor{\L@color}{#1}%
+     }%
    \else%
      \FPdiv{\DC@Xscale}{\DC@heightnum}{\DC@Xheightnum}%
      \setlength\DC@fontsize{\DC@Xscale\DC@height}%
@@ -197,6 +210,7 @@
   \setlength{\L@slope}{\DefaultSlope}%
   \renewcommand*{\L@color}{\DefaultLcolor}%
   \setlength{\L@top}{\DefaultDCtop}%
+  \renewcommand*{\L@descender}{\DefaultLdescender}%
   \setkeys{L}{#1}%
   \setlength{\L@Findent}{\L@gap+\L@kern}%
   \setlength{\L@Nindent}{-\L@kern}%
@@ -222,6 +236,13 @@
   \setlength{\DropcapHeight}{\ht\L@lbox}%
   \setlength{\DropcapDepth}{\dp\L@lbox}%
   \addtocounter{DC@lines}{1}%
+  \ifDC@squeeze%
+    \ifthenelse{\equal{\L@descender}{down}}{%
+      \ifnum\value{L@depth}=0% %%%%%
+        \setcounter{L@depth}{1}%
+      \fi%
+    }{}%
+  \fi%
   \addtocounter{DC@lines}{\value{L@depth}}%
   \def\L@parshape{\c@DC@lines \the\L@Pindent \the\L@first}%
   \@tempcnta=\tw@%
@@ -235,18 +256,38 @@
   \parshape=\L@parshape\relax%
   \hspace{\L@xoffset}%
   \ifDC@squeeze%
-    \smash{%
-      \llap{%
+    \ifthenelse{\equal{\L@descender}{down}}{%
+      \smash{%
+        \llap{%
         \mbox{{\DCantefont\L@ante}}%
-        \raisebox{\L@yoffset-\value{DC@lines}\baselineskip+2\baselineskip+\DC@chardepth-\DC@maindescenderdepth}{\usebox{\L@lbox}}%
+        \raisebox{\L@yoffset-\value{DC@lines}\baselineskip+3\baselineskip}{\usebox{\L@lbox}}%
         \hskip \the\L@Findent%
+        }%
       }%
-    }%
+    }{}%
+    \ifthenelse{\equal{\L@descender}{up}}{%
+      \smash{%
+        \llap{%
+          \mbox{{\DCantefont\L@ante}}%
+          \raisebox{\L@yoffset-\value{DC@lines}\baselineskip+2\baselineskip+\value{L@depth}\baselineskip+\DC@chardepth-\DC@maindescenderdepth}{\usebox{\L@lbox}}%
+          \hskip \the\L@Findent%
+        }%
+      }%
+    }{}%
+    \ifthenelse{\equal{\L@descender}{off}}{%
+      \smash{%
+        \llap{%
+        \mbox{{\DCantefont\L@ante}}%
+        \raisebox{\L@yoffset-\value{DC@lines}\baselineskip+2\baselineskip+\value{L@depth}\baselineskip}{\usebox{\L@lbox}}%
+        \hskip \the\L@Findent%
+        }%
+      }%
+    }{}%
   \else%
     \smash{%
       \llap{%
       \mbox{{\DCantefont\L@ante}}%
-      \raisebox{\L@yoffset-\value{DC@lines}\baselineskip+2\baselineskip}{\usebox{\L@lbox}}%
+      \raisebox{\L@yoffset-\value{DC@lines}\baselineskip+2\baselineskip+\value{L@depth}\baselineskip}{\usebox{\L@lbox}}%
       \hskip \the\L@Findent%
       }%
     }%

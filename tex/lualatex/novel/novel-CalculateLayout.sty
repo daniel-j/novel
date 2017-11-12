@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-CalculateLayout.sty}%
-[2017/11/10 v1.43.6 LaTeX file (layout calculations)]
+[2017/11/16 v1.46 LaTeX file (layout calculations)]
 %%
 
 %%
@@ -288,7 +288,7 @@
 \setlength\nbs{\normalBaselineSkip}
 \gdef\nbsnum{\strip@pt\nbs} % just the numerical part
 %
-% This document class limits range of normal font point size:
+% This document class limits range of normal point size:
 \FPiflt{\Current@FontSizeNum}{8}%
   \ClassError{novel}{Normal fontsize must be at least 8pt^^J}%
    {In the class options, you chose a font size that is too small.^^J%
@@ -296,9 +296,9 @@
 \fi
 %
 \FPifgt{\Current@FontSizeNum}{18.1}%
-    \ClassError{novel}{Normal fontsize cannot exceed 18bp^^J}%
-     {In the class options, you chose a font size that is too large.^^J%
-     It cannot exceed 18bp.^^J}%
+  \ClassError{novel}{Normal fontsize cannot exceed 18bp^^J}%
+   {In the class options, you chose a font size that is too large.^^J%
+   It cannot exceed 18bp.^^J}%
 \fi
 % Alert when lines closer than generally-accepted usage:
 \FPmul{\@minBaselineSkipNum}{\Current@FontSizeNum}{1.24}

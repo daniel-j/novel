@@ -204,8 +204,6 @@ function closeall() {
       <li><a href="#h2.7">2.7 xml</a></li>
       <li><a href="#h2.8">2.8 coverart</a></li>
       <li><a href="#h2.9">2.9 unblock (dev)</a></li>
-      <li><a href="#h2.10">2.10 mtoff (dev)</a></li>
-      <li><a href="#h2.11">2.11 polyoff (dev)</a></li>
     </ul>
   </li><!-- end 2 -->
 
@@ -344,7 +342,15 @@ function closeall() {
           <li><a href="#h5.3.1">5.3.1 \SetScenebreakIndent</a></li>
         </ul>
       </li><!-- end 5.3 -->
-      <li id="l5.4"><span class="n" style="visibility:hidden"></span><a href="#h5.4">5.4 Chapter Numbering</a></li><!-- end 5.4 -->
+      <li id="l5.4"><span class="n" style="visibility:hidden"></span><a href="#h5.4">5.4 Chapter Numbering</a>
+      </li><!-- end 5.4 -->
+      <li id="l5.5"><span class="n"></span><a href="#h5.5">5.5 First Lines</a>
+        <ul id="u5.5">
+          <li><a href="#h5.5.1">5.5.1 First Character Special</a></li>
+          <li><a href="#h5.5.2">5.5.2 First Line Small Caps</a></li>
+          <li><a href="#h5.5.3">5.5.3 Drop Caps</a></li>
+        </ul>
+      </li><!-- end 5.5 -->
     </ul>
   </li><!-- end 5 -->
 
@@ -472,6 +478,7 @@ function closeall() {
               <li><a href="#h8.3.2.10">8.3.2.10 Author's Note</a></li>
               <li><a href="#h8.3.2.11">8.3.2.11 Map</a></li>
               <li><a href="#h8.3.2.12">8.3.2.12 Second Half-Title</a></li>
+              <li><a href="#h8.3.2.13">8.3.2.13 End of Front Matter</a></li>
             </ul>
           </li>
           <li id="l8.3.3"><span class="n"></span><a href="#h8.3.3">8.3.3 Main Matter</a>
@@ -567,8 +574,7 @@ function closeall() {
 <!-- **************************************************************************************** -->
 
 <h1 id="h0">Document class <i>novel</i> - documentation</h1>
-<p><b>CAUTION: You are looking at experimental stuff, from GitHub. Parts of this documentation may be out of sync with experimental code changes.</b></p>
-<p class="noindent">Version: 1.43.6, 2017/11/10. <span id="screennoscript" class="screennoscript"><b>For enchanced navigation of this file, turn on JavaScript.</b></span></p>
+<p class="noindent">Version: 1.46, 2017/11/16. <span id="screennoscript" class="screennoscript"><b>For enchanced navigation of this file, turn on JavaScript.</b></span></p>
 <div><script type="text/javascript">if(document.getElementById("screennoscript")){document.getElementById("screennoscript").style.display="none";}</script></div>
 <p class="noindent" style="position:relative"><span style="position:absolute; top:-.1em; font-size:150%; color:#008000">&#9786;</span>&nbsp; &nbsp; &nbsp; An example novel, text and cover, can be found at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/">GitHub project page, https://github.com/RobtAll/novel/</a>, in the "other" folder. You will find its TeX source and the resulting PDF. The PDF text and cover meet submission standards for major American print-on-demand services.</p>
 <p>A smaller example document is <i>novel-example.tex</i>, which can be found in the <i>extras</i> folder within this documentation.</p>
@@ -653,7 +659,7 @@ function closeall() {
 <div class="d5" id="d1.2.1.1">
 <p class="noindent">The pre-loaded <i>polyglossia</i> package (not <i>babel</i>) provides language support. By default, <i>novel</i> is configured for American English.</p>
 <p>If your document's language is something else, or if you will be writing in multiple languages, see the <i>polyglossia</i> package documentation regarding <code>\setdefaultlanguage</code> and other commands.</p>
-</div><!-- end 1.2.1.1 -->
+</div><!-- end 1.2.2.2 -->
 </div><!-- end 1.2.1 -->
 
 <h4 id="h1.2.2">1.2.2. Do Not Load Fonts via <code>\usepackage</code> or <code>\RequirePackage</code></h4>
@@ -809,21 +815,6 @@ function closeall() {
 <p>The odds that you will need a forbidden package are small, because they generally pertain to layout for mathematical and academic papers (tables, floats, equations, diagrams, etc.).</p>
 <p>If you specify document class option <i>unblock</i> then the list of forbidden packages will be disregarded by <i>novel</i>. Use at your own risk! This option is really intended for the convenience of developers, rather than ordinary users.</p>
 </div><!-- end 2.9 -->
-
-<h3 id="h2.10">2.10. mtoff  (primarily for developer use)</h3>
-<div class="d3" id="d2.10">
-<p class="noindent">By default, the <i>microtype</i> package is automatically loaded and configured. Class option <code>mtoff</code> does not load <i>microtype</i>.</p>
-<p>Sometimes, erroneous code throwns an error message about <code>MT@res@a</code>. This message is from <i>microtype</i>, but it does not identify the problem (which was caused by something else). With <code>mtoff</code> you will get a different error message, which might help you get closer to the cause of the problem.</p>
-</div><!-- end 2.10 -->
-
-<h3 id="h2.11">2.11. polyoff  (primarily for developer use)</h3>
-<div class="d3" id="d2.11">
-<p class="noindent">By default, the <i>polyglossia</i> package is automatically loaded and configured. Class option <code>polyoff</code> does not load <i>polyglossia</i>. Instead, the <i>babel</i> package will be loaded and configured.</p>
-<p>If you use <code>polyoff</code> and get an error message about <i>babel</i> not being able to find language <i>english</i>, here are two possible solutions:</p>
-<p>1. Close your TeX editor (if you are using one). Delete the *.aux and *.synctex.gz files. Then re-compile.</p>
-<p>2. If that did not fix: Close your TeX editor (if you are using one). Delete the *.aux and *.syctex.gz files. Create an empty file named <i>babel-english.sty</i> and place it in the same folder as your main *.tex document. Then re-compile.</p>
-<p>Note that if you see this problem, it is not caused by the <i>novel</i> document class.</p>
-</div><!-- end 2.11 -->
 
 
 </div><!-- end 2 -->
@@ -1065,6 +1056,7 @@ AnotherFeature=Setting,%<br/>
 <p>If you have the proper license, you can use a commercial font. For example:</p>
 <p class="code"><code>\SetParentFont{Adobe Garamond Pro}</code></p>
 <p><b>See how easy that is?</b> By default, <i>novel</i> will apply TeX Ligatures and Kerning to the <i>parentfont</i> and all its descendants. Common Ligatures and OldStyle numbers will be added for the main <i>textfont</i>. This is ideal for fiction.</p>
+
 </div><!-- end 4.2.1.1 -->
 
 <h5 id="h4.2.1.2">4.2.1.2. <code>\SetFontSize{<em>length</em>}</code></h5>
@@ -1097,7 +1089,7 @@ AnotherFeature=Setting,%<br/>
 
 <h4 id="h4.2.3">4.2.3. Advanced: The Deco Font</h4>
 <div class="d4" id="d4.2.3">
-<p class="noindent">Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <i>\decoglyph</i> and <i>\acronym</i> commands. From <i>novel</i> version 1.46, it also provides some characters for use with drop caps.</p>
+<p class="noindent">Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <i>\decoglyph</i> and <i>\acronym</i> commands.</p>
 <p>Normally, you do not need to configure this font, as it is automatic. The only reason for changng it is if you are an advanced user, who wishes to use a substitute font with different decorations. However, you may <i>not</i> specify just any font! The substitute must be an edited version of <i>NovelDeco.otf</i>, with a different font name. If you don't know what that means, then don't do it.</p>
 <p class="code">
 <code>\SetDecoFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.3">5.1.3.3</a></em>
@@ -1560,93 +1552,6 @@ In the latter days of the Dorf dynasty, a marvelous apparition sent the King's g
 \end{ChapterStart}</small></code></p>
 </div><!-- end 5.1.4.2 -->
 </div><!-- end 5.1.4 -->
-
-<h4 id="h5.1.5">5.1.5. First Lines</h4>
-<div class="d4" id="d5.1.5">
-<p class="noindent">Often, the first line of chapter text is typeset with a special effect. The first letter may rise above the rest, perhaps in a distinctive font. Or, the first line may be set in small caps. Both effects may be used together.</p>
-
-<h5 id="h5.1.5.1">5.1.5.1. First Letter Special</h5>
-<div class="d5" id="d5.1.5.1">
-<p class="noindent">The <code>\charscale</code> command is a simple way to place the opening letter at larger font size. You can also call for a different font, or other special effect. Here is an example, where <code>\alexbrush</code> was defined to be the font <i>Alex Brush</i>, using <code>\NewFontFace</code> in Preamble:</p>
-<p class="code"><code>
-\charscale[2]{{\alexbrush I}}t was a dark and stormy night. Lord Withens crept out the back door of his mansion, and sneaked over to the stables. Alas, he lost his way, it being dark. But you knew that.
-</code></p>
-<p class="centerimg"><img src="html-resources/firstchar.png" width="423" height="81" alt="first character special"/></p>
-<p>Whatever you do, <i>always</i> wrap the code in the <code>\charscale</code> command (even at scale 1). If you don't, then the line (and all following on that page) may be pushed off-grid.</p>
-<p>An enlarged capital letter will usually be followed by ordinary lowercase letters, so its scale will appear to be larger than you set it. You may also wish to add or subtract some <code>\hspace</code> between the special letter and the following text.</p>
-</div><!-- end 5.1.5.1 -->
-
-<h5 id="h5.1.5.2">5.1.5.2. First Line as Small Caps</h5>
-<div class="d5" id="d5.1.5.2">
-<p class="noindent">The <i>magaz</i> package is pre-configured in <i>novel</i> class. Use the <code>\FirstLine</code> command to place the first line of a paragraph in small caps. This example combines the small caps with an initial letter at enlarged size. Note that the special first letter goes <em>inside</em> the <code>\FirstLine</code> command:</p>
-<p class="code"><code>
-\FirstLine{\charscale[1.6]{I}t was a dark and stormy night. Lord Withens crept out the back door of his mansion, and sneaked over to the stables. Alas, he lost his way, it being dark. But you knew that.}
-</code></p>
-<p class="centerimg"><img src="html-resources/firstcharandline.png" width="427" height="74" alt="first character special, first line small caps"/></p>
-</div><!-- end 5.1.5.2 -->
-</div><!-- end 5.1.5 -->
-
-<h4 id="h5.1.6">5.1.6. Drop Cap Letter</h4>
-<div class="d4" id="d5.1.6">
-<p><b>CAUTION: You are looking at experimental code, from GitHub. This is being re-worked. Do not rely on this documentation regarding drop caps.</b></p>
-<p class="noindent">A drop cap is a letter that occupies two or more lines, causing the reaminder of the text to flow around it. This is very attractive in some books, especially those with long chapters. But if your book has numerous short chapters, the effect may be tedious. Don't do it just because you can.</p>
-<p>From version 1.46, <i>novel</i> has a built-in <code>\dropcap</code> command. It is based on the technology of the <i>lettrine</i> package, but does not load <i>lettrine</i> due to some possible incompatibilities. So, if you wish to have a drop cap, be sure to use the <code>\dropcap</code> command, not <code>\lettrine</code>. Many (but not all) of the settings are similar. Particularly notice that <code>\dropcap</code> has only one mandatory argument.</p>
-<p class="code"><code>\dropcap[<em>comma-separated keys</em>]{<em>letter</em>}</code></p>
-<p>The available keys are:</p>
-<p class="code"><code>
-lines=<em>integer</em> % Number of lines in the drop cap. Default 2.<br/>
-depth=<em>integer</em> % Use 1, if the letter has a large descender. Default 0.<br/>
-gap=<em>length</em> % From drop cap to textblock at its right. Default 0.25em.<br/>
-&nbsp; &nbsp; &nbsp; <i>(novel) gap = (lettrine) findent + nindent</i><br/>
-kern=<em>length</em> % Typically &lt;=0em, moves the first line of text. Default 0em.<br/>
-&nbsp; &nbsp; &nbsp; <i>(novel) kern = (lettrine) &ndash;nindent</i><br/>
-lraise=<em>length</em> % Raises the drop cap. Default 0em.<br/>
-loversize=<em>number</em> % Applies (scale = 1 + oversize) to the drop cap. Default 0.<br/>
-slope=<em>number</em> % Serially changes the following textblock indents. Default 0.<br/>
-color=<em>colorname</em> % Requires class option graytext. Default black.<br/>
-ante=<em>letter</em> % Places the letter prior to the drop cap. Default empty.<br/>
-lhang=<em>length</em> % Moves drop cap (and ante) left or right. Default 0em.<br/>
-align=<em>length</em> % Aligns the X-height of the drop cap to <i>length</i> above upper baseline.
-</code></p>
-<p>The <code>\dropcap</code> command does <i>not</i> use keys or settings corresponding to <i>lettrine's</i> settings of grid, DiscardVspace, realheight, or image. The drop cap will always remain on grid, and will never push the text down if the drop cap rises above the first line.</p>
-<p>If you wish to use an image, then place the image using <i>novel's</i> own method of <code>\InlineImage</code>. The drop cap image must be prepared according to the requirements in this documentation, at 100% scale and resolution. If you wish to align the bottom of the image with the last line in the drop cap:</p>
-<p class="code"><code>\dropcap{\InlineImage[0em,b]{yourimage.png}}</code></p>
-<p>To align it with the descenders of the main text, try <code>[0em,b-0.2\nfs]</code> more or less.</p>
-
-<h5 id="h5.1.6.1">5.1.6.1. Drop Cap Image (lettrine)</h5>
-<div class="d5" id="d5.1.6.1">
-<p class="noindent">If you wish to place an image as drop cap, use the <code>\lettrine</code> command as described above. However, <i>do not use the lettrine</i> <code>image</code> <i>option</i>. Instead place <code>\InlineImage</code> inside the lettrine. Note that the image file extension (png, jpeg, or jpg) must be included; no other image format is acceptable in <i>novel</i>. Example, assuming that <i>Oimage.png</i> exists:</p>
-<p class="code"><code>
-\lettrine[lines=3,findent=0.3\nfs,nindent=0em]{\InlineImage[0em,b-\normaldescender]{Oimage.png}}{nly} a Lord, such as Withens, would have ridden his horse through such a dark and stormy night. Maybe some other horse, but not that one, which was quite particular about its rider being a nobleman.
-</code></p>
-<p>Note that the image has vertical offset <code>[b-\normaldescender]</code>. As with any <code>\InlineImage</code> the <code>b</code> sets the image to align by bottom, rather than the default top. The <code>-\normaldescender</code> puts the image a little lower than the text baseline; your own setting may vary.</p>
-<p>Since the image must be at exact size and resolution, how do you know what that should be? After all your layout settings are final, do a test run, including code like this, with the number of lines changed as needed:</p>
-<p class="code"><code>
-\lettrine[lines=3]{\framebox{O}}{nce} upon a time...\par
-</code></p>
-<p>If the drop cap will be from a particular font, then style the O in that font.</p>
-<p>After it compiles, open that page in an image editor such as GIMP. Use resolution 300dpi, with anti-aliasing. Locate the framed drop cap, and crop the image down to the size of the frame (its outside boundary). You may then use that as the basis for creating an image pertaining to that letter.</p>
-<p>Note that letters with diacritical marks will have the marks rising above, or descending below, the space that would normally be occupied by the unmarked letter. If you need to use a marked letter, you can compare the box size of its marked an unmarked versions. Then you can decide whether or not to let the mark dangle over a white area in the image, or be part of the general decoration. It's up to you.<p>
-<p>My observation is that for most fonts, the width of the box is a little more than it really needs to be, probably because serifs push it outwards.
-<p>A very narrow letter, particularly I and J, might benefit from a wider image. The widest letters are usually M and W.</p>
-<p>Here is how it might work if you are using the default <i>Libertinus Serif</i> fonts, with a 3-line drop cap:<p>
-<p class="code"><code>
-\lettrine[lines=3]{\framebox{O}}{nce} upon a time\\
-the castle\\
-fearsome knight\\
-dragon in the moat.\par
-</code></p>
-<p>When the boxed O is isolated, its demensions (in pixels) will depend on your normal font size and normal baseline skip, as well as on which letter appears in the drop cap. In my case, the box was 186x179 pixels at 300dpi, incuding the box frame. In GIMP I whited-out the frame. I decided to make the image square by trimming 3px from left, 4px from right. Then I added a layer underneath, filled it with white, and used the "difference clouds" filter with foreground mid-gray. On the layer with O, I used color-to-alph to remove the white, leaving my with a black O over the clouds. I inverted the O to make it white. Select all, select rounded rectangle 30%, invert selection, fill with white. Image mode grayscale, flatten image. Export as png. Post-process in GraphicsMagick (as usual for any image in <i>novel</i> class). Finally:</p>
-<p class="code"><code>
-\lettrine[lines=3]{\InlineImage[0em,b-\normaldescender]{Oimage.png}}{nce} upon a time\\
-the castle\\
-fearsome knight\\
-dragon in the moat.\par
-</code></p>
-<p>Don't forget to remove any such test code from your working document!</p>
-<p>So, in a graphics program (such as GIMP) I created a new grayscale image, 168x168 pixels at 300dpi. It requires some experimentation to choose the font size for the O, because it is not necessarily the main document font, so the calculations in the log file do not apply.</p>
-</div><!-- end 5.1.6.1 -->
-</div><!-- end 5.1.6 -->
 </div><!-- end 5.1 -->
 
 <h3 id="h5.2">5.2. Continuously Running Chapters</h3>
@@ -1729,6 +1634,39 @@ Unfortunately, novelists of that era had so little to write about, or they would
 </code></p>
 <p class="centerimg"><img src="html-resources/robberies.png" width="411" height="98" title="odinal chapter numbering" alt="ordinal chapter numbering"/></p>
 </div><!-- end 5.4 -->
+
+<h3 id="h5.5">5.5. First Lines and Drop Caps</h3>
+<div class="d3" id="d5.5">
+<p class="noindent">The first line of chapter text is often treated with a style of its own. Often, all or part of the first line is in small caps. The first letter may be larger than the rest. Or, the first letter may occupy several lines (sometimes using an image). This last effect is known as <i>drop cap</i> (French <i>lettrine</i>).</p>
+
+<h4 id="h5.5.1">5.5.1. First Character Special</h4>
+<div class="d4" id="d5.5.1">
+<p class="noindent">Use the <code>\charscale</code> command to size the first letter (or more than one letter) so that it stands above the remainder of the line. Remember that you will see a capital letter standing next to lowercase letters, so it will appear taller. You may also use a font command. Example, where <code>\NewFontFace\alexbrush{AlexBrush-Regular.ttf}</code> appears in Preamble:</p>
+<p class="code"><code>
+\noindent\charscale[1.6]{\alexbrush I}\hspace{0.2em}t was a dark and stormy night. Well, it really wasn't all that dark, seeing as how this story is set in Las Vegas.
+</code></p>
+<p class="centerimg"><img src="html-resources/firstletterspecial.png" width="680" height="83" alt="first letter special" title="first letter special"/></p>
+</div><!-- end 5.5.1 -->
+
+<h4 id="h5.5.2">5.5.2. First Line Small Caps</h4>
+<div class="d4" id="d5.5.2">
+<p class="noindent">If you want to place a portion of the first line in small caps, then simply do it using <code>\textsc{text}</code>. This effect can also continue to additional lines. That is, it does not automatically stop at the end of the first line.</p>
+<p>The <i>magaz</i> package is pre-loaded in <i>novel</i>. It provides the <code>\FirstLine</code> command, which takes the entire first paragraph as its argument. Place <code>\noindent</code> inside. You may also style the first letter (or more than one) as described above; the styled letter appears inside the <code>\FirstLine</code> command. Example:</p>
+<p class="code"><code>
+\FirstLine{\noindent\charscale[1.6]{\alexbrush I}\hspace{0.2em}t was a dark and stormy night. Well, it really wasn't all that dark, seeing as how this story is set in Las Vegas.}
+</code></p>
+<p class="centerimg"><img src="html-resources/firstlinespecial.png" width="682" height="84" alt="first line small caps" title="first line small caps"/></p>
+</div><!-- end 5.5.2 -->
+
+<h4 id="h5.5.3">5.5.3. Drop Cap</h4>
+<div class="d4" id="d5.5.3">
+<p class="noindent">The <i>lettrine</i> package is pre-loaded and pre-configured in <i>novel</i>. The configuration forces lines to remain on grid.</p>
+<p>For information, see the <i>lettrine</i> package documentation and examples. Be aware that creating good-looking drop caps is harder than you think, even with automation. That is because you will be visually comparing an enlarged letter to surrounding normal text, and it is difficult to align the drop cap with the margin, in a way that looks right. In any case, drop caps are rarely used in popular fiction.</p>
+<p>Do not use the <code>[image=true]</code> option with <i>lettrine</i>. Instead, place an image using <i>novel's</i> own <code>\InlineImage</code> command. If you set its vertical offset at baseline, then the bottom of the image will align with the baseline of the final line in the displaced text.</p>
+<p>Note that <code>\lettrine</code> has an additional argument after the drop cap.</p>
+<p>You cannot use <code>\lettrine</code> in conjunction with <code>\FirstLine</code>. This is a fact of life. If you wish to use a drop cap and also have the first line in small caps, do this: Use empty braces <code>{}</code> as the final argument to <code>\lettrine</code>. Then use <code>\textsc</code> with enough text to continue to the second line. Note where the first line ends. Then, move the closing brace of <code>\FirstLine</code> to that position. You may place the closing brace in the middle of a word, at a hyphenation point, if you wish (do not manually add the hyphen). This is the only method that provides a satisfactory layout.</p> 
+</div><!-- end 5.5.3 -->
+<!-- end 5.5 -->
 
 
 </div><!-- end 5 -->
@@ -2139,7 +2077,7 @@ This text is in lightgray, until the group ends.<br/>
 <p class="code">For jpg images: &nbsp; <i>JPEG-Colorspace: 1</i> and <i>JPEG-Colorspace-Name: GRAYSCALE</i></p>
 <p>The above codes are the only ones that matter. Even if other information claims that the image is grayscale, or lists the colors and they are all shades of gray, <em>that is not good enough</em>. When automated software reviews your PDF for compliance, it will look at the png <i>IHDR.color_type</i>, which must be 0, or the <i>JPEG-Colorspace</i>, which must be 1. Anything else fails. If the information is different, it means that you forget to change the mode from RGB to grayscale before you exported the image.</p>
 <p>You may ask: If the image was not really grayscale, can it be converted to grayscale using a simple command line, with ImageMagick or GraphicsMagick? The answer is yes, but don't do it that way. The reason is that there are many ways to map colors (even "gray colors") to true grayscale, and an automated conversion may produce unexpectedly light or dark results. It is better to do the conversion in a graphics program, where you can see what you are doing.</p>
-</div><!-- end 7.2.2 -->
+</div><!-- end 7.3.2 -->
 
 <h4 id="h7.2.3">7.2.3. Scaling Images after <code>\Rework</code>.</h4>
 <div class="d4" id="d7.2.3">
@@ -2159,7 +2097,7 @@ This text is in lightgray, until the group ends.<br/>
 <div class="d4" id="d7.3.1">
 <p class="noindent">The <code>\charscale</code> command pertains to text, not images. It is mentioned here because it can place text almost anywhere on a page, even overlapping other text or previously-placed images. Thus, it provides an image-like effect.</p>
 <p>The command is documented in <a href="#h6.1.2">section 6.1.2</a>.</p>
-</div><!-- end 7.3.1 -->
+</div><!-- end 7.4.1 -->
 
 <h4 id="h7.3.2">7.3.2 <code>\InlineImage[<em>hoffset,voffset</em>]{<em>imageFile.png or .jpg</em>}</code> and starred version</h4>
 <div class="d4" id="d7.3.2">
@@ -2691,7 +2629,13 @@ Finally, I would like to thank... \lipsum[1]<br/>
 <p><i style="cursor:help" title="Chicago Manual of Style">CMoS</i> recommends that a second Half-Title be the first page of main matter. Thus, it would be page 1, with the actual story beginning on page 3. But it acknowledges that a <i>common practice</i> is for a second Half-Title and its verso to remain part of front matter, so that main matter begins with the story on page 1. Although I have seen a few books that follow the <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> recommendation, it appears that the great majority of them follow the <i>common practice</i>.</p>
 <p>If your book has <a href="#h8.3.3.2">Part Separators</a> in main matter, then you can do without a second Half-Title.</p>
 </div><!-- end 8.3.2.12 -->
-</div><!-- end 8.3.2 -->
+
+<h5 id="h8.3.2.13">8.3.2.13. Final Page of Front Matter</h5>
+<div class="d5" id="d8.3.2.13">
+<p class="noindent">The final page of front matter is always verso. It is almost always blank. The easiest way to insert a blank page is to write <code>\cleartorecto</code> at the end of the preceding recto page.</p>
+<p>Why is the final page of front matter almost always blank? It is because it faces the opening page of the main story, and you don't want to show anything that detracts from the scene or mood. But there are exceptions. For example, an Epigraph might usefully contribute to the setting. Or, in the case of an old-style English murder mystery (where you already know that the murderer did it with arsenic to inherit the family estate), a map of the estate, or a family tree, would not detract from the setting. The choice is yours.</p>
+</div><!-- end 8.3.2.13 -->
+</div><!-- end 8.3.2.1 -->
 
 <h4 id="h8.3.3">8.3.3. Main Matter</h4>
 <div class="d4" id="d8.3.3">
@@ -2813,7 +2757,7 @@ Dirk Hardcase is a former... etc.\par<br/>
 <div class="d3" id="dA.1">
 <p>This command changes the <em>existing</em> Trim Size. If you do not use the <code>\SetTrimSize</code> command, then the existing Trim Size is the default. But if you do use <code>\SetTrimSize</code>, then you must leave that command as-is, and place <code>\ReworkTrimSize</code> later in the Preamble.</p>
 <p>If you used <code>\SetMediaSize</code>, you may leave that command as-is, or change it if you wish; the Trim Size does not care.</p>
-</div><!-- end A.1 -->
+</div><!-- A.1 -->
 
 <h3 id="hA.2">A.2. <code>\ReworkMargins{<em>top</em>}{<em>outside</em>}{<em>bottom</em>}{<em>inside</em>}</code></h3>
 <div class="d3" id="AF.2">
@@ -3295,7 +3239,6 @@ It was a dark and stormy night, etc.<br/>
 <div class="d3" id="uG.2">
 <p class="noindent">Solved. If you compile a document sucessfully, then re-compile with a different <code>\setdefaultlanguage</code> setting, then compile may fail the second time. It may stop with error message "You can't use \relax after \the."<p>
 <p>This depends on which languages are involved. The solution is simple: Discard the <i>*.aux</i> and <i>*.synctex.gz</i> files generated by previous compilation. Then try again.</p>
-</div><!-- end G.2 -->
 
 
 </div><!-- end G -->

@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2017/11/10 v1.43.6 LaTeX file (text macros usable within document body)]
+[2017/11/16 v1.46 LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -151,6 +151,8 @@
 %%
 % \smcp{} and \textsc{} small caps (Open Type) and \allsmcp{}:
 %
+\ExplSyntaxOn
+%
 \DeclareDocumentCommand \smcp { +m }
  {%
   {\AddFontFeature{Letters=SmallCaps}#1}%
@@ -164,6 +166,8 @@
    {\AddFontFeature{Letters=SmallCaps}\MakeLowercase{#1}}%
   }%
  }
+%
+\ExplSyntaxOff
 %
 \let\textsc\smcp\relax % unified
 \let\oldscshape\scshape\relax % in case needed later
@@ -193,8 +197,8 @@
   \definecolor[named]{gray8}{gray}{0.75}
   \definecolor[named]{gray9}{gray}{0.87}
 \else
-  \LetLtxMacro\my@color\color\relax
-  \LetLtxMacro\color\relax
+  \let\my@color\color\relax
+  \let\color\relax
   \DeclareDocumentCommand \color { o m }
    {%
    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.903215}}{\@undeclaredcolor[gray]{0.903215}}{}% shademargins
@@ -288,26 +292,28 @@
 % Do not use \\ or \par inside \charscale, but you sometimes need \par after it.
 % If the text is in a font other than usual, place the font command
 %   outside \charscale, not inside.
+\ExplSyntaxOn
 \DeclareDocumentCommand \charscale { s O{1} m }
- {%
+ {
   % Allows empty or blank to be used, and still provide default values:
-  \ifthenelse{\equal{#2}{}\OR\equal{#2}{\space}}{\def\@myargs{1}}{\def\@myargs{#2}}%
-  \StrDel{\@myargs}{\space}[\@myargsns]% needs {\space} not { }
-  \StrCut{\@myargsns}{,}{\@myscalet}{\@mycoord}%
-  \ifthenelse{\equal{\@myscalet}{}}{\def\@myscale{1}}{\def\@myscale{\@myscalet}}%
+  \ifthenelse{\equal{#2}{}\OR\equal{#2}{\space}}{\def\@myargs{1}}{\def\@myargs{#2}}
+  \StrDel{\@myargs}{\space}[\@myargsns] % needs {\space} not { }
+  \StrCut{\@myargsns}{,}{\@myscalet}{\@mycoord}
+  \ifthenelse{\equal{\@myscalet}{}}{\def\@myscale{1}}{\def\@myscale{\@myscalet}}
   \FPmax{\@myscale}{\@myscale}{0.5}% not permitted below this scale
-  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}%
-  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{\def\@myx{0pt}}{\def\@myx{\@myxt}}%
-  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{\def\@myy{0pt}}{\def\@myy{\@myyt}}%
-  \IfBooleanTF{#1}%
+  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}
+  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{\def\@myx{0pt}}{\def\@myx{\@myxt}}
+  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{\def\@myy{0pt}}{\def\@myy{\@myyt}}
+  \IfBooleanTF{#1}
   {% starred
     \ifvmode\else\unskip\fi%
     \stake\makebox[0pt][l]{\smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}}%
   }{% unstarred
     \stake\makebox[0pt][l]{\smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}}%
     \smash{\phantom{\scalebox{\@myscale}{#3}}}%
-  }%
- }%
+  }
+ }
+\ExplSyntaxOff
 %%
 
 
@@ -396,10 +402,9 @@
 {\raggedright\hyphenpenalty=10000\exhyphenpenalty=10000}
 {}
 %
-\newlength\@temphangl%
 \gdef\hangleft#1{% places content to left of usual position.
+  \newlength\@temphangl%
   \setlength\@temphangl{\widthof{#1}}%
-  \global\@temphangl=\@temphangl%
   \stake\hspace{-\@temphangl}#1%
 }
 %%
@@ -462,6 +467,7 @@
 \gdef\realmarker{\toggletrue{@realmarker}} % anywhere in text
 \gdef\fakemarker{\togglefalse{@realmarker}} % anywhere in text
 %%
+\ExplSyntaxOn
 %
 \DeclareDocumentCommand \sups { m }
  {%
@@ -497,38 +503,12 @@
   }%
  }% end \subs
 %
+\ExplSyntaxOff
 %%
 \let\textsuperscipt\sups\relax
 \let\textsubscript\subs\relax
 %%
 \gdef\specialblankline{\null} % deprecated
-%%
-
-
-%% New in v. 1.44: Visual left-right character bearings, for preparing drop caps.
-%% Use ONLY in a file prepared for this purpose. See Documentation.
-\DeclareDocumentCommand\depictbearings { m O{} m } {
-  \SetTrimSize{3in}{3.5in}
-  \SetMargins{0in}{0in}{0in}{0in}
-  \SetHeadFootStyle{0}
-  \SetLinesPerPage{14}
-  \SetFontSize{12bp}
-  \setlength\fboxsep{0pt}
-  \setlength\fboxrule{.1pt}
-  \SetParentFont[#2]{#3}
-  \AfterEndPreamble{\depictcharacterbearings{#1}}
-}
-%
-\gdef\depictcharacterbearings#1{%
-  \vspace*{5\nbs}
-  \charscale[10]{\fbox{#1}}\par
-  \null
-  \hspace{1pt}\rule{10em}{2pt} \charscale[0.6]{length 1em}\par
-  \charscale[0.6]{Font: \parentfontname}\par
-  \charscale[0.5]{Features: \parentfontfeatures}\par
-  \charscale[0.6]{Open in graphics program at 600 dpi.}\par
-  \charscale[0.6]{Size of em will be 1000 pixels. Measure inside box.}\par
-}
 %%
 
 

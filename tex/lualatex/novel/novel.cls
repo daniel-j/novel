@@ -17,11 +17,10 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/11/10 v1.43.6 LaTeX document class]
+\ProvidesClass{novel}[2017/11/16 v1.46 LaTeX document class]
 %%
-%% Version 1.44 is probably very stable.
-%% Version 1.44: General cleanup of docs and code, added \dropcap.
-%% Version 1.43: Some code cleanup. Restored math capability.
+%% Version 1.46: Possibly final version.
+%% Version 1.43: General cleanup of docs and code, for improved readbaility.
 %% Version 1.42: Greatly improved HTML documentation.
 %% Version 1.41: Improved HTML documentation.
 %% Versions 1.40.x: Incremental minor changes, leading to 1.42.
@@ -74,7 +73,6 @@
 \ifluatex
   % New with TeXlive 2016. Removes unnecessary File Data:
   \pdfvariable suppressoptionalinfo 511 % writes only ID to PDF Catalog
-  \pdfimageresolution=300 % only applies to images lacking internal resolution
 \else
   \ClassError{novel}{Must compile with LuaLaTeX 0.95+}{Sorry, LuaLaTeX only.%
     No pdfTeX, dvips, or XeTeX.}
@@ -348,13 +346,13 @@
 \RequirePackage{novel-Images}
 % Footnotes and endnotes:
 \RequirePackage{novel-Footnotes}
-% Drop Caps (new in v. 1.44):
-\RequirePackage{novel-DropCap}
 %%
 
 %% \AtEndPreamble sets defaults and calculates layout
 %% -----------------------------------------------------------------------------
 \AtEndPreamble{
+  % New in v. 1.44. Sets default resolution for images without internal dpi:
+  \pdfimageresolution=\@novimgres % from \SetFlexResolution. Default 300.
   % If user did not choose language, default is here. Sorry, Brits:
   % Macro \xpg@main@language is gdef'd by \setdefaultlanguage in polyglossia.
   \if@polyoff\else % polyoff v 1.44.
@@ -373,39 +371,12 @@
 %% -----------------------------------------------------------------------------
 \AtBeginDocument{ %
   % Find some useful measurements:
-  \gdef\@normalxheight{\heightof{x}} % backwards compatibility
+  \gdef\@normalxheight{\heightof{x}}
   \setlength\normalxheight{\@normalxheight}
   \global\normalxheight=\normalxheight
-  \setlength\normalSCxheight{\heightof{\scshape{x}}}
-  \global\normalSCxheight=\normalSCxheight
-  \gdef\@normalXheight{\heightof{X}} % backwards compatibility
+  \gdef\@normalXheight{\heightof{X}}
   \setlength\normalXheight{\@normalXheight}
   \global\normalXheight=\normalXheight
-  \setlength\normalAringheight{\heightof{Å}}
-  \global\normalAringheight=\normalAringheight
-  \setlength\normaldescender{\depthof{gjpqy}}
-  \global\normaldescender=\normaldescender
-  \setlength\normalMwidth{\widthof{M}}
-  \global\normalMwidth=\normalMwidth
-  \setlength\normalOwidth{\widthof{O}}
-  \global\normalOwidth=\normalOwidth
-  \setlength\normalWwidth{\widthof{W}}
-  \global\normalWwidth=\normalWwidth
-  \typeout{%
-    ..............................................................^^J%
-    Class `novel' Info: Summary of text sizes:^^J%
-    \string\nbs (normal baseline skip) = \the\nbs ^^J%
-    \string\nfs (normal font size) = \the\nfs ^^J%
-    \string\normalxheight (normal lowercase x height) = \the\normalxheight ^^J%
-    \string\normalSCxheight (normal small cap x height) = \the\normalSCxheight ^^J%
-    \string\normalXheight (normal uppercase X height) = \the\normalXheight ^^J%
-    \string\normalAringheight (normal uppercase Å height) = \the\normalAringheight ^^J%
-    \string\normaldescender (normal depth of lowercase gjpqy) = \the\normaldescender ^^J%
-    \string\normalMwidth (normal width of M) = \the\normalMwidth ^^J%
-    \string\normalOwidth (normal width of O) = \the\normalOwidth ^^J%
-    \string\normalWwidth (normal width of W) = \the\normalWwidth ^^J%
-    ..............................................................^^J%
-  }
   % Activate user choice of whether or not to indent after scenebreak commands:
   \if@indentAfterScenebreak\else
     \NoIndentAfterCmd{\scenebreak}
@@ -420,13 +391,6 @@
   \let\title\relax
   \let\author\relax
   \let\subtitle\relax
-  \@ifpackageloaded{lettrine}{%
-    \global\LettrineOnGridtrue%
-    \setlength\DiscardVskip{150pt}% practically infinite
-    \global\DiscardVskip=\DiscardVskip%
-    \ClassWarning{novel}{The `lettrine' package usually works OK, but^^J%
-     prefer the \string\dropcap\space command, native to `novel'. See docs.^^J}%
-  }{}%
   % Dealing with known incompatible packages:
   \if@novelunblock
     \gdef\sorry@no#1{} % let them be used
@@ -548,6 +512,7 @@
   % Must wait to see how \SetFootnoteMarker was used:
   \ifthenelse{\equal{\@myfnsymbols}{*}}{\setcounter{@maxfnsymbol}{8}}{}
   \ifthenelse{\equal{\@myfnsymbols}{†}}{\setcounter{@maxfnsymbol}{6}}{}
+  %%
 }
 %% end AtBeginDocument
 

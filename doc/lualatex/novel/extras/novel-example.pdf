@@ -9,10 +9,10 @@ stream
    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
      <rdf:Description rdf:about=""
          xmlns:xmp="http://ns.adobe.com/xap/1.0/">
-       <xmp:ModifyDate>2017-10-18T17:44:10-07:00</xmp:ModifyDate>
-       <xmp:CreateDate>2017-10-18T17:44:10-07:00</xmp:CreateDate>
+       <xmp:ModifyDate>2017-11-12T15:35:49-08:00</xmp:ModifyDate>
+       <xmp:CreateDate>2017-11-12T15:35:49-08:00</xmp:CreateDate>
        <xmp:CreatorTool>LuaLaTeX with novel and microtype</xmp:CreatorTool>
-      <xmp:MetadataDate>2017-10-18T17:44:10-07:00</xmp:MetadataDate>
+      <xmp:MetadataDate>2017-11-12T15:35:49-08:00</xmp:MetadataDate>
      </rdf:Description>
      <rdf:Description rdf:about=""
          xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -31,7 +31,7 @@ stream
      <rdf:Description rdf:about=""
          xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/">
        <xmpMM:DocumentID>uuid:A12D98E081B6A0EC2CBA2D468474F922</xmpMM:DocumentID>
-       <xmpMM:InstanceID>uuid:7F13185C0F58E1840EF639EC4966D07F</xmpMM:InstanceID>
+       <xmpMM:InstanceID>uuid:BAC1CE81BF7428C5E0ACC1097BAEA1AC</xmpMM:InstanceID>
        <xmpMM:RenditionClass>default</xmpMM:RenditionClass>
        <xmpMM:VersionID>1</xmpMM:VersionID>
      </rdf:Description>
@@ -747,11 +747,11 @@ stream
 endstream
 endobj
 61 0 obj
-<</Subtype/CIDFontType0C/Length 472       >>
+<</Subtype/CIDFontType0C/Length 467       >>
 stream
-  ETXLAD+NovelDeco Eøø ‹ø øøøø)³üû~Áù¡   ş  	ø"  $  % {„‰‘ETXLAD+NovelDeco1.44Copyright 2017 Robert Allgeyer. Copyright 2003-2012 Philipp H. Poll. Copyright 2012-2016 Khaled Hosny.NovelDecoAdobeIdentity   v      ql½_ãUŸúPã`úêsùü™Œ‹‹Š‰ıü™„‚‹ƒ‹ƒˆ‚†„ûo†’ˆ”‹“‹“”’ıı}‰ˆŠ‡‹ˆ‹ˆŒ‡ˆ újÁtvzpp z¢¢ œ¦¦vœt ø&   E  “‹ø§—øA˜—÷•®˜©•û‚–—øA˜—÷•®˜©•û‚–	:–Âÿ	‘
+  ETXLAD+NovelDeco Eøø ‹ø øøøø)³üû~Áù¡   ş  	ø"  $  % {„‰‘ETXLAD+NovelDeco1.46Copyright 2017 Robert Allgeyer. Copyright 2003-2012 Philipp H. Poll. Copyright 2012-2016 Khaled Hosny.NovelDecoAdobeIdentity   v      ql½_ãUŸúPã`úêsùü™Œ‹‹Š‰ıü™„‚‹ƒ‹ƒˆ‚†„ûo†’ˆ”‹“‹“”’ıı}‰ˆŠ‡‹ˆ‹ˆŒ‡ˆ újÁtvzpp z¢¢ œ¦¦vœt ø&   @  “‹ø§—øA˜—÷•®˜©•û‚–—øA˜—÷•®˜©•û‚–	:–Âÿ	‘
 ¯
-¯ÚÚ’l/
+¯ÚÚ’
 endstream
 endobj
 62 0 obj
@@ -1054,7 +1054,7 @@ endobj
 endobj
 79 0 obj
 <<
- /Title(Dark\040and\040Stormy)/Author(Dirk\040Hardcase)/Creator(LuaLaTeX\040with\040novel\040and\040microtype)/CreationDate(D:20171018174410-07'00')/ModDate(D:20171018174410-07'00')/Producer(LuaLaTeX\040with\040novel-pdfx\040and\040hyperref)/Trapped/False/GTS_PDFXVersion(PDF/X-1a:2001)/GTS_PDFXConformance(PDF/X-1a:2001)
+ /Title(Dark\040and\040Stormy)/Author(Dirk\040Hardcase)/Creator(LuaLaTeX\040with\040novel\040and\040microtype)/CreationDate(D:20171112153549-08'00')/ModDate(D:20171112153549-08'00')/Producer(LuaLaTeX\040with\040novel-pdfx\040and\040hyperref)/Trapped/False/GTS_PDFXVersion(PDF/X-1a:2001)/GTS_PDFXConformance(PDF/X-1a:2001)
 >>
 endobj
 xref
@@ -1067,16 +1067,16 @@ xref
 0000007442 00000 n 
 0000007302 00000 n 
 0000006849 00000 n 
-0000110267 00000 n 
-0000110605 00000 n 
+0000110262 00000 n 
+0000110600 00000 n 
 0000007751 00000 n 
 0000007608 00000 n 
 0000007551 00000 n 
 0000009282 00000 n 
 0000009139 00000 n 
 0000007837 00000 n 
-0000105662 00000 n 
-0000085887 00000 n 
+0000105657 00000 n 
+0000085882 00000 n 
 0000012261 00000 n 
 0000012118 00000 n 
 0000009414 00000 n 
@@ -1102,7 +1102,7 @@ xref
 0000058396 00000 n 
 0000058252 00000 n 
 0000047288 00000 n 
-0000110734 00000 n 
+0000110729 00000 n 
 0000064779 00000 n 
 0000064635 00000 n 
 0000058507 00000 n 
@@ -1121,26 +1121,26 @@ xref
 0000084287 00000 n 
 0000084315 00000 n 
 0000084419 00000 n 
-0000084970 00000 n 
-0000085178 00000 n 
-0000086019 00000 n 
-0000086196 00000 n 
-0000086594 00000 n 
-0000086975 00000 n 
-0000103692 00000 n 
-0000103908 00000 n 
-0000105800 00000 n 
-0000105983 00000 n 
-0000106073 00000 n 
-0000106142 00000 n 
-0000109119 00000 n 
-0000109342 00000 n 
-0000110413 00000 n 
-0000110822 00000 n 
-0000110883 00000 n 
-0000111246 00000 n 
+0000084965 00000 n 
+0000085173 00000 n 
+0000086014 00000 n 
+0000086191 00000 n 
+0000086589 00000 n 
+0000086970 00000 n 
+0000103687 00000 n 
+0000103903 00000 n 
+0000105795 00000 n 
+0000105978 00000 n 
+0000106068 00000 n 
+0000106137 00000 n 
+0000109114 00000 n 
+0000109337 00000 n 
+0000110408 00000 n 
+0000110817 00000 n 
+0000110878 00000 n 
+0000111241 00000 n 
 trailer
-<</Size 80/Root 78 0 R/Info 79 0 R/ID[<D461A6E0CAD549745A42D5561EF956EB> <D461A6E0CAD549745A42D5561EF956EB>]>>
+<</Size 80/Root 78 0 R/Info 79 0 R/ID[<C68C49AAB8F1B67C7E77E615CB03C21F> <C68C49AAB8F1B67C7E77E615CB03C21F>]>>
 startxref
-111590
+111585
 %%EOF

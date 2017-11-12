@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-ChapterScene.sty}%
-[2017/11/10 v1.43.6 LaTeX file (chapter and scene macros)]
+[2017/11/16 v1.46 LaTeX file (chapter and scene macros)]
 %%
 
 
@@ -87,6 +87,7 @@
 \newlength\@oldparindent
 %
 % The argument is the number of normal baselineskips high (integer GTE 4).
+\ExplSyntaxOn
 \DeclareDocumentEnvironment {ChapterStart} { O{\@setchapterstartheight} O{\@setchapterstart} }
 {%
   \gdef\@thiscsstyle{#2}%
@@ -133,7 +134,7 @@
   \global\parindent=\parindent%
   \nov@AfterGroup\NoIndentAfterThis% etextools and noindentafter
 }
-% end ChapterStart environment
+\ExplSyntaxOff % end ChapterStart environment
 
 
 %%
@@ -263,8 +264,7 @@
   \null
   \clearpage
 }
-%%
-
+%
 
 
 

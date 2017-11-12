@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/11/10 v1.43.6 LaTeX file (layout settings)]
+[2017/11/16 v1.46 LaTeX file (layout settings)]
 %%
 
 
@@ -50,15 +50,9 @@
 \newif \if@FontSizeSet
 \newif \if@ReworkTrimSet
 \newif \if@ReworkMarginsSet
-% For summary Info:
+%
 \newlength\normalxheight
-\newlength\normalSCxheight
 \newlength\normalXheight
-\newlength\normalAringheight
-\newlength\normaldescender
-\newlength\normalMwidth
-\newlength\normalOwidth
-\newlength\normalWwidth
 %%
 
 
@@ -75,8 +69,8 @@
 \newcommand\SetTrimSize[2]{%
   \global\@TrimSizeSettrue
   \ifthenelse{\dimtest{#1}{<}{2.99in}}{
-      \ClassError{novel}{Unacceptably small Trim Width}%
-       {Trim Width must be at least 3in.}%
+    \ClassError{novel}{Unacceptably small Trim Width}%
+     {Trim Width must be at least 3in.}%
   }{}
   \ifthenelse{\dimtest{#2}{<}{2.99in}}{
     \ClassError{novel}{Unacceptably small Trim Height}%
@@ -190,12 +184,12 @@
 %   header or footer (if possible), or reduce vertical margins (if possible).
 \newcommand\SetLinesPerPage[1]{
   \global\@LinesPerPageSettrue
-  \FPiflt{#1}{2}%
-    \ClassError{novel}{\string\SetLinesPerPage\ must be at least 2}%
-      {You requested less than two lines per page. Naughty!^^J}%
+  \FPiflt{#1}{1}%
+    \ClassError{novel}{\string\SetLinesPerPage\ must be at least 1}%
+      {You requested less than one line per page. Naughty!^^J}%
   \else\fi %
   \FPround{\temp@IntegerLines}{#1}{0}
-  \gdef\my@LinesPerPage{\temp@IntegerLines}
+  \def\my@LinesPerPage{\temp@IntegerLines}
 }
 % \SetFontSize{} may be in any units, even decimals: 12.2pt, 11.5bp, etc.
 % When packages load, the font size is temporarily set to 11pt at 15pt skip,
@@ -348,6 +342,22 @@
   }%
 }
 %%
+
+
+%% New in version 1.44: flexible images (without built-in resolution dpi)
+\gdef\@novimgres{300} % default (can only be set once)
+\gdef\@novereserror{%
+  \ClassError{novel}{\string\SetFlexResolution\space bad value}%
+  {Resolution must be integer from 200 to 9600. Default 300.}%
+}
+\newcommand\SetFlexResolution[1]{
+  \IfInteger{#1}{ %
+    \FPiflt{#1}{200}\@novereserror\else\fi %
+    \FPifgt{#1}{9600}\@novereserror\else\fi %
+    \gdef\@novimgres{#1} %
+  }{\@novreserror}
+}
+%
 
 
 %% Markers (superscript, subscripts):
@@ -584,26 +594,17 @@
   \global\@gotdecotrue
   \newfontface\decofont[#1,#3]{#2}
 }%
-% Used with novel-DropCap.sty (if it exists) new in v. 1.44:
-\newif \if@dropcapfontset
-\DeclareDocumentCommand \SetDropcapFont { O{} m O{} } {%
-  \novel@checkfeatures{#1,#3}
-  \gdef\@dropcapfontname{#2}
-  \global\@dropcapfontsettrue
-  \newfontfamily\dropcapfont[#1,#3]{#2}
-}%
-%
 %% For syntax consistency:
-\ExplSyntaxOn % necessary
+\ExplSyntaxOn
 \cs_new_eq:NN \NewFontFamily \newfontfamily
 \cs_new_eq:NN \NewFontFace \newfontface
 \cs_new_eq:NN \SetSansFont \setsansfont
 \cs_new_eq:NN \SetMonoFont \setmonofont
-\cs_new_eq:NN \SetDropCapFont \SetDropcapFont
+
 \cs_new_eq:NN \SetMathFont \setmathfont
 \cs_new_eq:NN \AddFontFeatures \addfontfeatures
 \cs_new_eq:NN \AddFontFeature \addfontfeatures
-\ExplSyntaxOff % necessary
+\ExplSyntaxOff
 %%
 %% \CreateFontFeature{substitutions}{feature code}
 % Problem: Font has one or more alternate glyphs that you would like to use,

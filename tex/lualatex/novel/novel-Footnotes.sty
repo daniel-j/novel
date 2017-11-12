@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Footnotes.sty}%
-[2017/11/10 v1.43.6 LaTeX file (commands for footnotes and endnotes)]
+[2017/11/16 v1.46 LaTeX file (commands for footnotes and endnotes)]
 %%
 
 
@@ -51,8 +51,8 @@
 \newtoggle{@usenomark} % when true: no mark, no increment count
 \newtoggle{@placedfootnotenumber} % true if any numerical footnote placed
 %
-\LetLtxMacro\my@oldfootnote\footnote\relax % copies the original definition
-\LetLtxMacro\footnote\relax % so it can be re-defined, below
+\let\my@oldfootnote\footnote\relax % copies the original definition
+\let\footnote\relax % so it can be re-defined, below
 %
 \gdef\@fourem{% length of rule separating footnotes from main text
   \vspace{-\nbs}

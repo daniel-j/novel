@@ -32,34 +32,36 @@
 %
 %% Now to activate the font definitions:
 %% The parent font, ancestor of the main font, and some others:
-\ifthenelse{\equal{\rmdefault}{lmr}}{%
-  % At this point, if \rmdefault is lmr, it means that the user did not choose
-  %   a different font. Then, Libertinus Serif or Latin Modern Roman
-  %   will be automatically set as \rmdefault:
-  \IfFontExistsTF{Libertinus Serif}{ % preferred default
-    \SetParentFont[%
-      BoldFont=libertinusserif-semibold.otf,%
-      BoldItalicFont=libertinusserif-semibolditalic.otf,%
-    ]{Libertinus Serif}
-  }{ % backup default:
-    \SetParentFont[%
-      SmallCapsFont={Latin Modern Roman Caps}%
-      ]{Latin Modern Roman}% only because it comes with LaTeX
-    \let\scshape\oldscshape % or small caps won't work
-    \let\smcp\oldscshape % ditto
+\if@parentfontset\else % bug fix v. 1.44
+  \ifthenelse{\equal{\rmdefault}{lmr}}{%
+    % At this point, if \rmdefault is lmr, it means that the user did not choose
+    %   a different font. Then, Libertinus Serif or Latin Modern Roman
+    %   will be automatically set as \rmdefault:
+    \IfFontExistsTF{Libertinus Serif}{ % preferred default
+      \SetParentFont[%
+        BoldFont=libertinusserif-semibold.otf,%
+        BoldItalicFont=libertinusserif-semibolditalic.otf,%
+      ]{Libertinus Serif}
+    }{ % backup default:
+      \SetParentFont[%
+        SmallCapsFont={Latin Modern Roman Caps}%
+        ]{Latin Modern Roman}% only because it comes with LaTeX
+      \let\scshape\oldscshape % or small caps won't work
+      \let\smcp\oldscshape % ditto
+    }%
+  }{% However, if \rmdefault is not lmr, it means that the user chose the font.
+    % If the choice was made via \SetParentFont, no problem. But if done by
+    %   incorrect method such as \setmainfont, \renewcommand\rmdefault,
+    %   or \usepackage{fontname}, then an error is thrown (warning prior to v 1.44):
+    \if@parentfontset\else
+      \ClassError{novel}{Wrong command used to set main font}%
+      {You attempted to define the main document font using a command such as^^J%
+      \string\renewcommand\string\rmdefault\space or \string\usepackage^^J%
+      or \string\setmainfont. These are incorrect in `novel' class.^^J%
+      Use \string\SetParentFont\space instead. See `novel' documentation.^^J}%
+    \fi
   }%
-}{% However, if \rmdefault is not lmr, it means that the user chose the font.
-  % If the choice was made via \SetParentFont, no problem. But if done by
-  %   incorrect method such as \setmainfont, \renewcommand\rmdefault,
-  %   or \usepackage{fontname}, then an error is thrown (warning prior to v 1.44):
-  \if@parentfontset\else
-    \ClassError{novel}{Wrong command used to set main font}%
-    {You attempted to define the main document font using a command such as^^J%
-    \string\renewcommand\string\rmdefault\space or \string\usepackage^^J%
-    or \string\setmainfont. These are incorrect in `novel' class.^^J%
-    Use \string\SetParentFont\space instead. See `novel' documentation.^^J}%
-  \fi
-}%
+\fi
 % Now we are ready to set the main font:
 \setmainfont[\parentfontfeatures]{\parentfontname}
 \let\mainfont\rmfamily\relax % compatibility

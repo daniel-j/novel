@@ -75,8 +75,8 @@
 \newcommand\SetTrimSize[2]{%
   \global\@TrimSizeSettrue
   \ifthenelse{\dimtest{#1}{<}{2.99in}}{
-    \ClassError{novel}{Unacceptably small Trim Width}%
-     {Trim Width must be at least 3in.}%
+      \ClassError{novel}{Unacceptably small Trim Width}%
+       {Trim Width must be at least 3in.}%
   }{}
   \ifthenelse{\dimtest{#2}{<}{2.99in}}{
     \ClassError{novel}{Unacceptably small Trim Height}%
@@ -190,9 +190,9 @@
 %   header or footer (if possible), or reduce vertical margins (if possible).
 \newcommand\SetLinesPerPage[1]{
   \global\@LinesPerPageSettrue
-  \FPiflt{#1}{1}%
-    \ClassError{novel}{\string\SetLinesPerPage\ must be at least 1}%
-      {You requested less than one line per page. Naughty!^^J}%
+  \FPiflt{#1}{2}%
+    \ClassError{novel}{\string\SetLinesPerPage\ must be at least 2}%
+      {You requested less than two lines per page. Naughty!^^J}%
   \else\fi %
   \FPround{\temp@IntegerLines}{#1}{0}
   \gdef\my@LinesPerPage{\temp@IntegerLines}

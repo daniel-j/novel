@@ -505,6 +505,33 @@
 %%
 
 
+%% New in v. 1.44: Visual left-right character bearings, for preparing drop caps.
+%% Use ONLY in a file prepared for this purpose. See Documentation.
+\DeclareDocumentCommand\depictbearings { m O{} m } {
+  \SetTrimSize{3in}{3.5in}
+  \SetMargins{0in}{0in}{0in}{0in}
+  \SetHeadFootStyle{0}
+  \SetLinesPerPage{14}
+  \SetFontSize{12bp}
+  \setlength\fboxsep{0pt}
+  \setlength\fboxrule{.1pt}
+  \SetParentFont[#2]{#3}
+  \AfterEndPreamble{\depictcharacterbearings{#1}}
+}
+%
+\gdef\depictcharacterbearings#1{%
+  \vspace*{5\nbs}
+  \charscale[10]{\fbox{#1}}\par
+  \null
+  \hspace{1pt}\rule{10em}{2pt} \charscale[0.6]{length 1em}\par
+  \charscale[0.6]{Font: \parentfontname}\par
+  \charscale[0.5]{Features: \parentfontfeatures}\par
+  \charscale[0.6]{Open in graphics program at 600 dpi.}\par
+  \charscale[0.6]{Size of em will be 1000 pixels. Measure inside box.}\par
+}
+%%
+
+
 
 %%
 %% End of file `novel-TextMacros.sty'.

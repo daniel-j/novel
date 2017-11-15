@@ -512,6 +512,28 @@
 %%
 
 
+%% New in v. 1.46: Allows text to be placed (potentially) off-grid, with grid resuming after.
+\ExplSyntaxOn
+\DeclareDocumentEnvironment {linegap} { m }
+{% Only warning, since non-integer gap might be useful on a display page.
+  \FPifint{#1}\else%
+    \ClassWarning{novel}{Non-integer~linegap~on~page~\thepage.}%
+  \fi%
+  \par%
+  \null%
+  \vspace*{-\nbs}%
+  \begin{textblock*}{\textwidth}[0,0](0pt,0pt)%
+  \strut\par%
+  \vspace*{-\nbs}%
+}{% close the environment:
+  \end{textblock*}%
+  \par%
+  \vspace*{#1\nbs}%
+}
+\ExplSyntaxOff % end linegap environment
+%%
+
+
 
 %%
 %% End of file `novel-TextMacros.sty'.

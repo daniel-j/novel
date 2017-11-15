@@ -370,6 +370,16 @@
 %% \AtBeginDocument finishes the setup
 %% -----------------------------------------------------------------------------
 \AtBeginDocument{ %
+  \@ifpackageloaded{lettrine}{%
+    \LettrineOnGridtrue%
+    \setlength\DiscardVskip{10\nbs}% effectively infinite
+    \global\DiscardVskip=\DiscardVskip%
+    \setlength\DefaultFindent{0.25em}% about one space
+    \global\DefaultFindent=\DefaultFindent%
+    \setlength\DefaultNindent{0em}% uniform gap
+    \global\DefaultNindent=\DefaultNindent%
+    \setcounter{DefaultLines}{3}% more likely than 2.
+  }{}%
   % Find some useful measurements:
   \gdef\@normalxheight{\heightof{x}}
   \setlength\normalxheight{\@normalxheight}
@@ -377,6 +387,15 @@
   \gdef\@normalXheight{\heightof{X}}
   \setlength\normalXheight{\@normalXheight}
   \global\normalXheight=\normalXheight
+  \gdef\@normalscxheight{\heightof{\textsc{x}}}
+  \setlength\normalscxheight{\@normalscxheight}
+  \global\normalscxheight=\normalscxheight
+  \gdef\@normalAringheight{\heightof{Å}}
+  \setlength\normalAringheight{\@normalAringheight}
+  \global\normalAringheight=\normalAringheight
+  \gdef\@normaldescender{\depthof{gjpqy}}
+  \setlength\normaldescender{\@normaldescender}
+  \global\normaldescender=\normaldescender
   % Activate user choice of whether or not to indent after scenebreak commands:
   \if@indentAfterScenebreak\else
     \NoIndentAfterCmd{\scenebreak}

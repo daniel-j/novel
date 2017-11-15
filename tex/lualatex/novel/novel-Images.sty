@@ -159,8 +159,7 @@
 %
 %%
 
-
-
+%% RE-DEFINED in V. 1.46. Now must be placed within linegap environment.
 %% \BlockImage[alignment]{image}[text]
 % Alignment may have up to 3 comma-separated values. Default is [c]
 % First alignment: l, c, r (left, center, right).
@@ -175,8 +174,11 @@
 % If image is centered, the text will automatically be centered, so that
 % it necessarily overlies the image.
 % \forceindent or \backindent may be needed. Text may have several paragraphs.
-% Subsequent text (after all that) will clear the image bottom, and also
-% be at the baseline grid. Beware of using this command near bottom of page.
+% Beware of using this command near bottom of page.
+% Use linegap environment to clear both image and accompanying text.
+% To displace accompanying text, begin it with \vspace*{length}\par.
+% Use adjustwidth environment between linegap and BlockImage centered,
+%   if you have accompanying text that you wish to confine in width.
 \ExplSyntaxOn
 \DeclareDocumentCommand \BlockImage { O{c} m +O{} }{
   \iftoggle{@inheadfoot}{%
@@ -196,57 +198,27 @@
   \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{%
     \def\@myy{0pt}}{\def\@myy{\@myyt}%
   }
-  \newdimen\@sbsheight
+  %
   \ifthenelse{\equal{\@myalign}{c}\OR\equal{\@myalign}{}}{%
-    {\centering\strut\InlineImage*[{\@myx-0.5\imagewidth},{\@myy}]{#2}\par}
-    \vspace*{-\nbs}
-    {\centering\strut #3\par}
-    \setbox0=\vbox{{\centering #3\par}}
+    {\centering\InlineImage*[{\@myx-0.5\imagewidth},{\@myy}]{#2}\par}%
+    \vspace*{-\nbs}%
+    {\centering #3\par}%
   }{}
   \ifthenelse{\equal{\@myalign}{r}}{%
-    \noindent\InlineImage[{\textwidth-\imagewidth+\@myx},{\@myy}]{#2}\par%
+    \noindent\InlineImage*[{\textwidth-\imagewidth+\@myx},{\@myy}]{#2}\par%
     \vspace{-\nbs}
     \begin{adjustwidth}{0pt}{\imagewidth+\parindent}%
       #3\par%
     \end{adjustwidth}%
-    \setbox0=\vbox{%
-      \begin{adjustwidth}{0pt}{\imagewidth+\parindent}%
-        #3\par%
-      \end{adjustwidth}%
-    }%
   }{}
   \ifthenelse{\equal{\@myalign}{l}}{%
     \noindent\InlineImage*[{\@myx},{\@myy}]{#2}\par%
-    \vspace{-\nbs}
+    \vspace{-\nbs}%
     \begin{adjustwidth}{\imagewidth+\parindent}{0pt}%
       #3\par%
     \end{adjustwidth}%
-    \setbox0=\vbox{%
-      \begin{adjustwidth}{\imagewidth+\parindent}{0pt}%
-        #3\par%
-      \end{adjustwidth}%
-    }%
   }{}
-  % portion here, inspired by post from user Killian Foth,
-  % at stackoverflow.com, license CC-by-sa-3.0.
-  \@sbsheight=\ht0 \advance\@sbsheight by \dp0
-  \def\@sbsheightnum{\strip@pt\@sbsheight}
-  \FPdiv{\@roughlines}{\@sbsheightnum}{\nbsnum}
-  \FPadd{\@roughlines}{\@roughlines}{0.5} % round up, not down
-  \FPround{\@roughlines}{\@roughlines}{0}
-
-  \gdef\@imageheightnum{\strip@pt\@imageheight}%
-  \FPdiv{\@imagelines}{\@imageheightnum}{\nbsnum}%
-  \FPadd{\@imagelines}{\@imagelines}{0.5}% round up to integer, not down
-  \FPround{\@imagelines}{\@imagelines}{0}%
-  \FPclip{\@imagelines}{\@imagelines}%
-  \gdef\imagelineskip{\@imagelines}%
-  \FPclip{\@roughlines}{\@roughlines}
-  \FPadd{\@adjimagelines}{\imagelineskip}{1} % \imagelineskip from \InlineImage*
-  \FPsub{\@skipme}{\@adjimagelines}{\@roughlines}
-  \FPmax{\@skipme}{\@skipme}{0}
-  \vspace{\@skipme\nbs}
-}
+} % end \BlockImage
 \ExplSyntaxOff
 %%
 

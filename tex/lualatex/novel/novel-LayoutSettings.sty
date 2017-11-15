@@ -53,6 +53,9 @@
 %
 \newlength\normalxheight
 \newlength\normalXheight
+\newlength\normalscxheight
+\newlength\normalAringheight
+\newlength\normaldescender
 %%
 
 
@@ -243,7 +246,7 @@
 }
 \let\SetEmblem\SetEmblems% for convenience
 % If you want something fancier than \thepage:
-\gdef\SetPageNumberStyle#1{\gdef\pagenumberstyle{#1}}
+\gdef\SetPageNumberStyle#1{\gdef\pagenumberstyle{{\addfontfeature{Letters=ResetAll}#1}}}
 
 % See novel.cls for the accompanying AtBeginDocument routine.
 

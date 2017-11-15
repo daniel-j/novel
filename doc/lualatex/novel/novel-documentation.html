@@ -30,7 +30,7 @@ div.d5 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-rig
 div.d6 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
 div.page {padding:16px 0px 16px 0px; border-top:4px solid #505050;}
 div.codeblock {overflow:auto; margin:16px; padding: 8px; border: 1px solid #000000;}
-code {font-family:monospace,monospace; font-size:92%; color:#200050; background:transparent none; padding:0px 3px 0px 3px;}
+code {font-family:monospace,monospace; color:#200050; background:transparent none; padding:0px 3px 0px 3px;}
 *.smaller {font-weight:normal; font-size:88%;}
 *.noindent {text-indent:0px;}
 *.noindent1 {text-indent:0px; margin-top:8px;}
@@ -659,7 +659,7 @@ function closeall() {
 <div class="d5" id="d1.2.1.1">
 <p class="noindent">The pre-loaded <i>polyglossia</i> package (not <i>babel</i>) provides language support. By default, <i>novel</i> is configured for American English.</p>
 <p>If your document's language is something else, or if you will be writing in multiple languages, see the <i>polyglossia</i> package documentation regarding <code>\setdefaultlanguage</code> and other commands.</p>
-</div><!-- end 1.2.2.2 -->
+</div><!-- end 1.2.1.1 -->
 </div><!-- end 1.2.1 -->
 
 <h4 id="h1.2.2">1.2.2. Do Not Load Fonts via <code>\usepackage</code> or <code>\RequirePackage</code></h4>
@@ -1480,13 +1480,13 @@ In this context, "folio" means page number. The header (if any) is blank. If the
 <p>The styled text is limited to one line (no wrap). If you have a long chapter title or subtitle, then break it into pieces of manageable size, by repeating the command(s). Example:</p>
 <p class="code"><img class="floatright" src="html-resources/chaptertitlesubtitle.png" width="338" height="179" title="chapter title and subtitle, left aligned" alt="chapter title and subtitle, left aligned"/>
 <code><small>
-\begin{ChapterStart}
-\vspace{2\nbs}
-\ChapterTitle[l]{XV}
-\vspace{\nbs}
-\ChapterSubtitle[l]{In which Lord Withens, returned from his quest,}
-\ChapterSubtitle[l]{encounters an Army of Gnomes at his castle gate.}
-\end{\ChapterStart}
+\begin{ChapterStart}<br/>
+\vspace{2\nbs}<br/>
+\ChapterTitle[l]{XV}<br/>
+\vspace{\nbs}<br/>
+\ChapterSubtitle[l]{In which Lord Withens, returned from his quest,}<br/>
+\ChapterSubtitle[l]{encounters an Army of Gnomes at his castle gate.}<br/>
+\end{\ChapterStart}<br/>
 Following the dark and stormy night, it was a bright and sunny day. That did nothing to improve the demeanor of Lord Withens, who was still soaked from riding through the rain. ...\par
 </small></code></p>
 </div><!-- end 5.1.3.2 -->
@@ -1660,13 +1660,13 @@ Unfortunately, novelists of that era had so little to write about, or they would
 
 <h4 id="h5.5.3">5.5.3. Drop Cap</h4>
 <div class="d4" id="d5.5.3">
-<p class="noindent">The <i>lettrine</i> package is pre-loaded and pre-configured in <i>novel</i>. The configuration forces lines to remain on grid.</p>
+<p class="noindent">The <i>lettrine</i> package is pre-loaded and pre-configured in <i>novel</i>. The configuration forces lines to remain on grid. Lines are not added if the drop cap rises above prevailing text (DiscardVskip is very large). The Findent is set to 0.25em, and Nindent is set to 0em.</p>
 <p>For information, see the <i>lettrine</i> package documentation and examples. Be aware that creating good-looking drop caps is harder than you think, even with automation. That is because you will be visually comparing an enlarged letter to surrounding normal text, and it is difficult to align the drop cap with the margin, in a way that looks right. In any case, drop caps are rarely used in popular fiction.</p>
 <p>Do not use the <code>[image=true]</code> option with <i>lettrine</i>. Instead, place an image using <i>novel's</i> own <code>\InlineImage</code> command. If you set its vertical offset at baseline, then the bottom of the image will align with the baseline of the final line in the displaced text.</p>
 <p>Note that <code>\lettrine</code> has an additional argument after the drop cap.</p>
 <p>You cannot use <code>\lettrine</code> in conjunction with <code>\FirstLine</code>. This is a fact of life. If you wish to use a drop cap and also have the first line in small caps, do this: Use empty braces <code>{}</code> as the final argument to <code>\lettrine</code>. Then use <code>\textsc</code> with enough text to continue to the second line. Note where the first line ends. Then, move the closing brace of <code>\FirstLine</code> to that position. You may place the closing brace in the middle of a word, at a hyphenation point, if you wish (do not manually add the hyphen). This is the only method that provides a satisfactory layout.</p> 
 </div><!-- end 5.5.3 -->
-<!-- end 5.5 -->
+</div><!-- end 5.5 -->
 
 
 </div><!-- end 5 -->
@@ -1845,7 +1845,7 @@ This text is in lightgray, until the group ends.<br/>
 <div class="d4" id="d6.3.1">
 <p class="noindent">&bull; The <code>\raisebox</code> command does not play well with novel. It can be used, but there is the great risk of disturbing the line grid. Use <code><a href="#h6.1.2">\charscale</a></code> instead.</p>
 <p>&bull; If you must use the <code>\vspace</code> command (or its relative, <code>\vskip</code>) be sure to measure the space in units of <code>\nbs</code> (normal baseline skip).</p>
-<p>&bull; Avoid the <i>minipage</i> and <i>parbox</i> environments. These are likely to disrupt the line grid. When that happens, restoring the grid is your own responsibility. You may find the <i>adjustwidth</i> environment to be a useful alternative.</p>
+<p>&bull; Avoid the <i>minipage</i> and <i>parbox</i> environments. These are likely to disrupt the line grid. When that happens, restoring the grid is your own responsibility. You may find the <i>adjustwidth</i> and <i>linegap</i> environments to be useful, as described in the next section.</p>
 <p>&bull; In most cases, do not use the center environment. You may use <code>{\centering ... \par}</code> instead, for a single paragraph. The center environment may cause the text to go off-grid. That's not a problem on some stand-alone pages where you don't care about the grid, but it is ugly in the middle of running text.</p>
 <p>&bull; Avoid positioning via the <i>textblock</i> or <i>textblock*</i> environments (package <i>textpos</i>). Actually, <i>novel</i> uses that code internally. But if not handled with more care than usual, positioned text can disrupt the baseline and position of surrounding text. You may use <code><a href="#h6.1.2">\charscale</a></code> to position small amounts of text safely, but not on a paragraph basis. Images have built-in positioning arguments, which may also be useful for positioned text.</p>
 <p>&bull; Do not use floats. If you try, then <i>novel</i> may intercept them with a nasty message.</p>
@@ -1859,6 +1859,15 @@ This text is in lightgray, until the group ends.<br/>
 <p class="noindent">This is not a complete list. It merely addresses a few situations that you are likely to encounter, without the need for elaborate code, and without loading additional packages.</p>
 <p style="margin-top:10pt"><code>\begin{adjustwidth}{<em>left</em>}{<em>right</em>} ... \end{adjustwidth}</code></p>
 <p>This environment, from the included <i>changepage</i> package, is the most useful way to create block indents. The included text may have multiple paragraphs and span pages. The left and right arguments are lengths, being the amount to <em>increase</em> the respective margins from their normal values.</p>
+<p style="margin-top:10pt"><code>\begin{linegap}{<em>integer</em>} ... \end{linegap}</code></p>
+<p>This environment creates a gap of <i>integer</i> lines. Then, the following text will be on-grid, regardless of what you place inside the environment. If the contents are small relative to the gap, there will be a lot of white space. If the contents are too large, then they will overflow the gap and overlap the following text, rather than push it down.</p>
+<p>This environment is particularly useful when it contains highly styled text, because you don't have to calculate a <code>\vspace</code> to restore the following line grid. Pick a likely gap, then make it larger or smaller as desired.</p>
+<p>The environment fails if it crosses a page boundary. There will be no error, merely an undesired result. Be sure to plan your writing so that the linegap remains on a single page.</p>
+<p>If you use a non-integer linegap, it will be processed that way, but there will be a warning in the log file. The only reason it is not an error, is that a non-integer linegap might be useful on some display pages.</p>
+<p style="margin-top:10pt"><code>\rotatebox{<em>text</em>}</code></p>
+<p>This command is from the included <i>graphicx</i> package. It rotates the text, about an axis at the lower left of the text. If you wish to rotate the text about its center, use <code>\rotatebox[origin=c]{text}</code>.</p>
+<p>This command plays nicely with <code>\charscale</code>, so you can size, rotate, and displace a string of text (single line). It makes a difference which command goes inside the other. More likely than not, the effect you want is obtained by using <code>\charscale</code> on the outside, with <code>\rotatebox</code> inside.</p>
+<p>To avoid disturbing the line grid, <code>\rotatebox</code> is best used inside the <i>linegap</i> environment.</p>
 <p style="margin-top:10pt"><code>\phantom{<em>text</em>}</code></p>
 <p>Does not print the text, but leaves a horizontal gap as if the text were there.</p>
 <p style="margin-top:10pt"><code>\mbox{<em>text</em>}</code></p>
@@ -2088,16 +2097,17 @@ This text is in lightgray, until the group ends.<br/>
 <h3 id="h7.3">7.3. Placing Images In Your Document</h3>
 <div class="d3" id="d7.3">
 <p class="noindent">An image may be placed as an inline element, using the <code>\InlineImage</code> or <code>\InlineImage*</code> command. This allows the image to mingle with text, and even have text as an overlay.</p>
-<p><code>\BlockImage</code> places the image so that <em>subsequent</em> text will clear the bottom of the image, and be on the baseline grid. You may also <em>accompany</em> the image with text in its own block space, if you wish.</p>
+<p><code>\BlockImage</code> places the image as a block element. It may be accompanied by text, within the same block. IMPORTANT: Beginning with version 1.46, the behavior of this command has changed. See its description, below.</p>
 <p>If your book has a lot of images mingled with text, then you should consider using a page layout program (such as Scribus) instead of TeX. That's because the best strategies for an image-intensive picture book are very different from the strategies adoped by <i>novel</i>.</p>
 <p>&bull; Beware of image overlap. Images are not allowed to overlap each other, in the kind of commercial printing that is likely to be used for your book. However, since overlap is generally legal in PDF, TeX will not issue an error.</p>
 <p>&bull; Do not use the ordinary TeX commands, or environments, for floats or figures.</p>
+<p>&bull; Do not rotate an image in TeX. Prepare the rotated image in a graphics program, flatten it at correct size and dpi, then insert the pre-rotated image.</p>
+<p>&bull; Do not scale or crop an image in TeX. Do it in a graphics program. Be sure that the finished image is flattened, at correct size and dpi.</p>
 
-<h4 id="h7.3.1">7.3.1. <code>\charscale[<em>scale,hoffset,voffset</em>]{<em>text</em>}</code> and starred version</h4>
+<h4 id="h7.3.1">7.3.1. Image-Like Effects in Text</h4>
 <div class="d4" id="d7.3.1">
-<p class="noindent">The <code>\charscale</code> command pertains to text, not images. It is mentioned here because it can place text almost anywhere on a page, even overlapping other text or previously-placed images. Thus, it provides an image-like effect.</p>
-<p>The command is documented in <a href="#h6.1.2">section 6.1.2</a>.</p>
-</div><!-- end 7.4.1 -->
+<p class="noindent">You may scale, rotate, and displace text. This is done using text commands, and the result is still text. When cleverly done, it provides an image-like effect. See <a href="#h6">section 6</a> for the possibilities.</p> 
+</div><!-- end 7.3.1 -->
 
 <h4 id="h7.3.2">7.3.2 <code>\InlineImage[<em>hoffset,voffset</em>]{<em>imageFile.png or .jpg</em>}</code> and starred version</h4>
 <div class="d4" id="d7.3.2">
@@ -2105,9 +2115,11 @@ This text is in lightgray, until the group ends.<br/>
 <p>You may offset the image horizontally or vertically. Positive direction is to the right and up. If you use one offset, then you must use both (if necessary, <i>0em</i>). Any units of length may be used, but the preferred units are <i>em</i> or <code>\textwidth</code> for horizontal, and <i>em</i> or <code>\nbs</code> for vertical, because these are most compatible with the <code><a href="#hA">\Rework</a></code> commands.</p>
 <p>By default, the <em>top</em> of the image is at the text baseline. If you prefer that the <em>bottom</em> of the image be at the text baseline, use voffset <i>b</i>. Example:</p>
 <p class="code"><code>\InlineImage[0em,b]{imageFile.png}</code></p>
-<p>Thanks to the included <i>calc</i> package, offsets may use <code>\widthof{<em>text</em>}</code> and/or <code>\heightof{<em>text</em>}</code> as lengths. The most useful of these is when you wish to align the top of an image at the X-height of surrounding text:</p>
+<p>Thanks to the included <i>calc</i> package, offsets may use <code>\widthof{<em>text</em>}</code>, <code>\heightof{<em>text</em>}</code>, or <code>\depthof{<em>text</em>}</code>  as lengths. The most useful of these is when you wish to align the top of an image at the X-height of surrounding text:</p>
 <p class="code"><code>\InlineImage[0em,\heightof{X}]{imageFile.png}</code></p>
 <p>You may also use <code>\heightof{\Aring}</code> for the tallest accented letter normally found in Latin-1.</p>
+<p>Another possibility is to align the bottom of an image with the lowercase descender:</p>
+<p class="code"><code>\InlineImage[0em,b-\depthof{gjpqy}]{imageFile.png}</code></p>
 <p>Lengths <code>\imagewidth</code> and <code>\imageheight</code> may also be used for offsets. These lengths remain set, and can be used for other purposes (such as displacing text) until another image is placed.</p>
 <p>Offsets may be written as combinations of lengths. If you use the baseline <i>b</i> as above, it must be the first character of voffset. If you use <code>\widthof</code> or <code>\heightof</code>, then its backslash must be the first character <em>unless</em> it is preceded by another length. Thus, an offset of <code>-\heightof{X}</code> is prohibited, but you can use <code>0pt-\heightof{X}</code>.
 <p>Here are some examples of allowable code:</p>
@@ -2142,26 +2154,30 @@ He would have taken the car, had it not been stolen. But that was why he was her
 <h4 id="h7.3.4">7.3.4. <code>\BlockImage[<em>alignment,hoffset,voffset</em>]{<em>imageFile.png or .jpg</em>}[<em>text</em>]</code></h4>
 <div class="d4" id="d7.3.4">
 <p class="noindent">Note that <code>\BlockImage</code> has an optional argument that <i>precedes</i> the mandatory image file name. It has another optional argument that <i>follows</i> the file name. If this second option is used, there must be no space between <code>}[</code>.</p>
-<p>The first optional argument has up to three comma-separated values. The first is alignment: <i>l</i>, <i>c</i>, or <i>r</i> for left, center, or right. The second and third values are hoffset and voffset. Unlike the <code>\InlineImage</code> command, do not use <i>b</i> to indicate vertical position relative to the image bottom; it is always at the top with this command. The default alignment is centered, without offsets.</p>
-<p>An automatic calculation clears the height of the image. Subsequent text will be on grid. This is the right thing to do when the image and included text fit on a single page. But if they cannot both fit on a single page, an unusual layout will result.</p>
+<p>The first optional argument has up to three comma-separated values. The first is alignment: <i>l</i>, <i>c</i>, or <i>r</i> for left, center, or right. The second and third values are hoffset and voffset. Unlike the <code>\InlineImage</code> command, do not use <i>b</i> to indicate vertical position relative to the image bottom; it is always at the top (or offset from the top) with this command. The default alignment is centered, without offsets.</p>
+<p><b>IMPORTANT:</b> Prior to version 1.46, an automatic calculation cleared the greater of image and text, and restored the following line grid. However, there were several situations that were not properly handled. To avoid lengthy and obscure code, the behavior has changed: From version 1.46, you must wrap <code>\BlockImage</code> within the <a href="#h6.3.2"><i>linegap</i></a> environment, and manually choose the integer gap.</p>
 </div><!-- end 7.3.4 -->
 
 <h4 id="h7.3.5">7.3.5. <code>\BlockImage</code> with Accompanying Text</h4>
 <div class="d4" id="d7.3.5">
-<p class="noindent">The second optional argument of <code>\BlockImage</code>, following the image file name, may contain text that will accompany the image in the same block of space. The text is left-aligned like ordinary text, no matter which alignment you use for the image. The text may be in more than one paragraph, and may use <code>{\centering ...\par}</code> or <code>\begin{adjustwidth} ... \end{adjustwidth}</code> for positioning relative to the image. The text may overlie the image, using <code>\charscale</code>. You may need to use <code>\forceindent</code> or <code>\backindent</code> to control how the text appears. Note that you cannot automatically "flow" text around an image in <i>novel</i> class.</p>
+<p class="noindent">The second optional argument of <code>\BlockImage</code>, following the image file name, may contain text that will accompany the image in the same block of space. The text may be more than one paragraph.</p>
+<p>If the image is aligned at left or right, then the accompanying text block will be separated from the image by the length of the normal paragraph indent. Within this block, the text will be justified. You may need to use <code>\forceindent</code> for the first line of text, depending on your purpose.</p>
+<p>If the image is aligned at center, then the accompanying text will also be centered (and usually will overlie the image). If you wish to confine the width of this text block to less than the full page text width, then wrap all of <code>\BlockImage</code> (with its accompanying text) in an <i>adjustwidth</i> environment, which must sit inside the enveloping <i>linegap</i> environment.</p>
+<p>Note that you cannot automatically "flow" text around an image in <i>novel</i> class. Although there is a LaTeX package that will do that, parts of it are incompatible with the grid structure of <i>novel</i>, so the package is disallowed.</p>
 <p>Example:</p>
-<p class="code">
-<code>
+<p class="code"><code><small>
 It was a dark and stormy night. Lord Withens mounted his horse and rode through the darkness, accidentally trampling some petunias in Her Ladyship's garden.\par<br/>
-\BlockImage[l]{gnome.png}[\begin{adjustwidth}{8em}{0pt}\forceindent Suddenly he was confronted by an irate gnome, who expressed an opinion in the crudest of language, even for a gnome.\par<br/>
-Lord Withens was taken aback. How dare this mere gnome speak to him in such a tone of voice? But then he remembered that the gnomes had gone to college, where swearing was routine.\par\end{adjustwidth}]<br/>
-\charscale[1, 5\nbs]{CENSORED}\forceindent Lord Withens shrugged, and rode on. There was nothing to do but remain silent, this time taking more care. He would speak with his wife about the gnome situation when he returned.\par
-</code></p>
-<p class="centerimg"><img src="html-resources/irategnome.png" width="639" height="423" alt="example of BlockImage with accompanying text"/></p>
-<p>In the above example, the text to the right of the image happens to have just the right number of lines to fill the available area. But that is only because I wrote it that way. If I had written less, then there would be one or more blank lines before the subsequent text ("Lord Withens shrugged..."). If I had written more, then the subsequent text would have been pushed down by the necessary number of lines, and there would have been more white area underneath the gnome.</p>
+\begin{linegap}{7}<br/>
+\BlockImage[l,0em,\normalxheight]{gnome.png}[\forceindent Suddenly he was confronted by an irate gnome, who expressed an opinion in the crudest of language, even for a gnome.\par<br/>
+Lord Withens was taken aback. How dare this mere gnome speak to him in such a tone of voice? But then he remembered that the gnomes had gone to college, where swearing was routine.\par]<br/>
+\end{linegap}<br/>
+\charscale*[0.6,-1em, 4.5\nbs]{CENSORED}Lord Withens shrugged, and rode on. There was nothing to do but remain silent, this time taking more care. He would speak with his wife about the gnome situation when he returned.\par
+</small></code></p>
+<p class="centerimg"><img src="html-resources/irategnome.png" width="438" height="273" alt="example of BlockImage with accompanying text"/></p>
+<p>In the above example, the relationship between image and its accompanying text is not by chance. I first compiled with just the image, and noted that the best <i>linegap</i> was 7. Then I wrote enough accompanying text to fill 7 lines. That was not necessary, but it looks good. Finally, by trial and error I placed CENSORED over the gnome, using <code>\charscale*</code>.</p>
 <p>Thus, this technique requires careful inspection, particularly if there is the danger that the image or accompanying text may overflow the bottom of the page.</p>
-<p>Note that I used the start of the following text as a reference point for placing CENSORED over the gnome. That is not the only way it could have been done, but it was easy to discern the necessary offset.</p>
 <p>&bull; In general, avoid using accompanying text with an image, with the possible exception of titles and other special layouts. There is little need for it in the flowing text of a novel. If you find that you need to use it frequently, then perhaps your book would benefit from a page layout program such as <i>Scribus</i>, instead of TeX.</p>
+<p>&bull; If you wish to add a gap above accompanying text, then begin the text with <span style="white-space:nowrap"><code>\vspace*{<em>length</em>}\par</code></span>. The gap will move the accompanying text, but will not displace the text following the end of the <i>linegap</i> environment.</p>
 </div><!-- end 7.3.5 -->
 </div><!-- end 7.3 -->
 
@@ -2635,7 +2651,7 @@ Finally, I would like to thank... \lipsum[1]<br/>
 <p class="noindent">The final page of front matter is always verso. It is almost always blank. The easiest way to insert a blank page is to write <code>\cleartorecto</code> at the end of the preceding recto page.</p>
 <p>Why is the final page of front matter almost always blank? It is because it faces the opening page of the main story, and you don't want to show anything that detracts from the scene or mood. But there are exceptions. For example, an Epigraph might usefully contribute to the setting. Or, in the case of an old-style English murder mystery (where you already know that the murderer did it with arsenic to inherit the family estate), a map of the estate, or a family tree, would not detract from the setting. The choice is yours.</p>
 </div><!-- end 8.3.2.13 -->
-</div><!-- end 8.3.2.1 -->
+</div><!-- end 8.3.2 -->
 
 <h4 id="h8.3.3">8.3.3. Main Matter</h4>
 <div class="d4" id="d8.3.3">
@@ -3239,6 +3255,7 @@ It was a dark and stormy night, etc.<br/>
 <div class="d3" id="uG.2">
 <p class="noindent">Solved. If you compile a document sucessfully, then re-compile with a different <code>\setdefaultlanguage</code> setting, then compile may fail the second time. It may stop with error message "You can't use \relax after \the."<p>
 <p>This depends on which languages are involved. The solution is simple: Discard the <i>*.aux</i> and <i>*.synctex.gz</i> files generated by previous compilation. Then try again.</p>
+</div><!-- end G.2 -->
 
 
 </div><!-- end G -->

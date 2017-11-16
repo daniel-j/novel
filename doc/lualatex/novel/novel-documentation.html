@@ -580,6 +580,7 @@ function closeall() {
 <p>A smaller example document is <i>novel-example.tex</i>, which can be found in the <i>extras</i> folder within this documentation.</p>
 <p class="notprinted"><b>Printing this file:</b> A printed version (PDF or paper) has condensed Table of Contents, and inactive hyperlinks. If your user agent has trouble printing, do this: In a UNIX-compatible plain text editor, edit this file. About 83 lines from the top you will see a block of style that is commented out. Remove the comments so that the block is effective. Load the edited HTML file with JavaScript turned off.</p>
 <p class="notprinted">Some user agents have difficulty previewing this HTML file for print, or printing it. If you wish to print (to PDF or paper) then try this: Copy the HTML file, and name the copy <i style="white-space:nowrap">novel-documentation-print.html</i>. That might (or might not) help. In any case, the printable format of this file has an abbreviated list of contents at the top, not as a sidebar.</p>
+<p><b>Attention:</b> The behavior of the <code>\BlockImage</code> command has changed, beginning with version 1.46. If you have a document that relies on an earlier version of <i>novel</i>, review it for the new behavior.</p>
 <p>&nbsp;</p>
 
 
@@ -2151,33 +2152,30 @@ He would have taken the car, had it not been stolen. But that was why he was her
 <p class="centerimg"><img src="html-resources/inlineimagest.png" width="651" height="249" alt="example of InlineImage*"/></p>
 </div><!-- end 7.3.3 -->
 
-<h4 id="h7.3.4">7.3.4. <code>\BlockImage[<em>alignment,hoffset,voffset</em>]{<em>imageFile.png or .jpg</em>}[<em>text</em>]</code></h4>
+<h4 id="h7.3.4">7.3.4. <code>\BlockImage[<em>alignment,hoffset,voffset</em>]{<em>imageFile.png or .jpg</em>}[<em>accompanying text</em>]</code></h4>
 <div class="d4" id="d7.3.4">
-<p class="noindent">Note that <code>\BlockImage</code> has an optional argument that <i>precedes</i> the mandatory image file name. It has another optional argument that <i>follows</i> the file name. If this second option is used, there must be no space between <code>}[</code>.</p>
-<p>The first optional argument has up to three comma-separated values. The first is alignment: <i>l</i>, <i>c</i>, or <i>r</i> for left, center, or right. The second and third values are hoffset and voffset. Unlike the <code>\InlineImage</code> command, do not use <i>b</i> to indicate vertical position relative to the image bottom; it is always at the top (or offset from the top) with this command. The default alignment is centered, without offsets.</p>
-<p><b>IMPORTANT:</b> Prior to version 1.46, an automatic calculation cleared the greater of image and text, and restored the following line grid. However, there were several situations that were not properly handled. To avoid lengthy and obscure code, the behavior has changed: From version 1.46, you must wrap <code>\BlockImage</code> within the <a href="#h6.3.2"><i>linegap</i></a> environment, and manually choose the integer gap.</p>
+<p>The <code>\BlockImage</code> command places its image as a block element, distinct from the preceding or following text. Be sure to close the preceding paragraph before writing <code>\BlockImage</code>.</p>
+<p>The command takes an optional argument with up to three comma-separated values. The first is <i>alignment</i>: <code>l</code>, <code>c</code>, or <code>r</code> for left, center, or right. The second and third values are lengths, <i>hoffset</i> and <i>voffset</i> for the image. Positive offsets are up and right.</p>
+<p>Unlike the <code>\InlineImage</code> command, you may not use "b" in the vertical offset. By default top of the image is aligned to the baseline of where text would be, if you did not place an image. You may find that <code>\normalXheight</code> is a useful vertical offset, at it aligns the top of the image to where the X-height would be.</p>
+<p>Following the mandatory image filename, an optional argument allows text to appear in the same block as the image. See the next section.</p>
+<p>An automatic calculation ensures that text after <code>\BlockImage</code> will comfortably clear the bottom of the image (taking its voffset into account). The text will be on-grid.</p>
+<p>Remember that TeX does not care if the image overflows into the margins. Thus, you must review the PDF to ensure that an image does not appear in an unsuitable location. You can visualize margins using the <i>draft,shademargins</i> document class options.</p>
 </div><!-- end 7.3.4 -->
 
 <h4 id="h7.3.5">7.3.5. <code>\BlockImage</code> with Accompanying Text</h4>
 <div class="d4" id="d7.3.5">
-<p class="noindent">The second optional argument of <code>\BlockImage</code>, following the image file name, may contain text that will accompany the image in the same block of space. The text may be more than one paragraph.</p>
-<p>If the image is aligned at left or right, then the accompanying text block will be separated from the image by the length of the normal paragraph indent. Within this block, the text will be justified. You may need to use <code>\forceindent</code> for the first line of text, depending on your purpose.</p>
-<p>If the image is aligned at center, then the accompanying text will also be centered (and usually will overlie the image). If you wish to confine the width of this text block to less than the full page text width, then wrap all of <code>\BlockImage</code> (with its accompanying text) in an <i>adjustwidth</i> environment, which must sit inside the enveloping <i>linegap</i> environment.</p>
-<p>Note that you cannot automatically "flow" text around an image in <i>novel</i> class. Although there is a LaTeX package that will do that, parts of it are incompatible with the grid structure of <i>novel</i>, so the package is disallowed.</p>
+<p class="code"><small><em>The behavior has changed in version 1.46. If you have been using this command in a document with earlier code, you must review your document. In most cases it won't make a difference.</em></small></p>
+<p class="noindent">The second optional argument of <code>\BlockImage</code>, following the image filename, may contain text that will accompany the image in the same block of space. The text may be more than one paragraph.</p>
+<p>If the image is aligned at left or right, then the accompanying text block will be separated from the image by the length of the normal paragraph indent. Within this block, the text will be justified. The usual indentation rules apply.</p>
+<p>If the image is aligned at center, then the accompanying text will also be centered (and usually will overlie the image). If you wish to confine the width of this text block to less than the full page text width, then wrap the accompanying text (inside the brackets) in an <i>adjustwidth</i> environment.</p>
+<p>Whatever the alignment of image offset, the first line of accompanying text will be vertically located on-grid, where the first line of text would ordinarily sit. If you wish to displace it vertically, then begin the accompanying text with <code>\pushtextdown{<em>length</em>}</code>. It is best to measure the length in terms of the normal baselineskip, <code>\nbs</code>.</p>
+<p>Note that you cannot automatically "flow" text around an image in <i>novel</i> class. Although there is a LaTeX package that will do that, parts of it are incompatible with the grid structure of <i>novel</i>, so the package is disallowed. If you cleverly place just the right amount of accompanying text, then you can fill the area next to the image; but this is not automated.</p>
 <p>Example:</p>
-<p class="code"><code><small>
-It was a dark and stormy night. Lord Withens mounted his horse and rode through the darkness, accidentally trampling some petunias in Her Ladyship's garden.\par<br/>
-\begin{linegap}{7}<br/>
-\BlockImage[l,0em,\normalxheight]{gnome.png}[\forceindent Suddenly he was confronted by an irate gnome, who expressed an opinion in the crudest of language, even for a gnome.\par<br/>
-Lord Withens was taken aback. How dare this mere gnome speak to him in such a tone of voice? But then he remembered that the gnomes had gone to college, where swearing was routine.\par]<br/>
-\end{linegap}<br/>
-\charscale*[0.6,-1em, 4.5\nbs]{CENSORED}Lord Withens shrugged, and rode on. There was nothing to do but remain silent, this time taking more care. He would speak with his wife about the gnome situation when he returned.\par
-</small></code></p>
-<p class="centerimg"><img src="html-resources/irategnome.png" width="438" height="273" alt="example of BlockImage with accompanying text"/></p>
-<p>In the above example, the relationship between image and its accompanying text is not by chance. I first compiled with just the image, and noted that the best <i>linegap</i> was 7. Then I wrote enough accompanying text to fill 7 lines. That was not necessary, but it looks good. Finally, by trial and error I placed CENSORED over the gnome, using <code>\charscale*</code>.</p>
-<p>Thus, this technique requires careful inspection, particularly if there is the danger that the image or accompanying text may overflow the bottom of the page.</p>
+<p class="code"><code><small>It was a dark and stormy night. Lord Withens mounted his horse and rode through the darkness, accidentally trampling some petunias in Her Ladyship's garden.\par<br/>
+\BlockImage[r]{gnome.png}[\pushtextdown{2\nbs}Suddenly he was confronted by an irate gnome, who expressed an opinion in the crudest of language, even for a gnome.\par]<br/>
+Lord Withens shrugged, and rode on. There was nothing to do but remain silent, this time taking more care. He would speak with his wife about the gnome situation when he returned.\par</small></code></p>
+<p class="centerimg"><img src="html-resources/gnome-censored.png" width="437" height="270" alt="example of BlockImage with accompanying text"/></p>
 <p>&bull; In general, avoid using accompanying text with an image, with the possible exception of titles and other special layouts. There is little need for it in the flowing text of a novel. If you find that you need to use it frequently, then perhaps your book would benefit from a page layout program such as <i>Scribus</i>, instead of TeX.</p>
-<p>&bull; If you wish to add a gap above accompanying text, then begin the text with <span style="white-space:nowrap"><code>\vspace*{<em>length</em>}\par</code></span>. The gap will move the accompanying text, but will not displace the text following the end of the <i>linegap</i> environment.</p>
 </div><!-- end 7.3.5 -->
 </div><!-- end 7.3 -->
 

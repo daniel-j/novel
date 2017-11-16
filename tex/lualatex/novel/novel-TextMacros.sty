@@ -355,12 +355,11 @@
 \newlength\@tocskip
 \newenvironment{toc}[2][0]%
 {%
-  \begin{adjustwidth}{#2}{#2}\begingroup%
+  \begin{adjustwidth}{#2}{#2}%
+  \begingroup% lengths not global
   \setlength\parindent{0pt}%
   \setlength\@tocnumwid{\widthof{00.~}}%
-  \global\@tocnumwid=\@tocnumwid%
   \setlength\@tocskip{#1\nbs}%
-  \global\@tocskip=\@tocskip%
 }{%
   \endgroup\end{adjustwidth}\par%
 }%
@@ -444,7 +443,7 @@
 
 
 %% \lnum for lining numbers.
-\gdef\lnum#1{{\AddFontFeature{Numbers=Lining}#1}}
+\gdef\lnum#1{{\addfontfeature{Numbers=Lining}#1}}
 %%
 
 
@@ -513,22 +512,29 @@
 
 
 %% New in v. 1.46: Allows text to be placed (potentially) off-grid, with grid resuming after.
+\newcounter{currentlinegap} % 0 when not within a linegap environment, >0 otherwise.
 \ExplSyntaxOn
-\DeclareDocumentEnvironment {linegap} { m }
-{% Only warning, since non-integer gap might be useful on a display page.
+\DeclareDocumentEnvironment {linegap} { m } {%
   \FPifint{#1}\else%
-    \ClassWarning{novel}{Non-integer~linegap~on~page~\thepage.}%
+    \ClassError{novel}{Non-integer~linegap~on~page~\thepage}%
+     {Only~integer~>=~1~allowed~for~linegap.}%
+  \fi%
+  \FPiflt{#1}{1}%
+    \ClassError{novel}{Insufficient~linegap~on~page~\thepage}%
+     {Only~integer~>=~1~allowed~for~linegap.}%
   \fi%
   \par%
   \null%
   \vspace*{-\nbs}%
   \begin{textblock*}{\textwidth}[0,0](0pt,0pt)%
+  \setcounter{currentlinegap}{#1}%
   \strut\par%
   \vspace*{-\nbs}%
 }{% close the environment:
   \end{textblock*}%
   \par%
   \vspace*{#1\nbs}%
+  \setcounter{currentlinegap}{0}%
 }
 \ExplSyntaxOff % end linegap environment
 %%

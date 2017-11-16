@@ -72,13 +72,25 @@
 \gdef\imagestarred{false}
 \gdef\imagefilename{unknown}
 % Neutralize \includegraphics, so it is no longer a user command:
-\let\@includegraphics\includegraphics\relax
-\let\includegraphics\relax
+\LetLtxMacro\novel@includegraphics\includegraphics\relax
+\LetLtxMacro\includegraphics\relax
 \newcommand\includegraphics[2][]{
   \ClassError{novel}{Cannot use \string\includegraphics\space on page \thepage}
    {The `novel' class has its own commands for placing images. See docs.^^J%
     You cannot use the \string\includegraphics\space command.}%
 }
+%
+\newcommand\pushtextdown[1]{%
+  \ifthenelse{\equal{#1}{} \OR \equal{#1}{ } \OR \equal{#1}{0}}{%
+    \def\@howmuchdown{0em}%
+  }{%
+    \def\@howmuchdown{#1}%
+  }%
+  ~\par\vspace*{-\nbs}\vspace*{\@howmuchdown}\par%
+}
+%
+\newlength\@mytotalht
+\newif\if@imgExtOK%
 %
 % \InlineImage can be used in body, header, footer.
 % However, macros such as \imagefilename, \imagewidth, etc.
@@ -90,7 +102,7 @@
 %
 \ExplSyntaxOn
 \DeclareDocumentCommand \InlineImage { s O{0pt} m }{%
-  \newif\if@imgExtOK%
+  \@imgExtOKfalse%
   \IfEndWith{#3}{png}{\@imgExtOKtrue}{}%
   \IfEndWith{#3}{PNG}{\@imgExtOKtrue}{}%
   \IfEndWith{#3}{jpg}{\@imgExtOKtrue}{}%
@@ -112,7 +124,7 @@
     \def\@myily{0pt}}{\def\@myily{\@myilya}%
   }%
   \iftoggle{@inheadfoot}{}{\gdef\imagefilename{#3}}% for possible later use
-  \gdef\my@graphic{\@includegraphics[draft=false]{#3}}%
+  \gdef\my@graphic{\novel@includegraphics[draft=false]{#3}}%
   \setlength\@imagewidth{\widthof{\my@graphic}}%
   \global\@imagewidth=\@imagewidth%
   \iftoggle{@inheadfoot}{}{\setlength\imagewidth{\@imagewidth}}%
@@ -185,6 +197,19 @@
     \ClassError{novel}{Cannot~use~BlockImage~in~header~or~footer}%
       {Header~footer~allow~InlineImage~but~not~BlockImage.}%
   }{}%
+  \@imgExtOKfalse%
+  \IfEndWith{#2}{png}{\@imgExtOKtrue}{}%
+  \IfEndWith{#2}{PNG}{\@imgExtOKtrue}{}%
+  \IfEndWith{#2}{jpg}{\@imgExtOKtrue}{}%
+  \IfEndWith{#2}{JPG}{\@imgExtOKtrue}{}%
+  \IfEndWith{#2}{jpeg}{\@imgExtOKtrue}{}%
+  \IfEndWith{#2}{JPEG}{\@imgExtOKtrue}{}%
+  \if@imgExtOK\else%
+    \ClassError{novel}{^^JImage~`#2'~format~not~allowed,~page~\thepage}%
+    {^^JImage~`#2'~has~file~type~not~allowed~in~`novel'~class.^^J%
+     Must~have~file~extension~png,~jpg,~jpeg~(or~capitalized).^^J%
+     Others~such~as~pdf~bmp,~tiff,~eps,~pdf,~svg~are~not~allowed.^^J}%
+  \fi%
   % Allows empty or blank to be used, and still provide default values:
   \ifthenelse{\equal{#1}{} \OR \equal{#1}{\space}}{%
     \def\@myargs{c}}{\def\@myargs{#1}%
@@ -199,25 +224,62 @@
     \def\@myy{0pt}}{\def\@myy{\@myyt}%
   }
   %
+  \gdef\my@graphic{\novel@includegraphics[draft=false]{#2}}%
+  \setlength\@imagewidth{\widthof{\my@graphic}}%
+  \global\@imagewidth=\@imagewidth%
+  \setlength\@imageheight{\heightof{\my@graphic}}%
+  \global\@imageheight=\@imageheight%
+  \setlength\@imagehoffset{\@myx}%
+  \IfBeginWith{\@myy}{b}{%
+    \ClassError{novel}{Cannot~use~voffset~`b'~in~\stringBlockImage,~page~\thepage}%
+    {The~`b'~voffset~only~works~with~\string\InlineImage\space,~not~\string\BlockImage.}
+  }{%
+    \setlength\@imagevoffset{-\@imageheight}%
+    \addtolength\@imagevoffset{\@myy}%
+  }%
+  %
+  \setlength\@mytotalht{0pt}%
+  \addtolength\@mytotalht{\@imageheight}%
+  \addtolength\@mytotalht{-\@myy}%
+  \addtolength\@mytotalht{1em}%
+  \def\@mytotalhtnum{\strip@pt\@mytotalht}%
+  \FPdiv{\@mytotalhtnum}{\@mytotalhtnum}{\nbsnum}%
+  \FPadd{\@mytotalhtnum}{\@mytotalhtnum}{0.5}%
+  \FPround{\@mytotalhtnum}{\@mytotalhtnum}{0}%
+  %
+  \begin{linegap}{\@mytotalhtnum}%
+  %
   \ifthenelse{\equal{\@myalign}{c}\OR\equal{\@myalign}{}}{%
-    {\centering\InlineImage*[{\@myx-0.5\imagewidth},{\@myy}]{#2}\par}%
+    {\centering%
+      \makebox[0pt][l]{%
+        \hspace{\dimexpr\@myx-0.5\@imagewidth}%
+        \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\my@graphic}}%
+      }%
+    \par}%
     \vspace*{-\nbs}%
     {\centering #3\par}%
-  }{}
+  }{}%
   \ifthenelse{\equal{\@myalign}{r}}{%
-    \noindent\InlineImage*[{\textwidth-\imagewidth+\@myx},{\@myy}]{#2}\par%
-    \vspace{-\nbs}
-    \begin{adjustwidth}{0pt}{\imagewidth+\parindent}%
-      #3\par%
+    \noindent\makebox[0pt][l]{%
+      \hspace{\dimexpr\textwidth+\@myx-\@imagewidth}%
+      \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\my@graphic}}%
+    }\par%
+    \vspace{-2\nbs}%
+    \begin{adjustwidth}{0pt}{\@imagewidth+\parindent}%
+      \strut\par #3\par%
     \end{adjustwidth}%
-  }{}
+  }{}%
   \ifthenelse{\equal{\@myalign}{l}}{%
-    \noindent\InlineImage*[{\@myx},{\@myy}]{#2}\par%
-    \vspace{-\nbs}%
-    \begin{adjustwidth}{\imagewidth+\parindent}{0pt}%
-      #3\par%
+    \noindent\makebox[0pt][l]{%
+      \hspace{\@myx}%
+      \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\my@graphic}}%
+    }\par%
+    \vspace{-2\nbs}%
+    \begin{adjustwidth}{\@imagewidth+\parindent}{0pt}%
+      \strut\par #3\par%
     \end{adjustwidth}%
-  }{}
+  }{}%
+  \end{linegap}%
 } % end \BlockImage
 \ExplSyntaxOff
 %%

@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-HeadFootStyles.sty}%
-[2017/11/16 v1.46 LaTeX file (header and footer layouts and styles)]
+[2017/11/17 v1.46 LaTeX file (header and footer layouts and styles)]
 %% 
 
 
@@ -279,6 +279,7 @@
       \dimexpr\New@BottomMargin+0.5\New@MediaHeight-0.5\New@TrimHeight}%
     \global\temp@pgnumraise=\temp@pgnumraise%
   \fi%
+  %%%%%
   \ifodd\c@page%
     \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
      \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%
@@ -306,16 +307,16 @@
     \setlength\temp@pgnumraise{%
       \New@BottomMargin-\nbs+0.5\New@MediaHeight-0.5\New@TrimHeight}%
   \fi%
-  \ifodd\c@page%
-    \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
-     \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%
-      \charscale[1,0.5\textwidth,\temp@pgnumraise]{%
-       {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
-  \else%
-    \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
-     \hspace{\dimexpr\Trim@Lx+\New@OutsideMargin-0.5\temp@pgnumwidth}\raisebox{%
-      \temp@pgnumraise}{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
-  \fi%
+  \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
+    \ifodd\c@page%
+      \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%
+    \else%
+      \hspace{\dimexpr\Trim@Lx+\New@OutsideMargin-0.5\temp@pgnumwidth}%
+    \fi%
+    \charscale[1,0.5\textwidth,\temp@pgnumraise]{%
+      {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
+    }%
+  }%
 } % end \@dropfoliobeneath
 %%
 %

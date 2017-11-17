@@ -13,94 +13,14 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2017/11/16 v1.46 LaTeX file (text macros usable within document body)]
+[2017/11/17 v1.46 LaTeX file (text macros usable within document body)]
 %%
 
 
-%% This file contains commands that are usable within the document body,
+%% This file contains various commands that are usable within the document body,
 %% for styling and otherwise manipulating text.
 %% These are not commands used in Preamble for setup, although a few of them
 %% can be used in Preamble for setup, then again in body for change.
-
-
-
-%% The following commands were defined in other files of `novel' class:
-%% -----------------------------------------------------------------------------
-% \theTitle returns string set by \SetTitle{} -- See novel-LayoutSettings.sty.
-% \theAuthor returns string set by \SetAuthor{} -- See novel-LayoutSettings.sty.
-% \nfs normal font size. May be tweaked during rework. -- See novel-CalculateLayout.sty.
-% \nbs (calculated) normal baselineskip. May be tweaked during rework. -- See novel-CalculateLayout.sty.
-% \theSubtitle returns string set by \SetSubtitle{} -- See novel-LayoutSettings.sty.
-% \InlineImage, \BlockImage -- See novel-Images.sty.
-% \scenebreak, \sceneline, \scenestars -- See novel-ChapterScene.sty.
-% ChapterStart, \ChapterTitle{}, \ChapterSubtitle{}, \ChapterDeco{} -- See novel-ChapterScene.sty.
-% {\chapterfont text} and other pre-defined font selection commands -- See novel-LayoutSettings.sty.
-% \decoglyph{} and \acronym{} -- See novel-FontDefaults.sty.
-% \frontmatter, \mainmatter -- See novel-LayoutSettings.sty.
-% \footnote[]{}, \endnote, \endnotetext[]{} -- See novel-Footnotes.sty.
-% \thispagestyle{choice} -- See novel-HeadFootStyles.sty.
-% \SetVersoHeadText{}, \SetRectoHeadText{} -- See novel-HeadFootStyles.sty.
-% \CreateFontFeature{substitutions}{feature code} fakes an Open Type feature -- See novel-LayoutSettings.sty.
-
-
-
-%% The following commands are defined on this page:
-%% -----------------------------------------------------------------------------
-% \memo{text} is a memo to yourself. Does not print, is not saved.
-% \forceindent and \backindent when \indent and \noindent fail.
-% \smcp{text} or \textsc{text} for lowercase to small caps.
-% \allsmcp{text} puts both caps and lowercase into small caps.
-% \charscale[scale,x,y]{text} for brief change of text size/position. No line wrap.
-% parascale environment for long change in text size. Will go off-grid.
-% toc environment for table of contents.
-% \tocitem[]{}{} and \tocitem*[]{}{} for one-line entries in toc.
-% legalese environment uses ragged right, disables hyphenation.
-% \showlength[round]{length}{units} returns the length, re-calculated in units, rounded.
-% \supersub{raise}{scale}{text} alternative to superscript and subscript commands.
-% \sups{text}, \subs{text}, and \sinf{text} other alternatives to super/subscripts.
-% \bigemdash[raise,thickness] provides a raised rule of flexible length, a "big em dash."
-% \stake inserts zero-width rule, 1pt thick, as placeholder.
-% \color and \textcolor (from package xcolor) have been modified to ensure black, or grayscale when permitted.
-% \hangleft{text} -- places text to left of its usual block position. Do not place text in margins!
-% \lnum{number} -- lining numbers
-% \squeeze{} and \crush{} for emergency text adjustment.
-
-
-%% The following useful commands are from core code, or other pre-loaded packages.
-%% -----------------------------------------------------------------------------
-%% They are listed here as a reminder of their existence. Not a complete list.
-%% A description is only provided here, when it is brief and simple.
-%
-% {\centering text\par} centers text. Needs the \par to finish. May also use internal \\ or \par.
-% \makebox[length][alignment]{text}
-% \hspace{length}
-% \vspace{length}  Caution: may disrupt text line grid!
-% \kern
-% \hfill and \dotfill
-% \vfill (use only with discretion)
-% \linebreak (use only with discretion)
-% \null inserts an empty line. See also the scene break commands.
-% \clearpage begins a new page. Two consecutive \clearpage does not make 2 pages (use \null if blank page desired).
-% \strut is useful for occupying the full line height.
-% \smash{text} allows its included text to overlay other content. Sometimes useful when text is too tall to fit the line grid.
-% \textwidth (length) is the width of the textblock.
-% adjustwidth environment (package: changepage) for block indents, etc.
-% \FirstLine{} (package: magaz) may be useful for first line of new chapter. Patched by me.
-% \textsuperscript{} and \textsubscript{} are re-defined.
-
-
-
-%% The following commands are available, but STRONGLY DISCOURAGED.
-%% -----------------------------------------------------------------------------
-%% Beware: Their usage is likely to disturb the line grid.
-%% That is less of an issue on pages where the line grid does not matter.
-%
-% Environments: center, minipage, sloppypar
-% \parbox
-% \framebox or \fbox
-% \raisebox BUT can be used inside \smash or \charscale.
-% \linespread
-% Anything involving math mode.
 
 
 %% The following commands are BANNED.
@@ -155,15 +75,15 @@
 %
 \DeclareDocumentCommand \smcp { +m }
  {%
-  {\AddFontFeature{Letters=SmallCaps}#1}%
+  {\addfontfeature{Letters=SmallCaps}#1}%
  }
 %
 \DeclareDocumentCommand \allsmcp { +m }
  {%
   \fontspec_if_feature:nTF {c2sc}{%
-   {\AddFontFeatures{Letters=UppercaseSmallCaps, Letters=SmallCaps}#1}%
+   {\addfontfeatures{Letters=UppercaseSmallCaps, Letters=SmallCaps}#1}%
   }{%
-   {\AddFontFeature{Letters=SmallCaps}\MakeLowercase{#1}}%
+   {\addfontfeature{Letters=SmallCaps}\MakeLowercase{#1}}%
   }%
  }
 %
@@ -437,8 +357,8 @@
 
 %% \squeeze{} and \crush{} slightly shrink the horizonal dimension of the
 % enclosed text. May span paragraphs. Emergency only! No compounding.
-\long\gdef\squeeze#1{{\AddFontFeature{FakeStretch=0.99}#1}}
-\long\gdef\crush#1{{\AddFontFeature{FakeStretch=0.98}#1}}
+\long\gdef\squeeze#1{{\addfontfeature{FakeStretch=0.99}#1}}
+\long\gdef\crush#1{{\addfontfeature{FakeStretch=0.98}#1}}
 %%
 
 
@@ -452,7 +372,7 @@
 \let\sups\relax
 \let\textsuperscript\relax
 \let\textsubscript\relax
-\newlength\@hoAhl % Measures the height of these characters in the current font.
+\newlength\@hoAhl % measured when needed.
 % Perhaps superscripts and subscripts (scientific) are in the font, or not.
 % Problem: The best fonts have these characters at size/weight designed
 %   to mingle with normal size. But many fonts merely scaled characters,
@@ -472,14 +392,14 @@
  {%
   \iftoggle{@realmarker}{%
     \fontspec_if_feature:nTF {sups}{%
-      \ifvmode\else\unskip\fi{\AddFontFeature{VerticalPosition=Superior}\smash{#1}}%
+      \ifvmode\else\unskip\fi{\addfontfeature{VerticalPosition=Superior}\smash{#1}}%
     }{%
       \setlength\@hoAhl{\heightof{Ahl}}%
       \ifvmode\else\unskip\fi\charscale[0.7,0pt,0.5\@hoAhl]{#1}%
     }%
   }{%
     \setlength\@hoAhl{\heightof{Ahl}}%
-    \ifvmode\else\unskip\fi{\basefont\AddFontFeature{Numbers=Lining}\charscale[0.7,0pt,0.5\@hoAhl]{#1}}%
+    \ifvmode\else\unskip\fi{\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,0.5\@hoAhl]{#1}}%
   }%
  }% end \sups
 %
@@ -487,10 +407,10 @@
  {%
   \iftoggle{@realmarker}{%
     \fontspec_if_feature:nTF {sinf}{%
-      \ifvmode\else\unskip\fi{\AddFontFeature{VerticalPosition=ScientificInferior}\smash{#1}}%
+      \ifvmode\else\unskip\fi{\addfontfeature{VerticalPosition=ScientificInferior}\smash{#1}}%
     }{%
       \fontspec_if_feature:nTF {subs}{%
-        \ifvmode\else\unskip\fi{\AddFontFeature{VerticalPosition=Inferior}\smash{#1}}%
+        \ifvmode\else\unskip\fi{\addfontfeature{VerticalPosition=Inferior}\smash{#1}}%
       }{%
         \setlength\@hoAhl{\heightof{Ahl}}%
         \ifvmode\else\unskip\fi\charscale[0.7,0pt,-0.2\@hoAhl]{#1}%
@@ -498,14 +418,13 @@
     }%
   }{%
     \setlength\@hoAhl{\heightof{Ahl}}%
-    \ifvmode\else\unskip\fi{\basefont\AddFontFeature{Numbers=Lining}\charscale[0.7,0pt,-0.2\@hoAhl]{#1}}%
+    \ifvmode\else\unskip\fi{\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,-0.2\@hoAhl]{#1}}%
   }%
  }% end \subs
 %
+\cs_new_eq:NN \textsuperscript \sups
+\cs_new_eq:NN \textsubscript \subs
 \ExplSyntaxOff
-%%
-\let\textsuperscipt\sups\relax
-\let\textsubscript\subs\relax
 %%
 \gdef\specialblankline{\null} % deprecated
 %%

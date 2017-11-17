@@ -1,0 +1,266 @@
+% !TeX TS-program = LuaLaTeX
+% !TeX encoding = UTF-8
+%
+% TEST SUITE FOR NOVEL DOCUMENT CLASS
+%
+% IF YOU COMPILE THIS DOCUMENT: Be sure that this file, and its generated PDF,
+%   have read/write permissions for any user. If they don't, then
+%   compile will fail at the point where files are written.
+%
+% This document tests the various capabilities of `novel' document class.
+% The Preamble settings are originally the defaults.
+% Change them to exercise the setting, and see the result.
+% In the document body, various commands are exercised.
+%
+% You need all fonts from the `libertinus' package,
+% all fonts from `lmodern' package,
+% and the included NovelDeco.otf.
+%
+% You also need the file` novel-testimage.png'
+% in the same folder as this document.
+% It is grayscale png, 150x150 pixels, with resolution 300pdi.
+% 
+% The `test' class option is required. You may add others.
+\documentclass[test]{novel} % v. 1.46.
+\SetTitle{Test Suite}
+\SetSubtitle{Novel Document Class}
+\SetAuthor{Author Name}
+% Additional Preamble, if desired.
+
+
+\begin{document}
+
+\frontmatter % begins at page i.
+
+\thispagestyle{footer}
+\vspace*{5\nbs}
+\begin{center}
+\charscale[3.6]{\textbf{Test Suite}}\par
+\vspace{1.5\nbs}
+\charscale[1.6]{Novel Document Class}\par
+\vspace{4\nbs}
+\ChapterDeco[6]{\decoglyph{n9548}}
+\vspace{2\nbs}
+\charscale[1.5]{The following page will be completely blank!}\par
+\vfill
+If you choose a head/foot style with footer, then page number i (lowercase roman) will appear in the footer below.\par
+But if the head/foot style has no footer, then nothing below.\par
+\end{center}
+\clearpage
+
+
+% Now to begin at page 1:
+\mainmatter
+
+\begin{ChapterStart}[10]
+\vspace*{3\nbs}
+\ChapterTitle{Chapter One}
+\ChapterSubtitle{Dark and Stormy}
+\ChapterDeco[4]{\decoglyph{n9548}}
+\end{ChapterStart}
+
+This tests the ChapterStart environment, plus \string\ChaterTitle, \string\ChapterSubtitle, \string\ChapterDeco, and \string\decoglyph.
+
+In the TeX document, you can change the height of the environment, the alignment of its components, the decoglpyh, and so forth.
+
+The first paragraph will not be indented, but all following paragraphs will be indented.
+
+Since this is a recto (odd-numbered) page at right side, the default margins will be a little larger at left, where there is an allowance for binding gutter.
+
+Unless you change the head/foot style, you should see no heading. Arabic page number 1 should be at the bottom.
+
+\clearpage
+
+
+% NEXT PAGE:
+
+This page tests all of the linegap environment, the \string\charscale\space command, and \string\rotatebox. The combined effect is shown below:
+\begin{linegap}{10}
+\vspace{1.5\nbs}
+\charscale[2,3em,-4em]{\rotatebox[origin=c]{45}{Random Test Items}}
+\end{linegap}
+Above, you should see the phrase Random Test Items in larger than normal text, tilted 45 degrees, nicely fitting between the text above and this text.  The phrase does not begin at the left margin; this can be changed.
+
+If you change the font size or number of lines per page, then the tilted phrase might not fit nicely. That can be fixed by changing the linegap.
+
+\clearpage
+
+
+% NEXT PAGE:
+
+This page tests \string\BlockImage\space effects. Remember that \textit{novel} uses its own methods of placing images.
+
+\BlockImage[r]{novel-testimage.png}[\pushtextdown{\nbs}Text accompanying image. This text appears to the left of the image. One line above this text was skipped.\par]
+
+Above, the top of the image sits where the baseline of text would be. The current paragraph comfortably clears the bottom of the image.
+
+\null
+
+In the following example,  the accompanying text fills all available lines. This is \textit{not} the same as float/caption in other classes!
+
+\BlockImage[r]{novel-testimage.png}[Text accompanying image.  The fact that this text fills the available area is not automated.\par I first compiled with some random amount of text, then adjusted it so that it filled.\par]
+
+If you change the font size or lines per page, then the accompanying text, above, probably won't fill its space. Or, it may overflow, and mingle with this paragraph. So, this is not a technique with wide applicability.
+
+\null
+
+Below, the image is centered:
+
+\BlockImage[c]{novel-testimage.png}[\pushtextdown{\nbs}This text overlies the image.\par]
+
+\clearpage
+
+
+% NEXT PAGE:
+
+This page tests \string\InlineImage\space effects. Note that the command also has a starred version. The difference: Unstarred, the width of the image is taken into account. Starred, the width of the image is ignored.
+
+\null
+
+\noindent\InlineImage*[0,\normalXheight]{novel-testimage.png}This paragraph is not indented. The starred command places an image, offset so that its top sits at the X-height of the text. The image underlies the following text. If you use this effect, then be sure that the image is much lighter, or the text will be hard to read.
+
+\null\null\null
+
+\noindent\InlineImage[0,b-\normaldescender]{novel-testimage.png}This paragraph is not indented. The unstarred command places an image, offset so that its bottom sits at the descender of the text. It was necessary to insert previous blank lines, or the image would overlie (and obscure) the preceding paragraph.
+
+\null\null
+
+\noindent\InlineImage[0,1.5em]{novel-testimage.png}This paragraph is not indented. The unstarred command places an image, offset so that it rises above the paragraph, and also descends beneath the following text. 
+
+\null\null
+
+In all of the above, the alignments will change, if you change the text size or lines per page.
+
+\clearpage
+
+
+% NEXT PAGE:
+
+This page tests the footnote and endnote capabilities.\footnote{This is the first sample footnote. Unless you change the marker style, it will be marked with an asterisk.} Two footnotes have been placed.\footnote{This is the second footnote. Unless you change the marker style, it will be marked by a dagger.}
+
+\scenebreak
+
+The \string\scenebreak\space command was used above. This paragraph is not indented, unless you change the behavior using \string\SetScenebreakIndent.
+
+\scenestars
+
+As above, but this time marked by three centered asterisks.
+
+\sceneline
+
+As above, but this time marked by a short, centered line.
+
+\QuickChapter[3em]{Just Before Midnight}
+
+Above, \string\QuickChapter\space inserted two blank lines, in which a phrase is followed by a short line. The text is slightly larger than normal, and sits slightly above the normal baseline.
+
+\null
+
+There is a \string\bigemdash\space between here\makebox[2.5em]{\bigemdash}and here. Its length is set at 2.5em, using \string\makebox. Compare to normal—emdash. Thickness and yoffset is adjustable.
+
+\null
+
+This tests the endnote capability.\endnote You will see marker 1 after the last sentence, and marker 2 after this one.\endnote\memo{This text does not print.} But no actual endnotes are created. You may manually place them wherever you wish. For that, you may use the \string\endnotetext\space command (if its style works for you), or any other method.
+
+\null
+
+\endnotetext{1}{This tests the \string\endnotetext\space command, although you would not normally place the text of an endnote here. It is only a test.\par}
+
+\endnotetext{2}{Text for a second endnote.\par}
+
+\clearpage
+
+
+% NEXT PAGE:
+
+The following tests the \textit{parascale}  and \textit{linegap} environments:
+
+\begin{linegap}{8}
+\vspace{0.4\nbs}
+\begin{parascale}[0.8]
+This text has a different scale than normal. Both the font size and the baseline skip have been proportionately changed. As a result, the lines are not on the normal line grid.\par
+If the following normal text needs to be back on grid (usually the case), there are two possible solutions: (1) Compile, note the number of lines occupied by this text, then calculate how much vertical space must be added, to restore the grid. Manually add that space, usually splitting it top and bottom. (2) Place \textit{parascale} within a \textit{linegap} environment. This will restore the grid. You will still have to compile, and count lines\par
+\end{parascale}
+\end{linegap}
+
+Back to normal text. The above scaled text is wrapped in \textit{linegap}. The gap is not necessarily the number of lines in the scaled text. It is the number of normal lines that occupy that vertical space.
+
+At the dimensions originally used for this test, there are 9 lines of scaled text. They occupy more or less 7 lines of normal vertical space. However, I chose an 8 line gap, then added a little \string\vspace\space above the scaled text. I think this looks nicer.
+
+If you change the dimensions used for this test, then the scaled text and its surrounding will probably not align properly. So, before you use \textit{parascale}, plan ahead by making your settings final.
+
+\null
+
+\begin{adjustwidth}{2\normalparindent}{\normalparindent}
+\forceindent This text uses the \textit{adjustwidth} environment. It is set to block indent 2\string\normalparindent\space at left, and indent 1\string\normalparindent\space at right. The \string\forceindent\space command precedes the text, so that (within the block) it indents like an ordinary paragraph.\par
+\end{adjustwidth}
+
+\clearpage
+
+
+% NEXT PAGE:
+
+This tests various text effects:
+
+\null
+
+\FirstLine{\noindent\charscale[2]{T}\hspace{-2pt}his line has its first letter enlarged, and sets the first line in small caps. After the first line, text continues as usual. Note that space must be provided prior to this paragraph, so that the first letter does not intrude on text (or margin) above it.}
+
+The \string\charscale\space command scales the letter, and \string\FirstLine\space performs the small caps. Also, some kerning was applied so that the large T has the following \textsc{h} resting beneath its top. The \string\noindent\space command goes inside \string\FirstLine.
+
+\null\null
+
+\lettrine{H}{ere}, is placed is a drop cap, using \string\lettrine. But you will only see the drop cap if you place \string\RequirePackage\{lettrine\} in the Preamble. Otherwise, you will not see anything unusual. This behavior is specific to the test suite. Anywhere else, if you try to use \string\lettine\space without loading the package, an error will result.\par
+In general, it is difficult to style drop caps so that they look good for many different letters. An alternative is to use images for the drop caps. If you use images, please read the \textit{novel} documentation, as the method is not the same as the usual methods from the \textsc{lettrine} package.\par
+Note that there is no automated way to combine a drop cap with a first line in small caps. This is discussed in \textsc{novel} documentation.
+
+\null
+This line is in the main font.\par
+\textsf{This line is in the sans font.}\par
+\texttt{This line is in the mono font.}\par
+{\mustbelibertinus This line is in Libertinus Serif.}\par % specific to testsuite
+{\mustbelmodern This line is in Latin Modern Roman.}\par % specific to testsuite
+
+
+\clearpage
+
+
+% NEXT PAGE:
+
+\thispagestyle{dropfoliobeneath}
+
+This page tests drop folio. There will be no page header. If your head/foot style normally has a footer, then you will see it as usual.
+
+If you choose a head/foot style without footer, you will still see a page number centered below. Exactly where it appears will depend on which kind of drop folio is used.
+
+If using \string\thispagestyle\{dropfoliobeneath\} then the page number will appear within the lower margin.
+
+If using \string\thispagestyle\{dropfolioinside\} then the page number will appear just above the lower margin, where the final line of text would otherwise be placed. 
+
+Use class options [draft,shademargins] to see the position.
+
+The initial choice is \textit{dropfoliobeneath}.
+
+\clearpage
+
+% NEXT PAGE:
+
+This tests the \string\cleartoend\space command. If this page is recto (odd), then exactly one blank page will follow. If this page is verso (even), then exactly two blank pages will follow.
+
+\null\null
+
+You may change the settings in the Preamble, or try additional settings.
+
+\null\null
+
+If you have the Adobe Acrobt Pro software,  then you can also test for PDF/X compliance:
+
+First, add \lnum{\string\SetPDFX[CGATSTR001]\{X-1a:2001\}} to the Preamble. Then compile, and verify that the resulting PDF meets the standard, without embedded *.icc profile.
+
+Note that if you use an image other then the included \textit{novel-testimage.png}, then your own image must be prepared according to the specification in \textit{novel} documentation. Otherwise, an incorrectly prepared image will cause PDF/X compliance to fail.
+
+
+\cleartoend % ensures final page is blank verso
+
+\end{document}
+

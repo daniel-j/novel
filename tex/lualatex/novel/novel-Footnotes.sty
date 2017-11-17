@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Footnotes.sty}%
-[2017/11/16 v1.46 LaTeX file (commands for footnotes and endnotes)]
+[2017/11/17 v1.46 LaTeX file (commands for footnotes and endnotes)]
 %%
 
 
@@ -179,7 +179,7 @@
 \DeclareDocumentCommand \endnote { }
 {%
 \global\toggletrue{@gotendnotes}%
-\stepcounter{@endnotecount}\sups{\arabic{@endnotecount}}%
+\stepcounter{@endnotecount}\sups{\arabic{@endnotecount}}\obeyspaces%
 \long\edef\@endnotelist{\@endnotelist\space (\arabic{@endnotecount},p.\thepage)}%
 }
 %%

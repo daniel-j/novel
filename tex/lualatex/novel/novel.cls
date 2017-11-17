@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/11/16 v1.46 LaTeX document class]
+\ProvidesClass{novel}[2017/11/17 v1.46 LaTeX document class]
 %%
 %% Version 1.46: Possibly final version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
@@ -240,6 +240,14 @@
 \DeclareOption{polyoff}{
   \@polyofftrue
 }
+% New in version 1.46: test option, primarily for developer use.
+% Throws error if Liberintus and Latin Modern Roman fonts are unavailable.
+% Throws error is file novel-testimage.png is not in same folder.
+% Lets \lettrine relax if `lettrine' package not loaded.
+\newif \if@testsuite
+\DeclareOption{test}{
+  \@testsuitetrue
+}
 %% Note that document size and normal font size are not class options.
 %% They are set by commands in the Preamble, and have default values.
 %
@@ -348,6 +356,25 @@
 \RequirePackage{novel-Footnotes}
 %%
 
+
+%% Special features of test suite.
+%% -----------------------------------------------------------------------------
+\newcommand\testsuiteoops[1]{%
+  \ClassError{novel}{#1 missing}{Install the necessary file(s).}%
+}
+\if@testsuite
+  \IfFontExistsTF{libertinusserif-regular.otf}{}{\testsuiteoops{`libertinus' fonts}}
+  \IfFileExists{lmodern.sty}{}{\testsuiteoops{`lmodern' package}}
+  \IfFileExists{novel-testimage.png}{}{\testsuiteoops{`novel-testimage.png'}}
+  \NewFontFamily\mustbelibertinus{Libertinus Serif}
+  \NewFontFamily\mustbelmodern{Latin Modern Roman}
+\fi
+\AtBeginDocument{\@ifpackageloaded{lettrine}{}%
+  {\DeclareDocumentCommand\lettrine{ O{} m m }{#2#3}}%
+}
+%% end special features of test suite.
+
+
 %% \AtEndPreamble sets defaults and calculates layout
 %% -----------------------------------------------------------------------------
 \AtEndPreamble{
@@ -369,6 +396,7 @@
 
 %% \AtBeginDocument finishes the setup
 %% -----------------------------------------------------------------------------
+\newlength\normalparindent
 \AtBeginDocument{ %
   \@ifpackageloaded{lettrine}{%
     \LettrineOnGridtrue%
@@ -381,6 +409,8 @@
     \setcounter{DefaultLines}{3}% more likely than 2.
   }{}%
   % Find some useful measurements:
+  \setlength\normalparindent{\parindent}
+  \global\normalparindent=\parindent
   \gdef\@normalxheight{\heightof{x}}
   \setlength\normalxheight{\@normalxheight}
   \global\normalxheight=\normalxheight

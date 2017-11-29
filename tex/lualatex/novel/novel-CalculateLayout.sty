@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-CalculateLayout.sty}%
-[2017/11/17 v1.46 LaTeX file (layout calculations)]
+[2017/12/01 v1.46.1 LaTeX file (layout calculations)]
 %%
 
 %%
@@ -95,7 +95,7 @@
   \FPsub{\@tempLPP}{\@tempLPP}{1.5} % allows for default header
   \FPround{\@tempLPP}{\@tempLPP}{0} % integer
   \FPclip{\@tempLPP}{\@tempLPP} % remove excess trailing 0.
-  \gdef\my@LinesPerPage{\@tempLPP}
+  \gdef\@myLinesPerPage{\@tempLPP}
 \fi
 %
 % Correct bottom margin for descenders, assumed to be 0.3em:
@@ -185,7 +185,7 @@
 % Get values of \@gotHeader and \@gotFooter booleans:
 \@reserveHFspace % defined in `novel-LayoutSettings.sty'.
 % Adjusted LinesPerPage will include header, footer, and added separations:
-\let\adj@LinesPerPage\my@LinesPerPage % Start with the textblock lines.
+\let\adj@LinesPerPage\@myLinesPerPage % Start with the textblock lines.
 % The footskip is always "there" even if no content. Remove it:
 \FPsub{\adj@LinesPerPage}{\adj@LinesPerPage}{1}
 %
@@ -221,10 +221,10 @@
 
 %% FIT CurrentTextWidth TO NewLiveWidth
 %% -----------------------------------------------------------------------------
-\FPdiv{\my@TextRescaleNum}{\New@LiveWidthNum}{\Current@TextWidthNum}
-\FPmul{\Current@FontSizeNum}{\Current@FontSizeNum}{\my@TextRescaleNum}
+\FPdiv{\@myTextRescaleNum}{\New@LiveWidthNum}{\Current@TextWidthNum}
+\FPmul{\Current@FontSizeNum}{\Current@FontSizeNum}{\@myTextRescaleNum}
 \setlength\Current@FontSize{\Current@FontSizeNum pt}
-\FPmul{\Current@TextWidthNum}{\Current@TextWidthNum}{\my@TextRescaleNum}
+\FPmul{\Current@TextWidthNum}{\Current@TextWidthNum}{\@myTextRescaleNum}
 \setlength\Current@TextWidth{\Current@TextWidthNum pt}
 %
 %% end fit CurrentTextWidth to NewLiveWidth
@@ -234,8 +234,8 @@
 %% -----------------------------------------------------------------------------
 % Test if New Text Height fits within New Live Height:
 \FPifgt{\Current@TextHeightNum}{\New@LiveHeightNum} % does not fit, so fix it
-  \FPdiv{\my@NBSrescaleNum}{\New@LiveHeightNum}{\Current@TextHeightNum}
-  \FPmul{\Current@BaselineSkipNum}{\Current@BaselineSkipNum}{\my@NBSrescaleNum}
+  \FPdiv{\@myNBSrescaleNum}{\New@LiveHeightNum}{\Current@TextHeightNum}
+  \FPmul{\Current@BaselineSkipNum}{\Current@BaselineSkipNum}{\@myNBSrescaleNum}
   \setlength\Current@BaselineSkip{\Current@BaselineSkipNum pt}
   \FPmul{\Current@TextHeightNum}{\Current@BaselineSkipNum}{\adj@LinesPerPage}
 \fi
@@ -334,12 +334,12 @@
 \setlength\parindent{1.5em}
 %
 %% Values to be used by footnotes:
-\FPdiv{\my@FontScale}{\Current@FontSizeNum}{12}
+\FPdiv{\@myFontScale}{\Current@FontSizeNum}{12}
 % Substitute for \footnotesize, but only works for actual footnotes,
 %   about 10pt with similarly reduced skip:
-\FPmul{\@myfootnotesizenum}{\my@FontScale}{10}
+\FPmul{\@myfootnotesizenum}{\@myFontScale}{10}
 \FPround{\@myfootnotesizenum}{\@myfootnotesizenum}{2}
-\FPmul{\@myfootnoteskipnum}{\my@FontScale}{\Current@BaselineSkipNum}
+\FPmul{\@myfootnoteskipnum}{\@myFontScale}{\Current@BaselineSkipNum}
 \FPmul{\@myfootnoteskipnum}{\@myfootnoteskipnum}{0.84}
 \FPround{\@myfootnoteskipnum}{\@myfootnoteskipnum}{2}
 %
@@ -365,7 +365,7 @@
 \setlength\paperwidth{\New@MediaWidth} % MediaWidth
 \setlength\paperheight{\New@MediaHeight} % MediaHeight
 %% The `closecrop' class option calculates layout, then removes most of the
-%%  margins. Draft mode only. Purpose is to create a file with just enough white
+%%  margins. In draft mode only. Purpose is to create a file with just enough white
 %%  space around the text to be readable on a handheld device. Not an E-book!
 %% Additional closecrop code is located farther down this page.
 \if@closecrop
@@ -391,7 +391,7 @@
 % per page, minus 1 for the (invisible) footskip, with \normalFontSize added.
 % To straddle the fence between Underfull vbox complaints, and missing a line,
 % I added a very tiny fudge amount, which is less that 1/65536pt.
-\FPsub{\less@LinesPerPage}{\my@LinesPerPage}{1}
+\FPsub{\less@LinesPerPage}{\@myLinesPerPage}{1}
 \setlength\textheight{\normalFontSize+\less@LinesPerPage\nbs+0.000001pt}
 %
 % \oddsidemargin is at the left (inside, spine edge) of recto pages.
@@ -583,7 +583,7 @@
 %
 
 % Labels each page with DRAFT at upper left, if in draft mode:
-\if@useDraftMode
+\ifdraftdoc
   \AddToShipoutPictureBG{\@getPageXY%
     \AtPageUpperLeft{\raisebox{-\nbs}{\textbf{~DRAFT}}}
   }%

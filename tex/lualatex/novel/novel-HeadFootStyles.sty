@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-HeadFootStyles.sty}%
-[2017/11/17 v1.46 LaTeX file (header and footer layouts and styles)]
+[2017/12/01 v1.46.1 LaTeX file (header and footer layouts and styles)]
 %% 
 
 
@@ -155,12 +155,12 @@
   % Look here for the pre-defined layouts, for use as models.
   % Note that if you write \fancyhead or \fancyfoot in the Preamble,
   % that sets the \@styledHeader flag, so these codes do not over-ride yours.
-  \ifthenelse{\equal{\my@HeadFootStyle}{1}}{ % default
+  \ifthenelse{\equal{\@myHeadFootStyle}{1}}{ % default
     \if@styledHeader\else
       \fancyhead[LE]{\makebox[2.5em][l]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\my@VersoEmblem%
+        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\@myVersoEmblem%
       }
-      \fancyhead[RO]{\my@RectoEmblem\makebox[2.5em][r]{%
+      \fancyhead[RO]{\@myRectoEmblem\makebox[2.5em][r]{%
         {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
       }
       \fancyhead[CE]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}}
@@ -168,18 +168,18 @@
     \fi
   }{}
   %
-  \ifthenelse{\equal{\my@HeadFootStyle}{2}}{
+  \ifthenelse{\equal{\@myHeadFootStyle}{2}}{
     \if@styledFooter\else
       \fancyfoot[LE]{\makebox[2.5em][l]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\my@VersoEmblem%
+        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\@myVersoEmblem%
       }
-      \fancyfoot[RO]{\my@RectoEmblem\makebox[2.5em][r]{%
+      \fancyfoot[RO]{\@myRectoEmblem\makebox[2.5em][r]{%
         {\headfont{\addfontfeature{LetterSpace=\@loosehead}\pagenumberstyle}}}%
       }
     \fi
   }{}
   %
-  \ifthenelse{\equal{\my@HeadFootStyle}{3}}{
+  \ifthenelse{\equal{\@myHeadFootStyle}{3}}{
     \if@styledFooter\else
       \fancyfoot[CO,CE]{%
         {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}%
@@ -187,21 +187,21 @@
     \fi
   }{}
   %
-  \ifthenelse{\equal{\my@HeadFootStyle}{4}}{
+  \ifthenelse{\equal{\@myHeadFootStyle}{4}}{
     \if@styledHeader\else
       \fancyhead[LE]{\makebox[2.5em][l]{%
         {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
-        \my@VersoEmblem\hspace{1em}%
+        \@myVersoEmblem\hspace{1em}%
         {\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}%
       }
       \fancyhead[RO]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\rectoheadtext}}%
-        \hspace{1em}\my@RectoEmblem\makebox[2.5em][r]{{%
+        \hspace{1em}\@myRectoEmblem\makebox[2.5em][r]{{%
           \headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
       }
     \fi
   }{}
   %
-  \ifthenelse{\equal{\my@HeadFootStyle}{5}}{
+  \ifthenelse{\equal{\@myHeadFootStyle}{5}}{
     \if@styledHeader\else
         \fancyhead[CE]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}}
         \fancyhead[CO]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\rectoheadtext}}}
@@ -213,12 +213,12 @@
     \fi
   }{}
   %
-  \ifthenelse{\equal{\my@HeadFootStyle}{6}}{
+  \ifthenelse{\equal{\@myHeadFootStyle}{6}}{
     \if@styledHeader\else
       \fancyhead[LE]{\makebox[2.5em][l]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\my@VersoEmblem%
+        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\@myVersoEmblem%
       }
-      \fancyhead[RO]{\my@RectoEmblem\makebox[2.5em][r]{%
+      \fancyhead[RO]{\@myRectoEmblem\makebox[2.5em][r]{%
         {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
       }
       \fancyhead[RE]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}}
@@ -244,9 +244,9 @@
     \renewcommand\footrulewidth{0pt}
     \fancyhead[LO,RE,LE,RO,CE,CO]{}
     \fancyhead[LE]{\makebox[2.5em][l]{%
-      {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\my@VersoEmblem%
+      {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\@myVersoEmblem%
     }
-    \fancyhead[RO]{\my@RectoEmblem\makebox[2.5em][r]{%
+    \fancyhead[RO]{\@myRectoEmblem\makebox[2.5em][r]{%
       {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
     }
     \fancyfoot[LO,RE,LE,RO,CE,CO]{}

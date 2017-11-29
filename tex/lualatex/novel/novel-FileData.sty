@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-FileData.sty}%
-[2017/11/17 v1.46 LaTeX file (File Data settings)]
+[2017/12/01 v1.46.1 LaTeX file (File Data settings)]
 %% 
 
 
@@ -28,7 +28,7 @@
 \gdef\title#1{\gdef\@title{#1}}
 \gdef\thetitle{\@title} % for convenience
 \gdef\theTitle{\@title}
-\SetTitle{}
+\SetTitle{IMPORTANT: Provide Book Title} % Default as of v. 1.46.1. Formerly empty.
 %
 % \author{} or \SetAuthor{}
 % Copied to File Data at end of preamble, unless not set.
@@ -77,15 +77,19 @@
 
 %% SET PDF/X ARGUMENTS
 %% -----------------------------------------------------------------------------
-%% Arguments: [embed-icc or no-embed]{compliance standard}{output intent}
-%% Default option is no-embed.
-%% When this command is not used, it is equivalent to compliance `off'.
+%% \SetPDFX[Output Intent]{compliance standard} % Does not embed *.icc. Default.
+%% \SetPDFX*[Output Intent]{compliance standard} % Embeds *.icc.
+%% Default up to and including v. 1.46: \SetPDFX{off}
+%% Default as of v. 1.46.1: \SetPDFX[CGATSTR001]{X-1a:2001}
 %
 \newif \if@chosenComplianceOK
 \newif \if@chosenEmbedOK
 \newif \if@gotConformance
 \newif \if@noembedicc \@noembedicctrue
-\newif \ifpdfx@isOFF \pdfx@isOFFtrue
+% \@pdfxSEToff refers to the setting, rather than whether or not it really is off.
+% \@pdfxISoff refers to whether it really is off (perhaps something over-rode the setting).
+\newif \if@pdfxSEToff % Prior to v. 1.46.1, was \ifpdfx@isOFF.
+\newif \if@pdfxISoff % New in v. 1.46.1.
 % These will get meaningful info when an output intent file is loaded:
 \gdef\@OIidentifier{}
 \gdef\@OIcondition{}
@@ -106,11 +110,13 @@
 %
 \newcommand\@setpdfx[2]{
   \ifthenelse{\equal{#2}{off}}{
-    \global\pdfx@isOFFtrue
+    \global\@pdfxSETofftrue
+    \global\@pdfxISofftrue
     \@chosenComplianceOKtrue
   }{}
   \ifthenelse{\equal{#2}{X-1a:2001}}{
-    \pdfx@isOFFfalse
+    \global\@pdfxSETofffalse
+    \global\@pdfxISofffalse
     \@chosenComplianceOKtrue
     \gdef\@PDFversion{PDF/X-1}
     \gdef\@PDFXversion{PDF/X-1a:2001}
@@ -119,7 +125,8 @@
     \global\pdfminorversion=3
   }{}
   \ifthenelse{\equal{#2}{X-1a:2003}}{
-    \pdfx@isOFFfalse
+    \global\@pdfxSETofffalse
+    \global\@pdfxISofffalse
     \@chosenComplianceOKtrue
     \gdef\@PDFversion{PDF/X-1}
     \gdef\@PDFXversion{PDF/X-1a:2003}
@@ -128,14 +135,16 @@
     \global\pdfminorversion=3
   }{}
   \ifthenelse{\equal{#2}{X-3:2002}}{
-    \pdfx@isOFFfalse
+    \global\@pdfxSETofffalse
+    \global\@pdfxISofffalse
     \@chosenComplianceOKtrue
     \gdef\@PDFversion{PDF/X-3}
     \gdef\@PDFXversion{PDF/X-3:2002}
     \global\pdfminorversion=3
   }{}
   \ifthenelse{\equal{#2}{X-3:2003}}{
-    \pdfx@isOFFfalse
+    \global\@pdfxSETofffalse
+    \global\@pdfxISofffalse
     \@chosenComplianceOKtrue
     \gdef\@PDFversion{PDF/X-3}
     \gdef\@PDFXversion{PDF/X-3:2003}
@@ -143,15 +152,20 @@
   }{}
   \if@chosenComplianceOK\else
     \ClassError{novel}{Bad compliance argument for \string\SetPDFX}%
-     {Choose: off, X-1a:2001, X-1a:2003, X-3:2002, X-3:2003.^^J}%
+     {Choose: X-1a:2001, X-1a:2003, X-3:2002, X-3:2003, off.^^J}%
   \fi
   %
-  \ifpdfx@isOFF\else % Output Intent ignored if compliance is `off'.
+  \if@pdfxSEToff\else % Output Intent ignored if compliance set `off'.
+    \ifthenelse{\equal{#1}{CGATS TR 001}}{%
+      \ClassError{novel}{Use CGATSTR001 not CGATS TR 001 Output Intent}%
+       {Although `CGATS TR 001' is industry spec for Output Intent,^^J%
+        instead use CGATSTR001 without spaces, in \string\SetPDFX.}%
+    }{}%
     % Grab the file that defines the output intent information:
     \makeatletter % Apparently needed when non-*.sty is input within a command!
     \IfFileExists{novel-#1.clo}{\input{novel-#1.clo}}{
       \ClassError{novel}{Bad Output Intent argument for \string\SetPDFX}%
-       {Use filename (without~extension) of a file with *.clo~extension. ^^J%
+       {Use filename (without extension) of a file with *.clo extension. ^^J%
         Filename must begin with novel- ^^J%
         The file must be where TeX can find it. Or use standard code: ^^J%
         CGATSTR001, FOGRA39, JC200103.}%
@@ -160,6 +174,7 @@
   \fi
 } % end \@setpdfx
 %
+\SetPDFX[CGATSTR001]{X-1a:2001} % Default, from v. 1.46.1. Formerly off.
 %%
 
 

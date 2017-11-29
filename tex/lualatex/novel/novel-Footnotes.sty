@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Footnotes.sty}%
-[2017/11/17 v1.46 LaTeX file (commands for footnotes and endnotes)]
+[2017/12/01 v1.46.1 LaTeX file (commands for footnotes and endnotes)]
 %%
 
 
@@ -51,7 +51,7 @@
 \newtoggle{@usenomark} % when true: no mark, no increment count
 \newtoggle{@placedfootnotenumber} % true if any numerical footnote placed
 %
-\let\my@oldfootnote\footnote\relax % copies the original definition
+\let\@myoldfootnote\footnote\relax % copies the original definition
 \let\footnote\relax % so it can be re-defined, below
 %
 \gdef\@fourem{% length of rule separating footnotes from main text
@@ -82,7 +82,7 @@
   \def\footnotesize{% Not gdef. Only here in footnote. Calculated during layout.
     \@setfontsize\footnotesize{\@myfootnotesizenum pt}{\@myfootnoteskipnum pt}%
   }%
-  \unskip\my@oldfootnote{#2}%
+  \unskip\@myoldfootnote{#2}%
   \endgroup%
 } % end \footnote
 %

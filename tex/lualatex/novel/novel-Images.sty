@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Images.sty}%
-[2017/11/17 v1.46 LaTeX file (image placement)]
+[2017/12/01 v1.46.1 LaTeX file (image placement)]
 %%
 
 
@@ -124,11 +124,11 @@
     \def\@myily{0pt}}{\def\@myily{\@myilya}%
   }%
   \iftoggle{@inheadfoot}{}{\gdef\imagefilename{#3}}% for possible later use
-  \gdef\my@graphic{\novel@includegraphics[draft=false]{#3}}%
-  \setlength\@imagewidth{\widthof{\my@graphic}}%
+  \gdef\@mygraphic{\novel@includegraphics[draft=false]{#3}}%
+  \setlength\@imagewidth{\widthof{\@mygraphic}}%
   \global\@imagewidth=\@imagewidth%
   \iftoggle{@inheadfoot}{}{\setlength\imagewidth{\@imagewidth}}%
-  \setlength\@imageheight{\heightof{\my@graphic}}%
+  \setlength\@imageheight{\heightof{\@mygraphic}}%
   \global\@imageheight=\@imageheight%
   \iftoggle{@inheadfoot}{}{%
     \setlength\imageheight{\@imageheight}%
@@ -155,14 +155,14 @@
     \iftoggle{@inheadfoot}{}{\gdef\imagestarred{true}}%
     \makebox[0pt][l]{%
       \hspace{\@imagehoffset}%
-      \stake\smash{\raisebox{\@imagevoffset}{\my@graphic}}%
+      \stake\smash{\raisebox{\@imagevoffset}{\@mygraphic}}%
     }%
   }%
   % unstarred:
   {%
     \iftoggle{@inheadfoot}{}{\gdef\imagestarred{false}}%
     \hspace{\@imagehoffset}%
-    \stake\smash{\raisebox{\@imagevoffset}{\my@graphic}}%
+    \stake\smash{\raisebox{\@imagevoffset}{\@mygraphic}}%
   }% end IfBooleanTF{#1}
   \iftoggle{@inheadfoot}{}{\setlength\imagehoffset{\@imagehoffset}}%
   \iftoggle{@inheadfoot}{}{\setlength\imagevoffset{\@imagevoffset}}%
@@ -224,10 +224,10 @@
     \def\@myy{0pt}}{\def\@myy{\@myyt}%
   }
   %
-  \gdef\my@graphic{\novel@includegraphics[draft=false]{#2}}%
-  \setlength\@imagewidth{\widthof{\my@graphic}}%
+  \gdef\@mygraphic{\novel@includegraphics[draft=false]{#2}}%
+  \setlength\@imagewidth{\widthof{\@mygraphic}}%
   \global\@imagewidth=\@imagewidth%
-  \setlength\@imageheight{\heightof{\my@graphic}}%
+  \setlength\@imageheight{\heightof{\@mygraphic}}%
   \global\@imageheight=\@imageheight%
   \setlength\@imagehoffset{\@myx}%
   \IfBeginWith{\@myy}{b}{%
@@ -253,7 +253,7 @@
     {\centering%
       \makebox[0pt][l]{%
         \hspace{\dimexpr\@myx-0.5\@imagewidth}%
-        \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\my@graphic}}%
+        \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}%
       }%
     \par}%
     \vspace*{-\nbs}%
@@ -262,7 +262,7 @@
   \ifthenelse{\equal{\@myalign}{r}}{%
     \noindent\makebox[0pt][l]{%
       \hspace{\dimexpr\textwidth+\@myx-\@imagewidth}%
-      \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\my@graphic}}%
+      \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}%
     }\par%
     \vspace{-2\nbs}%
     \begin{adjustwidth}{0pt}{\@imagewidth+\parindent}%
@@ -272,7 +272,7 @@
   \ifthenelse{\equal{\@myalign}{l}}{%
     \noindent\makebox[0pt][l]{%
       \hspace{\@myx}%
-      \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\my@graphic}}%
+      \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}%
     }\par%
     \vspace{-2\nbs}%
     \begin{adjustwidth}{\@imagewidth+\parindent}{0pt}%

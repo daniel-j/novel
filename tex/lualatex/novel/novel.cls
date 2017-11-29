@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/11/17 v1.46 LaTeX document class]
+\ProvidesClass{novel}[2017/12/01 v1.46.1 LaTeX document class]
 %%
 %% Version 1.46: Possibly final version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
@@ -102,6 +102,7 @@
 \RequirePackage{letltxmacro} % for re-defining some macros
 \RequirePackage{magaz} % special treatment of first lines
 \RequirePackage{xparse} % for writing cool-looking commands
+\RequirePackage{lettrine} % New in v. 1.46.1. Configured AtBeginDocument.
 %
 % In addition, the following packages are required, but they are not loaded now.
 % They must wait for something else to happen first. They will be loaded
@@ -123,7 +124,7 @@
 %% -----------------------------------------------------------------------------
 % Allowed option list:
 %   draft xml shademargins graytext greytext cropmarks cropview closecrop
-%   coverart unblock
+%   coverart unblock mtoff polyoff test
 % Yes, I realize that this could have been done another way, but I want
 %   to issue error messages from `novel' rather than (say) `keyval':
 \gdef\@mycol{\@classoptionslist}
@@ -141,6 +142,7 @@
 \StrDel{\@mycol}{unblock}[\@mycol]
 \StrDel{\@mycol}{mtoff}[\@mycol]
 \StrDel{\@mycol}{polyoff}[\@mycol]
+\StrDel{\@mycol}{test}[\@mycol]
 %
 \ifthenelse{\equal{\@mycol}{}}{}{
   \ClassWarning{novel}{Unrecognized class option: \@mycol^^J%
@@ -151,13 +153,16 @@
 }
 %
 % If used, option `draft' shows overflow rule.
-\newif \if@useDraftMode
+% Prior to v. 1.46.1, the following was \if@useDraftMode.
+% Changed for possible compatibility with packages that detect draft mode.
+\newif \ifdraftdoc
 \setlength\overfullrule{0pt}
 \DeclareOption{draft}{
   \setlength\overfullrule{6pt}
-  \@useDraftModetrue
+  \draftdoctrue
   \ClassWarning{novel}{Compiled using draft mode. Not for final release!^^J}
 }
+\newif \ifmsdoc % manuscript, always false. Compatibility with other packages.
 % If used, option `xml' creates a file `\jobname-XMPasXML.xml` that contains
 % the XMP metadata with an xml declaration and comments at top.
 % Only works when \SetPDFX is not `off'. Note that you do not need to use
@@ -253,7 +258,7 @@
 %
 \ProcessOptions\relax
 % Disable some options, depending on compatibilities:
-\if@useDraftMode\else
+\ifdraftdoc\else
   \global\@shademarginsfalse
   \global\@cropviewfalse
   \global\@closecropfalse
@@ -270,7 +275,7 @@
 \fi
 %
 \if@coverart
-  \global\@useDraftModefalse
+  \global\draftdocfalse
   \global\@shademarginsfalse
   \global\@cropviewfalse
   \global\@closecropfalse
@@ -290,7 +295,7 @@
 %   which will be temporarily enabled, even if not specifically requested.
 \newif \if@grayenabled
 %
-\if@useDraftMode
+\ifdraftdoc
   \RequirePackage[gray,hyperref]{xcolor} % allows some layout checks
   \global\@grayenabledtrue
 \else
@@ -397,17 +402,17 @@
 %% \AtBeginDocument finishes the setup
 %% -----------------------------------------------------------------------------
 \newlength\normalparindent
+%
 \AtBeginDocument{ %
-  \@ifpackageloaded{lettrine}{%
-    \LettrineOnGridtrue%
-    \setlength\DiscardVskip{10\nbs}% effectively infinite
-    \global\DiscardVskip=\DiscardVskip%
-    \setlength\DefaultFindent{0.25em}% about one space
-    \global\DefaultFindent=\DefaultFindent%
-    \setlength\DefaultNindent{0em}% uniform gap
-    \global\DefaultNindent=\DefaultNindent%
-    \setcounter{DefaultLines}{3}% more likely than 2.
-  }{}%
+  % Configure lettrine package:
+  \LettrineOnGridtrue%
+  \setlength\DiscardVskip{10\nbs} % effectively infinite
+  \global\DiscardVskip=\DiscardVskip
+  \setlength\DefaultFindent{0.25em} % about one normal space
+  \global\DefaultFindent=\DefaultFindent
+  \setlength\DefaultNindent{0em} % uniform gap
+  \global\DefaultNindent=\DefaultNindent
+  \setcounter{DefaultLines}{3} % more likely than 2.
   % Find some useful measurements:
   \setlength\normalparindent{\parindent}
   \global\normalparindent=\parindent
@@ -426,13 +431,15 @@
   \gdef\@normaldescender{\depthof{gjpqy}}
   \setlength\normaldescender{\@normaldescender}
   \global\normaldescender=\normaldescender
+  % end useful measurements
+  \RequirePackage{lettrine} % was not auto-loaded prior to v. 1.46.1
   % Activate user choice of whether or not to indent after scenebreak commands:
   \if@indentAfterScenebreak\else
     \NoIndentAfterCmd{\scenebreak}
     \NoIndentAfterCmd{\sceneline}
     \NoIndentAfterCmd{\scenestars}
   \fi
-  %
+  % end indent after scenebreak
   \@activateHeadFootStyles % in file `novel-HeadFootStyles.sty'
   \@novelPDFinfo % in file `novel-pdfx.sty'.
   % Commands that cannot be used after Preamble:
@@ -440,6 +447,11 @@
   \let\title\relax
   \let\author\relax
   \let\subtitle\relax
+  \LetLtxMacro\SetMediaSize\relax
+  \LetLtxMacro\SetTrimSize\relax
+  \LetLtxMacro\ReworkTrimSize\relax
+  \LetLtxMacro\SetMargins\relax
+  \LetLtxMacro\ReworkMargins\relax
   % Dealing with known incompatible packages:
   \if@novelunblock
     \gdef\sorry@no#1{} % let them be used
@@ -481,12 +493,18 @@
   \sorry@no{nth}
   \sorry@no{engord}
   \sorry@no{endnotes}
-  %%
-  %% Pertains to novel-LayoutSettings.sty:
+  % end list of incompatible packages
+  \@ifpackageloaded{pagegrid}{
+    \ifdraftdoc\else
+      \ClassError{novel}{\string\pagegrid\space needs `draft' mode^^J}%
+       {\string\pagegrid\space may only be used with class option `draft'^^J}%
+    \fi
+  }{} % end pagegrid
+  % Pertains to novel-LayoutSettings.sty:
   \ifcsname pagenumberstyle\endcsname\else
     \SetPageNumberStyle{\thepage}
   \fi
-  %
+  % initialize defaults for chapterstart:
   \def\@setchapterstartOK{false}%
   \ifthenelse{\equal{\@setchapterstart}{empty}}{%
     \def\@setchapterstartOK{true}%
@@ -516,14 +534,12 @@
     \ClassError{novel}{\string\SetChapterStartStyle\space bad argument}%
     {\string\SetChapterStartStyle\space only allows certain choices.^^J}%
   }%
-  %%
-  %% Pertains to novel-TextMacros.sty:
+  % Pertains to novel-TextMacros.sty:
   \setlength\forceparlength{\parindent}
   \global\forceparlength=\forceparlength
   \gdef\forceindent{\ifvmode\else\unskip\fi\stake\hspace{\forceparlength}}
   \gdef\backindent{\ifvmode\else\unskip\fi\hspace{-\forceparlength}}
-  %%
-  %% Pertains to novel-footnotes.sty:
+  % Pertains to novel-footnotes.sty:
   \gdef\SetFootnoteMarker#1{%
     \typeout{^^JClass `novel' Alert: %
     \string\SetFootnoteMarker\space ineffective after Preamble.^^J}%
@@ -561,9 +577,9 @@
   % Must wait to see how \SetFootnoteMarker was used:
   \ifthenelse{\equal{\@myfnsymbols}{*}}{\setcounter{@maxfnsymbol}{8}}{}
   \ifthenelse{\equal{\@myfnsymbols}{†}}{\setcounter{@maxfnsymbol}{6}}{}
-  %%
-}
-%% end AtBeginDocument
+  %
+}% end AtBeginDocument
+%%
 
 
 %% New in version 1.2, coverart option. See documentation.

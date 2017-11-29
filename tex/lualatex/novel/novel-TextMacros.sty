@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2017/11/17 v1.46 LaTeX file (text macros usable within document body)]
+[2017/12/01 v1.46.1 LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -117,7 +117,7 @@
   \definecolor[named]{gray8}{gray}{0.75}
   \definecolor[named]{gray9}{gray}{0.87}
 \else
-  \let\my@color\color\relax
+  \let\@mycolor\color\relax
   \let\color\relax
   \DeclareDocumentCommand \color { o m }
    {%
@@ -259,12 +259,12 @@
 %   do the calculations yourself.
 \newenvironment{parascale}[1][1]
 {\begingroup%
-\FPmax{\my@tempDetailsNum}{#1}{0.5}% must be at least half normal.
-\FPmul{\my@tempDetailsFontNum}{\my@tempDetailsNum}{\Current@FontSizeNum}%
-\FPround{\my@tempDetailsFontNum}{\my@tempDetailsFontNum}{2}%
-\FPmul{\my@tempDetailsSkipNum}{\my@tempDetailsNum}{\Current@BaselineSkipNum}%
-\FPround{\my@tempDetailsSkipNum}{\my@tempDetailsSkipNum}{2}%
-\fontsize{\my@tempDetailsFontNum pt}{\my@tempDetailsSkipNum pt}\selectfont}%
+\FPmax{\@mytempDetailsNum}{#1}{0.5}% must be at least half normal.
+\FPmul{\@mytempDetailsFontNum}{\@mytempDetailsNum}{\Current@FontSizeNum}%
+\FPround{\@mytempDetailsFontNum}{\@mytempDetailsFontNum}{2}%
+\FPmul{\@mytempDetailsSkipNum}{\@mytempDetailsNum}{\Current@BaselineSkipNum}%
+\FPround{\@mytempDetailsSkipNum}{\@mytempDetailsSkipNum}{2}%
+\fontsize{\@mytempDetailsFontNum pt}{\@mytempDetailsSkipNum pt}\selectfont}%
 {\endgroup}
 %
 %%
@@ -457,7 +457,6 @@
 }
 \ExplSyntaxOff % end linegap environment
 %%
-
 
 
 %%

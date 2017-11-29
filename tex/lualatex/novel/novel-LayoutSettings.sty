@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/11/17 v1.46 LaTeX file (layout settings)]
+[2017/12/01 v1.46.1 LaTeX file (layout settings)]
 %%
 
 
@@ -38,9 +38,9 @@
 \newlength\New@MediaHeight % Initialized to \Old@MediaHeight.
 \newlength\Old@FontSize
 %
-\gdef\my@HeadFootStyle{1} % default: header but not footer
-\gdef\my@VersoEmblem{} % no default emblem
-\gdef\my@RectoEmblem{} % no default emblem
+\gdef\@myHeadFootStyle{1} % default: header but not footer
+\gdef\@myVersoEmblem{} % no default emblem
+\gdef\@myRectoEmblem{} % no default emblem
 \gdef\novel@checkfeatures#1{} % re-defined below
 %
 \newif \if@TrimSizeSet
@@ -192,7 +192,7 @@
       {You requested less than one line per page. Naughty!^^J}%
   \else\fi %
   \FPround{\temp@IntegerLines}{#1}{0}
-  \def\my@LinesPerPage{\temp@IntegerLines}
+  \def\@myLinesPerPage{\temp@IntegerLines}
 }
 % \SetFontSize{} may be in any units, even decimals: 12.2pt, 11.5bp, etc.
 % When packages load, the font size is temporarily set to 11pt at 15pt skip,
@@ -231,18 +231,18 @@
 \SetFootJump{1.5} % default
 % New in version 1.2, coverart.
 \if@coverart % cover art has no header or footer
-  \gdef\SetHeadFootStyle#1{\gdef\my@HeadFootStyle{0}}
-  \gdef\SetHeadStyle#1{\gdef\my@HeadFootStyle{0}} % deprecated
+  \gdef\SetHeadFootStyle#1{\gdef\@myHeadFootStyle{0}}
+  \gdef\SetHeadStyle#1{\gdef\@myHeadFootStyle{0}} % deprecated
   \SetHeadFootStyle{0}
 \else
   % See docs for available layout choices:
-  \gdef\SetHeadFootStyle#1{\gdef\my@HeadFootStyle{#1}}
-  \gdef\SetHeadStyle#1{\gdef\my@HeadFootStyle{#1}} % deprecated
+  \gdef\SetHeadFootStyle#1{\gdef\@myHeadFootStyle{#1}}
+  \gdef\SetHeadStyle#1{\gdef\@myHeadFootStyle{#1}} % deprecated
 \fi
 % See docs for what these emblems do, if used:
 \newcommand\SetEmblems[2]{ % verso, recto
-  \gdef\my@VersoEmblem{{\headfont #1}}
-  \gdef\my@RectoEmblem{{\headfont #2}}
+  \gdef\@myVersoEmblem{{\headfont #1}}
+  \gdef\@myRectoEmblem{{\headfont #2}}
 }
 \let\SetEmblem\SetEmblems% for convenience
 % If you want something fancier than \thepage:
@@ -258,25 +258,25 @@
 \newif \if@validHF
 %
 \gdef\@reserveHFspace{ % used for layout calculations
-  \ifthenelse{\equal{\my@HeadFootStyle}{0}}{
+  \ifthenelse{\equal{\@myHeadFootStyle}{0}}{
     \@gotHeaderfalse\@gotFooterfalse\@validHFtrue
   }{}
-  \ifthenelse{\equal{\my@HeadFootStyle}{1}}{ % default
+  \ifthenelse{\equal{\@myHeadFootStyle}{1}}{ % default
     \@gotHeadertrue\@gotFooterfalse\@validHFtrue
   }{}
-  \ifthenelse{\equal{\my@HeadFootStyle}{2}}{
+  \ifthenelse{\equal{\@myHeadFootStyle}{2}}{
     \@gotHeaderfalse\@gotFootertrue\@validHFtrue
   }{}
-  \ifthenelse{\equal{\my@HeadFootStyle}{3}}{
+  \ifthenelse{\equal{\@myHeadFootStyle}{3}}{
     \@gotHeaderfalse\@gotFootertrue\@validHFtrue
   }{}
-  \ifthenelse{\equal{\my@HeadFootStyle}{4}}{
+  \ifthenelse{\equal{\@myHeadFootStyle}{4}}{
     \@gotHeadertrue\@gotFooterfalse\@validHFtrue
   }{}
-  \ifthenelse{\equal{\my@HeadFootStyle}{5}}{
+  \ifthenelse{\equal{\@myHeadFootStyle}{5}}{
     \@gotHeadertrue\@gotFootertrue\@validHFtrue
   }{}
-  \ifthenelse{\equal{\my@HeadFootStyle}{6}}{
+  \ifthenelse{\equal{\@myHeadFootStyle}{6}}{
     \@gotHeadertrue\@gotFootertrue\@validHFtrue
   }{}
   % Ensure that user choice was on the allowed list:
@@ -652,6 +652,7 @@
 %% FRONTMATTER, MAINMATTER. BUT NO BACKMATTER!
 %% --------------------------------------------------------------------------
 %
+% These do not have @ in name, so that they can be used in document body:
 \newif \ifWithinFrontmatter \WithinFrontmatterfalse
 \newif \ifWithinMainmatter \WithinMainmatterfalse
 \newcounter{frontmatterpages}

@@ -24,7 +24,7 @@
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesFile{novel-pdfx.sty}%
-[2017/11/17 v1.46 LaTeX file (PDF/X support for novel class)]
+[2017/12/01 v1.46.1 LaTeX file (PDF/X support for novel class)]
 % This package supports, and is part of, class `novel'.
 % No support for anything but LuaLaTeX.
 
@@ -34,8 +34,18 @@
 %%
 
 
+%% Preliminary tests for cases forbidding PDF/X:
+\ifdraftdoc
+  \global\@pdfxISofftrue
+  \if@pdfxSEToff
+    \ClassWarning{novel}{You requested PDF/X compliance in draft mode.^^J%
+     Sorry, but you cannot have both at the same time.^^J%
+     Your document was processed with \string\SetPDFX\{off\}.^^J}%
+  \fi
+\fi
+%%
 
-%
+
 % Hyperref options for PDF/X with LuaLaTeX:
 \def\pdfx@pdfX@opts@luatex{%
   draft,pdftex,pdfpagemode=UseNone,bookmarks=false,hyperfootnotes=false,%
@@ -50,16 +60,19 @@
 \fi
 \Hy@bookmarksfalse
 %
-\newif \if@gottitle \@gottitlefalse % refers to PDF File Data
-% Was \SetTitle{} called prior to this step? If so:
-\ifthenelse{\equal{\@title}{} \OR \equal{\@title}{ }}{}{\@gottitletrue}
+\newif \if@gottitle % refers to PDF File Data
+\ifthenelse{\equal{\@title}{} \OR \equal{\@title}{ }}{\global\@gottitlefalse}{\global\@gottitletrue}
+\ifthenelse{\equal{\@title}{IMPORTANT: Provide Book Title}}{%
+  \ClassWarning{novel}{^^JYou did not provide a title using \string\SetTitle.^^J%
+   Default used: `IMPORTANT: Provide Book Title'. Be sure to change it!^^J}%
+}{}%
 %
 % Sanity check: If title is missing at this step, then compliance must be off:
-\ifpdfx@isOFF\else
+\if@pdfxISoff\else
   \if@gottitle\else
-    \ClassError{novel}{PDF/X requires \string\SetTitle\space first}%
-     {Unless \string\SetPDFX\space is off, must use \string\SetTitle\space ^^J%
-       before using \string\SetPDFX.^^J}
+    \ClassError{novel}{PDF/X requires non-empty \string\SetTitle\space}%
+     {Unless \string\SetPDFX\space is off, must use \string\SetTitle\space^^J%
+      with non-empty title. Blank space counts as empty.^^J}%
   \fi
 \fi
 %
@@ -90,53 +103,53 @@
 %   by professional PDF software. For that reason, and for proper centering
 %   of TrimBox when MediaBox is larger, CropBox is created (= MediaBox).
 %
-\newcommand\my@MWnum{\strip@pt\New@MediaWidth}
-\FPmul{\my@MWnum}{\my@MWnum}{0.99626401}
-\FPround{\my@MWnum}{\my@MWnum}{3}
-\FPclip{\my@MWnum}{\my@MWnum}
-\newcommand\my@MHnum{\strip@pt\New@MediaHeight}
-\FPmul{\my@MHnum}{\my@MHnum}{0.99626401}
-\FPround{\my@MHnum}{\my@MHnum}{3}
-\FPclip{\my@MHnum}{\my@MHnum}
-\newcommand\my@TWnum{\strip@pt\New@TrimWidth}
-\FPmul{\my@TWnum}{\my@TWnum}{0.99626401}
-\FPround{\my@TWnum}{\my@TWnum}{3}
-\newcommand\my@THnum{\strip@pt\New@TrimHeight}
-\FPmul{\my@THnum}{\my@THnum}{0.99626401}
-\FPround{\my@THnum}{\my@THnum}{3}
+\newcommand\@myMWnum{\strip@pt\New@MediaWidth}
+\FPmul{\@myMWnum}{\@myMWnum}{0.99626401}
+\FPround{\@myMWnum}{\@myMWnum}{3}
+\FPclip{\@myMWnum}{\@myMWnum}
+\newcommand\@myMHnum{\strip@pt\New@MediaHeight}
+\FPmul{\@myMHnum}{\@myMHnum}{0.99626401}
+\FPround{\@myMHnum}{\@myMHnum}{3}
+\FPclip{\@myMHnum}{\@myMHnum}
+\newcommand\@myTWnum{\strip@pt\New@TrimWidth}
+\FPmul{\@myTWnum}{\@myTWnum}{0.99626401}
+\FPround{\@myTWnum}{\@myTWnum}{3}
+\newcommand\@myTHnum{\strip@pt\New@TrimHeight}
+\FPmul{\@myTHnum}{\@myTHnum}{0.99626401}
+\FPround{\@myTHnum}{\@myTHnum}{3}
 %
-\FPsub{\my@TWorigin}{\my@MWnum}{\my@TWnum}
-\FPmul{\my@TWorigin}{\my@TWorigin}{0.5}
-\FPround{\my@TWorigin}{\my@TWorigin}{3}
-\FPadd{\my@TWcorner}{\my@TWorigin}{\my@TWnum}
-\FPround{\my@TWcorner}{\my@TWcorner}{3}
-\FPsub{\my@THorigin}{\my@MHnum}{\my@THnum}
-\FPmul{\my@THorigin}{\my@THorigin}{0.5}
-\FPround{\my@THorigin}{\my@THorigin}{3}
-\FPadd{\my@THcorner}{\my@THorigin}{\my@THnum}
-\FPround{\my@THcorner}{\my@THcorner}{3}
+\FPsub{\@myTWorigin}{\@myMWnum}{\@myTWnum}
+\FPmul{\@myTWorigin}{\@myTWorigin}{0.5}
+\FPround{\@myTWorigin}{\@myTWorigin}{3}
+\FPadd{\@myTWcorner}{\@myTWorigin}{\@myTWnum}
+\FPround{\@myTWcorner}{\@myTWcorner}{3}
+\FPsub{\@myTHorigin}{\@myMHnum}{\@myTHnum}
+\FPmul{\@myTHorigin}{\@myTHorigin}{0.5}
+\FPround{\@myTHorigin}{\@myTHorigin}{3}
+\FPadd{\@myTHcorner}{\@myTHorigin}{\@myTHnum}
+\FPround{\@myTHcorner}{\@myTHcorner}{3}
 %
-\FPclip{\my@TWorigin}{\my@TWorigin}
-\FPclip{\my@TWcorner}{\my@TWcorner}
-\FPclip{\my@THorigin}{\my@THorigin}
-\FPclip{\my@THcorner}{\my@THcorner}
+\FPclip{\@myTWorigin}{\@myTWorigin}
+\FPclip{\@myTWcorner}{\@myTWcorner}
+\FPclip{\@myTHorigin}{\@myTHorigin}
+\FPclip{\@myTHcorner}{\@myTHcorner}
 %
 \newcommand\novel@CropBox{%
  \if@cropview%
-   /CropBox[\my@TWorigin\space\my@THorigin\space\my@TWcorner\space\my@THcorner]%
+   /CropBox[\@myTWorigin\space\@myTHorigin\space\@myTWcorner\space\@myTHcorner]%
  \else%
-   /CropBox[0\space0\space\my@MWnum\space\my@MHnum]%
+   /CropBox[0\space0\space\@myMWnum\space\@myMHnum]%
  \fi%
 }
 %
 \newcommand\novel@TrimBox{%
-  /TrimBox[\my@TWorigin\space\my@THorigin\space\my@TWcorner\space\my@THcorner]%
+  /TrimBox[\@myTWorigin\space\@myTHorigin\space\@myTWcorner\space\@myTHcorner]%
 }
 %
 % New in version 1.2: BleedBox, only for cover art. Same size as MediaBox.
 \newcommand\novel@BleedBox{%
   \if@coverart%
-   /BleedBox[0\space0\space\my@MWnum\space\my@MHnum]%
+   /BleedBox[0\space0\space\@myMWnum\space\@myMHnum]%
   \else\fi%
 }
 %
@@ -144,42 +157,6 @@
 \endgroup\pdfpageattr{\novel@CropBox^^J\novel@BleedBox^^J\novel@TrimBox}}\next
 %
 %% End calculate and specify TrimBox.
-
-
-
-%% DISABLE HYPERLINKS AND BOOKMARKS
-%% -----------------------------------------------------------------------------
-%
-% Files for PDF/X cannot have hyperlinks. If your document has any,
-% they will be functionally disabled. However, it is still necessary
-% to ensure that you do not specify them in the wrong color space.
-% Since `novel' class disallows any kind of color, `xcolor' is loaded with
-% `monochrome' or `gray' option, prior to loading `hyperref'.
-%
-% Your text will be K black, rather than CMYK `rich black'. This is best.
-% If you use a grayscale image anywhere, ask your print service whether it may
-% be directly placed as grayscale (and they will convert to halftone)
-% or whether you must convert it to halftone yourself, and place it that way.
-%
-% Note that LaTeX cannot detect any erroneous placement of a color image.
-%
-% The pagegrid package can only be used in draft mode, without PDF/X:
-\gdef\@reallyOFF{off}
-\@ifpackageloaded{pagegrid}{
-  \if@useDraftMode\else
-    \ClassError{novel}{\string\pagegrid\space needs `draft' mode^^J}%
-     {\string\pagegrid\space may only be used with class option `draft'^^J}%
-  \fi
-  \ifpdfx@isOFF\else
-    \pdfx@isOFFtrue % cancels pdfx when using pagegrid (in draft mode)
-    \gdef\@reallyOFF{re-set to off by pagegrid package.}
-    \ClassWarning{novel}{You requested PDF/X compliance.^^J%
-     But you also used the \string\pagegrid\space package. Cannot have both.^^J%
-     So instead, your document was processed with \string\SetPDFX\space off.^^J%
-     Reason: The grid and text are in layers. No layers allowed.^^J}%
-  \fi
-}{}
-%% End disable hyperlinks and bookmarks.
 
 
 
@@ -245,7 +222,7 @@
 %
 \def\@pdfVersion{1.\the\pdfminorversion}
 %
-\ifpdfx@isOFF
+\if@pdfxISoff
   \gdef\@verconfString{}%
 \else
   \gdef\@verconfString{
@@ -256,7 +233,7 @@
   }
 \fi
 %
-\ifpdfx@isOFF
+\if@pdfxISoff
   \gdef\@pdfidString{}%
 \else
   \gdef\@pdfidString{
@@ -331,7 +308,7 @@
 %% Inserts the prepared XMP metadata into XMP packet template, then writes
 %% the result at the start of the PDF, right now, before the document.
 %
-\ifpdfx@isOFF\else
+\if@pdfxISoff\else
   \if@gottitle
     \begingroup
       \makeatletter
@@ -410,7 +387,7 @@
 %% WRITE THE OUTPUT INTENT, UNLESS PDFX IS OFF.
 %% -----------------------------------------------------------------------------
 %
-\ifpdfx@isOFF\else
+\if@pdfxISoff\else
   \begingroup
     \edef\@pctchar{\expandafter\@gobble\string\%} % Escaped in TeX, not PDF.
     \edef\@bchar{\expandafter\@gobble\string\\} % For use as escape, below.
@@ -508,7 +485,7 @@
       \fi
       \ifx\@infoproducer\@empty\else /Producer(\@infoproducer)\fi%
       /Trapped/False%
-      \ifpdfx@isOFF\else
+      \if@pdfxISoff\else
         /GTS_PDFXVersion(\@PDFXversion)%
         \if@gotConformance /GTS_PDFXConformance(\@PDFXconformance)\fi%
       \fi

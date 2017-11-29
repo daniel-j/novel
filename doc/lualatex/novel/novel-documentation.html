@@ -23,14 +23,14 @@ img.nodisplaynav {display:none; height:1em;}
 img.openclose {display:none; height:1em;}
 *.noimg {padding-left:1.5em;}
 div.d1 {margin:0px 16px 16px 16px;}
-div.d2 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
-div.d3 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
-div.d4 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
-div.d5 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
-div.d6 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
+div.d2 {margin:0px 0px 16px 16px; padding-bottom:1em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
+div.d3 {margin:0px 0px 16px 16px; padding-bottom:1em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
+div.d4 {margin:0px 0px 16px 16px; padding-bottom:1em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
+div.d5 {margin:0px 0px 16px 16px; padding-bottom:1em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
+div.d6 {margin:0px 0px 16px 16px; padding-bottom:1em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
 div.page {padding:16px 0px 16px 0px; border-top:4px solid #505050;}
 div.codeblock {overflow:auto; margin:16px; padding: 8px; border: 1px solid #000000;}
-code {font-family:monospace,monospace; color:#200050; background:transparent none; padding:0px 3px 0px 3px;}
+code {font-size:1em; font-family:monospace,monospace; color:#200050; background:transparent none; padding:0px 3px 0px 3px;}
 *.smaller {font-weight:normal; font-size:88%;}
 *.noindent {text-indent:0px;}
 *.noindent1 {text-indent:0px; margin-top:8px;}
@@ -52,6 +52,7 @@ span.ap {color: #996633;} /* percent comment in code */
 *.n {display:none; border:1px solid #990000; font-family:monospace,monospace; font-size:0.92em; font-weight:bold; padding: 0 0.3em 0 0.3em; color:#990000; background: #ffdddd none; margin-right:0.5em;}
 p.centerimg {text-indent:0px; text-align:center; margin-top:0.5em; margin-bottom:0.5em;}
 p.code {text-indent:0px; margin: 4px 16px 4px 16px; padding-left:32px;}
+p.item {text-indent:0px; padding-top:8px;}
 b em {font-weight:normal;}
 hr.newpage {margin-top:2em; margin-bottom:2em; height:4px; color:#505050; background:#505050;}
 p.overhang {margin-left:32px; text-indent:-16px;}
@@ -161,6 +162,8 @@ function closeall() {
 
 <ul><!-- master toc ul -->
 
+  <li id="l0"><a href="#h0"><b>&ldquo;Novel&rdquo; Document Class</b></a></li>
+
   <li id="l1"><span class="n"></span><a href="#h1"><b>1. Overview</b></a>
     <ul id="u1">
       <li id="l1.1"><span class="n"></span><a href="#h1.1">1.1 Description</a>
@@ -187,7 +190,7 @@ function closeall() {
           <li><a href="#h1.2.7">1.2.7 Beware of Special Characters</a></li>
           <li><a href="#h1.2.8">1.2.8 Avoid TeX Editors, IDEs</a></li>
           <li><a href="#h1.2.9">1.2.9 Write Using Word Processor</a></li>
-          <li><a href="#h1.2.10">1.2.10 Think for Yourself</a></li>
+          <li><a href="#h1.2.10">1.2.10 Paragraph Layout</a></li>
         </ul>
       </li><!-- end 1.2 -->
     </ul>
@@ -203,7 +206,7 @@ function closeall() {
       <li><a href="#h2.6">2.6 closecrop</a></li>
       <li><a href="#h2.7">2.7 xml</a></li>
       <li><a href="#h2.8">2.8 coverart</a></li>
-      <li><a href="#h2.9">2.9 unblock (dev)</a></li>
+      <li><a href="#h2.9">2.9 other options (dev)</a></li>
     </ul>
   </li><!-- end 2 -->
 
@@ -573,17 +576,16 @@ function closeall() {
 <div id="main">
 <!-- **************************************************************************************** -->
 
-<h1 id="h0">Document class <i>novel</i> - documentation</h1>
-<p class="noindent">Version: 1.46, 2017/11/17. <span id="screennoscript" class="screennoscript"><b>For enchanced navigation of this file, turn on JavaScript.</b></span></p>
+<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.46.1, 2017/12/01</span></h1>
+<p class="noindent"><span id="screennoscript" class="screennoscript"><b>For enchanced navigation of this file, turn on JavaScript.</b></span></p>
 <div><script type="text/javascript">if(document.getElementById("screennoscript")){document.getElementById("screennoscript").style.display="none";}</script></div>
-<p class="noindent" style="position:relative"><span style="position:absolute; top:-.1em; font-size:150%; color:#008000">&#9786;</span>&nbsp; &nbsp; &nbsp; An example novel, text and cover, can be found at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/">GitHub project page, https://github.com/RobtAll/novel/</a>, in the "other" folder. You will find its TeX source and the resulting PDF. The PDF text and cover meet submission standards for major American print-on-demand services.</p>
-<p>A smaller example document is <i>novel-example.tex</i>, which can be found in the <i>extras</i> folder within this documentation.</p>
-<p class="notprinted"><b>Printing this file:</b> A printed version (PDF or paper) has condensed Table of Contents, and inactive hyperlinks. If your user agent has trouble printing, do this: In a UNIX-compatible plain text editor, edit this file. About 83 lines from the top you will see a block of style that is commented out. Remove the comments so that the block is effective. Load the edited HTML file with JavaScript turned off.</p>
-<p class="notprinted">Some user agents have difficulty previewing this HTML file for print, or printing it. If you wish to print (to PDF or paper) then try this: Copy the HTML file, and name the copy <i style="white-space:nowrap">novel-documentation-print.html</i>. That might (or might not) help. In any case, the printable format of this file has an abbreviated list of contents at the top, not as a sidebar.</p>
-<p><b>Attention:</b> Changed behavior of <code>\BlockImage</code> in v. 1.46. See <a href="#hG">issue G.3</a></p>
+<p class="noindent">The <i>novel</i> document class provides an integrated method for creating original works of fiction, such as a novel or collection of short stories. It may also be used for popular non-fiction, using design similar to that seen for fiction. It does not provide support for academic or mathematical works.</p>
+<p>LuaLaTeX and utf-8 are used exclusively. Dimensions and fonts are pre-configured for a popular American size of print-on-demand softcover fiction. Simple commands allow you to easily change settings. Necessary component packages are pre-loaded and pre-configured. PDF/X capability is included.</p>
+<p style="position:relative"><img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Only printed (to paper) books are supported. E-books are <i>not</i> supported, and never will be.</p>
 <p>&nbsp;</p>
 
 
+<!-- ********************************************************************** -->
 <div id="page01" class="page">
 
 
@@ -592,50 +594,53 @@ function closeall() {
 
 <h3 id="h1.1">1.1. Description</h3>
 <div class="d3" id="d1.1">
-<p class="noindent">The <i>novel</i> document class is intended for writers of original fiction, such as novels and collections of short stories. For this purpose, it provides easy-to-use settings that are pre-configured for the most common book Trim Sizes, according to publishing standards.</p>
-<p>The class uses the advanced typographic features of <i>LuaTeX</i>, <i>fontspec</i>, and <i>microtype</i>, and has the built-in capability to produce files compliant with PDF/X. All these capabilities are accessed via simple front-end commands that do the work for you, thereby reducing the learning curve.</p>
-<p>You will be using utf-8 encoding throughout, and Open Type fonts (or TrueType). That means built-in support for many languages.</p>
-<p>PDF/A and other formats pertaining to digital publication (e-books) are not supported, and never will be. If that is what you need, then this is the wrong document class for you.</p>
-<p>Bibliography, Floats, Tables, Math Mode, automatic generation of title page and table of contents... Forget them! Many of the TeX features used for academic work have reduced functionality, or are entirely disabled, in <i>novel</i> class. There is a reason for this. If you need those capabilities, find another document class. There is some support for page-bottom footnotes, but good support for raster (not vector) images.</p>
-<p>The class makes typographic choices that are best suited to <em>original</em> fiction, where you can easily resolve problematic typesetting by re-writing your own work. Note that modern commercial publishing is often very tolerant of widows and orphans, so <i>novel</i> makes no effort to control them.</p>
-<p>The <i>novel</i> class has a lot of possible settings, and a command structure that differs from other document classes in many ways. So, there is a lot of documentation. But you probably do not have to read most of it.</p>
-<p>Before you panic, look at the <i>novel-example.tex</i> demonstration file, in the documentation <i>extras</i> folder. It uses mostly default settings. See how easy that can be?</p>
-<p>If you are ready to typeset your great detective novel, or your collection of sci-fi short stories, then <i>novel</i> is for you. And, if you are unfamiliar with the terminology of commercial book publishing, have no fear! This documentation is here to help you.</p>
+<p class="noindent">If you are ready to typeset your great detective novel, or your collection of sci-fi short stories, then <i>novel</i> is for you. And, if you are unfamiliar with the terminology of commercial book publishing, have no fear! This documentation is here to help you.</p>
 
 <h4 id="h1.1.1">1.1.1. Installation</h4>
 <div class="d4" id="d1.1.1">
-<p class="noindent">Your TeX installation must be based on TeXLive 2016 or later (including any recent MiKTeX). If you are on Linux and your distro is something such as Ubuntu 16.04 LTS (Xenial), then the distro version of TeXLive is too old. However, you can still install a more recent version of TeXLive manually, to your home directory, from <a class="external" rel="external" target="new" href="https://www.tug.org/texlive/">tug.org</a>.</p>
-<p>The <i>novel</i> package is not (yet) included with default TeX distribution. Once you have TeX working, use its package manager to install <i>novel</i>. The TeX package will be placed in <i>(texroot)/tex/lualatex/novel/</i>, the documentation will be placed in <i>(texroot)/doc/lualatex/novel/</i>, and the included font will be placed in <i>(texroot)/fonts/opentype/novel/</i>.</p>
-<p>Fonts from the <i>libertinus</i> package are required, and may be installed via your TeX package manager. Note that a <i>novel</i> document does not request the package, so you will not see an error if the fonts are not installed! Instead, if you have not manually specified which fonts to use, it will automatically look for pre-installed Libertinus fonts (or Linux Libertine O) as defaults.</p>
-<p>Since you will be using LuaLaTeX, the font cache will be updated to include the newly-installed fonts, the next time you run this software. However, I recommend that you force a full cache refresh, by locating the <i>luatex-cache</i> directory, and discard its contents. The cache may be anywhere (sadly), so you will have to hunt for it. If you have never used LuaLaTeX before, it may not exist. If there are any updates to the fonts, then a manual cache refresh is necessary.</p>
+<p class="item"><b>A.</b> Requires TeXLive 2016 or later (including current MikTeX).</p>
+<p class="item"><b>B.</b> Some Linux (such as Ubuntu 16.04 LTS Xenial) contains TeXLive 2015 or earlier (too old). <span style="white-space:nowrap">Work-around:</span> Remove the old TeXLive, and install newer version to your home directory, from <a class="external" rel="external" target="new" href="https://www.tug.org/texlive/">tug.org</a>.</p>
+<p class="item"><b>C.</b> To use <i>novel</i>, you must also install the <i>libertinus</i> package. This is not automatic.</p>
+<p class="item"><b>D.</b> Once you have TeX installed and running, then install <i>novel</i> and <i>libertinus</i> via your TeX package manager. On MiKTeX, they will be listed among available packages. On other TeXLive, try this command (use <code>sudo</code> if TeXLive is installed to system, instead of home directory):</p>
+<p class="code"><code>tlmgr install novel libertinus</code></p>
+<p class="item"><b>E.</b> Test your installation: In this documentation folder, there is an <i>extras</i> subfolder. Inside is file <span style="white-space:nowrap"><i>novel-example.tex</i></span>. Copy this file to your home directory, or other location with read/write privileges. You may open it in the TeXWorks editor (if installed), and compile from there. The editor will automatically detect the compiler (LuaLaTeX) and encoding <span style="white-space:nowrap">(utf-8)</span>. Or, from command line:</p>
+<p class="code"><code>lualatex novel-example.tex</code></p>
+<p class="item"><b>E.</b> If <i>novel-example.tex</i> does not compile, the problem is (almost certainly) with your installation. Note that TeX editor software, other than TeXWorks, may or may not recognize the <i>lualatex</i> and <i>utf-8</i> directives.</p>
+<p class="item"><b>F.</b> When it compiles: Inspect the PDF for fonts. It must contain <span style="white-space:nowrap"><i>Libertinus Serif</i></span> and <i>NovelDeco</i> fonts, but not contain <span style="white-space:nowrap"><i>Computer Modern</i></span> or <span style="white-space:nowrap"><i>Latin Modern</i></span> fonts.</p>
+<p>If the fonts are incorrect: Did you install <i>libertinus</i>? Did you update the file name database? In some cases, you must clear the contents of any existing <span style="white-space:nowrap"><i>luatex-cache</i></span> folder.</p>
+<p class="item" style="position:relative"><b>G.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you have Adobe Acrobat Pro software (not the free Adobe Reader): Pre-flight the PDF as <span style="white-space:nowrap">PDF/X-1a:2001</span>. It should pass without problem. Be sure that this is the standard you test (not any other PDF/X).</p>
 </div><!-- end 1.1.1 -->
 
 <h4 id="h1.1.2">1.1.2. Licensing</h4>
 <div class="d4" id="d1.1.2">
-<p class="noindent">The <i>novel</i> document class, including software, examples, documentation and supporting images, is distributed under the terms of the LaTeX Project Publc License, either version 1.3c of this license or (at your option) any later version. The exception is the included font NovelDeco.otf, which is distributed under terms of the SIL Open Font License, v.1.1.</p>
-<p>To ensure that your book may be sold commercially, be careful to use only fonts that allow commercial usage. That may exclude some of the fonts in the LaTeX font catalog. See this documentation regarding fonts.</p>
+<p class="item"><b>A.</b> The <i>novel</i> document class, including software, examples, documentation and supporting images, is distributed under the terms of the <a class="external" rel="external" target="new" href="https://www.latex-project.org/lppl/lppl-1-3c/">LaTeX Project Public License, version 1.3c</a>, or (at your option) any later version.</p>
+<p class="item"><b>B.</b> Exception: The included font <i>NovelDeco.otf</i> is distributed under terms of the <a class="external" rel="external" target="new" href="http://scripts.sil.org/cms/scripts/page.php?item_id=OFL_web">SIL Open Font License, v.1.1.</a></p>
+<p class="item"><b>C.</b> To ensure that your book may be sold commercially, be careful to use only fonts that allow commercial usage. That may exclude some of the fonts in the LaTeX font catalog. See <a href="#hC">Appendix C</a>.</p>
 </div><!-- end 1.1.2 -->
 
 <h4 id="h1.1.3">1.1.3. Credits</h4>
 <div class="d4" id="d1.1.3">
-<p class="noindent">My method of "programming" largely involves using or modifying code provided by others under allowable license terms. Thus, within the TeX code files, you will find places where small or large pieces of code are the work of someone else. Names or organizations are credited in-place within the TeX code, according to license.</p>
-<p>Various clipart graphics were obtained from <a class="external" rel="external" target="new" href="https://openclipart.org">openclipart.org</a>. The <i>NovelDeco.otf</i> font is partly derived from <i>Linux Libertine O</i>, using <a class="external" rel="external" target="new" href="https://fontforge.github.io/en-US/">FontForge.</a></p>
-<p>I read popular fiction a lot, usually books from my local public library. Even if I do not read a particular book, I often look a how it is designed. Throughout this documentation, where I recommend a design or style, it is most often based on the preponderance of designs/styles as I have seen in softcover or hardcover popular fiction, from major publishers in the U.S.A. That does not include "mass-market paperback" versions (the kind seen at supermarkets, rather than at bookstores). I may mention several common alternatives.</p>
-<p>I have also consulted the authoritative <i>Chicago Manual of Style</i> (CMoS) hardcover 16th Edition. In the case of fiction, <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> notes that publishers sometimes don't do things the official way.</p>
-<p>Although I have looked at a variety of web sites concerning book design, I give these the least credence, because (a) often they merely duplicate each other's opinions, right or wrong, and (b) they may simply echo <i style="cursor:help" title="Chicago Manual of Style">CMoS</i>.</p>
+<p class="item"><b>A.</b> Within the TeX code files, you will find places where small or large pieces of code are the work of someone else. Names or organizations are credited in-place within the TeX code, according to license.</p>
+<p class="item"><b>B.</b> Various clipart graphics were obtained from <a class="external" rel="external" target="new" href="https://openclipart.org">openclipart.org</a>.</p>
+<p class="item"><b>C.</b> Font <i>NovelDeco.otf</i> was created using <a class="external" rel="external" target="new" href="https://fontforge.github.io/en-US/">FontForge</a>. The font is partly derived from <a class="external" rel="external" target="new" href="https://github.com/khaledhosny/libertinus"><span style="white-space:nowrap"><i>Libertinus Serif</i></span></a>, which in turn is derived from <a class="external" rel="external" target="new" href="http://www.linuxlibertine.org/"><i>Linux Libertine O</i></span></a>.</p>
+<p class="item"><b>D.</b> In places, I offer opinions or make suggestions regarding design. These are largely based on my own inspection of popular fiction books, at my local public library. In some cases, I follow the <a class="external" rel="external" target="new" href="http://www.chicagomanualofstyle.org/home.html"><i>Chicago Manual of Style</i></a> (CMoS), hardcover 16th edition. However, please do not regard my opinions and suggestions as authoritative.</p>
 </div><!-- end 1.1.3 -->
 
-<h4 id="h1.1.4">1.1.4. Success Story</h4>
+<h4 id="h1.1.4">1.1.4. Success Stories</h4>
 <div class="d4" id="d1.1.4">
-<p class="noindent">In August 2017, an original novel using this document class was published. The text block used nearly all the default settings, and was electronically submitted as PDF/X-1a:2001.</p>
-<p>The color cover image was designed in RGB using <a class="external" rel="external" target="new" href="https://inkscape.org">Inkscape</a> and <a class="external" rel="external" target="new" href="https://www.gimp.org">GIMP</a>, coverted to CMYK at 240% ink limit using <a class="external" rel="external" target="new" href="http://www.graphicsmagick.org">GraphicsMagick</a> and the methods described in this documentation, then finally converted to PDF/X-1a:2001 using this document class.</p>
+<p class="item"><b>A.</b> <span style="font-size:150%; color:#008000">&#9786;</span> In August 2017, an <a class="external" rel="external" target="new" href="https://www.amazon.com/Werewolf-Barbary-Arc-Light-Hearted-Novel/dp/1549573527/ref=la_B0757X9Y44_1_1?s=books&ie=UTF8&qid=1511752247&sr=1-1">original novel</a> using this document class was published. The text block used nearly all the default settings, and was electronically submitted as PDF/X-1a:2001.</p>
+<p>The color cover image was designed in RGB using <a class="external" rel="external" target="new" href="https://inkscape.org">Inkscape</a> and <a class="external" rel="external" target="new" href="https://www.gimp.org">GIMP</a>, coverted to CMYK at 240% ink limit using <a class="external" rel="external" target="new" href="http://www.graphicsmagick.org">GraphicsMagick</a> and the methods described in this documentation, then finally converted to <span style="white-space:nowrap">PDF/X-1a:2001</span> using this document class.</p>
 <p>Both files were automatically reviewed and accepted <i>on first attempt</i>, with the actual printed books for sale within a few days of file submission.</p>
+<p class="item"><b>B.</b> <span style="font-size:150%; color:#008000">&#9786;</span> In October 2017, another author published a novel using this document class, again with color cover artwork.</p>
+<p class="item"><b>C.</b> <span style="font-size:150%; color:#008000">&#9786;</span> As of November 2017, I am informed that a third author (not writing in English) is in the process of writing a novel with this document class, and has experienced success with preliminary (draft) versions.</p>
+<p class="item"><b>D.</b> <span style="font-size:150%; color:#008000">&#9786;</span> An example novel, text and cover, can be found at the GitHub project page, in the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/tree/master/other">other</a> folder.</p>
 </div><!-- end 1.1.4 -->
 
 <h4 id="h1.1.5">1.1.5. Help Wanted</h4>
 <div class="d4" id="d1.1.5">
-<p class="noindent">Although this package works for me, and there are no <i>known</i> issues, bugs are always possible. You may file an issue at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel">GitHub project page</a>, or contact me by e-mail if you do not have a GitHub account. My e-mail address is towards the top of the <i>novel.cls</i> file.</p>
-<p>I, the original author of this package, am a retiree who prefers to move on to other things. If you are of a mind to take up long-term maintenance, then contact me by e-mail. If you already are a package developer with a <a class="external" rel="external" target="new" href="https://ctan.org/contact">CTAN</a> login, also contact them. You will need to understand elementary LuaLaTeX, fontspec, Unicode, Open Type fonts, PDF/X, and the general needs of fiction writers in the printed (not e-book) market. However, Lua, XeTeX, TiKz, math, and physics are not required (possibly counterproductive).</p>
+<p class="item"><b>A.</b> Although this package works for me and for others, and there are no <i>known</i> issues, bugs are always possible. You may file an issue at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel">GitHub project page</a>, or contact me by e-mail if you do not have a GitHub account. My e-mail address is towards the top of the <i>novel.cls</i> file.</p>
+<p class="item" style="position:relative"><b>B.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> The original author of this package (<i>c'est moi</i>) is a retiree who prefers to move on to other things. If you are of a mind to take up long-term maintenance, then contact me by e-mail. If you already are a package developer with a CTAN login, also <a class="external" rel="external" target="new" href="https://ctan.org/contact">contact</a> them (use the <i>upload</i> e-mail).</p>
+<p>You will need to understand elementary LuaLaTeX, fontspec, Unicode, Open Type fonts, PDF/X, and the general needs of fiction writers in the printed (not e-book) market. However, Lua, XeTeX, TiKz, math, and physics are not required (possibly counterproductive).</p>
 </div><!-- end 1.1.5 -->
 </div><!-- end 1.1 -->
 
@@ -643,87 +648,98 @@ function closeall() {
 <div class="d3" id="d1.2">
 <p class="noindent">There are several ways that <i>novel</i> is very different from other TeX document classes. Before you wonder why your document doesn't work, you need to understand the differences. All of these are features, not bugs. They are done with the intent of making <i>novel</i> best for its intended purpose.</p>
 <p>At the top of your *.tex main document, place these lines:</p>
-<p class="code"><code>% !TeX TS-program = LuaLaTeX<br/>
-% !TeX encoding = UTF-8
-</code></p>
+<p class="code"><code>% !TeX TS-program = LuaLaTeX</code><br/>
+<code>% !TeX encoding = UTF-8</code></p>
 <p>Those instructions are read and understood by many TeX editors, and also serve as a reminder to yourself. However, they do nothing when the document is processed by command line.</p>
 
-<h4 id="h1.2.1">1.2.1. Always Use UTF-8, Without fontenc</h4>
+<h4 id="h1.2.1">1.2.1. Always Use UTF-8</h4>
 <div class="d4" id="d1.2.1">
-<p class="noindent">You must create your document in utf-8 encoding. No OT1, no T1, no LY1, or other TeX font encoding that pre-dates cell phones.</p>
-<p>Instead of typing TeX codes such as <code>\`{e}</code> you can simply paste <code>è</code> from a Unicode character map. Other alphabets such as Greek and Cyrillic are directly supported, as long as you choose fonts that support those character sets.</p>
-<p>Do not call for <i>fontenc</i> in your Preamble. The <i>novel</i> class is pre-configured for utf-8.</p>
-<p>If you use a plain text editor, or TeXWorks, or export plain text from a word processor, be sure that your text is encoded as utf-8, without byte order mark (BOM).</p>
-<p>If you are on Windows, do not use Notepad! The free <a class="external" rel="external" target="new" href="https://notepad-plus-plus.org">Notepad++</a> (also <a class="external" rel="external" target="new" href="https://portableapps.com/apps/development/notepadpp_portable">Portable</a> version) is a suitable plain text editor. Configure it as specified, with utf-8 and without BOM. Does not matter whether UNIX or DOS line endings, as long as you are consistent.</p>
+<p class="item"><b>A.</b> You must create your document in <span style="white-space:nowrap">utf-8</span> encoding. No OT1, no T1, no LY1, or other TeX font encoding that pre-dates cell phones. Do not call for <i>fontenc</i> in your Preamble, because <span style="white-space:nowrap">utf-8</span> is <span style="white-space:nowrap">pre-configured</span>.</p>
+<p class="item"><b>B.</b> If you use a plain text editor, or TeXWorks, or export plain text from a word processor, be sure that your text is encoded as <span style="white-space:nowrap">utf-8</span>, <i>without</i> byte order mark (BOM).</p>
+<p class="item"><b>C.</b> Instead of typing TeX codes such as <code>\`{e}</code> you can simply paste <code>è</code> from a Unicode character map. Other alphabets such as Greek and Cyrillic are directly supported, as long as you choose fonts that support those character sets.</p>
+<p class="item"><b>D.</b> If you are on Windows, <i>do not</i> use Notepad! The free <a class="external" rel="external" target="new" href="https://notepad-plus-plus.org">Notepad++</a> (also <a class="external" rel="external" target="new" href="https://portableapps.com/apps/development/notepadpp_portable">Portable</a> version) is a suitable plain text editor. Configure it as specified, with utf-8 but without BOM. Does not matter whether UNIX or DOS line endings, as long as you are consistent.</p>
 
 <h5 id="h1.2.1.1">1.2.1.1. Polyglossia Language Support</h5>
 <div class="d5" id="d1.2.1.1">
-<p class="noindent">The pre-loaded <i>polyglossia</i> package (not <i>babel</i>) provides language support. By default, <i>novel</i> is configured for American English.</p>
-<p>If your document's language is something else, or if you will be writing in multiple languages, see the <i>polyglossia</i> package documentation regarding <code>\setdefaultlanguage</code> and other commands.</p>
+<p class="item"><b>A.</b> The pre-loaded <i>polyglossia</i> package (not <i>babel</i>) provides language support. By default, <i>novel</i> is configured for American English.</p>
+<p class="item"><b>B.</b> If your document's language is something else, or if you will be writing in multiple languages, see the <i>polyglossia</i> package documentation regarding <code>\setdefaultlanguage</code> and other commands.</p>
 </div><!-- end 1.2.1.1 -->
 </div><!-- end 1.2.1 -->
 
 <h4 id="h1.2.2">1.2.2. Do Not Load Fonts via <code>\usepackage</code> or <code>\RequirePackage</code></h4>
 <div class="d4" id="d1.2.2">
-<p class="noindent">The method for loading fonts is described elsewhere on this page. Be sure you read that! For example, you cannot load a font with <code>\usepackage{<em>fontname</em>}</code> in this document class.</p>
+<p class="item">The method for loading fonts is described in <a href="#h4.2">section 4.2</a>. Be sure you read that! For example, you cannot load a font with <code>\usepackage{<em>fontname</em>}</code> in this document class.</p>
 </div><!-- end 1.2.2 -->
 
 <h4 id="h1.2.3">1.2.3. Use LuaLaTeX and Open Type fonts</h4>
 <div class="d4" id="d1.2.3">
-<p class="noindent"><img class="floatright" src="html-resources/doordie.png" width="279" height="300" alt="Thou Shalt"/> With <i>novel</i>, you will be using the <i>LuaLaTeX</i> engine, whether you like it or not. No <i>pdfTeX</i>, no <i>XeTeX</i>, no <i>dvips</i>. You do not have to understand <i>Lua</i> code, since the heavy lifting is already done for you. Just follow the instructions in this documentation.</p>
-<p>The built-in <i>fontspec</i> package handles modern Open Type fonts, and is able to access their internal features. The syntax is easy to learn, and very powerful. And, you can directly include text with diacritical marks, Greek, Cyrillic, and most other utf-8 encoded characters in your document. All you need are the fonts, and you probably have them. You will wonder why you never did this before.</p>
+<p class="item"><img class="floatright" src="html-resources/doordie.png" width="279" height="300" alt="Thou Shalt"/><b>A.</b> <i>Novel</i>, uses only the <i>LuaLaTeX</i> compiler. No other! You do not need to understand <i>Lua</i> code.</p>
+<p class="item"><b>B.</b> The built-in <i>fontspec</i> package requires utf-8 encoding. It is able to load Open Type fonts, and access their internal feature sets. Forget Type 1 fonts and special encodings! If you wish to use Greek or Cyrillic, all you need are compatible fonts.</p>
+<p class="item"><b>C.</b> If you accept the pre-configured fonts (from <i>libertinus</i>), then you do not need to know anything about <i>fontspec</i>. But if you wish to configure your own fonts, <a href="#hE">Appendix E</a> reviews the most important parts of <i>fontspec</i> syntax.</p>
+<div style="clear:both"></div>
 </div><!-- end 1.2.3 -->
 
 <h4 id="h1.2.4">1.2.4. Disabled standard text size commands</h4>
 <div class="d4" id="d1.2.4">
-<p class="noindent">Would you like to size text, using command such as <code>\small</code> or<code> \LARGE</code> ? Bah! They will be ignored. Write these commands, and the text will appear at its usual size, just as if the commands did not exist.</p>
-<p>There is a reason for this behavior, related to the need for constant line spacing. Thus, <i>novel</i> provides its own capability to size text, using different commands.</p>
+<p class="item"><b>A.</b> Standard text size commands, such as <code>\small</code> or <code>\LARGE</code>, will be ignored. The text will appear at its normal size, just as if the commands did not exist.</p>
+<p class="item"><b>B.</b> <i>Novel</i> provides its own capability to size text, using <a href="#h6.1">different commands</a>.</p>
+<p class="item" style="position:relative"><b>C.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> The <i>novel</i>-specific size commands maintain text line grid, where possible. This is important for printed fiction.</p>
 </div><!-- end 1.2.4 -->
 
 <h4 id="h1.2.5">1.2.5. Disabled academic-purpose commands</h4>
 <div class="d4" id="d1.2.5">
-<p class="noindent"><img class="floatright" src="html-resources/fpaper.png" width="134" height="215" alt="flunked math"/> Commands such as <code>\section</code>, <code>\chapter</code>, <code>\abstract</code>, <code>\index</code>, <code>\tableofcontents</code>, <code>\maketitle</code>, and many other structural commands will not work with <i>novel</i>. Those are for academic papers. The results they would produce (if enabled) would be inappropriate for fiction. If you attempt to use them, you will either get an error message, or they will simply be ignored.</p>
-<p>Novelists do not need many ways to distinguish chapters. With <i>novel</i> there are commands specifically created for the needs of fictional works. They are described below.</p>
-<p>Also, the <i>float</i> and <i>table</i> environments are ineffective. In <i>novel</i> there are specific ways to place images or construct a table of contents.</p>
+<p class="item"><img class="floatright" src="html-resources/fpaper.png" width="134" height="215" alt="flunked math"/><b>A.</b> Commands such as <code>\section</code>, <code>\chapter</code>, <code>\abstract</code>, <code>\index</code>, <code>\tableofcontents</code>, <code>\maketitle</code>, and many other structural commands will not work with <i>novel</i>. This is intentional.</p>
+<p class="item"><b>B.</b> The <i>float</i> and <i>table</i> environments are ineffective. This is intentional. In <i>novel</i> there are specific ways to <a href="#h7.3">place images</a> or construct a <a href="#h8.3.2.7">table of contents</a>.</p>
+<p class="item"><b>C.</b> <i>Novel</i> has <a href="#h5">chapter-related commands</a> specifically created for the needs of fictional works.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> <i>Novel</i> is focused on doing one thing well, rather than many things poorly. That is why so many "academic" commands have been discarded. They are not necessary in popular fiction.</p>
+<div style="clear:both"></div>
 </div><!-- end 1.2.5 -->
 
 <h4 id="h1.2.6">1.2.6. Images must be raster png or jpg</h4>
 <div class="d4" id="d1.2.6">
-<p class="noindent">You read that correctly. Sometimes fiction uses images, especially for the title page and chapter titles. With <i>novel</i>, do not use vector formats such as <i>eps</i>, <i>svg</i>, or <i>pdf</i> images. Use raster images in <i>png</i> or <i>jpg</i> format.</p>
-<p>There is a reason for this, explained below, where the use of images is discussed in detail. Be sure to read it, as <i>novel</i> has its own way to place images, in a way that is most likely to work well with fiction.</p>
+<p class="item"><b>A.</b> You may use raster images in <i>png</i> or <i>jpg</i> format.</p>
+<p class="item"><b>B.</b> Images must be processed to <a href="#h7">specifications</a>, and placed using <a href="#h7.3">special commands</a>.</p>
+<p class="item"><b>C.</b> Do not use vector formats such as <i>eps</i>, <i>svg</i>, or <i>pdf</i>.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Why only raster images? Since <i>novel</i> is for printed books, there is no advantage to scalable vector artwork. However, there is a disadvantage: Vector artwork often has technical errors that you cannot detect, but a commercial printer can detect.</p>
 </div><!-- end 1.2.6 -->
 
 <h4 id="h1.2.7">1.2.7. Beware of $, %, and Other TeX Special Characters</h4>
 <div class="d4" id="d1.2.7">
-<p class="noindent">This is standard TeX behavior. Just a reminder!</p>
-<p><img class="floatright" src="html-resources/trdol.png" width="238" height="67" alt="dollar is math mode"/> TeX has a number of special characters. If you type them in a document, they will not appear as an ordinary printed character, but will do something else. These are:</p>
+<p class="item"><b>A.</b> This is standard TeX behavior. Just a reminder!</p>
+<p class="item"><img class="floatright" src="html-resources/trdol.png" width="238" height="67" alt="dollar is math mode"/><b>B.</b> TeX has a number of special characters. If you type them in a document, they will not appear as an ordinary printed character, but will do something else. These are:</p>
 <p class="code"><code>$ % # _ ^ & ~ \ { }</code> and sometimes <code>[ ]</code></p>
-<p>In most cases, an incorrect usage will provide an error message that can be easily deciphered. However, the dollar sign and percent symbol are tricky. Incorrect use of the dollar sign may either place your text in math mode (not your intent) or produce a baffling error message that points to an innocent package. The percent symbol normally produces no error, since it is a comment character. But then, whatever text follows on that line will be missing from your PDF.</p>
-<p>Special characters, other than the backslash, are escaped by placing a backslash in front, thus: <code>\$</code> for the dollar sign, <code>\%</code> for percent. If you must print a backslash, <code>\string\</code> does it.</p>
-<p class="noindent"><b>&bull; Tip:</b> To avoid unforeseen problems, you should review your document in a text editor, prior to compiling. Search for any instances of special characters, particularly dollar and percent. Backslash them as needed.</p>
+<p class="item"><b>C.</b> In some cases, an incorrect usage will provide an error message that can be easily deciphered.</p>
+<p class="item"><b>D.</b> Incorrect use of the dollar sign may either place your text in math mode (not your intent) or produce a baffling error message that points to an innocent package.</p>
+<p class="item"><b>E.</b> The percent symbol normally produces no error, since it is a comment character. But then, whatever text follows on that line will be missing from your PDF. Unless you carefully review the PDF, you might not notice that text is missing.</p>
+<p class="item"><b>F.</b> Special characters, other than the backslash, are escaped by placing a backslash in front, thus: <code>\$</code> for the dollar sign, <code>\%</code> for percent. If you must print a backslash, <code>\string\</code> does it.</p>
+<p class="item" style="position:relative"><b>G.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> To avoid unforeseen problems, you should review your document in a text editor, prior to compiling. Search for any instances of special characters, particularly dollar and percent. Backslash them as needed.</p>
+<div style="clear:both"></div>
 </div><!-- end 1.2.7 -->
 
 <h4 id="h1.2.8">1.2.8. Avoid TeX Editors and IDEs</h4>
 <div class="d4" id="d1.2.8">
-<p class="noindent">You must create your document in utf-8 encoding. You may use a plain text editor (with or without TeX code highlighting), export plain text from a word processor (recommended), or use the minimal <i>TeXWorks</i> GUI. If you use <i>TeXWorks</i>, be sure that you are not running scripts that change the content of your document.</p>
-<p>Do not use another TeX editor, such as <i>Lyx</i> or <i>TeXstudio</i>, or an Integrated Development Environment (IDE). Those programs are often capable of inserting standard LaTeX code from menus. However, <i>novel</i> does not necessarily use that standard LaTeX code. The result may be unexpected.</p>
+<p class="item"><b>A.</b> Many TeX editors assume that you are using a standard TeX document class. They may attempt to insert code that does not work in <i>novel</i> class. Or, they may not understand the commands specific to <i>novel</i>. Do not use those editors.</p>
+<p class="item"><b>B.</b> The TeXWorks editor is satisfactory. Be sure that you do not run scripts that change the content of your document.</p>
 </div><!-- end 1.2.8 -->
 
 <h4 id="h1.2.9">1.2.9. Suggestion: Write Using a Word Processor</h4>
 <div class="d4" id="d1.2.9">
-<p class="noindent">I suggest that you write your novel in a word processor rather than in a text editor. <i>MS Word</i> and similar programs work. I use <a class="external" rel="external" target="new" href="https://www.libreoffice.org">LibreOffice</a> (also <a class="external" rel="external" target="new" href="https://portableapps.com/apps/office/libreoffice_portable">Portable</a> version). If you use <i>LibreOffice</i>, version 5.3 or later is much better than earlier versions.</p>
-<p>Why begin with a word processor? These programs can automatically substitute curly quotes and other characters. Remember than since you are using utf-8 encoding, you don't need to use TeX code for that, since you can simply insert the character directly. And, word processors have much better support for spell checking (and sometimes grammar). Just be sure that the word processor does not <i>automatically</i> correct your spelling, because any TeX code won't be in its dictionary.</p>
-<p>Remember that TeX closes paragraphs by skipping lines, or by <code>\par</code>. Also remember that in most word processors, the emdash is <i>two</i> hyphens, not the three used in TeX. You can always insert an emdash (or endash) directly. You can write TeX code into the word processor, where it will be treated like ordinary text, so use <code>\textit{<em>text</em>}</code> or similar command, rather than the word processor's italics menu.</p>
-<p>In any case, be sure to export plain text as utf-8, then compile it with <i>lualatex</i>.</p>
-<p class="noindent"><b>&bull; Tip:</b> For the editing and proofreading phase, where spelling and grammar are carefully reviewed, I use a special font <i>CPmodified.otf</i>. This is my custom derivative of the <a class="external" rel="external" target="new" href="https://quoteunquoteapps.com/courierprime/">Courier Prime</a> regular font. <i>Cpmodified</i> can be found in the documentation <i>extras</i> folder. It is released under the SIL Open Font License v.1.1. To use this font for editing, install it in your <i>operating system</i>, not TeX. Then, call it from your word processor. The font includes Latin-1 and ANSI characters, and a few others. It is not quite monospaced (the em dash and ellipsis are longer). Punctuation is highly exaggerated, so you can see it more easily. My own experience is that most errors in the nearly-finished document involve punctuation.</p>
-<p class="noindent"><b>&bull; Tip:</b> Word processors usually make an incorrect substitution for certain English elisions (possibly in other languages also). When you type "Give 'em hell," the substitution may provide <i>Give &lsquo;em hell</i>, but the correct rendition is <i>Give &rsquo;em hell</i>. Can you see the tiny difference in the direction of the single quote? Probably not on your computer screen, but it will be noticeable in print. The <i>CPmodified.otf</i> font makes the difference obvious.</p>
+<p class="item"><b>A.</b> Write your book first. Code TeX later.</p>
+<p class="item"><b>B.</b> A good word processor has advanced spell checking, and may also be able to detect some grammatical errors. I use <a class="external" rel="external" target="new" href="https://www.libreoffice.org">LibreOffice</a> (also <a class="external" rel="external" target="new" href="https://portableapps.com/apps/office/libreoffice_portable">Portable</a>), version 5.3 or later.</p>
+<p class="item"><b>C.</b> Remember that styles and formats from a word processor <i>do not</i> translate to TeX styles and formats.</p>
+<p class="item"><b>D.</b> Since your document uses utf-8 encoding, you may allow a word processor to automatically substitute curly quotes, curly apostrophe, and emdash. Beware of incorrect direction of apostrophe, in expressions such as <i>Give &rsquo;em hell</i>.</p>
+<p class="item"><b>E.</b> Export plain text as utf-8 (without BOM).</p>
+<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> For the editing and proofreading phase, in a word processor, I use a special font <i>CPmodified.otf</i>. This is my custom derivative of the <a class="external" rel="external" target="new" href="https://quoteunquoteapps.com/courierprime/">Courier Prime</a> regular font.</p>
+<p><i>CPmodified</i> can be found in the documentation <i>extras</i> folder. It is released under the SIL Open Font License v.1.1. To use this font in a word processor, install it in your <i>operating system</i>, not TeX.</p>
+<p>The font includes Latin-1 and ANSI characters, and a few others. It is not quite monospaced (the em dash and ellipsis are longer). Punctuation is highly exaggerated, so you can see it more easily. My own experience is that most errors in the nearly-finished document involve punctuation. Sample, using a word processor:</p>
+<p class="centerimg"><img src="html-resources/CPmodified-sample.png" width="518" height="61" title="sample using CPmodified" alt="sample using CPmodified"/></p>
 </div><!-- end 1.2.9 -->
 
-<h4 id="h1.2.10">1.2.10. Think for yourself</h4>
+<h4 id="h1.2.10">1.2.10. Paragraph Layout</h4>
 <div class="d4" id="d1.2.10">
-<p>When TeX processes a document on a paragraph-by-paragraph basis, it chooses the layout that has the least total "penalty." Penalties are assessed based on factors such as word spacing, inter-line spacing, hyphenation, widows, and orphans. You may choose the value of each penalty.</p>
-<p>With <i>novel</i>, inter-line spacing is fixed, and there is no padding between paragraphs. No plus-or-minus. Hyphens are allowed, but strongly penalized. A reasonable amount of altered word spacing is allowed, and the built-in <i>microtype</i> package allows reasonable changes to letter spacing and the letters themselves. These choices achieve a high level of visual appeal and readability for flowing text.</p>
-<p>However, there is little penalty for widows or orphans. When you process a document with <i>novel</i> you are likely to find widows and orphans on many pages. This choice was made for several reasons. First, attention to widows and orphans would reduce the effectiveness of the other, more important, layout penalties. Second, fiction often has numerous short paragraphs (especially with dialogue), and it is very difficult for software to deal with all of them. Third, a great deal of contemporary fiction has widows and orphans. Fourth, it's your book... You can rewrite it!</p>
+<p class="item"><b>A.</b> In <i>novel</i>, inter-line spacing is fixed. There is no padding between paragraphs. No plus/minus "flexible glue." This is standard for printed fiction.</p>
+<p class="item"><b>B.</b> When TeX processes a document on a paragraph-by-paragraph basis, it chooses the layout that has the least total "penalty." Penalties are assessed based on factors such as word spacing, hyphenation, widows, and orphans (clubs). <i>Novel</i> applies a moderately strong penalty to hyphens; they are allowed, but discouraged. Widows and orphans are penalized very little. Word spacing, and even the spacing and characters within words, are controlled by moderate settings of the built-in <i>microtype</i> package.</p>
+<p class="item" style="position:relative"><b>C.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> You are likely to find widows and orphans on many pages. If you wish to remove them, you must edit your text. This choice was made for several reasons: First, attention to widows and orphans would reduce the effectiveness of the other, more important, layout penalties. Second, fiction often has numerous short paragraphs (especially with dialogue), and it is very difficult for software to deal with all of them. Third, a great deal of contemporary fiction allows widows and orphans, when they are not distracting.</p>
 </div><!-- end 1.2.10 -->
 </div><!-- end 1.2 -->
 
@@ -736,85 +752,100 @@ function closeall() {
 
 <h2 id="h2">2. Document Class Options</h2>
 <div class="d2" id="d2">
-<p class="noindent">As with other LaTeX classes, <i>novel</i> is called this way:</p>
-<p><code>\documentclass[options]{novel}</code></p>
-<p>As with other document classes, <i>novel</i> chooses a default paper size, and font size, if you do not make the choice. But there, the similarity ends. The default paper size in <i>novel</i> is 5.5" wide by 8.5" high, which is a popular book Trim Size for softcover fiction in the US, and close to the Demy Octavo (C novel) British size. And, the default font size is not an integer point size!</p>
-<p>In fact, you <em>cannot</em> set either the paper size or font size in the class options. You set them via other commands, in the Preamble. The commands are explained on other pages of this documentation.</p>
-<p>Still, there are a number of class options. As usual, options must be enclosed in braces and be separated by commas.</p>
-<p>Note: The <i>debug</i> option, unique to version 1.38, has been removed.</p>
+<p class="item"><b>A.</b> As with other LaTeX classes, <i>novel</i> is called this way:</p>
+<p><code>\documentclass[options,separated,by,commas]{novel}</code></p>
+<p class="item"><b>B.</b> You do NOT use class options to choose paper size, font size, or any other dimensions. The settings are described in <a href="#h4">section 4</a>.</p>
+<p class="item"><b>C.</b> Default sizes are appropriate for most print-on-demand, softcover fiction.</p>
 
 <h3 id="h2.1">2.1. draft</h3>
 <div class="d3" id="d2.1">
-<p class="noindent">The word DRAFT will appear at the upper left of each page.</p>
-<p>In draft mode, a little black bar will be placed at the right side of text that didn't quite fit on the line. These locations are reported in the log file as "overfull hbox" warnings. The black bar is called an "overflow rule".</p>
+<p class="item"><b>A.</b> May NOT be used for final, print-ready PDF.</p>
+<p class="item"><b>B.</b> The word DRAFT will appear at the upper left of each page.</p>
+<p class="item"><b>C.</b> When text cannot be precisely wrapped, a small black bar (overflow rule) appears at right. These locations are reported in the log file as "overfull hbox" warnings. Example:</p>
 <p class="centerimg"><img src="html-resources/overflowrule.png" width="525" height="155" title="draft mode, overflow rule" alt="overflow rule"/></p>
-<p>Some packages take note of whether or not the document is in draft mode, and change their behavior accordingly. However, the included <i>microtype</i> package will always be in final mode, and the included <i>hyperref</i> package will always be in draft mode.</p>
-<p>In draft mode, PDF/X compliance is turned off, no matter what you specify.</p>
+<p class="item"><b>D.</b> Some class options are only effective when used with <i>draft</i> option.</p>
+<p class="item"><b>E.</b> PDF/X compliance is turned <i>off</i>. This over-rides any PDF/X setting.</p>
+<p class="item"><b>F.</b> Some packages take note of whether or not the document is in draft mode, and change their behavior accordingly. However, the included <i>microtype</i> package will always be in final mode, and the included <i>hyperref</i> package will always be in draft mode.</p>
+
 </div><!-- end 2.1 -->
 
 <h3 id="h2.2">2.2. graytext</h3>
 <div class="d3" id="d2.2">
-<p class="noindent">The <i>novel</i> document class is intended for black/white book interiors. Normally, any color command, even gray, will be ignored, and the text will be rendered black. This does not affect images.</p>
-<p>The <i>graytext</i> option over-rides this restriction, and obeys grayscale color commands from the <i>xcolor</i> package, which is already loaded with the class. Non-grayscale colors will be converted to shades of gray.</p>
+<p class="item"><b>A.</b> May be used for final, print-ready PDF. Only use when necessary.</p>
+<p class="item"><b>B.</b> Allows text in grayscale. Otherwise, text is always black, regardless of color command.</p>
 <p class="centerimg"><img src="html-resources/graytext.png" width="512" height="54" title="graytext" alt="graytext"/></p>
-<p>Your book will not be printed with "gray ink." Instead, anything other than pure black will be emulated by a pattern of black dots. This is known as "halftone." It causes a reduction in resolution, so your gray text will appear somewhat fuzzy. Therefore, do not use very small text, or characters with fine lines.</p>
-<p>Sometimes the halftone operation extends to nearby text that is not gray. So: Unlike the example shown above, it is a bad idea to mingle gray with the ordinary flow of black text. The most appropriate use of gray text is for special items such as chapter titles.</p>
-<p>You may place darker text over a lighter background. But even though the resulting PDF meets standards, lighter text over darker background is unlikely to print as intended.</p>
-<p>See also <a href="#h7.3.3">section 7.3.3</a>.</p>
+<p class="item"><b>C.</b> Does not affect images.</p>
+<p class="item"><b>D.</b> Uses methods of the pre-loaded <i>xcolor</i> package.</p>
+<p class="item"><b>E.</b> Gray text is printed using a pattern of black dots, not "gray ink." Fine details may be lost. It is best to limit gray text to special items, such as chapter titles and decorations.</p>
+<p class="item"><b>F.</b> You may place darker text over a lighter background. But lighter text over darker background is unlikely to print as intended, even if it looks correct in the PDF. See <a href="#h7.3.3">section 7.3.3</a>.</p>
 </div><!-- end 2.2 -->
 
 <h3 id="h2.3">2.3. shademargins</h3>
 <div class="d3" id="d2.3">
-<p class="noindent">This option is ignored unless using draft mode. It is not necessary to use the <i>graytext</i> option.</p>
-<p><img class="floatright" style="margin-top:6px" src="html-resources/shademargins.png" width="132" height="205" title="shademargins" alt="shademargins"/> The <i>shademargins</i> option is simple: The margins will have a light gray background.</p>
-<p>Note that <em>margins</em> refers to the area between the live text area (including head/foot, if any) and the TrimBox, which is the finished size of your book. If you are using <code>\SetMediaSize</code> to request paper larger than your book's Trim Size, the excess area is <em>not</em> considered to be margins; it is discarded paper, so it is not gray.</p>
-<p>Some commands (in particular, images) allow their content to overflow the textblock area. With <i>shademargins</i> you can see where such object intrude into the margins.</p>
-<p>Sometimes it is hard to see whether a centered object is really centered, because the left-right margins are not the same width. With <i>shademargins</i> you can more easily see centering.</p>
-<p>Note that headers and footers are not part of the margins.</p>
+<p class="item"><img class="floatright" style="margin-top:6px" src="html-resources/shademargins.png" width="132" height="205" title="shademargins" alt="shademargins"/><b>A.</b> Only effective with <i>draft</i> option. May NOT be used for final, print-ready PDF.</p>
+<p class="item"><b>B.</b> Does not require <i>graytext</i> option.</p>
+<p class="item"><b>C.</b> Applies gray shade to margin areas. Helps to detect objects that overflow into margins. Also helps to visualize centering within text block.</p>
+<p class="item"><b>D.</b> Header and Footer, if any, are within the rectangle bounded by the margins. They do not sit in the gray area.</p>
+<p class="item"><b>E.</b> If Media Size exceeds Trim Size, the area outside the Trim Size will not be gray, because it is not part of the margins in the finished book. See sections <a href="#h4.1.1">4.1.1</a> and <a href="#h4.1.2">4.1.2</a>.</p>
+<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Technical Info: During page shipout, adds the gray as background color, with a white box above it, then text (and images, if any) on top.</p>
+<div style="clear:both"></div>
 </div><!-- end 2.3 -->
 
-<h3 id="h2.4">2.4. cropmarks</h3>
+<h3 id="h2.4">2.4. cropmarks <em>(do not use unless required)</em></h3>
 <div class="d3" id="d2.4">
-<p class="noindent"><img class="floatright" style="margin-top:6px" src="html-resources/cropmarks.png" width="205" height="265" title="cropmarks" alt="cropmarks"/> This option is ignored if the TrimSize is the same as the MediaSize (the usual situation). It works whether or not in draft mode.</p>
-<p>If the PDF Media Size is larger than its finished TrimSize, you can place crop marks (also known as trim marks) to indicate where the paper will be cut. The <i>cropmarks</i> option makes the marks visible. If this option is not used, then no marks are placed, regardless of any other commands.</p>
-<p>Note that most print-on-demand book printers <em>do not want crop marks</em>. The process flow is automated, and trim data is read from within the PDF. Crop marks may actually interfere with proper layout, if your PDF is re-formatted to share a large sheet of paper along with other pages. So, do not use <i>cropmarks</i> unless you must. For this reason, the built-in capability for cropmarks is very basic.</p>
-<p><img class="floatright" style="margin-top:6px" src="html-resources/cropmarkgap.png" width="140" height="141" title="cropmark gap" alt="cropmark gap"/> There is only one configurable setting, which may be used in the Preamble:</p>
-<p class="code"><code>\SetCropmarkGap{<em>length</em>}</code></p>
+<p class="item"><img class="floatright" style="margin-top:6px" src="html-resources/cropmarks.png" width="205" height="265" title="cropmarks" alt="cropmarks"/><b>A.</b> May be used with or without <i>draft</i> option.</p>
+<p class="item"><b>B.</b> Ignored if Media Size is same as Trim Size.</p>
+<p class="item"><b>C.</b> Do not load any package that provides other cropmarks.</p>
+<p class="item"><b>D.</b> Most print-on-demand services do NOT want crop marks (also known as trim marks). Do not use this option unless you are certain that you need crop marks!</p>
+<p class="item"><b>E.</b> Whether or not you use cropmarks: With PDF/X, the file contains invisible information (TrimBox) that is understood by automatic print/cut machines.</p>
+<p class="item"><b>F.</b> If Trim Size is placed off-center in Media Size, then only one pair of cropmarks will be visible.</p>
+<p class="item"><b>G.</b> Cropmarks are very basic. There is only one setting, which may be used in the Preamble:</p>
+<p class="code"><img class="floatright" style="margin-top:6px" src="html-resources/cropmarkgap.png" width="140" height="141" title="cropmark gap" alt="cropmark gap"/><code>\SetCropmarkGap{<em>length</em>}</code></p>
 <p>The cropmark gap is the distance between the Trim Box and where the crop lines begin. The purpose of the gap is so that the marks do not show on the trimmed paper, if the cut is a little bit off. In all cases, the far end of the cropmarks is 0.5in from the Trim Area. The gap is marked G in this diagram. The length must be least 0pt, and is more typically 0.125in or 0.250in. The default is 0.125in. </p>
-<p>If your Trim is placed off-center in the Media, then only one pair of cropmarks will be visible.</p>
+<div style="clear:both"></div>
 </div><!-- end 2.4 -->
 
 <h3 id="h2.5">2.5. cropview</h3>
 <div class="d3" id="d2.5">
-<p class="noindent"><img class="floatright" style="margin-top:6px" src="html-resources/cropview.png" width="132" height="203" title="cropview" alt="cropview"/> This option is ignored if the TrimSize is the same as the MediaSize (the usual situation), because it is unnecessary. Also, it is ignored unless using draft mode.</p>
-<p>With <i>cropview</i>, there is an internal instruction to PDF viewers, requesting that only the Trim Size be displayed on the screen, rather than the whole Media Size. This is useful during the layout phase, because it is hard to visualize layout when you have a small finished size floating in a much larger paper size. Nothing else is changed.</p>
-<p>The accompanying image is the <i>cropview</i> display of the same page that was used to illustrate the <i>cropmarks</i> command. However, you do not need to have cropmarks, to use <i>cropview</i>.</p>
+<p class="item"><img class="floatright" style="margin-top:6px" src="html-resources/cropview.png" width="132" height="203" title="cropview" alt="cropview"/><b>A.</b> Only effective with <i>draft</i> option. May NOT be used for final, print-ready PDF.</p>
+<p class="item"><b>B.</b> Ignored if Media Size is same as Trim Size.</p>
+<p class="item"><b>C.</b> Instructs PDF viewer: Only display Trim Size on screen.</p>
+<p class="item"><b>D.</b> Helps to visualize trimmed book size, when Media Size is larger than Trim Size.</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Technical Info: Normally, the PDF CropBox is equal to the MediaBox. This option sets the CropBox equal to the TrimBox.</p>
+<div style="clear:both"></div>
 </div><!-- end 2.5 -->
 
 <h3 id="h2.6">2.6. closecrop</h3>
 <div class="d3" id="d2.6">
-<p class="noindent"><img class="floatright" style="margin-top:6px" src="html-resources/closecrop.png" width="110" height="186" title="closecrop" alt="closecrop"/> This option is only effective in draft mode. When used, the layout of your text is unchanged, but the surrounding margins are shrunk so that they just clear the live text area (which includes header and footer, if present). Also, the TrimSize is shrunk accordingly. The resulting PDF will be easier to read on a handheld device.</p>
-<p>This does <em>not</em> produce an E-book, since the file will be missing some things that an E-book ought to have. The sole purpose of this option is to create a conveniently-sized file that you can carry around while you are thinking about edits and revisions.</p>
+<p class="item"><img class="floatright" style="margin-top:6px" src="html-resources/closecrop.png" width="110" height="186" title="closecrop" alt="closecrop"/><b>A.</b> Only effective with <i>draft</i> option. May NOT be used for final, print-ready PDF.</p>
+<p class="item"><b>B.</b> Shrinks Trim Size and margins, so that text/head/foot just barely clears.</p>
+<p class="item"><b>C.</b> Does not waste visual space on a hand-held device.</p>
+<p class="item"><b>D.</b> Purpose: Helps to to visualize your own book, while traveling, before you make final edits.</p>
+<p class="item"><b>E.</b> This is NOT an e-book. It does not meet e-book standards, and cannot be changed to meet e-book standards.</p>
+<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Technical Info: First, the live area (text plus head/foot) is calculated from the original settings. Then, small margins are added, and the TrimSize is reduced to fit.</p>
+<div style="clear:both"></div>
 </div><!-- end 2.6 -->
 
 <h3 id="h2.7">2.7. xml</h3>
 <div class="d3" id="d2.7">
-<p class="noindent">If you request your PDF to comply with PDF/X standards, it will automatically include XMP Metadata that can be seen as document properties in some (mostly professional) PDF reader software. The <i>xml</i> option exports this data with an xml header added, so that it can be independently viewed in software such as a browser.</p>
-<p>This option is only for your information; the exported xml file is not necessary. Whether or not you choose this option will not affect the structure or content of your PDF. If you set PDF/X compliance to <i>off</i>, then there will be no exported xml file.</p>
-<p>The exported file will be named <i>jobname-XMPasXML.xml</i>, where <i>jobname</i> is the file name of your *.tex document. If you wish to obtain the XMP packet, without the xml header, you can easily do that with a Unicode-compatible text editor. The necessary editing is obvious.</p>
+<p class="item"><b>A.</b> May NOT be used in draft mode. Only effective with PDF/X.</p>
+<p class="item"><b>B.</b> Copies internal XMP Metadata to a separate <i>jobname-XMPasXML.xml</i> file.</p>
+<p class="item"><b>C.</b> Not necessary. Only informative. Does not affect structure or content of PDF.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Technical Info: XMP packet may be isolated by editing the *.xml file, in a plain text editor (requires UNIX line endings, utf-8). Necessary edits are obvious.</p>
 </div><!-- end 2.7 -->
 
 <h3 id="h2.8">2.8. coverart</h3>
 <div class="d3" id="d2.8">
-<p class="noindent">This option is only used for cover artwork. See section 12.</p>
+<p class="item">This option is only used for cover artwork. See <a href="#h7.4">section 7.4</a>.</p>
 </div><!-- end 2.8 -->
 
-<h3 id="h2.9">2.9. unblock  (primarily for developer use)</h3>
+<h3 id="h2.9">2.9. Other Options <em>(primarily for developers)</em></h3>
 <div class="d3" id="d2.9">
-<p class="noindent">A number of LaTeX packages are known to be incompatible with <i>novel</i>, because "the way those packages do things" conflicts with "the way <i>novel</i> does things." If you attempt to load one of those packages, then the results you get may not be in agreement with the formats and styles described in this documentation, because the other package over-rides some of <i>novel's</i> own macros.</p>
-<p>Therefore, at the end of your Preamble, <i>novel</i> reviews the loaded packages, and throws an error message if you included any of them via <code>\usepackage</code> or <code>\RequirePackage</code>. That also applies if you call some other package that chain-loads one of the forbidden packages.</p>
-<p>The odds that you will need a forbidden package are small, because they generally pertain to layout for mathematical and academic papers (tables, floats, equations, diagrams, etc.).</p>
-<p>If you specify document class option <i>unblock</i> then the list of forbidden packages will be disregarded by <i>novel</i>. Use at your own risk! This option is really intended for the convenience of developers, rather than ordinary users.</p>
+<p class="item"><b>A.</b> <code>unblock</code> Allows blocked, known-incompatible packages to load.</p>
+<p class="item"><b>B.</b> <code>mtoff</code> The <i>microtype</i> package will not be loaded.</p>
+<p class="item"><b>C.</b> <code>polyoff</code> The <i>polyglossia</i> package will not be loaded.</p>
+<p class="item"><b>D.</b> <code>test</code> Only used with file <i>novel-testsuite.tex</i>.</p>
+<p class="item"><b>E.</b> <code>debug</code> OBSOLETE. Experimental in version 1.38. Now ignored.</p>
 </div><!-- end 2.9 -->
 
 
@@ -825,9 +856,9 @@ function closeall() {
 
 <h2 id="h3">3. Metadata, File Data, and PDF/X</h2>
 <div class="d2" id="d3">
-<p class="noindent">The commands described on this page are used only in the Preamble.</p>
-<p>These commands write non-printing information to the PDF file. Some of the information is used to identify and classify the file. Other information is read by the printer, to assist it with printing choices.</p>
-<p>Unfortunately, some of the terms have slightly different meaning, depending on whether they are used in the context of printing, book distribution, or ebooks. To avoid confusion <em>within this documentation</em> I will use different terms when they mean different things. When you are communicating with your printing and distribution service, take care to ensure that your understanding of terminology is what they really mean.</p>
+<p class="item"><b>A.</b> The commands described on this page are used only in the Preamble.</p>
+<p class="item"><b>B.</b> These commands write non-printing information to the PDF file. Some of the information is used to identify and classify the file. Other information is read by the printer, to assist it with printing choices.</p>
+<p class="item" style="position:relative"><b>C.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Some of the terms have different meanings, depending on whether they are used in the context of printing, book distribution, or ebooks. To avoid confusion <em>within this documentation</em> I will use different terms when they mean different things. When you are communicating with your printing and distribution service, take care to ensure that your understanding of terminology is what they really mean.</p>
 
 <h3 id="h3.1">3.1. Definition of Terms</h3>
 <div class="d3" id="d3.1">
@@ -835,63 +866,77 @@ function closeall() {
 
 <h4 id="h3.1.1">3.1.1. ISBN Metadata</h4>
 <div class="d4" id="d3.1.1">
-<p class="noindent"><img class="floatright" src="html-resources/bookmanglerdashboard.png" width="500" height="309" alt="online form for ISBN metadata"/> When you obtain the ISBN for your book, either directly through the issuing agency or via your chosen print service, you will enter <em>ISBN Metadata</em> in an online form. This metadata will go into a database, and identify your printed book in distribution and sales channels. It neither knows nor cares about PDF. (If you were marketing a PDF ebook, instead of print, that would be a different story.)</p>
-<p>ISBN Metadata includes title, author(s), subtitle if any, ISBN, other identifying information, and a description. The description is by way of advertising, and can usually be changed later; it need not appear anywhere in your book or PDF file, although some authors might use the description on the book's rear cover or cover flap.</p>
-<p>Note: The ISBN refers to your <em>printed book</em>, not to the PDF file. You are not selling copies of the PDF.</p>
+<p class="item"><b>A.</b> When you obtain the ISBN for your book, either directly through the issuing agency or via your chosen print service, you will enter <em>ISBN Metadata</em> in an online form.</p>
+<p class="item"><img class="floatright" src="html-resources/bookmanglerdashboard.png" width="500" height="309" alt="online form for ISBN metadata"/><b>B.</b> This metadata goes into a database, and identifies your printed book in distribution and sales channels. It neither knows nor cares about PDF. (If you were marketing a PDF ebook, instead of print, that would be a different story.)</p>
+<p class="item"><b>C.</b> ISBN Metadata includes title, author(s), subtitle if any, ISBN, and other identifying information. Once the book is released, this information (normally) cannot be changed.</p>
+<p class="item"><b>D.</b> You may also enter a description, genre classification, and other information that will help people find your book by browsing, and help to sell your book. This information can usually be changed at a later date.</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> The ISBN refers to your <em>printed book</em>, not to the PDF file. You are not selling copies of the PDF.</p>
+<div style="clear:both"></div>
 </div><!-- end 3.1.1 -->
 
 <h4 id="h3.1.2">3.1.2. Printed Metadata</h4>
 <div class="d4" id="d3.1.2">
-<p class="noindent"><img class="floatright" src="html-resources/megatitlepagesm.png" width="165" height="256" alt="printed metadata, cover page"/> <em>Printed Metadata</em> refers to the information that can be seen on paper, in expected places: the book cover, the title page, and the copyright page. Whether your book was printed from a PDF file, or by some other method, is not relevant.</p>
-<p>Your print service will insist that the title, subtitle (if any), author, and ISBN in these places exactly match what appears in the ISBN database. Of course, you can (and usually will) use styling or images to make the Printed Metadata more attractive than the plain-text ISBN Metadata.</p>
-<p>Some print services may object to artwork that is too fancy, on the grounds that it is difficult to discern the title and author. Although this is very unlikely, it is better to ask before committing resources.</p>
+<p class="item"><b>A.</b> <em>Printed Metadata</em> refers to the information that can be seen on paper, in expected places: the book cover, the title page, and the copyright page.</p>
+<p class="item"><img class="floatright" src="html-resources/megatitlepagesm.png" width="165" height="256" alt="printed metadata, cover page"/><b>B.</b> Whether your book was printed from a PDF file, or by some other method, is not relevant.</p>
+<p class="item"><b>C.</b> Your print service will insist that the title, subtitle (if any), author, and ISBN in these places exactly match what appears in the ISBN database. Of course, you can (and usually will) use styling or images to make the Printed Metadata more attractive than the plain-text ISBN Metadata.</p>
+<p class="item"><b>D.</b> Some print services may object to artwork that is too fancy, on the grounds that it is difficult to discern the title and author. Although this is very unlikely, it is better to ask before committing resources.</p>
+<div style="clear:both"></div>
 </div><!-- end 3.1.2 -->
 
 <h4 id="h3.1.3">3.1.3. File Data (PDF Metadata)</h4>
 <div class="d4" id="d3.1.3">
-<p class="noindent"><img class="floatright" src="html-resources/megadocprops.png" width="298" height="215" alt="PDF metadata"/> When your PDF file is produced, internal metadata will be automatically created for the benefit of PDF reader software. <em>To avoid confusion, this documentation uses the term "File Data" to mean this internal PDF metadata.</em> You can see some of the File Data when you open the PDF in any reader, and go to File&gt;Properties. To see all of it, you need professional software (such as Adobe Acrobat Pro).</p>
-<p>Be sure to read the rules for File Data, below. Some of it is generic, and some is particular to TeX or to the <i>novel</i> class.</p>
+<p class="item"><b>A.</b> Your PDF has internal metadata, which can been seen by PDF reader software.</p>
+<p class="item"><img class="floatright" src="html-resources/megadocprops.png" width="298" height="215" alt="PDF metadata"/><b>B.</b> To avoid confusion, this documentation uses the term <i>File Data</i> to mean this internal PDF Metadata.</p>
+<p class="item"><b>C.</b> You can see some of the File Data when you open the PDF in any reader, and go to <i>File&gt;Properties</i>. To see all of it, you need professional software (such as Adobe Acrobat Pro).</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Be sure to read the rules for File Data, below. Some of it is generic, and some is particular to TeX or to the <i>novel</i> class.</p>
+<div style="clear:both"></div>
 </div><!-- end 3.1.3 -->
 </div><!-- end 3.1 -->
 
 <h3 id="h3.2">3.2. Rules for File Data</h3>
 <div class="d3" id="d3.2">
-<p class="noindent">File Data must conform to several specifications, in terms of what you may or may not write. Some of the limitations are imposed by the book distribution industry, which stores information in its databases a certain way.</p>
+<p class="item">File Data must conform to several specifications, in terms of what you may or may not write. Some of the limitations are imposed by the book distribution industry, which stores information in its databases a certain way.</p>
+<p>What File Data do you need, if any? Ask your print service.</p>
 
 <h4 id="h3.2.1">3.2.1. Required, Prohibited, Optional?</h4>
 <div class="d4" id="d3.2.1">
-<p class="noindent">If PDF/X compliance is required, then you <em>must</em> at least set the title in File Data, using the <code>\SetTitle</code> command. Note that this title is not styled in any way.</p>
-<p>Some print services require a minimum amount of file data, particularly title and author, which must match the printed metadata and ISBN metadata for these fields. Other services may require that the book's ISBN number, with something like <i>_text</i> added, be used in place of the title (remember that underscore is a special character in LaTeX, so it must be preceded by a backslash). You will have to communicate with your service, and determine their requirements.</p>
-<p>Many print services do not care about File Data, one way or the other. Your PDF is passed through production according to its file name, not its internals. In such a case, assume that title and author are required.</p>
-<p>Caution: Be sure that any included images are stripped of their own image metadata. The procedure is described on farther along in this documentation.</p>
+<p class="item"><b>A.</b> If PDF/X compliance is required, then you <em>must</em> at least set the title in File Data, using the <code><a href="#h3.3.1">\SetTitle</a></code> command. Note that this title is not styled in any way.</p>
+<p class="item"><b>B.</b> Some print services require a minimum amount of file data, particularly title and author, which must match the printed metadata and ISBN metadata for these fields.</p>
+<p class="item"><b>C.</b> Other services may require that the book's ISBN number, with something like <i>_text</i> added, be used in place of the title. Remember that underscore is a special character in LaTeX, so it must be preceded by a backslash.</p>
+<p class="item"><b>D.</b> Many print services do not care about File Data, one way or the other. Your PDF is passed through production according to its file name, not its internals. In such a case, assume that title and author are required.</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Be sure that any included images are stripped of their own image metadata. The procedure is described in <a href="#h7.2">section 7.2</a>.</p>
 </div><!-- end 3.2.1 -->
 
 <h4 id="h3.2.2">3.2.2. Limited to Latin-1?</h4>
 <div class="d4" id="d3.2.2">
-<p class="noindent">At least in the USA, your print service may require that File Data be limited to characters in the Latin-1 set. This is because their production and distribution software uses Latin-1 for the database. Note that Latin-1 does not include curly quotes or em dash. You will still be using utf-8 encoding in your document files, but your choice of characters is restricted.</p>
-<p>If it were not for the database limitation to Latin-1, you could give your book a Greek or Cyrillic title, because <i>novel</i> can do it, and so can the PDF.</p>
-<p>If your book has File Data using quotes, then use the special commands <code>\straightquote{}</code> and <code>\straightdblquote{}</code>. Be sure to use the braces, so that you don't have to worry about gobbled space. When you use these commands instead of typing <code>'</code> or <code>"</code> you eliminate the risk that your software will automatically convert them to the forbidden curly quotes. Example title:</p>
+<p class="item"><b>A.</b> At least in the USA, your print service may require that File Data be limited to characters in the Latin-1 set. This is because their production and distribution software uses Latin-1 for the database.</a>
+<p class="item"><b>B.</b> Latin-1 does not include curly quotes or em dash. You will still be using utf-8 encoding in your document files, but your choice of characters is restricted.</p>
+<p class="item"><b>C.</b> <i>Novel</i> allows the title, and other File Data, to be in alphabets such as Greek or Cyrillic. If you are limited to Latin-1, the limitation has nothing to do with TeX or PDF.</p>
+<p class="item"><b>D.</b> If your book has File Data using quotes, then use the special commands <code>\straightquote{}</code> and <code>\straightdblquote{}</code>. Be sure to use the braces, so that you don't have to worry about gobbled space. When you use these commands, you eliminate the risk that your software will automatically convert them to the forbidden curly quotes. Example:</p>
 <p class="code"><code>\SetTitle{That\straightquote{}s Amore}  % That's Amore</code></p>
-<p>If you are limited to Latin-1 in File Data, you can still use curly quotes and em dash on the cover and title page, and in headings. In <i>novel</i> there is no <code>\maketitle</code> command, so you may (and should) apply styling to the printed title, even though the File Data title cannot be styled.</p>
+<p class="item"><b>E.</b> If you are limited to Latin-1 in File Data, you can still use curly quotes and em dash on the cover and title page, and in headings.</p>
+<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> There is no <code>\maketitle</code> command in <i>novel</i>. You may (and should) apply styling to the printed title, even though the File Data title cannot be styled.</p>
 </div><!-- end 3.2.2 -->
 
 <h4 id="h3.2.3">3.2.3. TeX escapes</h4>
 <div class="d4" id="d3.2.3">
-<p class="noindent">In File Data, you must obey the same TeX rules that apply everywhere: Certain characters have special meaning, and must be preceded by a backslash, if you wish to use them as ordinary characters. These are:</p>
-<p><code># $ % &amp; _ { }</code> &nbsp; &nbsp; (hash, dollar, percent, ampersand, underscore, left and right curly brackets)</p>
+<p class="item"><b>A.</b> In File Data, you must obey the same TeX rules that apply everywhere: Certain characters have special meaning, and must be preceded by a backslash, if you wish to use them as ordinary characters.</p>
+<p class="item"><b>B.</b> The list of special characters:</p>
+<p><code># $ % &amp;</code> &nbsp; &nbsp; (hash, dollar, percent, ampersand)</p>
 <p>Example: The title <em>Doing 9% &amp; Gone</em> is coded:</p>
 <p class="code"><code>\SetTitle{Doing 9\% \&amp; Gone}</code></p>
-<p>The above characters are rarely needed in File Data. Sometimes they must be spelled out, in order to agree with your book's ISBN Metadata. For example, you may need to write "and" rather than the ampersand.</p>
+<p class="item"><b>C.</b> The above characters are rarely needed in File Data. Sometimes they must be spelled out, in order to agree with your book's ISBN Metadata. For example, you may need to write "and" rather than the ampersand, "dollar" rather than the dollar symbol, and "percent" or "per-cent" rather than the percent symbol.</p>
+
 </div><!-- end 3.2.3 -->
 
 <h4 id="h3.2.4">3.2.4. Forbidden Characters</h4>
 <div class="d4" id="d3.2.4">
-<p class="noindent">&bull; Do not use the backslash <code>\</code> except as described above.</p>
-<p class="noindent">&bull; Do not use the tilde <code>~</code> or the circumflex <code>^</code>.</p>
-<p class="noindent">&bull; Do not use TeX code, such as <code>\`e</code> for e with grave; instead paste <code>è</code> directly from a character map.</p>
-<p class="noindent">&bull; Do not use styling, such as <code>{\small text}</code> or <code>\textit{text}</code>.</p>
-<p class="noindent">&bull; Use only <code>\straightquote{}</code> and <code>\straightdblquote{}</code> if necessary, not TeX code for apostrophe or quote.</p>
-<p class="noindent">&bull; Do not use multiple hyphens to create longer dashes. Do not use em dash or en dash.</p>
+<p class="item"><b>A.</b> Do not use the backslash <code>\</code> except as described above.</p>
+<p class="item"><b>B.</b> Do not use the tilde <code>~</code> or the circumflex <code>^</code>.</p>
+<p class="item"><b>C.</b> Do not use TeX code, such as <code>\`e</code> for e with grave; instead paste <code>è</code> directly from a character map.</p>
+<p class="item"><b>D.</b> Do not use styling, such as <code>{\small text}</code> or <code>\textit{text}</code>.</p>
+<p class="item"><b>E.</b> If necessary, use <code>\straightquote{}</code> and <code>\straightdblquote{}</code>. Do not use TeX code for apostrophe or quote.</p>
+<p class="item"><b>F.</b> Do not use multiple hyphens to create longer dashes. Do not use em dash or en dash.</p>
 </div><!-- end 3.2.4 -->
 </div><!-- end 3.2 -->
 
@@ -901,88 +946,117 @@ function closeall() {
 
 <h4 id="h3.3.1">3.3.1. <code>\SetTitle{<em>text</em>}</code></h4>
 <div class="d4" id="d3.3.1">
-<p class="noindent">If you do not use the <code>\SetTitle{}</code> command, or leave it empty or blank, then the resulting PDF cannot comply with PDF/X standards. In <i>very rare</i> cases, that is desirable.</p>
-<p>This information is not automatically transferred to your book's title page. It will be used as default in certain page heading styles, but you can over-ride it. The information can be retrieved as <code>\theTitle</code> anywhere in your document.</p>
+<p class="noindent"><i>Default title has changed from version 1.46.1. See <a href="#hG.5">Appendix G.5</a></i></p>
+<p class="item"><b>A.</b> The <i>novel</i> document class does not have <code>\maketitle</code>. The title is <i>not</i> automatically transferred to a title page, because there is no automatic title page.</p>
+<p class="item"><b>B.</b> The title can be retrieved as <code>\theTitle</code> anywhere in your document.</p>
+<p class="item"><b>C.</b> In certain page layouts, the title is used as default text in recto page headings. You may over-ride this behavior. See <a href="#h4.3.4.6">section 4.3.4.6</a>.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> You may set the title as empty (or blank space). In <i>very rare</i> cases, that is useful. However, if you do that, then you must follow <code>\SetTitle{}</code> with <code>\SetPDFX{off}</code>, or an error will result. This is because PDF/X standards require a real title.</p>
 </div><!-- end 3.3.1 -->
 
 <h4 id="h3.3.2">3.3.2. <code>\SetAuthor{<em>text</em>}</code></h4>
 <div class="d4" id="d3.3.2">
-<p class="noindent">This information is not automatically transferred to your book's title page. It will be used as default in certain page heading styles, but you can over-ride it. The information can be retrieved as <code>\theAuthor</code> anywhere in your document.</p>
-<p>Use the name as it is spoken. Correct: Mary Smith. Incorrect: Smith, Mary. Possibly correct, if true: Mary Smith, Ph. D. (ask your print service).</p>
+<p class="item"><b>A.</b> The default author is empty (no author).</p>
+<p class="item"><b>B.</b> In certain page layouts, the author is used as default text in verso page headings. You may over-ride this behavior. See <a href="#h4.3.4.6">section 4.3.4.6</a>.</p>
+<p class="item"><b>C.</b> The author can be retrieved as <code>\theAuthor</code> anywhere in your document.</p>
+<p class="item"><b>D.</b> Use the name as it is spoken. <i>Correct:</i> Mary Smith. <i>Incorrect:</i> Smith, Mary. <i>Possibly correct, if true:</i> Mary Smith, Ph. D.</p>
+<p class="item"><b>E.</b> Your PDF file is <i>not</i> seen by a public database. Instead, the public database contains the information you entered, when you obtained the ISBN. See <a href="#h3.1.1">section 3.1.1</a>. So, if you have multiple authors or minor contributors, that is the place to provide search information.</p>
+<p class="item"><b>F.</b> Ask your print service about how to enter multiple authors, and how to display them in print.</p>
+<p class="item" style="position:relative"><b>G.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Print-On-Demand services do not like to split royalty payments among multiple authors. Instead, the entire account is the responsibility of one main author or editor.</p>
+<p>If anyone else is involved, that is a matter of private contract betwen the one main author/editor, and any other contributors. The print service neither knows nor cares about such agreements, and will do nothing to cooperate.</p>
+<p>[DISCLAIMER] Here is my amateur advice: Consider using other contributors on a <i><span style="white-space:nowrap">work-for-hire</span></i> basis. This involves a written contract, prior payment of a fixed amount that does not depend on sales, and no grant of rights. You also need written assurance that the hired persons have the right to sell you the work they provide. If you need professional advice, then consult a professional.</p>
 </div><!-- end 3.3.2 -->
 
 <h4 id="h3.3.3">3.3.3. <code>\SetSubtitle{<em>text</em>}</code></h4>
 <div class="d4" id="d3.3.3">
-<p class="noindent">There is no file data for subtitle! The only reason for using this command is if you wish to later retrieve the information as <code>\theSubtitle</code> in your document.</p>
+<p class="item"><b>A.</b> The subtitle can be retrieved as <code>\theSubtitle</code> anywhere in your document.</p>
+<p class="item"><b>B.</b> The subtitle does <i>not</i> appear in File Data, and does <i>not</i> appear anywhere in your book, unless you manually write it there (either manually, or via <code>\theSubtitle</code>.</p>
+<p class="item"><b>C.</b> If you want the subtitle to appear in File Data, manually include it via <code>\SetTitle</code>. Example:</p>
+<p class="code"><code>\SetTitle{Megabarf: The Green Plague of London}</code></p>
+<p>Then, you may need to adjust page headings so that only the main title appears. See <a href="#h4.3.4.6">section 4.3.4.6</a>.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Usually, there is no benefit to including the subtitle in File Data. The search database does not read your PDF. It reads the information you entered as <a href="#h3.1.1">ISBN Metadata</a>, which does have an entry for subtitle.</p>
 </div><!-- end 3.3.3 -->
 
 <h4 id="h3.3.4">3.3.4 Advanced: <code>\SetApplication{<em>text</em>}</code> and <code>\SetProducer{<em>text</em>}</code></h4>
 <div class="d4" id="d3.3.4">
-<p class="noindent">The <i>Application</i>, also known as <i>CreatorTool</i>, is the program used to create your source document. Text editors, word processors, and page layout programs are the most common Applications (not specific to TeX). The PDF <i>Producer</i> is the program that converts the source document to PDF. In many cases, the Producer is a back-end, directly linked to the Application.</p>
-<p>These details are automatically created when you compile your document, without any input from you. However, if you have the need to provide a custom text string for the Application or Producer, these commands will do it.</p>
+<p class="item"><b>A.</b> The <i>Application</i>, also known as <i>CreatorTool</i>, is the program used to create your source document. Text editors, word processors, and page layout programs are the most common Applications (not specific to TeX).</p>
+<p class="item"><b>B.</b> The PDF <i>Producer</i> is the program that converts the source document to PDF. In many cases, the Producer is a back-end, directly linked to the Application.</p>
+<p class="item"><b>C.</b> These details are automatically created when you compile your document, without any input from you. However, if you have the need to provide a custom text string for the Application or Producer, these commands will do it.</p>
 </div><!-- end 3.3.4 -->
 </div><!-- end 3.3 -->
 
 <h3 id="h3.4">3.4. PDF/X</h3>
 <div class="d3" id="d3.4">
-<p class="noindent">Commercial printers are very likely to require PDF/X compliance. This ensures that your PDF meets a variety of criteria, by containing those things it must contain, and omitting those things it must not contain. Most perfectly valid PDF files are <em>not</em> PDF/X compliant, simply because they are not intended for commercial printing.</p>
+<p class="item"><i>New in version 1.46.1: Default settings changed. See <a href="#hG.5">Appendix G.5</a>.</i></p>
+<p class="item"><b>A.</b> Commercial printers are very likely to require PDF/X compliance. This ensures that your PDF meets a variety of criteria, by containing those things it must contain, and omitting those things it must not contain.</a>
+<p class="item"><b>B.</b> Most perfectly valid PDF files are <em>not</em> PDF/X compliant, simply because they are not intended for commercial printing.</p>
+<p class="item"><b>C.</b> To set PDF/X compliance, use this command in Preamble:</p>
 <p class="code"><code>\SetPDFX[<em>OutputIntent</em>]{<em>ComplianceStandard</em>}</code> &nbsp; and starred version</p>
-<p>If the <code>\SetPDFX</code> command is not used, it is <i>off</i> by default. Note that a non-compliant file is not a defective file! It complies with PDF standards, but not PDF/X standards. Some print services insist on PDF/X, and others don't care as long as the fonts are embedded (which they always are).</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> A non-PDF/X file is not a defective file! It complies with PDF standards, but not PDF/X standards. Some print services insist on PDF/X. Others don't care, as long as the fonts are embedded (which they always are).</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Some document class options are not used for final print production. When you use these options, PDF/X will be temporarily turned <i>off</i>, regardless of your setting.</p>
 
 <h4 id="h3.4.1">3.4.1. Compliance Standards</h4>
 <div class="d4" id="d3.4.1">
-<p class="noindent">The following choices are available:</p>
-<p><code>X-1a:2001</code></p>
+<p class="item"><b>A.</b> The following choices are available:</p>
+<p><code>X-1a:2001</code> (default)</p>
 <p><code>X-1a:2003</code></p>
 <p><code>X-3:2002</code></p>
 <p><code>X-3:2003</code></p>
-<p><code>off</code> (default)</p>
-<p>The first of these is the one that is most widely accepted in commercial printing. Anything meeting X-1a:2001 necessarily meets the other standards. If your book involved complicated color artwork, then the correct choice might be crucial. But for a black and white book block, <span style="white-space:nowrap">X-1a:2001</span> is the preferred choice unless your print service says otherwise.</p>
+<p><code>off</code></p>
+<p class="item"><b>B.</b> The first of these is the one that is most widely accepted in commercial printing. Anything meeting X-1a:2001 necessarily meets the other standards.</p>
+<p class="item"><b>C.</b> If your book involved complicated color artwork, then the correct choice might be crucial. But for a black and white book block, <span style="white-space:nowrap">X-1a:2001</span> is the preferred choice, unless your print service says otherwise.</p>
 </div><!-- end 3.4.1 -->
 
 <h4 id="h3.4.2">3.4.2. Output Intent</h4>
 <div class="d4" id="d3.4.2">
-<p class="noindent">Unless compliance is <i>off</i>, an Output Intent is always required. However, <i>novel</i> treats this as an optional argument, because it will automatically use <i>CGATSTR001</i> as default Output Intent.</p>
-<p>Output Intent informs the printer that you "intend" your PDF to be printed according to certain printer capabilities. If you took the trouble to soft-proof your PDF on a color-calibrated monitor using color-managed software, and if the printer's capabilities actually correspond to the intent, then the printed result will closely match what you expected. This is very important in commercial color printing (such as for cover artwork), but nearly irrelevant for a black and white book block. Nevertheless, an Output Intent is required to meet PDF/X compliance.</p>
+<p class="item"><b>A.</b> Output Intent informs the printer that you "intend" your PDF to be printed according to certain technical capabilities, particularly regarding color.</p>
+<p class="item"><b>B.</b> If your are using color-managed workflow with a calibrated monitor and color profile, and if the actual printer matches your intent, then you can expect accurate printed colors within the technical limits.</p>
+<p class="item"><b>C.</b> If the intended printer does not match the actual printer, there are three possible results: (1) The file will still be printed, but colors may be inaccurate. Home and office printers do this routinely. (2) If the printer is very advanced, it will adjust its properties to emulate the intended printer. (3) The printer may reject the print job, because it knows that it cannot produce the intended results.</p>
+<p class="item"><b>D.</b> The above considerations are very important for glossy fashion magazines, somewhat important for color book covers, and unimportant for non-color book text. Nevertheless, an Output Intent is required to meet PDF/X compliance, even when it does not matter.</p>
+<p class="item"><b>E.</b> The Output Intent is an optional argument to <code>\SetPDFX</code>, because a default will be used when the Intent is not specified.</p>
 </div><!-- end 3.4.2 -->
 
 <h4 id="h3.4.3">3.4.3. Built-in Output Intent Codes</h4>
 <div class="d4" id="d3.4.3">
-<p class="noindent">There are three pre-defined choices:</p>
+<p class="item"><b>A.</b> There are three pre-defined choices for Output Intent:</p>
 <p><code>CGATSTR001</code> (default)</p>
 <p><code>FOGRA39</code></p>
 <p><code>JC200103</code></p>
-<p>The first of these, more properly named "CGATS&nbsp;TR&nbsp;001" with spaces, is also known as "US&nbsp;Web&nbsp;Coated&nbsp;SWOP&nbsp;v2" in the USA, and is the most commonly-used American print standard for this kind of book. The second is widely used in Europe, the third in Japan.</p>
+<p class="item"><b>B.</b> The first of these, more properly named "CGATS&nbsp;TR&nbsp;001" with spaces, is also known as "US&nbsp;Web&nbsp;Coated&nbsp;SWOP&nbsp;v2" in the USA, and is the most commonly-used American print standard for this kind of book.</p>
+<p class="item"><b>C.</b> The second is widely used in Europe, the third in Japan.</p>
 </div><!-- end 3.4.3 -->
 
 <h4 id="h3.4.4">
 3.4.4. Other Output Intents</h4><div class="d4" id="d3.4.4">
-<p class="noindent">If you are required to use an Output Intent that is not one of the above three, then you have to code it yourself. Have a look at the three pre-configured Output Intents (files <span style="white-space:nowrap"><i>novel-CGATSTR001.clo</i></span>, <span style="white-space:nowrap"><i>novel-FOGRA39.clo</i></span>, and <span style="white-space:nowrap"><i>novel-JC200103.clo</i>).</span> Instructions are inside the files. There are several places where you can find the necessary data; the most comprehensive is at the <a class="external" rel="external" target="new" href="http://www.color.org/index.xalter">Inernational Color Consortium</a>.</p>
-<p>In essence: If you create a custom Output Intent file named <span style="white-space:nowrap"><em>novel-MyFunkyPrinter.clo</em></span>, then you request <i>MyFunkyPrinter</i> (without the preceding <i>novel-</i> or the <i>.clo</i> extension) as Output Intent, and that file will be loaded.</p>
+<p class="item"><b>A.</b> If you are required to use an Output Intent that is not one of the above three, then you have to code it yourself.</p>
+<p class="item"><b>B.</b> Look at the three pre-configured Output Intents (files <span style="white-space:nowrap"><i>novel-CGATSTR001.clo</i></span>, <span style="white-space:nowrap"><i>novel-FOGRA39.clo</i></span>, and <span style="white-space:nowrap"><i>novel-JC200103.clo</i>).</span> Instructions are inside the files.</p>
+<p class="item"><b>C.</b> There are several places where you can find the necessary data. The most comprehensive is at the <a class="external" rel="external" target="new" href="http://www.color.org/index.xalter">Inernational Color Consortium</a>.</p>
+<p class="item"><b>D.</b> Your custom Output Intent file must be named in this format: <span style="white-space:nowrap"><em>novel-MyFunkyPrinter.clo</em></span>. Place it where TeX can find it. Then specify <i>MyFunkyPrinter</i> (without the preceding <i>novel-</i> or the <i>.clo</i> extension) as Output Intent, and that file will be loaded.</p>
 </div><!-- end 3.4.4 -->
 
 <h4 id="h3.4.5">
 3.4.5. Whether or Not to Embed *.icc</h4><div class="d4" id="d3.4.5">
-<p class="noindent">Each Output Intent has a corresponding color profile, in the form of a file with extension <i>*.icc</i>.</p>
-<p>You usually do not need it. In fact, unless your print service specifically asks you to embed the file, <i>don't do it</i>. When you use <code>\SetPDFX</code> in its un-starred form, the *.icc file will not be embedded.</p>
-<p>If your print service demands that you embed the *.icc color profile, then use <code>\SetPDFX*</code> (with the asterisk).</p>
-<p>Repeat: Do not embed the *.icc color profile unless specifically requested by your print service.</p>
-<p>&bull; If your printer requests "US Web Coated SWOP v2" and, as usual, requests that you <em>not</em> embed the corresponding *.icc color profile, then some software will read the Output Intent as "CGATS&nbsp;TR&nbsp;001" instead of "US&nbsp;Web&nbsp;Coated&nbsp;SWOP&nbsp;v2". They are identical. But not everyone knows that.</p>
+<p class="item"><b>A.</b> Each Output Intent has a color profile, in the form of a file with extension <i>*.icc</i>.</p>
+<p class="item"><b>B.</b> You usually do not need the color profile, because the printer knows which profile corresponds with which standard Output Intent code.</p>
+<p class="item"><b>C.</b> When you use <code>\SetPDFX</code> in its un-starred form, the *.icc color profile will not be embedded in the PDF. This is the normal situation.</p>
+<p class="item"><b>D.</b> If your print service demands that you embed the *.icc color profile, then use <code>\SetPDFX*</code> (with the asterisk). You must have the actual *.icc file available where TeX can find it.</p>
+<p class="item"><b>E.</b> Do not embed the *.icc color profile unless specifically requested by your print service. If you embed it when you should not, the result may be worse!</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If your printer requests "US Web Coated SWOP v2" and, as usual, requests that you <em>not</em> embed the corresponding *.icc color profile, then some software will read the Output Intent as "CGATS&nbsp;TR&nbsp;001" instead of "US&nbsp;Web&nbsp;Coated&nbsp;SWOP&nbsp;v2". They are identical.</p>
 </div><!-- end 3.4.5 -->
 
 <h4 id="h3.4.6">
 3.4.6. Where to Find *.icc Files</h4><div class="d4" id="d3.4.6">
-<p class="noindent">You do not need an *.icc color profile unless you choose to embed it.</p>
-<p>Although many *.icc files are freely available, they usually cannot be distributed within an open-source project. You might already have them in your system, wherever such files are stored. Note that TeX uses forward slash in file paths, not backslash, even if the platform is Windows:</p>
+<p class="item"><b>A.</b> You do not need an *.icc color profile unless you choose to embed it.</p>
+<p class="item"><b>B.</b> Although many *.icc color profiles are freely available, they usually cannot be distributed within an open-source project. You might already have them in your system, wherever such files are stored. Note that TeX uses forward slash in file paths, not backslash, even if the platform is Windows:</p>
 <p class="isolate">
-Windows: <code>C:/Windows/System32/spool/drivers/color/</code> &nbsp; [older Windows: system32 instead of System32]<br/>
+Windows: <code>C:/Windows/System32/spool/drivers/color/</code><br/>
 Linux: <code>/usr/share/color</code> or hidden <code>~/.local/share/icc/</code> or other places<br/>
 OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Library/Colorsync/Profiles/</code>
 </p>
-<p>If you do not have the files, look on the Internet <a href="https://www.adobe.com/support/downloads/iccprofiles/icc_eula_win_end.html" target="new">here</a> and <a href="http://www.color.org/profiles.xalter" target="new">here</a>. These links also have many other profiles, beyond the basic three. In a few cases, your print service may provide the necessary file.</p>
-<p>You want printer profiles, usually CMYK. Don't worry about the files being "for Windows," as they are actually cross-platform.</p>
-<p>If your system has the necessary <i>*.icc</i> file for your Output Intent, but <i>novel</i> cannot find it, then copy the file to the same folder as your TeX document.</p>
-<p>Again: Do not embed the color profile unless the printer requests it.</p>
+<p class="item"><b>C.</b> If you do not have a file you need, look on the Internet <a href="https://www.adobe.com/support/downloads/iccprofiles/icc_eula_win_end.html" target="new">here</a> and <a href="http://www.color.org/profiles.xalter" target="new">here</a>. These links also have many other profiles, beyond the basic three.</a>
+<p class="item"><b>D.</b> In a few cases, your print service may provide the necessary *.icc file.</p>
+<p class="item"><b>E.</b> You want <i>printer</i> profiles, usually CMYK. Don't worry about the files being "for Windows," as they are actually cross-platform.</p>
+<p class="item"><b>F.</b> If your system has the necessary <i>*.icc</i> file for your Output Intent, but <i>novel</i> cannot find it, then copy the file to the same folder as your TeX document.</p>
+<p class="item" style="position:relative"><b>G.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Again: Do not embed the color profile unless the printer requests embedding.</p>
 </div><!-- end 3.4.6 -->
 </div><!-- end 3.4 -->
 
@@ -3241,11 +3315,12 @@ It was a dark and stormy night, etc.<br/>
 <div id="pageG" class="page">
 
 
-<h2 id="hG">Appendix G. Known Issues</h2>
+<h2 id="hG">Appendix G. News and Issues</h2>
 <div class="d2" id="dG">
-<p class="noindent">Here is a list of known issues (and solutions, if known). Remember that "only compile with lualatex" is not an issue; it is a feature! Also remember that academic-like commands and modes are often disabled in this document class. That is a feature, not an issue.</p>
+<p class="noindent">As versions change, some minor modifications have been made. Whevere existing behavior has changed, it is described here. These changes will affect very few users, if any.<p>
+<p>Also provided are known issues (and solutions, if known). Remember that "only compile with lualatex" is not an issue; it is a feature! Also remember that academic-like commands and modes are often disabled in this document class. That is a feature, not an issue.</p>
 <p>Issues may be reported at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel">GitHub project page</a> or by e-mail if you don't have a GitHub account. The e-mail address is near the top of the <i>novel.cls</i> file. These may change at some future time.</p>
-<p>Before reporting an issue, attempt to compile the file <i>novel-testsuite.tex</i>. Make a copy of that file, and also copy the required image <i>novel-testimage.png</i>. Place the copies in your home directory, or some other location where you have read/write privilege. If compile fails, see if your TeX distribution is incomplete or out-of-date.</p>
+<p>Before reporting an issue, attempt to compile the file <span style="white-space:nowrap"><i>novel-testsuite.tex</i></span>, located in the documentation <i>extras</i> subfolder. Make a copy of that file, and also copy the required image <span style="white-space:nowrap"><i>novel-testimage.png</i></span>. Place the copies in your home directory, or some other location where you have read/write privilege. If compile fails, see if your TeX distribution is incomplete or out-of-date.</p>
 <p>You may ask for new features, but don't expect any. The <i>novel</i> class is focused on doing one thing well, not several things poorly. That's why several standard LaTeX features are disabled.</p>
 
 
@@ -3260,13 +3335,39 @@ It was a dark and stormy night, etc.<br/>
 <p>This depends on which languages are involved. The solution is simple: Discard the <i>*.aux</i> and <i>*.synctex.gz</i> files generated by previous compilation. Then try again.</p>
 </div><!-- end G.2 -->
 
-<h3 id="hG.3"><span class="n"></span>G.3. (Solved) Changed Behavior of \BlockImage</h3>
+<h3 id="hG.3"><span class="n"></span>G.3. (News, v.1.46) Changed Behavior of \BlockImage</h3>
 <div class="d3" id="uG.3">
-<p class="noindent">Prior to version 1.46, the <code>\BlockImage</code> command attempted to measure the height of the image, measure the height of its acommpanying text block (if any), and automatically clear the maximum of the two.</p>
-<p>However, the calculation could be disrupted by a variety of text effects. Since it was unreliable, the behavior of <code>\BlockImage</code> has been re-defined, beginning with version 1.46.</p>
-<p>Now, the image (and its vertical offset) will be measured. But the height of any accompanying text will <i>not</i> be measured. After the image (and any accompanying text) have been placed, the following text will be on-grid, positioned so as to comfortably clear the image. However, if there is too much accompanying text, that text will overflow down into the following text.</p>
-<p>Very few users, if any, will be affected. But if you started a document using <i>novel</i> prior to v. 1.46, and you use <code>\BlockImage</code>, then be sure to review the results.</p>
+<p class="item"><b>A.</b> Prior to version 1.46, the <code>\BlockImage</code> command measured the height of the image. It also measured the height of optional text that accompanied the image within its block. Unfortunately, the text measurement was unreliable.</p>
+<p class="item"><b>B.</b> From version 1.46, <code>\BlockImage</code> still measures and clears the height of the image, with subsequent text (not in the same block as the image) on-grid.</p>
+<p class="item"><b>C.</b> However, the new behavior does <i>not</i> measure the height of optional text that accompanies <code>\BlockImage</code> within its block. If there is too much of it, then it will overflow down into the subsequent text. The subsequent text will not be pushed down or off-grid.</p>
+<p class="item"><b>D.</b> Very few users, if any, will be affected. But if you started a document using <i>novel</i> prior to v. 1.46, and you use <code>\BlockImage</code>, then be sure to review the results.</p>
 </div><!-- end G.3 -->
+
+<h3 id="hG.4"><span class="n"></span>G.4. (News, v.1.46.1) Printing This HTML File</h3>
+<div class="d3" id="uG.4">
+<p class="item"><b>A.</b> With some browsers, you can print this HTML file in the usual fashion. The printout will not show navigation as a right column, Instead, a brief list of contents will appear at the top.</p>
+<p class="item"><b>B.</b> If your user agent has trouble printing, do this: Edit this file, In a UNIX-compatible plain text editor with utf-8. About 83 lines from the top you will see a block of style that is commented out. Remove the comments so that the block is effective. Load the edited HTML file with JavaScript turned off. Then print.</p>
+</div><!-- end G.4 -->
+
+<h3 id="hG.5"><span class="n"></span>G.5. (News, v.1.46.1) Default Title and PDF/X Changed</h3>
+<div class="d3" id="uG.5">
+<p class="item"><b>A.</b> Up to, and including version 1.46, the default title was empty, and PDF/X was <i>off</i>:</p>
+<p class="code"><code>\SetTitle{} % old default</code></p>
+<p class="code"><code>\SetPDFX{off} % old default</code></p>
+<p class="item"><b>B.</b> From version 1.46.1, the default title is <i>IMPORTANT: Provide Book Title</i>, and PDF/X is enabled (using the most frequent American standard):</p>
+<p class="code"><code>\SetTitle{IMPORTANT: Provide Book Title} % new default</code></p>
+<p class="code"><code>\SetPDFX[CGATSTR001]{X-1a:2001} % new default</code></p>
+<p class="item"><b>C.</b> You may return to the old behavior by manually setting <b>A</b>. You may change PDF/X to something else. Definitely change the title, unless merely testing.</p>
+<p class="item"><b>D.</b> Now, PDF/X is automatically turned off when in draft mode, regardless of your setting. There is also a warning message in the log file.</p> 
+</div><!-- end G.5 -->
+
+<h3 id="hG.6"><span class="n"></span>G.6. (News, v.1.46.1) Some Internal Macro Name Changes</h3>
+<div class="d3" id="uG.6">
+<p class="item"><b>A.</b> Internal Macros are the kind with <code>@</code> in the name. They are normally hidden from the user, and not documented here.</p>
+<p class="item"><b>B.</b> If you have "dived into" the TeX code, and directly used an internal macro: Some of the macro names have changed. You may have to change your own code.</p>
+<p class="item"><b>C.</b> The revised names have more consistent style, for the benefit of developers.</p> 
+<p class="item"><b>D.</b> If you don't know what the above means, then it certainly does not apply to you.</p> 
+</div><!-- end G.6 -->
 
 
 </div><!-- end G -->

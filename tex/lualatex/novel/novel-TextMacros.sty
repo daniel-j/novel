@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2017/12/01 v1.46.1 LaTeX file (text macros usable within document body)]
+[2017/12/03 v1.46.2 LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -432,6 +432,7 @@
 
 %% New in v. 1.46: Allows text to be placed (potentially) off-grid, with grid resuming after.
 \newcounter{currentlinegap} % 0 when not within a linegap environment, >0 otherwise.
+\newif \if@withinlinegap
 \ExplSyntaxOn
 \DeclareDocumentEnvironment {linegap} { m } {%
   \FPifint{#1}\else%
@@ -445,17 +446,40 @@
   \par%
   \null%
   \vspace*{-\nbs}%
+  \global\@withinlinegaptrue%
   \begin{textblock*}{\textwidth}[0,0](0pt,0pt)%
   \setcounter{currentlinegap}{#1}%
   \strut\par%
   \vspace*{-\nbs}%
 }{% close the environment:
   \end{textblock*}%
+  \global\@withinlinegapfalse%
   \par%
   \vspace*{#1\nbs}%
   \setcounter{currentlinegap}{0}%
 }
 \ExplSyntaxOff % end linegap environment
+%%
+
+
+%% New in v. 1.46.2. The `column' environment.
+% Not to be confused with `columns' in other classes.
+% May only be used within `linegap' environment.
+% Mandatory argument: column width.
+% Optional argument: column offset from left.
+\newif \if@withincolumn
+\newenvironment{column}[2][0pt]{%
+  \if@withinlinegap\else%
+    \ClassError{novel}{Must nest `column' within `linegap' on p. \thepage}%
+     {The `column' environment(s) must be nested within `linegap'}%
+  \fi%
+  \global\@withincolumntrue%
+  \begin{textblock*}{#2}(#1,0pt)\strut%
+  \ignorespaces%
+}{%
+  \end{textblock*}%
+  \global\@withincolumnfalse%
+}%
 %%
 
 

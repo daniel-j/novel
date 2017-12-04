@@ -2026,6 +2026,7 @@ This text is in lightgray, until the group ends.<br/>
 <div class="d5" id="d6.5.2.1">
 <p class="noindent">The <code>\endnote</code> command inserts a numerical superscript in the text. A running count of the numbers is automatically updated. This command does nothing else.</p>
 <p>The endnote numbers normally run continuously through the text, without reset. If you wish to reset the count (perhaps at new chapters), you have to do it manually, using <code>\ResetEndnote</code> at the appropriate location.</p>
+<p>Since <code>\endnote</code> gobbles any following space, use <code>\endnote{}</code> to preserve the space.</p>
 <p>When you use <code>\endnote</code>, there is no provision for the actual note, at that place in the text. The <i>novel</i> class does not know, and does not care, whether or not you actually write the endnote later.</p>
 <p>If you wish to write an in-place reminder to yourself, about why you put an endnote marker there, use <code>\memo{<i>text</i>}</code>. The argument of <code>\memo</code> will not be printed, and will not be remembered for later use. Note that <code>\memo</code> is not like the percent <code>%</code> comment, because anything following <code>\memo</code> will be honored. Also, don't use space both before and after <code>\memo{}</code>, because both spaces will appear when typeset:</p>
 <p class="code"><i>Wrong:</i> <code>... in the sacred book.\endnote \memo{Dorf, VI} Afterward, Shange left for ...</code><br/>

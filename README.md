@@ -4,9 +4,11 @@ LuaLaTeX document class for fiction, such as novels and short story collections.
 
 ## Version
 
-The current stable version is 1.46, 2017/11/17. There are no known outstanding issues. The package works as intended. Stay tuned.
+The current stable version is 1.46.1, 2017/11/29. There are no known outstanding issues.
 
 If you already have a document using prior code, then review your document for use of the \BlockImage command. The functionality of this command is changed in v. 1.46. See The documentation.
+
+Here at GitHub is experimental code for possible enhancements. Do not use for production.
 
 The *novel* class requires TeXLive 2016 or later, or recent MiKTeX.
 

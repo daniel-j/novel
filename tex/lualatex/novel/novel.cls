@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/12/01 v1.46.1 LaTeX document class]
+\ProvidesClass{novel}[2017/12/03 v1.46.2 LaTeX document class]
 %%
 %% Version 1.46: Possibly final version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
@@ -102,7 +102,6 @@
 \RequirePackage{letltxmacro} % for re-defining some macros
 \RequirePackage{magaz} % special treatment of first lines
 \RequirePackage{xparse} % for writing cool-looking commands
-\RequirePackage{lettrine} % New in v. 1.46.1. Configured AtBeginDocument.
 %
 % In addition, the following packages are required, but they are not loaded now.
 % They must wait for something else to happen first. They will be loaded
@@ -248,7 +247,6 @@
 % New in version 1.46: test option, primarily for developer use.
 % Throws error if Liberintus and Latin Modern Roman fonts are unavailable.
 % Throws error is file novel-testimage.png is not in same folder.
-% Lets \lettrine relax if `lettrine' package not loaded.
 \newif \if@testsuite
 \DeclareOption{test}{
   \@testsuitetrue
@@ -345,6 +343,8 @@
 %% Also sets a variety of miscellaneous lengths:s \parsep, \parindent, etc.
 \RequirePackage{novel-LayoutSettings}
 %%
+\RequirePackage{novel-DropCap}
+%%
 
 
 %% Additional Preamble Settings and Commands.
@@ -374,9 +374,6 @@
   \NewFontFamily\mustbelibertinus{Libertinus Serif}
   \NewFontFamily\mustbelmodern{Latin Modern Roman}
 \fi
-\AtBeginDocument{\@ifpackageloaded{lettrine}{}%
-  {\DeclareDocumentCommand\lettrine{ O{} m m }{#2#3}}%
-}
 %% end special features of test suite.
 
 
@@ -404,15 +401,6 @@
 \newlength\normalparindent
 %
 \AtBeginDocument{ %
-  % Configure lettrine package:
-  \LettrineOnGridtrue%
-  \setlength\DiscardVskip{10\nbs} % effectively infinite
-  \global\DiscardVskip=\DiscardVskip
-  \setlength\DefaultFindent{0.25em} % about one normal space
-  \global\DefaultFindent=\DefaultFindent
-  \setlength\DefaultNindent{0em} % uniform gap
-  \global\DefaultNindent=\DefaultNindent
-  \setcounter{DefaultLines}{3} % more likely than 2.
   % Find some useful measurements:
   \setlength\normalparindent{\parindent}
   \global\normalparindent=\parindent
@@ -431,8 +419,12 @@
   \gdef\@normaldescender{\depthof{gjpqy}}
   \setlength\normaldescender{\@normaldescender}
   \global\normaldescender=\normaldescender
-  % end useful measurements
-  \RequirePackage{lettrine} % was not auto-loaded prior to v. 1.46.1
+  % Configure lettrine, if loaded by user:
+  \@ifpackageloaded{lettrine}{%
+    \global\LettrineOnGridtrue % Necessary.
+    \setlength\DiscardVskip{10\nbs} % effectively infinite
+    \global\DiscardVskip=\DiscardVskip %
+  }{}%
   % Activate user choice of whether or not to indent after scenebreak commands:
   \if@indentAfterScenebreak\else
     \NoIndentAfterCmd{\scenebreak}

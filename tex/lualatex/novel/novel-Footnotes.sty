@@ -167,6 +167,7 @@
 %% ENDNOTES
 %% -----------------------------------------------------------------------------
 % \endnote only places a marker. It does not store a note for later use.
+% Since \endnote gobbles following space, in most cases use \endnote{}.
 % The \memo{} command is helpful, to make a non-printing note to yourself.
 % Whenever \endnote is used, the marker number and page is added to a list,
 % and the list is typed into the log file after the document ends. That way,
@@ -179,7 +180,7 @@
 \DeclareDocumentCommand \endnote { }
 {%
 \global\toggletrue{@gotendnotes}%
-\stepcounter{@endnotecount}\sups{\arabic{@endnotecount}}\obeyspaces%
+\stepcounter{@endnotecount}\sups{\arabic{@endnotecount}}%
 \long\edef\@endnotelist{\@endnotelist\space (\arabic{@endnotecount},p.\thepage)}%
 }
 %%

@@ -1,0 +1,290 @@
+%%
+%% This is file `novel-DropCap.sty', part of `novel' package,
+%% Copyright (C) 2017 Robert Allgeyer.
+%%
+%% It is based on `lettrine.sty', part of `lettrine' package,
+%% Copyright (C) 1999-2015 Daniel Flipo.
+%%
+%% The license for this file is that same for `lettrine':
+%
+% This program can be distributed and/or modified under the terms
+% of the LaTeX Project Public License either version 1.3c of this
+% license or (at your option) any later version.
+% The latest version of this license is in
+%    http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2005/12/01 or later.
+%
+%%
+%
+% Although this file is part of the `novel' document class,
+% it may be used by itself, in many standard LaTeX classes
+% such as `article', compiled with pdflatex or LuaLaTeX
+% (maybe also XeTeX, but I have not tested this).
+%
+% Be sure to use a scalable font. If you don't use a scaleable font,
+% then the drop cap letter will be at the wrong size.
+%
+% You may use \SetDropCapFont if you want the letter to be
+% in a font other than the main font. Syntax depends on compiler.
+% You must choose the syntax of \SetDropCapFont yourself,
+% based on your chosen compiler. If you attempt to use the
+% old-fashioned TeX font notation with LuaTeX, it won't work.
+% Likewise the fontspec notatio won't work in pdfTeX.
+%
+% Example usage in pdfLaTeX, with old-fashioned TeX notation.
+% Here, the requested font is Palatino (ppl) bold (bx) slant (sl):
+% \SetDropCapFont{\fontfamily{ppl}\fontseries{bx}\fontshape{sl}}
+%
+% Example usage in LuaLaTeX with `fontspec' package loaded.
+% This syntax is standard in `fontspec':
+% \newfontface\mydropcapfont[open type options]{font name}
+% \SetDropCapFont{\mydropcapfont}
+% You don't need to call it \mydropcapfont. Whatever works for you.
+%
+% You may use \SetDropCapColor, which invokes `xcolor'.
+% It is better to load `xcolor' yourself.
+% That allows you to choose your own options for `xcolor'.
+% Otherwise, the `xcolor' package is loaded without options.
+% Example usage:
+% \SetDropCapColor[model]{value} OR \SetDropCapColor{name}
+%
+% Other configuration: lines, depth, oversize, raise, hang, gap, ante.
+% Similar to `lettrine' but not exactly the same.
+%
+% lines=integer  (Number of lines in drop cap. Default 3. Raised if 1).
+% depth=integer (Extra empty space under drop cap. Default 0.)
+% oversize=number (See docs. oversize, not loversize.)
+% raise=length (Moves letter up. See docs. raise, not lraise.)
+% hang=length (Moves letter left. See docs. hang, not lhang.)
+% gap=length (From letter to textblock at right. Called findent in lettrine.)
+% ante={text} (Precedes drop cap, in normal text.)
+%
+% Not supported: slope.
+% Not supported: image. To place an image as drop cap, write the necessary
+%   \includegraphics code yourself, as argument to \dropcap.
+%   In `novel' class, use the \InlineImage command.
+% Not supported: following text in small caps, or other styling.
+%   Unlike \lettrine, \dropcap does not take a third argument.
+%   If you want small caps there, style it yourself.
+% Instead of lettrine's findent and nindent, this package uses a uniform gap.
+%   Use \kern or \hspace to change spacing between drop cap and first line.
+% Not supported: Variable alignment relative to first line of text.
+%   Like it or not, drop cap will align with capital X height there
+%   (except upper diacriticals will rise above).
+%   This is standard practice in all modern examples I've seen.
+% Added feature: \boxdropcap command.
+%   Places a box around the drop cap letter, but not upper diacritical marks.
+%   Works best in `novel' class, using NovelDeco.otf font,
+%   ASCII, Latin-1 and Latin Extended A only.
+%   Appearance with other font, or other character set, may be unattractive.
+%
+%%
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\ProvidesFile{novel-DropCap.sty}
+  [2017/12/03 v1.46.2 (Drop Caps)]
+\NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\RequirePackage{keyval}
+\RequirePackage{xparse}
+\RequirePackage{xifthen}
+\RequirePackage{xstring}
+\AtBeginDocument{% helps to prevent package clash
+  \@ifpackageloaded{xcolor}{}{\RequirePackage{xcolor}}
+}
+%
+\gdef\dropcapfont{} % until actually set, will be default main font
+\gdef\dropcapcolormodel{} % until actually set
+\gdef\dropcapcolorvalue{black} % until actually set
+\newif \if@dropcapfontset
+\newcommand*\NDCcharstyle{}
+%
+\ExplSyntaxOn
+\DeclareDocumentCommand \SetDropCapFont { m } {%
+  \global\@dropcapfontsettrue%
+  \gdef\@dropcapfont{#1}%
+  \renewcommand\NDCcharstyle{%
+    #1%
+    \ifthenelse{\equal{\dropcapcolormodel}{}}{%
+      \color{\dropcapcolorvalue}%
+    }{%
+      \color[\dropcapcolormodel]{\dropcapcolorvalue}%
+    }%
+  }%
+}%
+% dropcap color may be named color (without optional argument),
+% or [colormodel]{numbers}.
+% In `novel' package, only black and grayscale.
+\newif \if@dropcapcolorset
+\DeclareDocumentCommand \SetDropCapColor { O{} m } {%
+  \global\@dropcapcolorsettrue%
+  \gdef\dropcapcolormodel{#1}%
+  \gdef\dropcapcolorvalue{#2}%
+  \renewcommand\NDCcharstyle{%
+    \@dropcapfont%
+    \ifthenelse{\equal{\dropcapcolormodel}{}}{%
+      \color{\dropcapcolorvalue}%
+    }{%
+      \color[\dropcapcolormodel]{\dropcapcolorvalue}%
+    }%
+  }%
+}%
+%
+\cs_new_eq:NN \SetDropcapFont \SetDropCapFont
+\cs_new_eq:NN \SetDropcapColor \SetDropCapColor
+\ExplSyntaxOff
+%
+\newcounter{NDCDefaultLines}
+\setcounter{NDCDefaultLines}{3}
+\newcounter{NDCDefaultDepth}
+\newcommand*{\NDCDefaultOversize}{0}
+\newcommand*{\NDCDefaultLraise}{0}
+\newcommand*{\NDCDefaultHang}{0}
+\newdimen\NDCDefaultGap
+\setlength{\NDCDefaultGap}{0.25em} % approx. width of normal space %%%%%
+\newsavebox{\NDC@lbox}
+\newsavebox{\NDC@tbox}
+\newcounter{NDC@lines}
+\newcounter{NDC@depth}
+\newdimen\NDC@Pindent
+\newdimen\NDC@Gap % equivalent to lettrine findent
+\newdimen\NDC@Nindent % not a user setting
+\newdimen\NDC@lraise
+\newdimen\NDC@first
+\newdimen\NDC@next
+\newdimen\NDC@height
+\newcommand*{\NDC@hang}{}
+\newcommand*{\NDC@oversize}{}
+\newcommand*{\NDC@raise}{}
+\newcommand*{\NDC@ante}{}
+\def\@getNDCheight{%
+   \@tempdima=\baselineskip
+   \setlength{\NDC@height}{\value{NDC@lines}\@tempdima}%
+   \addtolength{\NDC@height}{-\@tempdima}%
+   \sbox{\NDC@tbox}{X}% Normal capital X, rather than something else.
+   \addtolength{\NDC@height}{\ht\NDC@tbox}%
+   \addtolength{\NDC@height}{\NDC@oversize\NDC@height}%
+}
+\newcommand*{\NDCchar}{%
+   \@getNDCheight%
+   % Measures drop cap capital X, rather than something else:
+   \sbox{\@tempboxa}{\NDCcharstyle\fontsize{\NDC@height}{\NDC@height}\selectfont X}%
+   \@tempcntb=\ht\@tempboxa%
+   \@tempcnta=\NDC@height%
+   \multiply\@tempcnta by 100%
+   \divide\@tempcntb by 100%
+   \divide\@tempcnta by \@tempcntb%
+   \advance\@tempcnta by -9999%
+   \ifnum\@tempcnta>0%
+     \def\@tempa{1.\the\@tempcnta}%
+   \else%
+     \def\@tempa{1}%
+   \fi%
+   \NDCcharstyle\fontsize{\@tempa\NDC@height}{\@tempa\NDC@height}\selectfont
+}
+\define@key{NDC}{lines}{\setcounter{NDC@lines}{#1}}
+\define@key{NDC}{depth}{\setcounter{NDC@depth}{#1}}
+\define@key{NDC}{hang}{\renewcommand*{\NDC@hang}{#1}}
+\define@key{NDC}{oversize}{\renewcommand*{\NDC@oversize}{#1}}
+\define@key{NDC}{lraise}{\renewcommand*{\NDC@raise}{#1}}
+\define@key{NDC}{ante}{\renewcommand*{\NDC@ante}{#1}}
+\define@key{NDC}{gap}{\setlength{\NDC@Gap}{#1}}
+\newdimen\NDCboxwidth
+\newdimen\NDCboxheight
+\newdimen\NDCboxdepth
+%
+\ExplSyntaxOn
+\DeclareDocumentCommand \boxdropcap { m }{%
+  \begingroup%
+  % The model letter has no upper diacritical.
+  \def\@NDCmodel{}
+  \IfSubStr{ÀÁÂÃÄÅĀĂ}{#1}{\def\@NDCmodel{A}}{}
+  \IfSubStr{ĆĈĊČ}{#1}{\def\@NDCmodel{C}}{}
+  \IfSubStr{Ď}{#1}{\def\@NDCmodel{D}}{}
+  \IfSubStr{ÈÉÊËĒĔĖĚ}{#1}{\def\@NDCmodel{E}}{}
+  \IfSubStr{ĜĞĠ}{#1}{\def\@NDCmodel{G}}{}
+  \IfSubStr{Ĥ}{#1}{\def\@NDCmodel{H}}{}
+  \IfSubStr{ÌÍÎÏĨĪĬİ}{#1}{\def\@NDCmodel{I}}{}
+  \IfSubStr{Ĵ}{#1}{\def\@NDCmodel{J}}{}
+  \IfSubStr{Ĺ}{#1}{\def\@NDCmodel{L}}{}
+  \IfSubStr{ÑŃŇ}{#1}{\def\@NDCmodel{N}}{}
+  \IfSubStr{ÒÓÔÕÖŌŎŐ}{#1}{\def\@NDCmodel{O}}{}
+  \IfSubStr{ŔŘ}{#1}{\def\@NDCmodel{R}}{}
+  \IfSubStr{ŚŜŠ}{#1}{\def\@NDCmodel{S}}{}
+  \IfSubStr{Ť}{#1}{\def\@NDCmodel{T}}{}
+  \IfSubStr{ÙÚÛÜŨŪŬŮŰ}{#1}{\def\@NDCmodel{U}}{}
+  \IfSubStr{Ŵ}{#1}{\def\@NDCmodel{W}}{}
+  \IfSubStr{ÝŶŸ}{#1}{\def\@NDCmodel{Y}}{}
+  \IfSubStr{ŹŻŽ}{#1}{\def\@NDCmodel{Z}}{}
+  %
+  \setlength\fboxsep{0.02em}%
+  \setlength\fboxrule{0.02\nfs}%
+  \ifthenelse{\equal{\@NDCmodel}{}}{%
+    \framebox{\phantom{|}#1\phantom{|}}%
+  }{%
+    \framebox{\phantom{|\@NDCmodel|}\llap{\smash{#1}}}%
+  }%
+  \endgroup%
+}% end boxdropcap
+%
+\DeclareDocumentCommand \dropcap { O{} m } {%
+  \setcounter{NDC@lines}{\value{NDCDefaultLines}}%
+  \setcounter{NDC@depth}{\value{NDCDefaultDepth}}%
+  \renewcommand*{\NDC@hang}{\NDCDefaultHang}%
+  \renewcommand*{\NDC@oversize}{\NDCDefaultOversize}%
+  \renewcommand*{\NDC@raise}{\NDCDefaultLraise}%
+  \renewcommand*{\NDC@ante}{}%
+  \setlength{\NDC@Gap}{\NDCDefaultGap}%
+  \setlength{\NDC@Nindent}{0pt}%
+  \setkeys{NDC}{#1}%
+  \sbox{\NDC@tbox}{X}% Normal capital X.
+  \sbox{\NDC@lbox}{\NDCchar #2}%
+  \@tempdima=\baselineskip%
+  \ifnum\value{NDC@lines}=1%
+    \setlength{\NDC@first}{\ht\NDC@lbox}%
+    \addtolength{\NDC@first}{-\ht\NDC@tbox}%
+    \setlength{\NDC@lraise}{\z@}%
+  \else%
+    \setlength{\NDC@first}{-\value{NDC@lines}\@tempdima}%
+    \addtolength{\NDC@first}{\@tempdima}%
+    \sbox{\@tempboxa}{X}%
+    \addtolength{\NDC@first}{-\ht\@tempboxa}%
+    \setlength{\NDC@lraise}{-\NDC@raise\NDC@first}%
+    \addtolength{\NDC@first}{\NDC@lraise}%
+    \addtolength{\NDC@first}{\ht\NDC@lbox}%
+    \addtolength{\NDC@lraise}{-\value{NDC@lines}\@tempdima}%
+    \addtolength{\NDC@lraise}{\@tempdima}%
+  \fi%
+  \par%
+  \setlength{\NDC@Pindent}{\wd\NDC@lbox}%
+  \addtolength{\NDC@Pindent}{-\NDC@hang\wd\NDC@lbox}%
+  \settowidth{\NDC@first}{\NDC@ante}%
+  \addtolength{\NDC@Pindent}{\NDC@first}%
+  \addtolength{\NDC@Pindent}{\NDC@Gap}%
+  \setlength{\NDC@first}{\linewidth}%
+  \addtolength{\NDC@first}{-\NDC@Pindent}%
+  \addtolength{\NDC@Nindent}{\NDC@Pindent}%
+  \setlength{\NDC@next}{\linewidth}%
+  \addtolength{\NDC@next}{-\NDC@Nindent}%
+  \addtolength{\NDC@Pindent}{\rightmargin}%
+  \addtolength{\NDC@Nindent}{\rightmargin}%
+  \setlength{\NDCboxwidth}{\wd\NDC@lbox}%
+  \setlength{\NDCboxheight}{\ht\NDC@lbox}%
+  \setlength{\NDCboxdepth}{\dp\NDC@lbox}%
+  \addtocounter{NDC@lines}{1}%
+  \addtocounter{NDC@lines}{\value{NDC@depth}}%
+  \def\NDC@parshape{\c@NDC@lines \the\NDC@Pindent \the\NDC@first}%
+  \@tempcnta=\tw@%
+  \@whilenum \@tempcnta<\c@NDC@lines\do{%
+     \edef\NDC@parshape{\NDC@parshape \the\NDC@Nindent \the\NDC@next}%
+     \advance\@tempcnta\@ne}%
+  \edef\NDC@parshape{\NDC@parshape \rightmargin \the\linewidth}%
+  \noindent%
+  \parshape=\NDC@parshape\relax%
+  \smash{\llap{\mbox{\NDC@ante}\raisebox{\NDC@lraise}{\usebox{\NDC@lbox}}%
+         \hskip \the\NDC@Gap}}%
+}% end @NDCdropcap
+\ExplSyntaxOff
+%
+%%
+%% End of file `novel-DropCap.sty'.
+

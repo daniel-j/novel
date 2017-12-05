@@ -24,7 +24,7 @@
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesFile{novel-pdfx.sty}%
-[2017/12/04 v1.46.3 LaTeX file (PDF/X support for novel class)]
+[2017/12/04 v1.46.3a LaTeX file (PDF/X support for novel class)]
 % This package supports, and is part of, class `novel'.
 % No support for anything but LuaLaTeX.
 
@@ -382,7 +382,7 @@
 
 %% WRITE THE OUTPUT INTENT, UNLESS PDFX IS OFF.
 %% -----------------------------------------------------------------------------
-%
+% Data for CGATS TR 001, FOGRA39, and JC200103 are in file novel-FileData.sty.
 \if@pdfxISoff\else
   \begingroup
     \edef\@pctchar{\expandafter\@gobble\string\%} % Escaped in TeX, not PDF.
@@ -464,7 +464,6 @@
 %
 \gdef\@novelPDFinfo{ % rather than \PDF@FinishDoc
   \if@gottitle
-    \Hy@UseMaketitleInfos
     \pdfinfo{
       \ifx\@infotitle\@empty\else /Title(\@infotitle)\fi
       \ifx\@infoauthor\@empty\else /Author(\@infoauthor)\fi

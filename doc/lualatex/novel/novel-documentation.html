@@ -576,7 +576,7 @@ function closeall() {
 <div id="main">
 <!-- **************************************************************************************** -->
 
-<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.46.1, 2017/12/01</span></h1>
+<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.46.3, 2017/12/04</span></h1>
 <p class="noindent"><span id="screennoscript" class="screennoscript"><b>For enchanced navigation of this file, turn on JavaScript.</b></span></p>
 <div><script type="text/javascript">if(document.getElementById("screennoscript")){document.getElementById("screennoscript").style.display="none";}</script></div>
 <p class="noindent">The <i>novel</i> document class provides an integrated method for creating original works of fiction, such as a novel or collection of short stories. It may also be used for popular non-fiction, using design similar to that seen for fiction. It does not provide support for academic or mathematical works.</p>
@@ -1018,19 +1018,33 @@ function closeall() {
 <h4 id="h3.4.3">3.4.3. Built-in Output Intent Codes</h4>
 <div class="d4" id="d3.4.3">
 <p class="item"><b>A.</b> There are three pre-defined choices for Output Intent:</p>
-<p><code>CGATSTR001</code> (default)</p>
+<p><code>CGATS TR 001</code> (default) (can also use CGATSTR001)</p>
 <p><code>FOGRA39</code></p>
 <p><code>JC200103</code></p>
-<p class="item"><b>B.</b> The first of these, more properly named "CGATS&nbsp;TR&nbsp;001" with spaces, is also known as "US&nbsp;Web&nbsp;Coated&nbsp;SWOP&nbsp;v2" in the USA, and is the most commonly-used American print standard for this kind of book.</p>
+<p class="item"><b>B.</b> The first of these is known as "US&nbsp;Web&nbsp;Coated&nbsp;SWOP&nbsp;v2" in the USA, and is the most commonly-used American print standard for this kind of book.</p>
 <p class="item"><b>C.</b> The second is widely used in Europe, the third in Japan.</p>
 </div><!-- end 3.4.3 -->
 
 <h4 id="h3.4.4">
 3.4.4. Other Output Intents</h4><div class="d4" id="d3.4.4">
 <p class="item"><b>A.</b> If you are required to use an Output Intent that is not one of the above three, then you have to code it yourself.</p>
-<p class="item"><b>B.</b> Look at the three pre-configured Output Intents (files <span style="white-space:nowrap"><i>novel-CGATSTR001.clo</i></span>, <span style="white-space:nowrap"><i>novel-FOGRA39.clo</i></span>, and <span style="white-space:nowrap"><i>novel-JC200103.clo</i>).</span> Instructions are inside the files.</p>
-<p class="item"><b>C.</b> There are several places where you can find the necessary data. The most comprehensive is at the <a class="external" rel="external" target="new" href="http://www.color.org/index.xalter">Inernational Color Consortium</a>.</p>
-<p class="item"><b>D.</b> Your custom Output Intent file must be named in this format: <span style="white-space:nowrap"><em>novel-MyFunkyPrinter.clo</em></span>. Place it where TeX can find it. Then specify <i>MyFunkyPrinter</i> (without the preceding <i>novel-</i> or the <i>.clo</i> extension) as Output Intent, and that file will be loaded.</p>
+<p class="item"><b>B.</b> In a place where TeX can find it, create a plain text file with its file name in the following format:</p>
+<p class="code">File name begins with <code>novel-</code> (note the hyphen).</p>
+<p class="code">No spaces or underscores in file name, no matter what the Intent.</p>
+<p class="code">File extension is <code>.clo</code></p>
+<p class="item"><b>C.</b> Example valid file name: <code>novel-YourIntent.clo</code>.</p>
+<p class="code">The above file is loaded using <code>\SetPDFX[YourIntent]{<em>compliance</em>}</code>.</p> 
+<p class="item"><b>D.</b> The file contains (up to) five <code>\gdef</code> commands. The <code>\@OIidentifier</code> is called "reference name" by some authorities. Here is the code used for <code>CGATS TR 001</code>:</p>:
+<div style="margin:0px 16px 0px 16px; background: #dddddd none">
+<p class="code"><code>\gdef\@OIidentifier{CGATS TR 001}</code></p>
+<p class="code"><code>\gdef\@OIcondition{SWOP (Publication) printing in USA (Printing process definition: ANSI CGATS.6).}</code></p>
+<p class="code"><code>\gdef\@OIinfo{U.S. Web Coated (SWOP) v2}</code></p>
+<p class="code"><code>\gdef\@OIregistry{http://www.color.org}</code></p>
+<p class="code"><code>\gdef\@OIprofile{USWebCoatedSWOP.icc}</code></p>
+</div>
+<p class="item"><b>E.</b> If the data contains any TeX special characters, such as underscore, percent, ampersand, or number sign, they must be escaped using a backslash.</p>
+<p class="item"><b>F.</b> The necessary data may be provided by your print service, or perhaps can be found at resources such as the <a href="http://color.org/registry/index.xalter" rel="external" class="external" target="new">International Color Consortium</a>. Alas, this source (and others) do not make it easy to discern the data.</p>
+<p class="item"><b>G.</b> Another place to look for Output Intent data is in your (texmf)/tex/latex/pdfx folder. This will be in your TeX system if package <i>pdfx</i> is installed (but do not load this package into <i>novel</i> class). Files <i>AdobeColorProfiles.tex</i> and <i>AdobeExternalProfiles.tex</i> contain code prepared by the author of the <i>pdfx</i> package. The macro names are not the same, but they are easy to decode: <code>\@OIidentifer</code> is <i>/OutputConditionIdentifier</i>; <code>\@OIcondition</code> is <i>/ProfileName</i>; <code>\@OIinfo</code> is <i>/OutputCondition</i>; <code>\@OIregistry</code> is <i>/RegistryName</i>; and <code>\@OIprofile</code> follows <i>\setCMYKcolorprofile</i>.</p>
 </div><!-- end 3.4.4 -->
 
 <h4 id="h3.4.5">

@@ -16,82 +16,17 @@
 % version 2005/12/01 or later.
 %
 %%
-%
-% Although this file is part of the `novel' document class,
-% it may be used by itself, in many standard LaTeX classes
-% such as `article', compiled with pdflatex or LuaLaTeX
-% (maybe also XeTeX, but I have not tested this).
-%
-% Be sure to use a scalable font. If you don't use a scaleable font,
-% then the drop cap letter will be at the wrong size.
-%
-% You may use \SetDropCapFont if you want the letter to be
-% in a font other than the main font. Syntax depends on compiler.
-% You must choose the syntax of \SetDropCapFont yourself,
-% based on your chosen compiler. If you attempt to use the
-% old-fashioned TeX font notation with LuaTeX, it won't work.
-% Likewise the fontspec notatio won't work in pdfTeX.
-%
-% Example usage in pdfLaTeX, with old-fashioned TeX notation.
-% Here, the requested font is Palatino (ppl) bold (bx) slant (sl):
-% \SetDropCapFont{\fontfamily{ppl}\fontseries{bx}\fontshape{sl}}
-%
-% Example usage in LuaLaTeX with `fontspec' package loaded.
-% This syntax is standard in `fontspec':
-% \newfontface\mydropcapfont[open type options]{font name}
-% \SetDropCapFont{\mydropcapfont}
-% You don't need to call it \mydropcapfont. Whatever works for you.
-%
-% You may use \SetDropCapColor, which invokes `xcolor'.
-% It is better to load `xcolor' yourself.
-% That allows you to choose your own options for `xcolor'.
-% Otherwise, the `xcolor' package is loaded without options.
-% Example usage:
-% \SetDropCapColor[model]{value} OR \SetDropCapColor{name}
-%
-% Other configuration: lines, depth, oversize, raise, hang, gap, ante.
-% Similar to `lettrine' but not exactly the same.
-%
-% lines=integer  (Number of lines in drop cap. Default 3. Raised if 1).
-% depth=integer (Extra empty space under drop cap. Default 0.)
-% oversize=number (See docs. oversize, not loversize.)
-% raise=length (Moves letter up. See docs. raise, not lraise.)
-% hang=length (Moves letter left. See docs. hang, not lhang.)
-% gap=length (From letter to textblock at right. Called findent in lettrine.)
-% ante={text} (Precedes drop cap, in normal text.)
-%
-% Not supported: slope.
-% Not supported: image. To place an image as drop cap, write the necessary
-%   \includegraphics code yourself, as argument to \dropcap.
-%   In `novel' class, use the \InlineImage command.
-% Not supported: following text in small caps, or other styling.
-%   Unlike \lettrine, \dropcap does not take a third argument.
-%   If you want small caps there, style it yourself.
-% Instead of lettrine's findent and nindent, this package uses a uniform gap.
-%   Use \kern or \hspace to change spacing between drop cap and first line.
-% Not supported: Variable alignment relative to first line of text.
-%   Like it or not, drop cap will align with capital X height there
-%   (except upper diacriticals will rise above).
-%   This is standard practice in all modern examples I've seen.
-% Added feature: \boxdropcap command.
-%   Places a box around the drop cap letter, but not upper diacritical marks.
-%   Works best in `novel' class, using NovelDeco.otf font,
-%   ASCII, Latin-1 and Latin Extended A only.
-%   Appearance with other font, or other character set, may be unattractive.
-%
-%%
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesFile{novel-DropCap.sty}
-  [2017/12/03 v1.46.2 (Drop Caps)]
+  [2017/12/04 v1.46.3 (Drop Caps)]
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \RequirePackage{keyval}
 \RequirePackage{xparse}
 \RequirePackage{xifthen}
 \RequirePackage{xstring}
-\AtBeginDocument{% helps to prevent package clash
-  \@ifpackageloaded{xcolor}{}{\RequirePackage{xcolor}}
-}
+\@ifpackageloaded{xcolor}{}{\RequirePackage{xcolor}}
 %
+%% New in v. 1.48 (drop caps):
 \gdef\dropcapfont{} % until actually set, will be default main font
 \gdef\dropcapcolormodel{} % until actually set
 \gdef\dropcapcolorvalue{black} % until actually set
@@ -101,7 +36,7 @@
 \ExplSyntaxOn
 \DeclareDocumentCommand \SetDropCapFont { m } {%
   \global\@dropcapfontsettrue%
-  \gdef\@dropcapfont{#1}%
+  \gdef\@dropcapfont{#1}
   \renewcommand\NDCcharstyle{%
     #1%
     \ifthenelse{\equal{\dropcapcolormodel}{}}{%
@@ -112,8 +47,7 @@
   }%
 }%
 % dropcap color may be named color (without optional argument),
-% or [colormodel]{numbers}.
-% In `novel' package, only black and grayscale.
+% or [gray]{number}. If [rgb]{numbers}, converted to grayscale.
 \newif \if@dropcapcolorset
 \DeclareDocumentCommand \SetDropCapColor { O{} m } {%
   \global\@dropcapcolorsettrue%
@@ -193,7 +127,7 @@
 \newdimen\NDCboxdepth
 %
 \ExplSyntaxOn
-\DeclareDocumentCommand \boxdropcap { m }{%
+\DeclareDocumentCommand \boxcap { m }{%
   \begingroup%
   % The model letter has no upper diacritical.
   \def\@NDCmodel{}
@@ -216,15 +150,15 @@
   \IfSubStr{ÝŶŸ}{#1}{\def\@NDCmodel{Y}}{}
   \IfSubStr{ŹŻŽ}{#1}{\def\@NDCmodel{Z}}{}
   %
-  \setlength\fboxsep{0.02em}%
+  \setlength\fboxsep{0.16\nfs}%
   \setlength\fboxrule{0.02\nfs}%
   \ifthenelse{\equal{\@NDCmodel}{}}{%
     \framebox{\phantom{|}#1\phantom{|}}%
   }{%
-    \framebox{\phantom{|\@NDCmodel|}\llap{\smash{#1}}}%
+    \framebox{\phantom{|\@NDCmodel}\llap{\smash{#1}}\phantom{|}}%
   }%
   \endgroup%
-}% end boxdropcap
+}% end boxcap
 %
 \DeclareDocumentCommand \dropcap { O{} m } {%
   \setcounter{NDC@lines}{\value{NDCDefaultLines}}%

@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-FileData.sty}%
-[2017/12/01 v1.46.1 LaTeX file (File Data settings)]
+[2017/12/04 v1.46.3 LaTeX file (File Data settings)]
 %% 
 
 
@@ -83,6 +83,7 @@
 %% Default as of v. 1.46.1: \SetPDFX[CGATSTR001]{X-1a:2001}
 %
 \newif \if@chosenComplianceOK
+\newif \if@chosenOutputIntentOK
 \newif \if@chosenEmbedOK
 \newif \if@gotConformance
 \newif \if@noembedicc \@noembedicctrue
@@ -154,23 +155,57 @@
     \ClassError{novel}{Bad compliance argument for \string\SetPDFX}%
      {Choose: X-1a:2001, X-1a:2003, X-3:2002, X-3:2003, off.^^J}%
   \fi
-  %
+  % Prior to version 1.46.2, this info was in separate files:
   \if@pdfxSEToff\else % Output Intent ignored if compliance set `off'.
-    \ifthenelse{\equal{#1}{CGATS TR 001}}{%
-      \ClassError{novel}{Use CGATSTR001 not CGATS TR 001 Output Intent}%
-       {Although `CGATS TR 001' is industry spec for Output Intent,^^J%
-        instead use CGATSTR001 without spaces, in \string\SetPDFX.}%
-    }{}%
-    % Grab the file that defines the output intent information:
-    \makeatletter % Apparently needed when non-*.sty is input within a command!
-    \IfFileExists{novel-#1.clo}{\input{novel-#1.clo}}{
-      \ClassError{novel}{Bad Output Intent argument for \string\SetPDFX}%
-       {Use filename (without extension) of a file with *.clo extension. ^^J%
-        Filename must begin with novel- ^^J%
-        The file must be where TeX can find it. Or use standard code: ^^J%
-        CGATSTR001, FOGRA39, JC200103.}%
-    }
-    \makeatother % back to usual
+    % Ignore spaces, so that CGATS TR 001 = CGATSTR001:
+    \StrDel{#1}{\space}[\@NPDFXOINS]
+    \ifthenelse{\equal{\@NPDFXOINS}{CGATSTR001}}{%
+      \global\@chosenOutputIntentOKtrue
+      % Data for Output Intent CGATS TR 001:
+      \gdef\@OIidentifier{CGATS TR 001} % also called "reference name"
+      \gdef\@OIcondition{SWOP (Publication) printing in USA (Printing process definition: ANSI CGATS.6).}
+      \gdef\@OIinfo{U.S. Web Coated (SWOP) v2}
+      \gdef\@OIregistry{http://www.color.org}
+      \gdef\@OIprofile{USWebCoatedSWOP.icc}
+      % end CGATS TR 001.
+    }{} %
+    \ifthenelse{\equal{\@NPDFXOINS}{FOGRA39}}{%
+      \global\@chosenOutputIntentOKtrue
+      % Data for Output Intent FOGRA39:
+      \gdef\@OIidentifier{FOGRA39} % also called "reference name"
+      \gdef\@OIcondition{Offset commercial and specialty printing according to ISO 12647-2:2004 / Amd 1, paper type 1 or 2 (gloss or matte coated offset, 115 g/m2), screen frequency 60/cm.}
+      \gdef\@OIinfo{Coated FOGRA39 (ISO 12647-2:2004)}
+      \gdef\@OIregistry{http://www.color.org}
+      \gdef\@OIprofile{CoatedFOGRA39.icc}
+      % end FOGRA39.
+    }{} %
+    \ifthenelse{\equal{\@NPDFXOINS}{JC200103}}{%
+      \global\@chosenOutputIntentOKtrue
+      % Data for Output Intent JC200103:
+      \gdef\@OIidentifier{JC200103} % also called "reference name"
+      \gdef\@OIcondition{Japan Color 2001 Coated: Printing process definition: ISO 12647-2:2004, sheet-fed offset printing, positive plates, paper type 3 (coated, 105 gsm), screen frequency 69/cm.}
+      \gdef\@OIinfo{Japan Color 2001 Coated}
+      \gdef\@OIregistry{http://www.color.org}
+      \gdef\@OIprofile{JapanColor2001Coated.icc}
+      % end JC200103.
+    }{} %
+    \if@chosenOutputIntentOK\else
+      % Grab the file that defines the Output Intent information:
+      % File name format: novel-YourIntent.clo
+      % Setting: \SetPDFX[YourIntent]{compliance}
+      % Contents of file: See the above included Output Intent data.
+      \makeatletter % Apparently needed when non-*.sty is input within a command!
+      \IfFileExists{novel-\@NPDFXOINS.clo}{\input{novel-\@NPDFXOINS.clo}}{%
+        \PackageError{novel-PDFX}{Bad Output Intent argument for \string\SetPDFX}%
+         {Use filename (without extension) of a file with *.clo extension.^^J%
+          Filename must begin with novel-^^J%
+          Example: File novel-FOGRA39.clo is called as [FOGRA39].^^J%
+          The file must be where TeX can find it.^^J%
+          For contents of the file, see package documentation,^^J%
+          or look inside `novel-PDFX.sty' for MODEL CODE FOR OUTPUT INTENTS.}%
+      }{}%
+      \makeatother % back to usual
+    \fi
   \fi
 } % end \@setpdfx
 %

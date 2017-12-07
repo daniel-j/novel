@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/12/04 v1.46.3 LaTeX document class]
+\ProvidesClass{novel}[2017/12/04 v1.46.3b LaTeX document class]
 %%
 %% Version 1.46: Possibly final version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
@@ -485,6 +485,7 @@
   \sorry@no{nth}
   \sorry@no{engord}
   \sorry@no{endnotes}
+  \sorry@no{acronym}
   % end list of incompatible packages
   \@ifpackageloaded{pagegrid}{
     \ifdraftdoc\else

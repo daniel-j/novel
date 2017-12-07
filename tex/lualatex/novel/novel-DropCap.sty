@@ -99,14 +99,15 @@
 \newcounter{NDCDefaultDepth}
 \newdimen\NDCDefaultVoffset
 \newdimen\NDCDefaultHoffset
-\newcommand*{\NDCDefaultHscale}{1}
 \newcommand*{\NDCDefaultVscale}{1}
+\newcommand*{\NDCDefaultHscale}{*} % asterisk means same as Vscale
 \newdimen\NDCDefaultGap
 \setlength{\NDCDefaultGap}{0.25em} % approx. width of normal space
 \newsavebox{\NDC@dropcapbox}
 \newsavebox{\NDC@normalXbox}
 \newcounter{NDC@lines}
 \newcounter{NDC@depth}
+\newdimen\NDC@antewidth
 \newdimen\NDC@Pindent
 \newdimen\NDC@Gap % equivalent to lettrine findent
 \newdimen\NDC@Nindent % not a user setting
@@ -147,7 +148,12 @@
 \define@key{NDC}{depth}{\setcounter{NDC@depth}{#1}}
 \define@key{NDC}{hoffset}{\setlength{\NDC@hoffset}{#1}}
 \define@key{NDC}{voffset}{\setlength{\NDC@voffset}{#1}}
-\define@key{NDC}{ante}{\renewcommand*{\NDC@ante}{#1}}
+\define@key{NDC}{ante}{\renewcommand*{\NDC@ante}{#1}} % Like `lettrine' ante,
+\define@key{NDC}{ante*}{\renewcommand*{\NDC@ante}{% Like `lettrine' ante, but
+  \setlength\NDC@antewidth{\widthof{#1}}% auto-hangs the ante in left margin.
+  \addtolength\NDC@antewidth{0.2em}% provides breathing room
+  \stake\hspace{-\NDC@antewidth}#1\hspace{0.2em}}% restores alignment
+}
 \define@key{NDC}{gap}{\setlength{\NDC@Gap}{#1}}
 \define@key{NDC}{hscale}{\renewcommand*{\NDC@hscale}{#1}}
 \define@key{NDC}{vscale}{\renewcommand*{\NDC@vscale}{#1}}
@@ -156,7 +162,7 @@
 \newdimen\NDCboxdepth
 %
 \ExplSyntaxOn
-\DeclareDocumentCommand \boxcap { m }{%
+\DeclareDocumentCommand \NDC@boxcap { m }{%
   \begingroup%
   % The model letter has no upper diacritical.
   \def\@NDCmodel{}
@@ -190,14 +196,14 @@
   \endgroup%
 }% end boxcap
 %
-\DeclareDocumentCommand \dropcap { O{} m } {%
+\DeclareDocumentCommand \dropcap { s O{} m } {%
   \@dropcapimagefalse%
-  \IfSubStr{#2}{png}{\@dropcapimagetrue}{}%
-  \IfSubStr{#2}{PNG}{\@dropcapimagetrue}{}%
-  \IfSubStr{#2}{jpg}{\@dropcapimagetrue}{}%
-  \IfSubStr{#2}{JPG}{\@dropcapimagetrue}{}%
-  \IfSubStr{#2}{jpeg}{\@dropcapimagetrue}{}%
-  \IfSubStr{#2}{JPEG}{\@dropcapimagetrue}{}%
+  \IfSubStr{#3}{png}{\@dropcapimagetrue}{}%
+  \IfSubStr{#3}{PNG}{\@dropcapimagetrue}{}%
+  \IfSubStr{#3}{jpg}{\@dropcapimagetrue}{}%
+  \IfSubStr{#3}{JPG}{\@dropcapimagetrue}{}%
+  \IfSubStr{#3}{jpeg}{\@dropcapimagetrue}{}%
+  \IfSubStr{#3}{JPEG}{\@dropcapimagetrue}{}%
   \setcounter{NDC@lines}{\value{NDCDefaultLines}}%
   \setcounter{NDC@depth}{\value{NDCDefaultDepth}}%
   \setlength{\NDC@hoffset}{\NDCDefaultHoffset}%
@@ -207,12 +213,16 @@
   \renewcommand*{\NDC@ante}{}%
   \setlength{\NDC@Gap}{\NDCDefaultGap}%
   \setlength{\NDC@Nindent}{0pt}%
-  \setkeys{NDC}{#1}%
-  \if@dropcapimage
-    \def\@dropthisthing{\InlineImage[0em,b]{#2}\hskip\the\NDC@Gap}%
-  \else
-    \def\@dropthisthing{#2}%
-  \fi
+  \setkeys{NDC}{#2}%
+  \ifthenelse{\equal{\NDC@hscale}{*}}{\def\NDC@hstar{true}}{\def\NDC@hstar{false}}%
+  \ifthenelse{\equal{\NDC@hstar}{true}}{\renewcommand*{\NDC@hscale}{\NDC@vscale}}{}%
+  \if@dropcapimage%
+    \def\@dropthisthing{\InlineImage[0em,b]{#3}\hskip\the\NDC@Gap}%
+  \else%
+    \IfBooleanTF{#1}%
+      {\def\@dropthisthing{\NDC@boxcap{#3}}}%
+      {\def\@dropthisthing{#3}}%
+  \fi%
   \ifnum\value{NDC@lines}=1%
     \par\noindent%
     \NDC@ante%

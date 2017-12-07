@@ -16,40 +16,72 @@
 % version 2005/12/01 or later.
 %
 %%
+% This file is new (and included) in class `novel' version 1.48.
+% In many cases, it may be used in other document classes as well.
+% No guarantee for other classes! To try in other classes:
+%   If you need color, first \RequirePackage[options]{xcolor}.
+%   Install package `novel' in TeX,
+%   but do not \usepackage{novel} or \RequirePackage{novel}.
+%   Instead, \RequirePackage{novel-DropCap}.
+%
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesFile{novel-DropCap.sty}
-  [2017/12/04 v1.46.3 (Drop Caps)]
+  [2017/12/06 v1.46.3b (Drop Caps)]
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \RequirePackage{keyval}
 \RequirePackage{xparse}
 \RequirePackage{xifthen}
 \RequirePackage{xstring}
-\@ifpackageloaded{xcolor}{}{\RequirePackage{xcolor}}
+% Will require package `xcolor' if you use any color features.
+% Not requested here, to avoid potential package option conflict.
 %
-%% New in v. 1.48 (drop caps):
 \gdef\dropcapfont{} % until actually set, will be default main font
-\gdef\dropcapcolormodel{} % until actually set
-\gdef\dropcapcolorvalue{black} % until actually set
+\newif \if@dropcapcolorset
+\gdef\dropcapcolormodel{} % until actually set, using `xcolor' syntax
+\gdef\dropcapcolorvalue{black} % until actually set, using `xcolor' syntax
 \newif \if@dropcapfontset
 \newcommand*\NDCcharstyle{}
 %
 \ExplSyntaxOn
+% The argument to \SetDropCapFont is a font command.
+% Example syntax, in traditional pdfLaTeX:
+%   \SetDropCapFont{\fontfamily{ppl}\fontseries{bx}\fontshape{sl}}
+% Example syntax, using `fontspec' in LuaLaTeX (maybe XeTeX, but not sure):
+%   Create font command, such as: \newfontface\mynicefont[options]{fontname}
+%   Then: \SetDropCapFont{\mynicefont}
 \DeclareDocumentCommand \SetDropCapFont { m } {%
   \global\@dropcapfontsettrue%
   \gdef\@dropcapfont{#1}
   \renewcommand\NDCcharstyle{%
     #1%
-    \ifthenelse{\equal{\dropcapcolormodel}{}}{%
-      \color{\dropcapcolorvalue}%
-    }{%
-      \color[\dropcapcolormodel]{\dropcapcolorvalue}%
-    }%
+    \if@dropcapcolorset%
+      \ifthenelse{\equal{\dropcapcolormodel}{}}{%
+        \color{\dropcapcolorvalue}%
+      }{%
+        \color[\dropcapcolormodel]{\dropcapcolorvalue}%
+      }%
+    \fi%
   }%
 }%
-% dropcap color may be named color (without optional argument),
-% or [gray]{number}. If [rgb]{numbers}, converted to grayscale.
-\newif \if@dropcapcolorset
+% The argument(s) to \SetDropCapColor use `xcolor' syntax:
+%   [colormodel]{value} OR {colorname}
 \DeclareDocumentCommand \SetDropCapColor { O{} m } {%
+  \@ifclassloaded{novel}{% includes `xcolor' monochrome or grayscale
+    \if@graytext%
+      \@setdropcapcolor[#1]{#2}%
+    \else%
+      \PackageWarning{novel}{Color of dropcap ignored unless class option `graytext'.}%
+    \fi%
+  }{%
+    \@ifpackageloaded{xcolor}{%
+      \@setdropcapcolor[#1]{#2}%
+    }{%
+      \PackageWarning{novel-DropCap}{Your \string\dropcap color setting was ignored.^^J%
+       First load package `xcolor'.}%
+    }%
+  }%
+}% end \SetDropCapColor
+\DeclareDocumentCommand \@setdropcapcolor { O{} m } {%
   \global\@dropcapcolorsettrue%
   \gdef\dropcapcolormodel{#1}%
   \gdef\dropcapcolorvalue{#2}%
@@ -61,8 +93,8 @@
       \color[\dropcapcolormodel]{\dropcapcolorvalue}%
     }%
   }%
-}%
-%
+}% end \@setdropcapcolor
+% for convenience:
 \cs_new_eq:NN \SetDropcapFont \SetDropCapFont
 \cs_new_eq:NN \SetDropcapColor \SetDropCapColor
 \ExplSyntaxOff
@@ -70,33 +102,34 @@
 \newcounter{NDCDefaultLines}
 \setcounter{NDCDefaultLines}{3}
 \newcounter{NDCDefaultDepth}
-\newcommand*{\NDCDefaultOversize}{0}
-\newcommand*{\NDCDefaultLraise}{0}
-\newcommand*{\NDCDefaultHang}{0}
+\newdimen\NDCDefaultVoffset
+\newdimen\NDCDefaultHoffset
+\newcommand*{\NDCDefaultHscale}{1}
+\newcommand*{\NDCDefaultVscale}{1}
 \newdimen\NDCDefaultGap
-\setlength{\NDCDefaultGap}{0.25em} % approx. width of normal space %%%%%
-\newsavebox{\NDC@lbox}
-\newsavebox{\NDC@tbox}
+\setlength{\NDCDefaultGap}{0.25em} % approx. width of normal space
+\newsavebox{\NDC@dropcapbox}
+\newsavebox{\NDC@normalXbox}
 \newcounter{NDC@lines}
 \newcounter{NDC@depth}
 \newdimen\NDC@Pindent
 \newdimen\NDC@Gap % equivalent to lettrine findent
 \newdimen\NDC@Nindent % not a user setting
-\newdimen\NDC@lraise
+\newdimen\NDC@voffset
+\newdimen\NDC@hoffset
 \newdimen\NDC@first
 \newdimen\NDC@next
 \newdimen\NDC@height
-\newcommand*{\NDC@hang}{}
-\newcommand*{\NDC@oversize}{}
-\newcommand*{\NDC@raise}{}
 \newcommand*{\NDC@ante}{}
-\def\@getNDCheight{%
+\newcommand*{\NDC@hscale}{}
+\newcommand*{\NDC@vscale}{}
+\def\@getNDCheight{% hscale and offsets do not affect height:
    \@tempdima=\baselineskip
    \setlength{\NDC@height}{\value{NDC@lines}\@tempdima}%
    \addtolength{\NDC@height}{-\@tempdima}%
-   \sbox{\NDC@tbox}{X}% Normal capital X, rather than something else.
-   \addtolength{\NDC@height}{\ht\NDC@tbox}%
-   \addtolength{\NDC@height}{\NDC@oversize\NDC@height}%
+   \sbox{\NDC@normalXbox}{X}% Normal capital X, rather than something else.
+   \addtolength{\NDC@height}{\ht\NDC@normalXbox}%
+   \setlength{\NDC@height}{\NDC@vscale\NDC@height}%
 }
 \newcommand*{\NDCchar}{%
    \@getNDCheight%
@@ -117,11 +150,12 @@
 }
 \define@key{NDC}{lines}{\setcounter{NDC@lines}{#1}}
 \define@key{NDC}{depth}{\setcounter{NDC@depth}{#1}}
-\define@key{NDC}{hang}{\renewcommand*{\NDC@hang}{#1}}
-\define@key{NDC}{oversize}{\renewcommand*{\NDC@oversize}{#1}}
-\define@key{NDC}{lraise}{\renewcommand*{\NDC@raise}{#1}}
+\define@key{NDC}{hoffset}{\setlength{\NDC@hoffset}{#1}}
+\define@key{NDC}{voffset}{\setlength{\NDC@voffset}{#1}}
 \define@key{NDC}{ante}{\renewcommand*{\NDC@ante}{#1}}
 \define@key{NDC}{gap}{\setlength{\NDC@Gap}{#1}}
+\define@key{NDC}{hscale}{\renewcommand*{\NDC@hscale}{#1}}
+\define@key{NDC}{vscale}{\renewcommand*{\NDC@vscale}{#1}}
 \newdimen\NDCboxwidth
 \newdimen\NDCboxheight
 \newdimen\NDCboxdepth
@@ -149,6 +183,7 @@
   \IfSubStr{Ŵ}{#1}{\def\@NDCmodel{W}}{}
   \IfSubStr{ÝŶŸ}{#1}{\def\@NDCmodel{Y}}{}
   \IfSubStr{ŹŻŽ}{#1}{\def\@NDCmodel{Z}}{}
+  \IfSubStr{DŽ}{#1}{\def\@NDCmodel{DZ}}{} % diglyph
   %
   \setlength\fboxsep{0.16\nfs}%
   \setlength\fboxrule{0.02\nfs}%
@@ -163,59 +198,64 @@
 \DeclareDocumentCommand \dropcap { O{} m } {%
   \setcounter{NDC@lines}{\value{NDCDefaultLines}}%
   \setcounter{NDC@depth}{\value{NDCDefaultDepth}}%
-  \renewcommand*{\NDC@hang}{\NDCDefaultHang}%
-  \renewcommand*{\NDC@oversize}{\NDCDefaultOversize}%
-  \renewcommand*{\NDC@raise}{\NDCDefaultLraise}%
+  \setlength{\NDC@hoffset}{\NDCDefaultHoffset}%
+  \renewcommand*{\NDC@hscale}{\NDCDefaultHscale}%
+  \renewcommand*{\NDC@vscale}{\NDCDefaultVscale}%
+  \setlength{\NDC@voffset}{\NDCDefaultVoffset}%
   \renewcommand*{\NDC@ante}{}%
   \setlength{\NDC@Gap}{\NDCDefaultGap}%
   \setlength{\NDC@Nindent}{0pt}%
   \setkeys{NDC}{#1}%
-  \sbox{\NDC@tbox}{X}% Normal capital X.
-  \sbox{\NDC@lbox}{\NDCchar #2}%
-  \@tempdima=\baselineskip%
   \ifnum\value{NDC@lines}=1%
-    \setlength{\NDC@first}{\ht\NDC@lbox}%
-    \addtolength{\NDC@first}{-\ht\NDC@tbox}%
-    \setlength{\NDC@lraise}{\z@}%
+    \par\noindent%
+    \NDC@ante%
+    #2%
   \else%
+    \sbox{\NDC@normalXbox}{X}% Normal capital X.
+    \sbox{\NDC@dropcapbox}{\scalebox{\NDC@hscale}[1]{\NDCchar #2}}%
+    \@tempdima=\baselineskip%
     \setlength{\NDC@first}{-\value{NDC@lines}\@tempdima}%
     \addtolength{\NDC@first}{\@tempdima}%
     \sbox{\@tempboxa}{X}%
     \addtolength{\NDC@first}{-\ht\@tempboxa}%
-    \setlength{\NDC@lraise}{-\NDC@raise\NDC@first}%
-    \addtolength{\NDC@first}{\NDC@lraise}%
-    \addtolength{\NDC@first}{\ht\NDC@lbox}%
-    \addtolength{\NDC@lraise}{-\value{NDC@lines}\@tempdima}%
-    \addtolength{\NDC@lraise}{\@tempdima}%
+    \addtolength{\NDC@first}{\NDC@voffset}%
+    \addtolength{\NDC@first}{\ht\NDC@dropcapbox}%
+    \addtolength{\NDC@voffset}{-\value{NDC@lines}\@tempdima}%
+    \addtolength{\NDC@voffset}{\@tempdima}%
+    \par%
+    \setlength{\NDC@Pindent}{\wd\NDC@dropcapbox}%
+    \addtolength{\NDC@Pindent}{\NDC@hoffset}%
+    \settowidth{\NDC@first}{\NDC@ante}%
+    \addtolength{\NDC@Pindent}{\NDC@first}%
+    \addtolength{\NDC@Pindent}{\NDC@Gap}%
+    \setlength{\NDC@first}{\linewidth}%
+    \addtolength{\NDC@first}{-\NDC@Pindent}%
+    \addtolength{\NDC@Nindent}{\NDC@Pindent}%
+    \setlength{\NDC@next}{\linewidth}%
+    \addtolength{\NDC@next}{-\NDC@Nindent}%
+    \addtolength{\NDC@Pindent}{\rightmargin}%
+    \addtolength{\NDC@Nindent}{\rightmargin}%
+    \setlength{\NDCboxwidth}{\wd\NDC@dropcapbox}%
+    \setlength{\NDCboxheight}{\ht\NDC@dropcapbox}%
+    \setlength{\NDCboxdepth}{\dp\NDC@dropcapbox}%
+    \addtocounter{NDC@lines}{1}%
+    \addtocounter{NDC@lines}{\value{NDC@depth}}%
+    \def\NDC@parshape{\c@NDC@lines \the\NDC@Pindent \the\NDC@first}%
+    \@tempcnta=\tw@%
+    \@whilenum \@tempcnta<\c@NDC@lines\do{%
+       \edef\NDC@parshape{\NDC@parshape \the\NDC@Nindent \the\NDC@next}%
+       \advance\@tempcnta\@ne}%
+    \edef\NDC@parshape{\NDC@parshape \rightmargin \the\linewidth}%
+    \noindent%
+    \parshape=\NDC@parshape\relax%
+    \smash{%
+      \llap{%
+        \mbox{\NDC@ante}%
+        \raisebox{\NDC@voffset}{\usebox{\NDC@dropcapbox}}%
+        \hskip\the\NDC@Gap%
+      }%
+    }%
   \fi%
-  \par%
-  \setlength{\NDC@Pindent}{\wd\NDC@lbox}%
-  \addtolength{\NDC@Pindent}{-\NDC@hang\wd\NDC@lbox}%
-  \settowidth{\NDC@first}{\NDC@ante}%
-  \addtolength{\NDC@Pindent}{\NDC@first}%
-  \addtolength{\NDC@Pindent}{\NDC@Gap}%
-  \setlength{\NDC@first}{\linewidth}%
-  \addtolength{\NDC@first}{-\NDC@Pindent}%
-  \addtolength{\NDC@Nindent}{\NDC@Pindent}%
-  \setlength{\NDC@next}{\linewidth}%
-  \addtolength{\NDC@next}{-\NDC@Nindent}%
-  \addtolength{\NDC@Pindent}{\rightmargin}%
-  \addtolength{\NDC@Nindent}{\rightmargin}%
-  \setlength{\NDCboxwidth}{\wd\NDC@lbox}%
-  \setlength{\NDCboxheight}{\ht\NDC@lbox}%
-  \setlength{\NDCboxdepth}{\dp\NDC@lbox}%
-  \addtocounter{NDC@lines}{1}%
-  \addtocounter{NDC@lines}{\value{NDC@depth}}%
-  \def\NDC@parshape{\c@NDC@lines \the\NDC@Pindent \the\NDC@first}%
-  \@tempcnta=\tw@%
-  \@whilenum \@tempcnta<\c@NDC@lines\do{%
-     \edef\NDC@parshape{\NDC@parshape \the\NDC@Nindent \the\NDC@next}%
-     \advance\@tempcnta\@ne}%
-  \edef\NDC@parshape{\NDC@parshape \rightmargin \the\linewidth}%
-  \noindent%
-  \parshape=\NDC@parshape\relax%
-  \smash{\llap{\mbox{\NDC@ante}\raisebox{\NDC@lraise}{\usebox{\NDC@lbox}}%
-         \hskip \the\NDC@Gap}}%
 }% end @NDCdropcap
 \ExplSyntaxOff
 %

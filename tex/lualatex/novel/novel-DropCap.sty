@@ -17,12 +17,6 @@
 %
 %%
 % This file is new (and included) in class `novel' version 1.48.
-% In many cases, it may be used in other document classes as well.
-% No guarantee for other classes! To try in other classes:
-%   If you need color, first \RequirePackage[options]{xcolor}.
-%   Install package `novel' in TeX,
-%   but do not \usepackage{novel} or \RequirePackage{novel}.
-%   Instead, \RequirePackage{novel-DropCap}.
 %
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesFile{novel-DropCap.sty}
@@ -40,6 +34,7 @@
 \gdef\dropcapcolormodel{} % until actually set, using `xcolor' syntax
 \gdef\dropcapcolorvalue{black} % until actually set, using `xcolor' syntax
 \newif \if@dropcapfontset
+\newif \if@dropcapimage
 \newcommand*\NDCcharstyle{}
 %
 \ExplSyntaxOn
@@ -196,6 +191,13 @@
 }% end boxcap
 %
 \DeclareDocumentCommand \dropcap { O{} m } {%
+  \@dropcapimagefalse%
+  \IfSubStr{#2}{png}{\@dropcapimagetrue}{}%
+  \IfSubStr{#2}{PNG}{\@dropcapimagetrue}{}%
+  \IfSubStr{#2}{jpg}{\@dropcapimagetrue}{}%
+  \IfSubStr{#2}{JPG}{\@dropcapimagetrue}{}%
+  \IfSubStr{#2}{jpeg}{\@dropcapimagetrue}{}%
+  \IfSubStr{#2}{JPEG}{\@dropcapimagetrue}{}%
   \setcounter{NDC@lines}{\value{NDCDefaultLines}}%
   \setcounter{NDC@depth}{\value{NDCDefaultDepth}}%
   \setlength{\NDC@hoffset}{\NDCDefaultHoffset}%
@@ -206,13 +208,18 @@
   \setlength{\NDC@Gap}{\NDCDefaultGap}%
   \setlength{\NDC@Nindent}{0pt}%
   \setkeys{NDC}{#1}%
+  \if@dropcapimage
+    \def\@dropthisthing{\InlineImage[0em,b]{#2}\hskip\the\NDC@Gap}%
+  \else
+    \def\@dropthisthing{#2}%
+  \fi
   \ifnum\value{NDC@lines}=1%
     \par\noindent%
     \NDC@ante%
-    #2%
+    \@dropthisthing%
   \else%
     \sbox{\NDC@normalXbox}{X}% Normal capital X.
-    \sbox{\NDC@dropcapbox}{\scalebox{\NDC@hscale}[1]{\NDCchar #2}}%
+    \sbox{\NDC@dropcapbox}{\scalebox{\NDC@hscale}[1]{\NDCchar\@dropthisthing}}%
     \@tempdima=\baselineskip%
     \setlength{\NDC@first}{-\value{NDC@lines}\@tempdima}%
     \addtolength{\NDC@first}{\@tempdima}%

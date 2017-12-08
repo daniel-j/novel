@@ -99,8 +99,8 @@
 \newcounter{NDCDefaultDepth}
 \newdimen\NDCDefaultVoffset
 \newdimen\NDCDefaultHoffset
-\newcommand*{\NDCDefaultVscale}{1}
-\newcommand*{\NDCDefaultHscale}{*} % asterisk means same as Vscale
+\newcommand*{\NDCDefaultScale}{1}
+\newcommand*{\NDCDefaultBloat}{1}
 \newdimen\NDCDefaultGap
 \setlength{\NDCDefaultGap}{0.25em} % approx. width of normal space
 \newsavebox{\NDC@dropcapbox}
@@ -117,15 +117,15 @@
 \newdimen\NDC@next
 \newdimen\NDC@height
 \newcommand*{\NDC@ante}{}
-\newcommand*{\NDC@hscale}{}
-\newcommand*{\NDC@vscale}{}
-\def\@getNDCheight{% hscale and offsets do not affect height:
+\newcommand*{\NDC@bloat}{}
+\newcommand*{\NDC@scale}{}
+\def\@getNDCheight{% offsets do not affect height:
    \@tempdima=\baselineskip
    \setlength{\NDC@height}{\value{NDC@lines}\@tempdima}%
    \addtolength{\NDC@height}{-\@tempdima}%
    \sbox{\NDC@normalXbox}{X}% Normal capital X, rather than something else.
    \addtolength{\NDC@height}{\ht\NDC@normalXbox}%
-   \setlength{\NDC@height}{\NDC@vscale\NDC@height}%
+   \setlength{\NDC@height}{\NDC@scale\NDC@height}%
 }
 \newcommand*{\NDCchar}{%
    \@getNDCheight%
@@ -155,8 +155,8 @@
   \stake\hspace{-\NDC@antewidth}#1\hspace{0.2em}}% restores alignment
 }
 \define@key{NDC}{gap}{\setlength{\NDC@Gap}{#1}}
-\define@key{NDC}{hscale}{\renewcommand*{\NDC@hscale}{#1}}
-\define@key{NDC}{vscale}{\renewcommand*{\NDC@vscale}{#1}}
+\define@key{NDC}{bloat}{\renewcommand*{\NDC@bloat}{#1}}
+\define@key{NDC}{scale}{\renewcommand*{\NDC@scale}{#1}}
 \newdimen\NDCboxwidth
 \newdimen\NDCboxheight
 \newdimen\NDCboxdepth
@@ -207,15 +207,13 @@
   \setcounter{NDC@lines}{\value{NDCDefaultLines}}%
   \setcounter{NDC@depth}{\value{NDCDefaultDepth}}%
   \setlength{\NDC@hoffset}{\NDCDefaultHoffset}%
-  \renewcommand*{\NDC@hscale}{\NDCDefaultHscale}%
-  \renewcommand*{\NDC@vscale}{\NDCDefaultVscale}%
+  \renewcommand*{\NDC@bloat}{\NDCDefaultBloat}%
+  \renewcommand*{\NDC@scale}{\NDCDefaultScale}%
   \setlength{\NDC@voffset}{\NDCDefaultVoffset}%
   \renewcommand*{\NDC@ante}{}%
   \setlength{\NDC@Gap}{\NDCDefaultGap}%
   \setlength{\NDC@Nindent}{0pt}%
   \setkeys{NDC}{#2}%
-  \ifthenelse{\equal{\NDC@hscale}{*}}{\def\NDC@hstar{true}}{\def\NDC@hstar{false}}%
-  \ifthenelse{\equal{\NDC@hstar}{true}}{\renewcommand*{\NDC@hscale}{\NDC@vscale}}{}%
   \if@dropcapimage%
     \def\@dropthisthing{\InlineImage[0em,b]{#3}\hskip\the\NDC@Gap}%
   \else%
@@ -229,7 +227,7 @@
     \@dropthisthing%
   \else%
     \sbox{\NDC@normalXbox}{X}% Normal capital X.
-    \sbox{\NDC@dropcapbox}{\scalebox{\NDC@hscale}[1]{\NDCchar\@dropthisthing}}%
+    \sbox{\NDC@dropcapbox}{\scalebox{\NDC@bloat}[1]{\NDCchar\@dropthisthing}}%
     \@tempdima=\baselineskip%
     \setlength{\NDC@first}{-\value{NDC@lines}\@tempdima}%
     \addtolength{\NDC@first}{\@tempdima}%

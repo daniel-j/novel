@@ -351,9 +351,16 @@ function closeall() {
         <ul id="u5.5">
           <li><a href="#h5.5.1">5.5.1 First Character Special</a></li>
           <li><a href="#h5.5.2">5.5.2 First Line Small Caps</a></li>
-          <li><a href="#h5.5.3">5.5.3 Drop Caps</a></li>
         </ul>
       </li><!-- end 5.5 -->
+      <li id="l5.6"><span class="n"></span><a href="#h5.6">5.6 Drop Caps</a>
+        <ul id="u5.6">
+          <li><a href="#h5.6.1">5.6.1 Built-In vs. Lettrine</a></li>
+          <li><a href="#h5.6.2">5.6.2 \dropcap</a></li>
+          <li><a href="#h5.6.3">5.6.3 Font and Color</a></li>
+          <li><a href="#h5.6.4">5.6.4 Drop Cap + First Line</a></li>
+        </ul>
+      </li><!-- end 5.6 -->
     </ul>
   </li><!-- end 5 -->
 
@@ -1746,16 +1753,79 @@ Unfortunately, novelists of that era had so little to write about, or they would
 </code></p>
 <p class="centerimg"><img src="html-resources/firstlinespecial.png" width="682" height="84" alt="first line small caps" title="first line small caps"/></p>
 </div><!-- end 5.5.2 -->
-
-<h4 id="h5.5.3">5.5.3. Drop Cap</h4>
-<div class="d4" id="d5.5.3">
-<p class="noindent">The <i>lettrine</i> package is pre-loaded and pre-configured in <i>novel</i>. The configuration forces lines to remain on grid. Lines are not added if the drop cap rises above prevailing text (DiscardVskip is very large). The Findent is set to 0.25em, and Nindent is set to 0em.</p>
-<p>For information, see the <i>lettrine</i> package documentation and examples. Be aware that creating good-looking drop caps is harder than you think, even with automation. That is because you will be visually comparing an enlarged letter to surrounding normal text, and it is difficult to align the drop cap with the margin, in a way that looks right. In any case, drop caps are rarely used in popular fiction.</p>
-<p>Do not use the <code>[image=true]</code> option with <i>lettrine</i>. Instead, place an image using <i>novel's</i> own <code>\InlineImage</code> command. If you set its vertical offset at baseline, then the bottom of the image will align with the baseline of the final line in the displaced text.</p>
-<p>Note that <code>\lettrine</code> has an additional argument after the drop cap.</p>
-<p>You cannot use <code>\lettrine</code> in conjunction with <code>\FirstLine</code>. This is a fact of life. If you wish to use a drop cap and also have the first line in small caps, do this: Use empty braces <code>{}</code> as the final argument to <code>\lettrine</code>. Then use <code>\textsc</code> with enough text to continue to the second line. Note where the first line ends. Then, move the closing brace of <code>\FirstLine</code> to that position. You may place the closing brace in the middle of a word, at a hyphenation point, if you wish (do not manually add the hyphen). This is the only method that provides a satisfactory layout.</p> 
-</div><!-- end 5.5.3 -->
 </div><!-- end 5.5 -->
+
+<h3 id="h5.6">5.6. Drop Caps</h3>
+<div class="d3" id="d5.6">
+<p class="noindent">A <i>drop cap</i> is an enlarged letter (or image) at the beginning of chapter text, with the first few lines of text wrapped around it:</p>
+<p class="centerimg"><img src="html-resources/dropcap.png" width="431" height="112" title="drop cap" alt="drop cap"/></p>
+<p>Works of popular fiction rarely use drop caps. Instead, having a special first character (<a href="#h5.5.1">section 5.5.1</a>) is more common, as it presents fewer layout problems, and is less distracting.</p>
+<p>If you expect to use the <code>\Rework</code> commands, be aware that you may need to manually adjust drop caps, because the rework algorithm is not fully effective there.</p>
+
+<h4 id="h5.6.1">5.6.1 Built-In Method vs. Lettrine</h4>
+<div class="d4" id="d5.6.1">
+<p class="item"><b>A.</b> In <i>novel</i>, the built-in <code>\dropcap</code> command is preferred to any other method for creating a drop cap. See the next section for its usage.</p>
+<p class="item"><b>B.</b> You may load the <i>lettrine</i> package, and use it as described in its own documentation. If <i>lettrine</i> is detected, <i>novel</i> will configure it so that lines remain on grid, and are not pushed down.</p>
+<p class="item"><b>C.</b> You may use both <code>\dropcap</code> and <code>\lettrine</code> in the same document, as they are independent, and use different settings.</p>
+<p class="item"><b>D.</b> In <i>novel</i>, the <code>\lettrine</code> command does not accept an image. Use <code>\dropcap</code>.</p>
+<p class="item"><b>E.</b> Only <i>lettrine</i> offers the rarely-used <i>slope</i> feature.</p>
+<p class="item"><b>F.</b> Both <code>\dropcap</code> and <code>\lettrine</code> are incompatible with <code>\FirstLine</code>. If you need to set the entire first line in small caps, you are more likely to be successful using <code>\dropcap</code> as described below.</p>
+<p class="item"><b>G.</b> Both commands allow you to precede the drop cap with something (such as quotation mark) using the <i>ante=</i> key. However, at least in American usage, the authoritative <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> recommends that an opening quotation mark be omitted preceding a drop cap.</p>
+</div><!-- end 5.6.1 -->
+
+<h4 id="h5.6.2">5.6.2. \dropcap[<em>options</em>]{<em>letter or image</em>} &nbsp; and starred version</h4>
+<div class="d4" id="d5.6.2">
+<p class="noindent">To ensure that this command works as described here, verify that font <i>NovelDeco.otf</i> is at least vrsion 1.48. If you use your own <i>decofont</i>, be sure that it is based on at least that version. Also, clear <i>luatex-cache</i> so that the version is updated. If you do not do that, the <code>\dropcap</code> command still works, but the appearance of the result will differ.</p>
+<p class="item"><b>A.</b> The <code>\dropcap</code> command is based on <i>lettrine</i> technology, but has different options and behavior.</p>
+<p class="item"><b>B.</b> In its starred form, <code>\dropcap*</code> will place a rectangular box around the drop cap letter (but not image). If the letter is in the Latin-1 or Latin Extended A character sets, then the box will ignore any upper diacritical mark, so that the mark sits above the box.</p>
+<p class="item"><b>C.</b> The <code>\dropcap</code> command (and starred) accepts the following options, written as comma-separated key values:</p>
+<p class="code"><code>lines=<em>integer</em></code> &nbsp; Number of lines indented by the drop cap. Default 3.</p>
+<p class="code"><code>gap=<em>length</em></code> &nbsp; Distance from drop cap to indented text. Default 0.25em. (note 1)</p>
+<p class="code"><code>hoffset=<em>length</em></code> &nbsp; Moves drop cap horizontally. Default 0em.</p>
+<p class="code"><code>voffset=<em>length</em></code> &nbsp; Moves drop cap vertically. Default 0em.</p>
+<p class="code"><code>ante={<em>text</em>}</code> &nbsp; Precedes drop cap with normal text. Default empty. (notes 2,4)</p>
+<p class="code"><code>ante*={<em>text</em>}</code> &nbsp; Like <code>ante={<em>text</em>}</code> but auto-hangs text in left margin. (notes 3,4)</p>
+<p class="code"><code>scale=<em>number</em></code> &nbsp; Scales drop cap letter (not image). Default 1.</p>
+<p class="code"><code>bloat=<em>number</em></code> &nbsp; Horizontally scales drop cap letter (not image). Default 1. (note5)</p>
+<p class="code"><code>depth=<em>integer</em></code> &nbsp; Adds blank line(s) beneath drop cap baseline. Default 0. (note 6)</p>
+<p>Note 1: The <code>gap</code> is equivalent to <i>lettrine's</i> <code>findent</code>. There is no equivalent to <code>nindent</code> or <code>slope</code>. If you wish to move the first line of text closer to the drop cap, use <code>\kern</code> or <code>\hspace</code> there.</p>
+<p>Note 2: <code>ante</code> is typically used for placing quotation mark before the drop cap. But the authoritative <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> recommends that such an opening mark be omitted, at least in American style. If the mark is placed, it is at normal text font, size, and position (this is the style used).</p>
+<p>Note 3: <code>ante</code> begins at the margin, and thus pushes the drop cap to the right. With <code>ante*</code> its text hangs in the left margin, so that the drop cap is aligned with the margin. This is visually better, providing that you have enough margin to accomodate the ante text.</p>
+<p>Note 4: You may use <code>\charscale</code> to manipulate the size and position of ante text. No other styling (such as font or color) may be applied. The ante text will always be black, in the main font. This is standard.</p>
+<p>Note 5: <code>bloat</code> multiplies <code>scale</code> horizontally. So, the result of <code>scale=1.2,bloat=0.75</code> is a drop cap letter that is scaled 1.2 vertically, 0.9 horizontally. The primary use of <code>bloat</code> is to tweak where the lines break, by making the drop cap slightly narrower or thicker.</p>
+<p>Note 6: If the drop cap character has a prominent descender, then you may need to create room underneath it using <code>depth</code>, or the descender wil intrude into the text beneath it. This can only be decided on a per-character basis, depending on the font.</p>
+<p class="item"><b>D.</b> An image is auto-detected by file extension png, PNG, jpg, JPG, jpeg, or JPEG. It will be aligned so that its bottom is at the lowest indented baseline. You may position the image using the <code>hoffset</code> and <code>voffset</code> option keys. The image cannot be scaled by <code>hscale</code> or <code>vscale</code>, because it must be at exact size and resolution. Thus, whether or not the image's top aligns in the desired location, depends on how you created the image.</p>
+<p class="item"><b>E.</b> If <code>lines=1</code>, then <code>\dropcap</code> has no effect. This applies whether or not the command or <code>ante</code> is starred. That is, the following lines of code have the same result:</p>
+<p class="code"><code>&ldquo;It was dark and stormy,&rdquo; he said.</code></p>
+<p class="code"><code>\dropcap*[<i>any keys</i>,lines=1,ante*=&ldquo;]{I}t was dark and stormy,&rdquo; he said.</code></p>
+<p class="item"><b>F.</b> When the drop cap is a letter (not image) at <code>scale=1</code>, its top will lie at the capital X-height of main text. This is the most commonly-used style. If the letter has upper diacritical mark, then the mark will be set higher.</p>
+</div><!-- end 5.6.2 -->
+
+<h4 id="h5.6.3">5.6.3. Drop Cap Font and Color</h4>
+<div class="d4" id="d5.6.3">
+<p class="item"><b>A.</b> These settings apply to <code>\dropcap</code>, but not <code>\lettrine</code>.</p>
+<p class="item"><b>B.</b> The default drop cap font is <i>NovelDeco.otf</i> with its Open Type feature <i>dcap</i>. These glyphs are modeled after the <i>Libertinus Serif Display</i> font, and are specially designed to look good at the enlarged size of drop caps, as well as align with the left margin.</p>
+<p class="item"><b>C.</b> To change the font used by <code>\dropcap</code>, you must first define one or more font commands in Preamble. For example:</p>
+<p class="code"><code>\NewFontFace\mynicedc[<em>features</em>]{font file name}</code></p>
+<p>Then, you set the font. This may be changed anywhere:</p>
+<p class="code"><code>\SetDropCapFont{\mynicedc}</code></p>
+<p class="item"><b>D.</b> Do not use Type1 or Metafont fonts. If the desired font is only available in one of those formats, you can use a font editor such as <a href="https://fontforge.github.io/en-US/" class="external" rel="external" target="new">FontForge</a> to convert it to Open Type or TrueType format. Then, as described above, load the converted file by its exact file name. If the font has mssing extrema, that is almost never a problem. Overlapped hints are rarely a problem. But self-intersecting glyphs and open paths may be a problem, if you use those glyphs.</p>
+<p class="item"><b>E.</b> Default drop cap color is black. To change it, use <i>xcolor</i> syntax. Either of these:</p>
+<p class="code"><code>\SetDropCapColor[<em>color model</em>]{<em>color value</em>}</code></p>
+<p class="code"><code>\SetDropCapColor{<em>color name</em>}</code></p>
+<p>Only grayscale may be used, and the <i>graytext</i> document class option must be enabled.</p>
+</div><!-- end 5.6.3 -->
+
+<h4 id="h5.6.4">5.6.4. Drop Cap With First Line Small Caps</h4>
+<div class="d4" id="d5.6.4">
+<p class="item"><b>A.</b> The <code>\FirstLine</code> command does not play well with either <code>\dropcap</code> or <code>\lettrine</code>. This is not a trivial fix.</p>
+<p class="item"><b>B.</b> If you require a drop cap to be followed by an entire first line in small caps, Then you must manually code it. You will probably get better results using <code>\dropcap</code> instead of <code>\lettrine</code>.
+<p class="item"><b>C.</b> Use <code>\dropcap{letter or image}\textsc{some text} rest of paragraph.</code></p>
+<p class="item"><b>D.</b> Guess at how much <code>{some text}</code> needs to be. Compile, look at result, then adjust and try again.</p>
+<p class="item"><b>E.</b> It is possible (although unsightly) to end <code>{some text}</code> at a hyphenation point in its final word.</p>
+<p class="item"><b>F.</b> Again: There is no known better way to do this.</p>
+</div><!-- end 5.6.4 -->
+</div><!-- end 5.6 -->
 
 
 </div><!-- end 5 -->
@@ -1767,7 +1837,7 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <h2 id="h6">6. Text Sizes and Styling</h2>
 <div class="d2" id="d6">
 <p class="noindent">This section describes how to change the size of text, how to style text (such as italics), and how to move it around. It also describes some miscellaneous commands that are intended to modify text.</p>
-<p>Information about how to choose the global, main text point size is described in <a href="#h4.2.1.2">section 4.2.1.2</a>. General information about choosing fonts and font features is in <a href="#hC">Appendix C</a> and <a href="#hE">Appendix E</a>.</p>
+<p>Information about how to choose the global, main text point size is described in <a href="#h4.2.1.2">section 4.2.1.2</a>. General information about choosing fonts and font features is in <a href="#hC">Appendix C</a> and <a href="#hE">Appendix E</a>. Styles particularly used at chapter openings are described in <a href="#h5">section 5</a>.</p>
 <p>There is no direct setting for normal baselineskip; it is automatically calculated from the size of the textblock (using Trim Size, Margins, and header/footer layouts) and <a href="#h4.3.2">lines per page</a>.</p>
 <p>The included <i>microtype</i> package is pre-configured, using these settings:</p>
 <p class="code"><code>\microtypesetup{config=novel-microtype,final,stretch=20,shrink=20}</code></p>

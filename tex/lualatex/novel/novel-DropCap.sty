@@ -17,43 +17,73 @@
 %
 %%
 % This file is new (and included) in class `novel' version 1.48.
+% It may be used in other document classes, provided that `fontspec' is used.
+% In other words, compile with LuaLaTeX (tested) or XeTeX (presumably).
+%
+% To use in other document classes: \RequirePackage{novel-Dropcap}
+%
+% Unless the drop cap font is the same as the document's main font,
+%   the drop cap font must be Open Type or TrueType, assigned to
+%   a new font commmand using \newfontface from `fontspec'.
+% Example: \newfontface\mynicedc[Open Type options]{font file name}
+% Then use \SetDropCapFont{\mynicedc}
 %
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 \ProvidesFile{novel-DropCap.sty}
-  [2017/12/06 v1.46.3b (Drop Caps)]
+  [2017/12/09 v1.46.3c (Drop Caps)]
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
+\RequirePackage{fontspec} % thus, cannot compile with pdflatex
 \RequirePackage{keyval}
 \RequirePackage{xparse}
 \RequirePackage{xifthen}
 \RequirePackage{xstring}
-% Will require package `xcolor' if you use any color features.
-% Not requested here, to avoid potential package option conflict.
+\RequirePackage{fp}
+% If you want to use as image for the drop cap, then you must load
+% either `graphics' or `graphicx' first.
+\@ifpackageloaded{graphics}{}{\RequirePackage{graphicx}} % `novel' uses `graphicx'.
+% The `novel' class thinks of font sizes in its own way:
+\newif \ifNDC@usingnovel
+\@ifclassloaded{novel}{%
+  \gdef\NDC@nfs{\nfs} % \nfs is normal font size, in `novel' class
+  \global\NDC@usingnoveltrue
+}{%
+  \gdef\NDC@nfs{\f@size pt} % any other class
+  \newif \if@graytext
+  \global\@graytexttrue
+}%
+% In `novel' this is already included, in slightly different form:
+\ifNDC@usingnovel\else% 
+  \IfFontExistsTF{NovelDeco.otf}{%
+    \newfontface\decodropcapfont[RawFeature=+dcap]{NovelDeco.otf}%
+  }{}%
+\fi%
+% If you use any color features, then you must load `xcolor' first.
+\newif \ifNDC@usingxcolor
+\@ifpackageloaded{xcolor}{\NDC@usingxcolortrue}{}
 %
-\gdef\dropcapfont{} % until actually set, will be default main font
-\newif \if@dropcapcolorset
-\gdef\dropcapcolormodel{} % until actually set, using `xcolor' syntax
-\gdef\dropcapcolorvalue{black} % until actually set, using `xcolor' syntax
-\newif \if@dropcapfontset
-\newif \if@dropcapimage
-\newcommand*\NDCcharstyle{}
+\gdef\NDC@dropcapfont{} % until actually set, will be default main font
+\newif \ifNDC@dropcapcolorset
+\gdef\NDC@dropcapcolormodel{} % until actually set, using `xcolor' syntax
+\gdef\NDC@dropcapcolorvalue{black} % until actually set, using `xcolor' syntax
+\newif \ifNDC@dropcapfontset
+\newif \ifNDC@dropcapimage
+\newcommand*\NDC@charstyle{}
 %
 \ExplSyntaxOn
-% The argument to \SetDropCapFont is a font command.
-% Example syntax, in traditional pdfLaTeX:
-%   \SetDropCapFont{\fontfamily{ppl}\fontseries{bx}\fontshape{sl}}
+% The argument to \SetDropCapFont is a user-defined `fontspec' font command.
 % Example syntax, using `fontspec' in LuaLaTeX (maybe XeTeX, but not sure):
 %   Create font command, such as: \newfontface\mynicefont[options]{fontname}
 %   Then: \SetDropCapFont{\mynicefont}
 \DeclareDocumentCommand \SetDropCapFont { m } {%
-  \global\@dropcapfontsettrue%
-  \gdef\@dropcapfont{#1}
-  \renewcommand\NDCcharstyle{%
+  \global\NDC@dropcapfontsettrue%
+  \gdef\NDC@dropcapfont{#1}%
+  \renewcommand\NDC@charstyle{%
     #1%
-    \if@dropcapcolorset%
-      \ifthenelse{\equal{\dropcapcolormodel}{}}{%
-        \color{\dropcapcolorvalue}%
+    \ifNDC@dropcapcolorset%
+      \ifthenelse{\equal{\NDC@dropcapcolormodel}{}}{%
+        \color{\NDC@dropcapcolorvalue}%
       }{%
-        \color[\dropcapcolormodel]{\dropcapcolorvalue}%
+        \color[\NDC@dropcapcolormodel]{\NDC@dropcapcolorvalue}%
       }%
     \fi%
   }%
@@ -61,31 +91,31 @@
 % The argument(s) to \SetDropCapColor use `xcolor' syntax:
 %   [colormodel]{value} OR {colorname}
 \DeclareDocumentCommand \SetDropCapColor { O{} m } {%
-  \@ifclassloaded{novel}{% includes `xcolor' monochrome or grayscale
+  \ifNDC@usingnovel% `novel' includes `xcolor' monochrome or grayscale
     \if@graytext%
       \@setdropcapcolor[#1]{#2}%
     \else%
-      \PackageWarning{novel}{Color of dropcap ignored unless class option `graytext'.}%
+      \ClassWarning{novel}{\string\SetDropCapColor~ignored~unless~`graytext'~class~option.}%
     \fi%
-  }{%
-    \@ifpackageloaded{xcolor}{%
+  \else% any other class
+    \ifNDC@usingxcolor%
       \@setdropcapcolor[#1]{#2}%
-    }{%
-      \PackageWarning{novel-DropCap}{Your \string\dropcap color setting was ignored.^^J%
-       First load package `xcolor'.}%
-    }%
-  }%
+    \else%
+      \PackageWarning{novel-DropCap}{Your~\string\dropcap~color~setting~was~ignored.^^J%
+       You~must~first~load~package~`xcolor'.}%
+    \fi%
+  \fi%
 }% end \SetDropCapColor
 \DeclareDocumentCommand \@setdropcapcolor { O{} m } {%
-  \global\@dropcapcolorsettrue%
-  \gdef\dropcapcolormodel{#1}%
-  \gdef\dropcapcolorvalue{#2}%
-  \renewcommand\NDCcharstyle{%
-    \@dropcapfont%
-    \ifthenelse{\equal{\dropcapcolormodel}{}}{%
-      \color{\dropcapcolorvalue}%
+  \global\NDC@dropcapcolorsettrue%
+  \gdef\NDC@dropcapcolormodel{#1}%
+  \gdef\NDC@dropcapcolorvalue{#2}%
+  \renewcommand\NDC@charstyle{%
+    \NDC@dropcapfont%
+    \ifthenelse{\equal{\NDC@dropcapcolormodel}{}}{%
+      \color{\NDC@dropcapcolorvalue}%
     }{%
-      \color[\dropcapcolormodel]{\dropcapcolorvalue}%
+      \color[\NDC@dropcapcolormodel]{\NDC@dropcapcolorvalue}%
     }%
   }%
 }% end \@setdropcapcolor
@@ -127,10 +157,10 @@
    \addtolength{\NDC@height}{\ht\NDC@normalXbox}%
    \setlength{\NDC@height}{\NDC@scale\NDC@height}%
 }
-\newcommand*{\NDCchar}{%
+\newcommand*{\NDC@char}{%
    \@getNDCheight%
    % Measures drop cap capital X, rather than something else:
-   \sbox{\@tempboxa}{\NDCcharstyle\fontsize{\NDC@height}{\NDC@height}\selectfont X}%
+   \sbox{\@tempboxa}{\NDC@charstyle\fontsize{\NDC@height}{\NDC@height}\selectfont X}%
    \@tempcntb=\ht\@tempboxa%
    \@tempcnta=\NDC@height%
    \multiply\@tempcnta by 100%
@@ -142,7 +172,7 @@
    \else%
      \def\@tempa{1}%
    \fi%
-   \NDCcharstyle\fontsize{\@tempa\NDC@height}{\@tempa\NDC@height}\selectfont
+   \NDC@charstyle\fontsize{\@tempa\NDC@height}{\@tempa\NDC@height}\selectfont
 }
 \define@key{NDC}{lines}{\setcounter{NDC@lines}{#1}}
 \define@key{NDC}{depth}{\setcounter{NDC@depth}{#1}}
@@ -185,9 +215,9 @@
   \IfSubStr{ÝŶŸ}{#1}{\def\@NDCmodel{Y}}{}
   \IfSubStr{ŹŻŽ}{#1}{\def\@NDCmodel{Z}}{}
   \IfSubStr{DŽ}{#1}{\def\@NDCmodel{DZ}}{} % diglyph
-  %
-  \setlength\fboxsep{0.16\nfs}%
-  \setlength\fboxrule{0.02\nfs}%
+  % Using \NDC@nfs compensates for `novel' \Rework:
+  \setlength\fboxsep{0.16\NDC@nfs}%
+  \setlength\fboxrule{0.02\NDC@nfs}%
   \ifthenelse{\equal{\@NDCmodel}{}}{%
     \framebox{\phantom{|}#1\phantom{|}}%
   }{%
@@ -197,13 +227,13 @@
 }% end boxcap
 %
 \DeclareDocumentCommand \dropcap { s O{} m } {%
-  \@dropcapimagefalse%
-  \IfSubStr{#3}{png}{\@dropcapimagetrue}{}%
-  \IfSubStr{#3}{PNG}{\@dropcapimagetrue}{}%
-  \IfSubStr{#3}{jpg}{\@dropcapimagetrue}{}%
-  \IfSubStr{#3}{JPG}{\@dropcapimagetrue}{}%
-  \IfSubStr{#3}{jpeg}{\@dropcapimagetrue}{}%
-  \IfSubStr{#3}{JPEG}{\@dropcapimagetrue}{}%
+  \NDC@dropcapimagefalse%
+  \IfSubStr{#3}{png}{\NDC@dropcapimagetrue}{}%
+  \IfSubStr{#3}{PNG}{\NDC@dropcapimagetrue}{}%
+  \IfSubStr{#3}{jpg}{\NDC@dropcapimagetrue}{}%
+  \IfSubStr{#3}{JPG}{\NDC@dropcapimagetrue}{}%
+  \IfSubStr{#3}{jpeg}{\NDC@dropcapimagetrue}{}%
+  \IfSubStr{#3}{JPEG}{\NDC@dropcapimagetrue}{}%
   \setcounter{NDC@lines}{\value{NDCDefaultLines}}%
   \setcounter{NDC@depth}{\value{NDCDefaultDepth}}%
   \setlength{\NDC@hoffset}{\NDCDefaultHoffset}%
@@ -214,7 +244,7 @@
   \setlength{\NDC@Gap}{\NDCDefaultGap}%
   \setlength{\NDC@Nindent}{0pt}%
   \setkeys{NDC}{#2}%
-  \if@dropcapimage%
+  \ifNDC@dropcapimage%
     \def\@dropthisthing{\InlineImage[0em,b]{#3}\hskip\the\NDC@Gap}%
   \else%
     \IfBooleanTF{#1}%
@@ -226,8 +256,12 @@
     \NDC@ante%
     \@dropthisthing%
   \else%
+    \ifNDC@usingnovel% Compensate for effect of `novel' \Rework:
+      \FPdiv{\NDC@widthscale}{\New@LiveWidthNum}{\Old@LiveWidthNum}%
+      \FPmul{\NDC@bloat}{\NDC@bloat}{\NDC@widthscale}%
+    \fi%
     \sbox{\NDC@normalXbox}{X}% Normal capital X.
-    \sbox{\NDC@dropcapbox}{\scalebox{\NDC@bloat}[1]{\NDCchar\@dropthisthing}}%
+    \sbox{\NDC@dropcapbox}{\scalebox{\NDC@bloat}[1]{\NDC@char\@dropthisthing}}%
     \@tempdima=\baselineskip%
     \setlength{\NDC@first}{-\value{NDC@lines}\@tempdima}%
     \addtolength{\NDC@first}{\@tempdima}%

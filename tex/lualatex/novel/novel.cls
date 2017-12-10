@@ -495,7 +495,7 @@
   }{} % end pagegrid
   % Pertains to novel-LayoutSettings.sty:
   \ifcsname pagenumberstyle\endcsname\else
-    \SetPageNumberStyle{\thepage}
+    \SetPageNumberStyle{\thepage}% no small caps
   \fi
   % initialize defaults for chapterstart:
   \def\@setchapterstartOK{false}%

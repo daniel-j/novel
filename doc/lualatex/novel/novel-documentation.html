@@ -351,16 +351,9 @@ function closeall() {
         <ul id="u5.5">
           <li><a href="#h5.5.1">5.5.1 First Character Special</a></li>
           <li><a href="#h5.5.2">5.5.2 First Line Small Caps</a></li>
+          <li><a href="#h5.5.3">5.5.3 Drop Caps</a></li>
         </ul>
       </li><!-- end 5.5 -->
-      <li id="l5.6"><span class="n"></span><a href="#h5.6">5.6 Drop Caps</a>
-        <ul id="u5.6">
-          <li><a href="#h5.6.1">5.6.1 Built-In vs. Lettrine</a></li>
-          <li><a href="#h5.6.2">5.6.2 \dropcap</a></li>
-          <li><a href="#h5.6.3">5.6.3 Font and Color</a></li>
-          <li><a href="#h5.6.4">5.6.4 Drop Cap + First Line</a></li>
-        </ul>
-      </li><!-- end 5.6 -->
     </ul>
   </li><!-- end 5 -->
 
@@ -566,10 +559,25 @@ function closeall() {
     </ul>
   </li><!-- end E -->
 
-  <li id="lF"><span class="n" style="visibility:hidden"></span><a href="#hF"><b>F. Sample Document</b></a>
+  <li id="lF"><span class="n"></span><a href="#hF"><b>F. Drop Caps</b></a>
+    <ul id="uF">
+      <li><a href="#hF.1">F.1 Built-In vs. Lettrine</a></li>
+      <li><a href="#hF.2">F.2 \dropcap</a></li>
+      <li><a href="#hF.3">F.3 \dropcap*</a></li>
+      <li><a href="#hF.4">F.4 Font and Color</a></li>
+      <li><a href="#hF.5">F.5 Drop Cap + First Line</a></li>
+    </ul>
   </li><!-- end F -->
 
-  <li id="lG"><span class="n" style="visibility:hidden"></span><a href="#hG"><b>G. Known Issues</b></a></li><!-- end G -->
+  <hr/>
+
+  <li id="lSD"><span class="n" style="visibility:hidden"></span><a href="#hSD"><b>Sample Document</b></a>
+  </li><!-- end SD -->
+
+  <hr/>
+
+  <li id="lNI"><span class="n" style="visibility:hidden"></span><a href="#hNI"><b>News and Issues</b></a>
+  </li><!-- end NI -->
 
 </ul><!-- end master toc ul -->
 
@@ -583,7 +591,7 @@ function closeall() {
 <div id="main">
 <!-- **************************************************************************************** -->
 
-<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.46.3, 2017/12/04</span></h1>
+<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.46.4, 2017/12/07</span></h1>
 <p class="noindent"><span id="screennoscript" class="screennoscript"><b>For enchanced navigation of this file, turn on JavaScript.</b></span></p>
 <div><script type="text/javascript">if(document.getElementById("screennoscript")){document.getElementById("screennoscript").style.display="none";}</script></div>
 <p class="noindent">The <i>novel</i> document class provides an integrated method for creating original works of fiction, such as a novel or collection of short stories. It may also be used for popular non-fiction, using design similar to that seen for fiction. It does not provide support for academic or mathematical works.</p>
@@ -953,7 +961,7 @@ function closeall() {
 
 <h4 id="h3.3.1">3.3.1. <code>\SetTitle{<em>text</em>}</code></h4>
 <div class="d4" id="d3.3.1">
-<p class="noindent"><i>Default title has changed from version 1.46.1. See <a href="#hG.5">Appendix G.5</a></i></p>
+<p class="noindent"><i>Default title has changed from version 1.46.1. See <a href="#hNI.5">News NI.5</a></i></p>
 <p class="item"><b>A.</b> The <i>novel</i> document class does not have <code>\maketitle</code>. The title is <i>not</i> automatically transferred to a title page, because there is no automatic title page.</p>
 <p class="item"><b>B.</b> The title can be retrieved as <code>\theTitle</code> anywhere in your document.</p>
 <p class="item"><b>C.</b> In certain page layouts, the title is used as default text in recto page headings. You may over-ride this behavior. See <a href="#h4.3.4.6">section 4.3.4.6</a>.</p>
@@ -993,7 +1001,7 @@ function closeall() {
 
 <h3 id="h3.4">3.4. PDF/X</h3>
 <div class="d3" id="d3.4">
-<p class="item"><i>New in version 1.46.1: Default settings changed. See <a href="#hG.5">Appendix G.5</a>.</i></p>
+<p class="item"><i>New in version 1.46.1: Default settings changed. See <a href="#hNI.5">News NI.5</a>.</i></p>
 <p class="item"><b>A.</b> Commercial printers are very likely to require PDF/X compliance. This ensures that your PDF meets a variety of criteria, by containing those things it must contain, and omitting those things it must not contain.</a>
 <p class="item"><b>B.</b> Most perfectly valid PDF files are <em>not</em> PDF/X compliant, simply because they are not intended for commercial printing.</p>
 <p class="item"><b>C.</b> To set PDF/X compliance, use this command in Preamble:</p>
@@ -1097,25 +1105,25 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 
 <h4 id="h4.1.1">4.1.1. Trim Size</h4>
 <div class="d4" id="d4.1.1">
-<p class="noindent"><b>Trim Size</b> is the finished size of your book, width and height (but not thickness). In the case of softcover books, it is the exact size. In the case of hardcover books, where the cover is larger than the contents, it is (usually) the cover size that is measured, with the internal trim size being slightly smaller than nominal (some of the margins shaved away).</p>
-<p>Your print service has a list of standard trim sizes. For fiction, you probably want creme (off-white) paper, which eliminates a few of the choices. Choice of size may also be limited by the distribution channels you choose.</p>
-<p>Trim Size is set using this command in Preamble:</p>
+<p class="item"><b>A.</b> <b>Trim Size</b> is the finished size of your book, width and height (but not thickness). In the case of softcover books, it is the exact size. In the case of hardcover books, where the cover is larger than the contents, it is (usually) the cover size that is measured, with the internal trim size being slightly smaller than nominal (some of the margins shaved away).</p>
+<p class="item"><b>B.</b> Your print service has a list of standard trim sizes. For fiction, you probably want creme (off-white) paper, which eliminates a few of the choices. Choice of size may also be limited by the distribution channels you choose.</p>
+<p class="item"><b>C.</b> Trim Size is set using this command in Preamble:</p>
 <p class="code"><code>\SetTrimSize{<em>width</em>}{<em>height</em>}</code></p>
 <p>The width and height must have dimensions, such as <i>in</i> or <i>cm</i>.</p>
-<p>If you do not specify the Trim Size, the default is <i>5.5in</i> wide, <i>8.5in</i> high. This is a widely-used "trade" size for softcover print-on-demand fiction in the U.S.A. If in doubt, leave the default.</p>
-<p>If you ever need to <i>retroactively</i> change Trim Size, see <a href="#hA">Appendix A</a>.</p>
-<p>Do not request a <em>mass-market paperback</em> Trim Size unless you really, truly, know what you are doing. Since you are not a major writer for a major publishing house, you don't know; so, don't do it.</p>
+<p class="item"><b>D.</b> If you do not specify the Trim Size, the default is <i>5.5in</i> wide, <i>8.5in</i> high. This is a widely-used "trade" size for softcover print-on-demand fiction in the U.S.A. If in doubt, leave the default.</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you ever need to <i>retroactively</i> change Trim Size, see <a href="#hA">Appendix A</a>.</p>
+<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/>  Do not request a <em>mass-market paperback</em> Trim Size unless you really, truly, know what you are doing. Since you are not a major writer for a major publishing house, you don't know; so, don't do it.</p>
 </div><!-- end 4.1.1 -->
 
 <h4 id="h4.1.2">4.1.2. Media Size and TrimBox</h4>
 <div class="d4" id="d4.1.2">
-<p class="noindent">In PDF terminology, <b>Media Size</b> is the size of the PDF page. By default, it is identical to the Trim Size.</p>
-<p>Some print services insist that the Trim Size be floated in a larger Media Size, which is likely to be U.S. Letter or A4 paper. This quietly happens when you print at home: The printout is at tray paper size, whether you like it or not.</p>
+<p class="item"><b>A.</b> In PDF terminology, <b>Media Size</b> is the size of the PDF page. By default, it is identical to the Trim Size. Do not set it manually, unless you must.</p>
+<p class="item"><b>B.</b> Some print services insist that the Trim Size be floated in a larger Media Size, which is likely to be U.S. Letter or A4 paper. This quietly happens when you print at home: The printout is at tray paper size, whether you like it or not.</p>
 <p><img class="floatright" src="html-resources/mediasize.png" width="202" height="264" title="Trim Size floated in larger Media Size" alt="Trim Size floated in larger Media Size"/>This is illustrated at right, where the Trim Size (green border) is centered in a larger PDF Media Size. The green border, known as the <b>TrimBox</b> is invisible, and does not print. Anything outside the green border does not appear when the book is finished.</p>
-<p>If you are required to float the Trim Size in a larger Media Size, here is the command in Preamble:</p>
+<p class="item"><b>C.</b> If you are required to float the Trim Size in a larger Media Size, here is the command in Preamble:</p>
 <p class="code"><code>\SetMediaSize[<em>alignment</em>]{<em>width</em>}{<em>height</em>}</code></p>
 <p>If the optional <i>alignment</i> is set to <i>edge</i> then the Trim Size will be placed at the edge of the Media Size, rather than vertically and horizontally centered.</p>
-<p>Again: You usually will <i>not</i> set Media Size manually.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/>  Again: You usually will <i>not</i> set Media Size manually.</p>
 </div><!-- end 4.1.2 -->
 
 <h4 id="h4.1.3">4.1.3. Advanced: <code>\SetCropmarkGap{<em>length</em>}</code></h4>
@@ -1136,20 +1144,20 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 
 <h5 id="h4.2.1.1">4.2.1.1. <code>\SetParentFont[<em>features</em>]{<em>fontname</em>}</code></h5>
 <div class="d5" id="d4.2.1.1">
-<p>In <i>novel</i> you set a parent font (<i>parentfont</i>), which is the ancestor of several pre-defined font styles, including the main text font. In Preamble:</p>
+<p class="item"><b>A.</b> In <i>novel</i> you set a parent font (<i>parentfont</i>), which is the ancestor of several pre-defined font styles, including the main text font. In Preamble:</p>
 <p class="code"><code>\SetParentFont[<em>features</em>]{<em>fontname</em>}</code><p>
-<p>The command uses <i>fontspec</i> syntax, which is reviewed in <a href="#hE">Appendix E</a>, and described in full detail by the <i>fontspec</i> package documentation.</p>
-<p>When you use <code>\SetParentFont</code>, its features and fontname are stored as strings in macros <code>\parentfontfeatures</code> and <code>\parentfontname</code>. If you don't use <code>\SetParentFont</code> then the default values will be provided. In any case, you can use <code>\parentfontfeatures</code> and <code>\parentfontname</code> as arguments to other font commands.</p>
-<p>IMPORTANT: In all font setting commands (<code>\SetParentFont</code> and others), you may <i>not</i> use a line break anywhere in the command. If you wish to break your code into multiple lines for ease of reading in the source document, be sure to use the percent symbol % at the end of each line, so that the line return character is nullified, like this:</p>
+<p class="item"><b>B.</b> The command uses <i>fontspec</i> syntax, which is reviewed in <a href="#hE">Appendix E</a>, and described in full detail by the <i>fontspec</i> package documentation.</p>
+<p class="item"><b>C.</b> When you use <code>\SetParentFont</code>, its features and fontname are stored as strings in macros <code>\parentfontfeatures</code> and <code>\parentfontname</code>. If you don't use <code>\SetParentFont</code> then the default values will be provided. In any case, you can use <code>\parentfontfeatures</code> and <code>\parentfontname</code> as arguments to other font commands.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> In all font setting commands (<code>\SetParentFont</code> and others), you may <i>not</i> use a line break anywhere in the command. If you wish to break your code into multiple lines for ease of reading in the source document, be sure to use the percent symbol % at the end of each line, so that the line return character is nullified, like this:</p>
 <p class="code"><code>
 \SetParentFont[%<br/>
 Feature=Setting,%<br/>
 AnotherFeature=Setting,%<br/>
 ]{fontname}
 </code></p>
-<p><b>Don't be intimidated.</b> If you don't use this command, then <i>novel</i> will attempt to use <i>Libertinus Serif</i> as the parent font family. It carries the SIL Open Font License, and was carefully chosen for its suitability in free-flowing text, such as a novel. It is a recent fork of the <i>Linux Libertine O</i> font family, which will be used as second choice default if <i>Libertinus Serif</i> is not installed.</p>
-<p>The last-choice default is <i>Latin Modern Roman</i>, which really is not suitable for novels; but surely your TeX installation has it.</p>
-<p>If you have the proper license, you can use a commercial font. For example:</p>
+<p class="item"><b>E.</b> <b>Don't be intimidated.</b> If you don't use this command, then <i>novel</i> will attempt to use <i>Libertinus Serif</i> as the parent font family. It carries the SIL Open Font License, and was carefully chosen for its suitability in free-flowing text, such as a novel. It is a recent fork of the <i>Linux Libertine O</i> font family.</p>
+<p class="item"><b>F.</b> The last-choice default is <i>Latin Modern Roman</i>, which really is not suitable for novels; but surely your TeX installation has it.</p>
+<p class="item"><b>G.</b> If you have the proper license, you can use a commercial font. For example:</p>
 <p class="code"><code>\SetParentFont{Adobe Garamond Pro}</code></p>
 <p><b>See how easy that is?</b> By default, <i>novel</i> will apply TeX Ligatures and Kerning to the <i>parentfont</i> and all its descendants. Common Ligatures and OldStyle numbers will be added for the main <i>textfont</i>. This is ideal for fiction.</p>
 
@@ -1157,36 +1165,36 @@ AnotherFeature=Setting,%<br/>
 
 <h5 id="h4.2.1.2">4.2.1.2. <code>\SetFontSize{<em>length</em>}</code></h5>
 <div class="d5" id="d4.2.1.2">
-<p class="noindent">In the <i>novel</i> document class, you do not set point size as a class option. Instead you use <code>\SetFontSize</code> in the Preamble. It applies to the parent (main) font, and is used as the basis for scaling font sizes.</p>
-<p>The size may be any units TeX understands, including decimal values. So, <i>12.8bp</i> and <i>13.1pt</i> are acceptable. This is because you will be using scalable, Open&nbsp;Type and TrueType fonts throughout your document. They do not need TeX metrics.<p>
-<p>If you insist on using ancient TeX fonts, then you may need to specify a convenient integer font size such as 11pt or 12pt. But why? Forget those fonts! Welcome to the Twenty-First Century.</p>
-<p>The minimum normal font size is <i>8pt</i>, and the maximum is <i>18bp</i>. On a local basis, text may be larger or smaller than this.</p>
-<p>If you do not use this command, the default font size will be set to <i>11.4pt</i> more or less. That is, the size is calculated from other layout settings. When there is less available text area, the default size is <i>11pt</i>. For larger books, the default is <i>12pt</i>.</p>
-<p>Once you have set the Trim Size, margins, and parent font, set the font size for readability. Depending on whom you ask, each line of free-running text should average 60 to 66 characters (including spaces). If you use all of the <i>novel</i> default settings, including <i>Libertinus Serif</i> parent font, that's what you will get. But if you change anything, then do a test document to see what font size works best.</p>
-<p>If you use the <code>\Rework</code> commands (<a href="#hA">Appendix A</a>), then the font size will be tweaked, whether you use the default size or set it yourself.</p>
+<p class="item"><b>A.</b> In the <i>novel</i> document class, you do not set point size as a class option. Instead you use <code>\SetFontSize</code> in the Preamble. It applies to the parent (main) font, and is used as the basis for scaling font sizes.</p>
+<p class="item"><b>B.</b> The size may be any units TeX understands, including decimal values. So, <i>12.8bp</i> and <i>13.1pt</i> are acceptable. This is because you will be using scalable, Open&nbsp;Type and TrueType fonts throughout your document. They do not need TeX metrics.<p>
+<p class="item"><b>C.</b> If you insist on using ancient TeX fonts, then you may need to specify a convenient integer font size such as 11pt or 12pt. But why? Forget those fonts! Welcome to the Twenty-First Century.</p>
+<p class="item"><b>D.</b> The minimum normal font size is <i>8pt</i>, and the maximum is <i>18bp</i>. On a local basis, text may be larger or smaller than this.</p>
+<p class="item"><b>E.</b> If you do not use this command, the default font size will be set to <i>11.4pt</i> more or less. That is, the size is calculated from other layout settings. When there is less available text area, the default size is <i>11pt</i>. For larger books, the default is <i>12pt</i>.</p>
+<p class="item"><b>F.</b> Once you have set the Trim Size, margins, and parent font, set the font size for readability. Depending on whom you ask, each line of free-running text should average 60 to 66 characters (including spaces). If you use all of the <i>novel</i> default settings, including <i>Libertinus Serif</i> parent font, that's what you will get. But if you change anything, then do a test document to see what font size works best.</p>
+<p class="item" style="position:relative"><b>G.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you use the <code>\Rework</code> commands (<a href="#hA">Appendix A</a>), then the font size will be tweaked, whether you use the default size or set it yourself.</p>
 </div><!-- end 4.2.1.2 -->
 </div><!-- end 4.2.1 -->
 
 <h4 id="h4.2.2">4.2.2. Descendant Fonts: textfont, chapterfont, subchfont, headfont</h4>
 <div class="d4" id="d4.2.2">
-<p class="noindent">The descendant fonts are automatically set, as variations of the parent font:</p>
+<p class="item"><b>A.</b> The descendant fonts are automatically set, as variations of the parent font:</p>
 <p class="centerimg"><img src="html-resources/font-tree.png" width="600" height="177" title="font tree" alt="font tree"/></p>
 <p>For example, the main <i>textfont</i> uses the parent font family. It has TeX Ligatures and Kerning (inherited from the parent font), and also Common Ligatures and OldStyle numbers. The main <i>textfont</i> is not configured directly. Instead, configure the <i>parentfont</i>, then the <i>textfont</i> (and other descendants) will obey. For example, if you don't want OldStyle numbers:</p>
 <p class="code"><code>\SetParentFont[<em>Numbers=Lining</em>]{<em>fontname</em>}</code></p>
 <p>Then, Lining numbers will be used for the <i>textfont</i> (and other descendants).<p>
-<p>If you don't like the defaults, you can address the other descendant fonts directly, in Preamble:</p>
+<p class="item"><b>B.</b> If you don't like the defaults, you can address the other descendant fonts directly, in Preamble:</p>
 <p class="code">
 <code>\SetChapterFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.1">5.1.3.1</a></em><br/>
 <code>\SetSubchFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.1">5.1.3.1</a></em><br/>
 <code>\SetHeadFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h4.3.4.2">4.3.4.2</a></em>
 </p>
-<p>You may use <code>\parentfontfeatures</code> and/or <code>\parentfontname</code> as arguments, if you wish.</p>
+<p class="item"><b>C.</b> You may use <code>\parentfontfeatures</code> and/or <code>\parentfontname</code> as arguments, if you wish.</p>
 </div><!-- end 4.2.2 -->
 
 <h4 id="h4.2.3">4.2.3. Advanced: The Deco Font</h4>
 <div class="d4" id="d4.2.3">
-<p class="noindent">Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <i>\decoglyph</i> and <i>\acronym</i> commands.</p>
-<p>Normally, you do not need to configure this font, as it is automatic. The only reason for changng it is if you are an advanced user, who wishes to use a substitute font with different decorations. However, you may <i>not</i> specify just any font! The substitute must be an edited version of <i>NovelDeco.otf</i>, with a different font name. If you don't know what that means, then don't do it.</p>
+<p class="item"><b>A.</b> Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <i>\decoglyph</i> and <i>\acronym</i> commands.</p>
+<p class="item"><b>B.</b> Normally, you do not need to configure this font, as it is automatic. The only reason for changng it is if you are an advanced user, who wishes to use a substitute font with different decorations. However, you may <i>not</i> specify just any font! The substitute must be an edited version of <i>NovelDeco.otf</i>, with a different font name. If you don't know what that means, then don't do it.</p>
 <p class="code">
 <code>\SetDecoFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.3">5.1.3.3</a></em>
 </p>
@@ -1194,25 +1202,25 @@ AnotherFeature=Setting,%<br/>
 
 <h4 id="h4.2.4">4.2.4. Advanced: Mono, Sans, and Math Fonts</h4>
 <div class="d4" id="d4.2.4">
-<p class="noindent">There are several pre-defined fonts that do not descend from the <i>parentfont</i>. In each case, an appropriate default font is selected. You will probably never need to use them; but TeX being what it is, default fonts are chosen "whether you like it or not."</p>
-<p>The default sans-serif font will be <i>Libertinus Sans</i> if available. Second choice is <i>Linux Biolinum O</i>. Third choice is <i>Latin Modern Sans</i>. To choose your own, use this command in Preamble, with <i>fontspec</i> syntax:</p>
+<p class="item"><b>A.</b> There are several pre-defined fonts that do not descend from the <i>parentfont</i>. In each case, an appropriate default font is selected. You will probably never need to use them; but TeX being what it is, default fonts are chosen "whether you like it or not."</p>
+<p class="item"><b>B.</b> The default sans-serif font will be <i>Libertinus Sans</i> if available. Second choice is <i>Linux Biolinum O</i>. Third choice is <i>Latin Modern Sans</i>. To choose your own, use this command in Preamble, with <i>fontspec</i> syntax:</p>
 <p class="code"><code>\SetSansFont[<em>features</em>]{<em>fontname</em>}</code></p>
-<p>The default monospaced font will be <i>Libertinus Mono</i> if available. Second choice is <i>Linux Libertine Mono O</i>. Third choice is <i>Latin Modern Mono</i>. To choose your own, use this command in Preamble, with <i>fontspec</i> syntax:</p>
+<p class="item"><b>C.</b> The default monospaced font will be <i>Libertinus Mono</i> if available. Second choice is <i>Linux Libertine Mono O</i>. Third choice is <i>Latin Modern Mono</i>. To choose your own, use this command in Preamble, with <i>fontspec</i> syntax:</p>
 <p class="code"><code>\SetMonoFont[<em>features</em>]{<em>fontname</em>}</code></p>
-<p>If you need a math font, then may I gently suggest that maybe <i>novel</i> is not the right document class for you? Nevertheless, the (hopefully never used) math font will be <i>Libertinus Math</i>, or <i>Asana-Math</i>, or <i>Latin Modern Math</i>. You can choose your own in Preamble, using the built-in <i>unicode-math</i> package notation:</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you need a math font, then may I gently suggest that maybe <i>novel</i> is not the right document class for you? Nevertheless, the (hopefully never used) math font will be <i>Libertinus Math</i>, or <i>Asana-Math</i>, or <i>Latin Modern Math</i>. You can choose your own in Preamble, using the built-in <i>unicode-math</i> package notation:</p>
 <p class="code"><code>\SetMathFont[<em>features</em>]{<em>fontname</em>}</code></p>
 </div><!-- end 4.2.4 -->
 
 <h4 id="h4.2.5">4.2.5. Advanced: Defining New Font Commands</h4>
 <div class="d4" id="d4.2.5">
-<p class="noindent">You can define new font commands in Preamble. The syntax depends on whether the new font is part of a family (where you might have bold and italic variants), or just a single file (no variants). If part of a family, use <code>\NewFontFamily</code>. If alone, use <code>\NewFontFace</code>.</p>
+<p class="item"><b>A.</b> You can define new font commands in Preamble. The syntax depends on whether the new font is part of a family (where you might have bold and italic variants), or just a single file (no variants). If part of a family, use <code>\NewFontFamily</code>. If alone, use <code>\NewFontFace</code>.</p>
 <p>The <code>\NewFontFamily</code> command (or <code>\NewFontFace</code>) takes three arguments: First, the name you assign to the new font command is required. Second, font features are optional. Third, the font name is required. The <i>fontspec</i> syntax is used:</p>
 <p class="code"><code>
 \NewFontFamily<em>\pickaname</em>[<em>features</em>]{<em>fontfamily</em>}<br/>
 \NewFontFace<em>\pickaname</em>[<em>features</em>]{<em>singlefont</em>}
 </code></p>
-<p>Note that if you define a font <em>family</em> when you should have just defined a font <em>face</em>, there will be complaints in the log file, because the font loaded cannot find the (nonexistent) other members of the family. But the document will compile. On the other hand, if you define a font <em>face</em> when you should have defined a font <em>family</em>, then commands for bold or italic will have no effect, since the other family members were not loaded. Again, the document will compile.</p>
-<p style="margin-top:16px"><b>Example:</b> Suppose your work is science fiction, and one if its characters is a talking robot. You wish to depict its utterances in a robotic-looking font, which will be called using a new <code>\robovoice</code> command. You shop around, and find that the <em>Orbitron</em> font suits your purpose, except that it is too large compared to your <em>textfont</em>. So, you scale it.</p>
+<p class="item"><b>B.</b> Note that if you define a font <em>family</em> when you should have just defined a font <em>face</em>, there will be complaints in the log file, because the font loaded cannot find the (nonexistent) other members of the family. But the document will compile. On the other hand, if you define a font <em>face</em> when you should have defined a font <em>family</em>, then commands for bold or italic will have no effect, since the other family members were not loaded. Again, the document will compile.</p>
+<p class="item"><b>C.</b> <b>Example:</b> Suppose your work is science fiction, and one if its characters is a talking robot. You wish to depict its utterances in a robotic-looking font, which will be called using a new <code>\robovoice</code> command. You shop around, and find that the <em>Orbitron</em> font suits your purpose, except that it is too large compared to your <em>textfont</em>. So, you scale it.</p>
 <p>In the Preamble, you define the new font command:</p>
 <p class="code"><code>\NewFontFace\robovoice[Scale=0.8]{Orbitron} % not part of a family</code></p>
 <p>After some experimentation, you realize that the \robovoice letters need to be spread apart a bit. Do not use the standard LaTeX <code>\textls</code> command. Instead, go back and change the font definition like this:
@@ -1227,7 +1235,7 @@ AnotherFeature=Setting,%<br/>
 <p>The result:</p>
 <p class="centerimg"><img src="html-resources/human-robot-talk.png" width="483" height="127" alt="conversation, human-robot"/></p>
 <p>Caution: If you are using a new font within body text (as above), then it is a bad idea to use Scale greater than 1.0. Reason: An excessively tall font will cause lines to spread apart.</p>
-<p style="margin-top:16px"><img class="floatright" src="html-resources/fluffy-conspiracy.png" width="265" height="409" alt="the fluffy conspiracy"/> <b>Example:</b> Suppose that you wish to style the title of your book, in a font that is not used for other things such as chapter titles. You purchase a license for the <em>Bernhard Modern Std</em> fonts, in Regular and Italic.</p>
+<p class="item"><b>D.</b> <img class="floatright" src="html-resources/fluffy-conspiracy.png" width="265" height="409" alt="the fluffy conspiracy"/> <b>Example:</b> Suppose that you wish to style the title of your book, in a font that is not used for other things such as chapter titles. You purchase a license for the <em>Bernhard Modern Std</em> fonts, in Regular and Italic.</p>
 <p>In the Preamble:</p>
 <p class="code"><code>\NewFontFamily\booktitlefont{Bernhard Modern Std}</code></p>
 <p>The title page, using <code>\charscale</code> for size:</p>
@@ -1242,6 +1250,7 @@ AnotherFeature=Setting,%<br/>
 Nonexistent Publications • Portland, Oregon\par<br/>
 \end{center}
 </code></p>
+<div style="clear:both"></div>
 </div><!-- end 4.2.5 -->
 </div><!-- end 4.2 -->
 
@@ -1251,18 +1260,18 @@ Nonexistent Publications • Portland, Oregon\par<br/>
 
 <h4 id="h4.3.1">4.3.1. Margins</h4>
 <div class="d4" id="d4.3.1">
-<p class="noindent"><b>Margins</b> are required on all four edges of the page. They do not have to be the same width. Generally the margin at the inside edge (spine margin) is wider. The <i>novel</i> class does not provide for marginal notes.</p>
-<p>In the case of fiction, it is usually the case that the inside margin is the widest. But this is not a rule for all books. All that is required is that each margin be "wide enough" for the printing process.</p>
-<p>Keep in mind that print services are not used to seeing books with exotic margins (such as bottom margin twice the size of top margin). They may think that there is a mistake in your PDF, or in the print job, if you do that.</p>
-<p>Normally, your TeX document will be compiled to a PDF that is electronically at the exact Trim Size. And normally, print services want it to be that way. When you view your PDF, the text will shift from side to side as you move through the pages, due to the slightly increased margin at the inside edge.</p>
-<p><img class="floatright" src="html-resources/margins-trim-media.png" width="202" height="264" title="Trim Size floated in larger Media Size" alt="Trim Size floated in larger Media Size"/>Margins are always relative to the Trim Size. If you are using a larger Media Size, the area outside the TrimBox is <i>not</i> counted among the margins; it is simply wasted area. This is illustrated at right, where a smaller Trim Size is floated in a marger Media Size. The margins are shown in gray.</p> 
-<p>Here is how margins are set in Preamble:</p>
+<p class="item"><b>A.</b> <b>Margins</b> are required on all four edges of the page. They do not have to be the same width. Generally the margin at the inside edge (spine margin) is wider. The <i>novel</i> class does not provide for marginal notes.</p>
+<p class="item"><b>B.</b> In the case of fiction, it is usually the case that the inside margin is the widest. But this is not a rule for all books. All that is required is that each margin be "wide enough" for the printing process.</p>
+<p class="item"><b>C.</b> Print services are not used to seeing books with exotic margins (such as bottom margin twice the size of top margin). They may think that there is a mistake in your PDF, or in the print job, if you do that.</p>
+<p class="item"><b>D.</b> Normally, your TeX document will be compiled to a PDF that is electronically at the exact Trim Size. And normally, print services want it to be that way. When you view your PDF, the text will shift from side to side as you move through the pages, due to the slightly increased margin at the inside edge.</p>
+<p class="item"><b>E.</b> <img class="floatright" src="html-resources/margins-trim-media.png" width="202" height="264" title="Trim Size floated in larger Media Size" alt="Trim Size floated in larger Media Size"/>Margins are always relative to the Trim Size. If you are using a larger Media Size, the area outside the TrimBox is <i>not</i> counted among the margins; it is simply wasted area. This is illustrated at right, where a smaller Trim Size is floated in a marger Media Size. The margins are shown in gray.</p> 
+<p class="item"><b>F.</b> Here is how margins are set in Preamble:</p>
 <p class="code"><code>\SetMargins{<em>top</em>}{<em>outside</em>}{<em>bottom</em>}{<em>inside</em>}</code></p>
 <p>Mnemonic for order of margins: "TOBI, or not TOBI, that is the question."</p>
 <p>Each of the settings must have dimension, such as <i>in</i> or <i>mm</i>.</p>
-<p>If you do not use this command, then margins are pre-configured. The minimum pre-configured margins are 0.5in at top, outside, and bootm, and 0.75in at inside. This meets the requirements of nearly any printing technology, unless your book is extremely thick. If your Trim Size is among the larger ones, then the pre-configured margins are larger than these minimums.</p>
-<p>If your pages have header/footer, they sit inside the rectnagle bounded by the four margins. That is, they do <i>not</i> sit inside the marginal areas.</p>
-<p>If you ever need to <i>retroactively</i> change margins, see <a href="#hA">Appendix A</a>.</p>
+<p class="item"><b>G.</b> If you do not use this command, then margins are pre-configured. The minimum pre-configured margins are 0.5in at top, outside, and bootm, and 0.75in at inside. This meets the requirements of nearly any printing technology, unless your book is extremely thick. If your Trim Size is among the larger ones, then the pre-configured margins are larger than these minimums.</p>
+<p class="item"><b>H.</b> If your pages have header/footer, they sit inside the rectangle bounded by the four margins. That is, they do <i>not</i> sit inside the marginal areas.</p>
+<p class="item" style="position:relative"><b>I.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you ever need to <i>retroactively</i> change margins, see <a href="#hA">Appendix A</a>.</p>
 
 <h5 id="h4.3.1.1">4.3.1.1. Gutter? Which Gutter?</h5>
 <div class="d5" id="d4.3.1.1">
@@ -1274,20 +1283,20 @@ Nonexistent Publications • Portland, Oregon\par<br/>
 
 <h4 id="h4.3.2">4.3.2. Lines Per Page</h4>
 <div class="d4" id="d4.3.2">
-<p class="noindent">Lines per page refers only to the textblock, and does <em>not</em> include header/footer. Lines are not stretched to fill short pages.</p>
-<p>By default, a suitable number of lines per page are set, based on other dimemsions. You can change the default with this command, in Preamble:</p>
+<p class="item"><b>A.</b> Lines per page refers only to the textblock, and does <em>not</em> include header/footer. Lines are not stretched to fill short pages.</p>
+<p class="item"><b>B.</b> By default, a suitable number of lines per page are set, based on other dimemsions. You can change the default with this command, in Preamble:</p>
 <p class="code"><code>\SetLinesPerPage{<em>integer</em>}</code></p>
 <p> Any non-integer will be rounded. There is no direct command to set the <em>leading</em>, also known as line-to-line spacing or <em>baselineskip</em>. Instead, it is calculated from the textblock height and number of lines.</p>
-<p>If the calculated leading is less than <i>1.2x</i> the font size, an error will result. It is difficult for TeX to honor all layout settings with such a small leading, which would normally be unacceptable for fiction in any case. If the calculated leading is at least <i>1.2x</i> the font size, but less than <i>1.25x</i> the font size, then the log file will have an Alert message, suggesting that you should consider using fewer lines per page. If the leading exceeds <i>1.4x</i> the font size, then the log will have an Alert, suggesting more lines per page. The Alert messages are friendly; you do not necessarily have to do anything.</p>
+<p class="item" style="position:relative"><b>C.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If the calculated leading is less than <i>1.2x</i> the font size, an error will result. It is difficult for TeX to honor all layout settings with such a small leading, which would normally be unacceptable for fiction in any case. If the calculated leading is at least <i>1.2x</i> the font size, but less than <i>1.25x</i> the font size, then the log file will have an Alert message, suggesting that you should consider using fewer lines per page. If the leading exceeds <i>1.4x</i> the font size, then the log will have an Alert, suggesting more lines per page. The Alert messages are friendly; you do not necessarily have to do anything.</p>
 </div><!-- end 4.3.2 -->
 
 <h4 id="h4.3.3">4.3.3. Global Header/Footer Styles</h4>
 <div class="d4" id="d4.3.3">
-<p class="noindent">Global choice of header/footer style is made in Preamble. Although some individual pages may have no visible header or footer, in reality the header/footer is "still there" in terms of occupying space, but has no content.</p>
-<p>There are six pre-configured header/footer styles, numbered <i>1</i> through <i>6</i>. These address every style I have seen in fiction. When you choose one of these styles, it reserves space for a header (if any) above the main text, and space for a footer (if any) below the main text. You may <i>not</i> write multi-line headers or footers.</p>
-<p>The default style is <i>1</i>, which has header, but no footer. Page numbers appear at the outside. Text (such as author or title) appears centered.</p>
-<p>Style <i>0</i> has no header or footer. This is not used in fiction, but it is available.</p>
-<p>Throughout the body of your document, you can use local commands to change the content of headers and footers, or blank them. But you may not change the overall header/footer style.</p>
+<p class="item"><b>A.</b> Global choice of header/footer style is made in Preamble. Although some individual pages may have no visible header or footer, in reality the header/footer is "still there" in terms of occupying space, but has no content.</p>
+<p class="item"><b>B.</b> There are six pre-configured header/footer styles, numbered <i>1</i> through <i>6</i>. These address every style I have seen in fiction. When you choose one of these styles, it reserves space for a header (if any) above the main text, and space for a footer (if any) below the main text. You may <i>not</i> write multi-line headers or footers.</p>
+<p class="item"><b>C.</b> The default style is <i>1</i>, which has header, but no footer. Page numbers appear at the outside. Text (such as author or title) appears centered.</p>
+<p class="item"><b>D.</b> Style <i>0</i> has no header or footer. This is not used in fiction, but it is available.</p>
+<p class="item"><b>E.</b> Throughout the body of your document, you can use local commands to change the content of headers and footers, or blank them. But you may not change the overall header/footer style.</p>
 
 <h5 id="h4.3.3.1">4.3.3.1. List of Header/Footer Style Choices</h5>
 <div class="d5" id="d4.3.3.1">
@@ -1347,8 +1356,8 @@ Default author verso, title recto.</p>
 
 <h5 id="h4.3.3.2">4.3.3.2. Custom Header/Footer Style</h5>
 <div class="d5" id="d4.3.3.2">
-<p class="noindent">Before you think about writing a custom header/footer style, be sure to try the above pre-configured choices. I have looked through a lot of fiction of all kinds. The pre-configured choices include every style I have seen, with the exception of the most highly decorative.</p>
-<p>If none of the above are satisfactory, then you can write your own headers and footers using the syntax of the <i>fancyhdr</i> package.</p>
+<p class="item"><b>A.</b> Before you think about writing a custom header/footer style, be sure to try the above pre-configured choices. I have looked through a lot of fiction of all kinds. The pre-configured choices include every style I have seen, with the exception of the most highly decorative.</p>
+<p class="item"><b>B.</b> If none of the above are satisfactory, then you can write your own headers and footers using the syntax of the <i>fancyhdr</i> package. Strategy:</p>
 <p>&bull; In the Preamble, you must use one of the above <code>\SetHeadFootStyle</code> choices to pick a starting point, in terms of whether or not there is a header and/or footer. <em>This is required, so that the layout engine knows how to calculate space.</em> After that, write the <i>fancyhdr</i> code for your custom header/footer in the Preamble. It will over-ride the numerical style in terms of appearance, but occupy the same space.</p>
 <p>&bull; You cannot use a header or footer with more than one line. No exceptions.</p>
 <p>&bull; See the file <i>novel-HeadFootStyles.sty</i> for how it is done in the pre-configured styles. In the file, the relevant portion follows <em>Look here for the pre-defined styles, for use as models.</em></p>
@@ -1363,97 +1372,96 @@ Default author verso, title recto.</p>
 
 <h5 id="h4.3.4.1">4.3.4.1 <code>\SetHeadJump{<em>number</em>}</code>, <code>\SetFootJump{<em>number</em>}</code></h5>
 <div class="d5" id="d4.3.4.1">
-<p class="noindent">These two commands control the separation between the header/footer and the main text. If your style does not have a header and/or footer, then the corresponding setting does not matter.</p>
-<p>When you change the "jump," the header or footer remains in the same place. However, the inter-line spacing (baseline skip) of the main text is tweaked to fit, while maintaining the same number of lines per page.</p>
-<p>Note that <i>novel</i> does not use arcane settings such as <i>headsep</i>, <i>footskip</i>, or <i>headheight</i>.</p>
+<p class="item"><b>A.</b> These two commands control the separation between the header/footer and the main text. If your style does not have a header and/or footer, then the corresponding setting does not matter.</p>
+<p class="item"><b>B.</b> When you change the "jump," the header or footer remains in the same place. However, the inter-line spacing (baseline skip) of the main text is tweaked to fit, while maintaining the same number of lines per page. Thus, there is no problem with the margins.</p>
+<p class="item"><b>C.</b> Note that <i>novel</i> does not use arcane settings such as <i>headsep</i>, <i>footskip</i>, or <i>headheight</i>.</p>
 <p class="floatright" style="text-indent:0px"><img src="html-resources/headjump1.png" width="158" height="125" alt="headjump 1"/><br/><img src="html-resources/footjump2.png" width="130" height="116" alt="footjump 2"/></p>
-<p>The head and/or foot "jump" is a multiple of the normal baseline skip. When the jumps are set to <i>1</i>, the header (if used) will be where the textblock would be, if it had one more line on top. The footer will be where the textblock would be, if it had one more line at the bottom. Values of <i>2</i> would skip a line at top and bottom. In other words, integer jumps maintain the line grid.</p>
-<p>Actually, the header and/or footer do not need to be on line grid. The defaults are <i>1.5</i> for each, which balances the need to separate the header/footer from the text, with the need to avoid wasting vertical space.</p>
-<p>The maximum is <i>3</i>, minimum <i>1</i>. The two jumps do not need to be identical.</p>
+<p class="item"><b>D.</b> The head and/or foot "jump" is a multiple of the normal baseline skip. When the jumps are set to <i>1</i>, the header (if used) will be where the textblock would be, if it had one more line on top. The footer will be where the textblock would be, if it had one more line at the bottom. Values of <i>2</i> would skip a line at top and bottom. In other words, integer jumps maintain the line grid.</p>
+<p class="item"><b>E.</b> The header and/or footer do not need to be on line grid. The default jumps are <i>1.5</i> for each, which balances the need to separate the header/footer from the text, with the need to avoid wasting vertical space.</p>
+<p class="item"><b>F.</b> The maximum jump is <i>3</i>, minimum <i>1</i>. The two jumps do not need to be identical.</p>
 <div style="clear:both"></div>
 </div><!-- end 4.3.4.1 -->
 
 <h5 id="h4.3.4.2">4.3.4.2. <code>\SetHeadFont[<em>features</em>]{<em>font</em>}</code></h5>
 <div class="d5" id="d4.3.4.2">
-<p class="noindent">The <i>novel</i> pre-configured header/footer styles automatically use the <em>headfont</em>.<p>
-<p>If you would like to use something else as <i>headfont</i>, use <code>\SetHeadFont</code> to define it by its font name and Open Type features.</p>
-<p>In the simplest case, you merely pick an Open Type (or TrueType) font, and <i>novel</i> automatically adds the default Open Type features, including Small Caps:</p>
+<p class="item"><b>A.</b> The <i>novel</i> pre-configured header/footer styles automatically use the <em>headfont</em>, which is pre-defined as a variation of the parent font: scaled to slightly smaller size, using lining numbers (if available), and small caps (if available). This is a general-purpose style, widely used in fiction. It may not be the most artistic, but it is unlikely to cause visual distraction:</p>
+<p class="centerimg"><img src="html-resources/headfont-default.png" width="419" height="81" title="default headfont" alt="default headfont"/></p>
+<p class="item"><b>B.</b> If you would like to use something else as <i>headfont</i>, use <code>\SetHeadFont</code> to define it by its font name and Open Type features.</p>
+<p>In the simplest case, you merely pick an Open Type (or TrueType) font, and <i>novel</i> automatically adds some Open Type features, including small caps:</p>
 <p class="code"><code>\SetHeadFont{Roboto}</code></p>
 <p class="centerimg"><img src="html-resources/headfont-roboto.png" width="419" height="81" title="Roboto headfont" alt="Roboto headfont"/></p>
-<p>The above is not best if your style has header text, because the <i>headfont</i> is too pronounced, compared to the main text. A more complex choice uses <i>fontspec</i> syntax to customize the Open Type Features:</p>
+<p class="item"><b>C.</b> The above example is not best if your style has header text, because the <i>headfont</i> is too pronounced, compared to the main text. A more complex example uses <i>fontspec</i> syntax to customize the Open Type Features:</p>
 <p class="code"><code>\SetHeadFont[Scale=0.75,Numbers=Lining,%<br/>
 Letters=SmallCaps,%<br/>
 Letters=UppercaseSmallCaps,%<br/>
 ItalicFont=Montserrat-ExtraLightItalic.otf]%<br/>
 {Montserrat-ExtraLight.otf}</code></p>
 <p class="centerimg"><img src="html-resources/headfont-montserrat-el.png" width="419" height="81" title="Montserrat EL headfont" alt="Montserrat EL headfont"/></p>
-<p>Unless you change it, the <i>headfont</i> is the same as the parent (main) font. However, it is scaled to slightly smaller size, uses lining numbers (if available), and small caps (if available). This is a general-purpose style, widely used in fiction. It may not be the most artistic, but it is unlikely to cause visual distraction:</p>
-<p class="centerimg"><img src="html-resources/headfont-default.png" width="419" height="81" title="default headfont" alt="default headfont"/></p>
-<p>If you do <i>not</i> want SmallCaps to be automatically added, use <code>Letters=ResetAll</code> as a feature:</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you do <i>not</i> want SmallCaps to be automatically added, use <code>Letters=ResetAll</code> as a feature:</p>
 <p class="code"><code>\SetHeadFont[Letters=ResetAll]{\parentfontname}</code></p>
 <div style="clear:both"></div>
 </div><!-- end 4.3.4.2 -->
 
 <h5 id="h4.3.4.3">4.3.4.3. <code>\SetLooseHead{<em>number</em>}</code></h5>
 <div class="d5" id="d4.3.4.3">
-<p class="noindent">This command applies to both headers and footers, but its effect is most noticeable when the style has header text.</p>
-<p>For best appearance of header text, its characters should be adjusted with a little extra space (tracking) between them, so that they are more easily distinguished from the main text. This is especially true if you are using small caps.</p>
+<p class="item"><b>A.</b> This command applies to both headers and footers, but its effect is most noticeable when the style has header text.</p>
+<p class="item"><b>B.</b> For best appearance of header text, its characters should be adjusted with a little extra space (tracking) between them, so that they are more easily distinguished from the main text. This is especially true if you are using small caps.</p>
 <p class="centerimg"><img src="html-resources/looseheads.png" width="400" height="76" alt="loosehead 50 and 100"/></p>
-<p>The argument of <code>\SetLooseHead</code> is a number from <i>0</i> to <i>200</i>. At <i>0</i> there is no extra space between the letters. Values from <i>50</i> (default) to <i>100</i> are most useful.</p>
-<p>Page number tracking will be clamped at a maximum of <i>50</i>, even when a larger (looser) tracking is applied to text.</p>
-<p>&bull; Do not use the <code>\textls</code> command. It is disabled in <i>novel</i>.</p>
+<p class="item"><b>C.</b> The argument of <code>\SetLooseHead</code> is a number from <i>0</i> to <i>200</i>. At <i>0</i> there is no extra space between the letters. Values from <i>50</i> (default) to <i>100</i> are most useful.</p>
+<p class="item"><b>D.</b> Page number tracking will be clamped at a maximum of <i>50</i>, even when a larger (looser) tracking is applied to text.</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Do not use the <code>\textls</code> command. It is disabled in <i>novel</i>.</p>
 <div style="clear:both"></div>
 </div><!-- end 4.3.4.3 -->
 
 <h5 id="h4.3.4.4">4.3.4.4. <code>\SetPageNumberStyle{<em>code using \thepage</em>}</code></h5>
 <div class="d5" id="d4.3.4.4">
-<p class="noindent">By default, the page number is simply <code>\thepage</code>, styled using <i>headfont</i>. In most cases, leave it that way. But if you wish to change how the page number is displayed, you can use this command to style it. Examples:</p>
+<p class="item"><b>A.</b> By default, the page number is styled using <i>headfont</i>, but without small caps (so that page roman xiv does not show as XIV).</p>
+<p class="item"><b>B.</b> If you wish to change how the page number is displayed, you can style it using <code>\SetPageNumber</code> with an argument that uses <code>\thepage</code>. Examples:</p>
 <p class="code" style="text-indent:0px"><code>\SetPageNumberStyle{\textit{\thepage}} % Page number in italics.<br/>
-\SetPageNumberStyle{-- \thepage{} --} % En-dashes, style 3 or 5.</code></p>
-<p>The <i>headfont</i> is applied automatically, unless you over-ride it in your code. For example, suppose the <i>headfont</i> is based on the parent (main) font, which is the default style. You would like the page numbers (but not anything else in header/footer) to be in a different font, which you have defined in Preamble as <i>yourpnfont</i> using <code>\NewFontFamily</code> or <code>\NewFontFace</code>. Then you could write:</p>
-<p class="code"><code>\SetPageNumberStyle{{\yourpnfont\thepage}}</code></p>
-<p>Avoid over-doing it. If you are tempted to use a macro that counts page numbers backwards, or writes them upside-down, be aware that your print service will likely reject it. Anyway, it has already been done in fiction.</p>
+\SetPageNumberStyle{-- \thepage{} --} % En-dashes, head/foot style 3 or 5.</code></p>
+<p class="item"><b>C.</b> The <i>headfont</i> is applied automatically, unless you over-ride it in your code. For example, suppose you would like the page numbers (but not anything else in header/footer) to be in a different font, which you have defined in Preamble as <code>\yourpnfont</code> using <code>\NewFontFamily</code> or <code>\NewFontFace</code>. Then you could write:</p>
+<p class="code"><code>\SetPageNumberStyle{{\yourpnfont\thepage}}</code> % note double braces</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Avoid over-doing it. If you are tempted to use a macro that counts page numbers backwards, or writes them upside-down, be aware that your print service will likely reject it. Anyway, it has already been done in fiction.</p>
 <div style="clear:both"></div>
 </div><!-- end 4.3.4.4 -->
 
 <h5 id="h4.3.4.5">4.3.4.5. <code>\SetEmblems{<em>verso</em>}{<em>recto</em>}</code></h5>
 <div class="d5" id="d4.3.4.5">
-<p class="noindent">If the style supports it, you may place an "emblem" that appears at a fixed distance (2.5em) from the outer margin. Thus, it will appear to the right of the page number on verso pages, and to the left of the page number on recto pages. In the case of style <i>4</i>, there will be a clearance of 1em between the emblem and the header text.</p>
-<p>The font used for emblems will be the same as the <i>headfont</i>, unless you specifically code the emblem to use a different font, or unless you use one of the built-in <code>\decoglyph</code> codes.</p>
-<p>Emblems are minor decorations that should not distract the eye from the main text. If the style supports emblems but you do not set them, then no emblems are placed.</p>
-<p><img class="floatright" src="html-resources/emblembar.png" width="380" height="104" alt="simple emblems using vertical bar"/>&bull; Most books do not use emblems. When they do, it is typically a vertical bar, or a bullet, like this:</p>
+<p class="item"><b>A.</b> If the head/foot style supports it, you may place an "emblem" that appears at a fixed distance (2.5em) from the outer margin. Thus, it will appear to the right of the page number on verso pages, and to the left of the page number on recto pages. In the case of style <i>4</i>, there will be a clearance of 1em between the emblem and the header text.</p>
+<p class="item"><b>B.</b> Emblems are minor decorations that should not distract the eye from the main text. If the style supports emblems but you do not set them, then no emblems are placed.</p>
+<p class="item"><b>C.</b> <img class="floatright" src="html-resources/emblembar.png" width="380" height="104" alt="simple emblems using vertical bar"/>&bull; Most books do not use an emblem. When they do, it is typically a vertical bar, or a bullet, like this:</p>
 <p class="code"><code>\SetHeadFootStyle{4}</code></p>
 <p class="code"><code>\SetEmblems{|}{|}</code></p>
-<p>The verso and recto emblems may be different. Whether they are the same or not, you must set them both, if you use emblems. Blanks are allowed.</p>
-<p><img class="floatright" src="html-resources/emblemdingbats.png" width="380" height="104" alt="dingbat emblems"/>&bull; Emblems may be styled. For example:</p>
-<p>The header emblems shown at right were produced using the code below. Dingbats from the NovelDeco font were specified, adjusted for size and position.</p>
+<p class="item"><b>D.</b> The font used for emblems will be the same as the <i>headfont</i>, unless you specifically code the emblem to use a different font, or unless you use one of the built-in <code>\decoglyph</code> codes.</p>
+<p class="item"><b>E.</b> The verso and recto emblems may be different. If you set one side, you must also set the other. Blanks are allowed.</p>
+<p class="item"><b>F.</b> <img class="floatright" src="html-resources/emblemdingbats.png" width="380" height="104" alt="dingbat emblems"/>&bull; Emblems may be styled. For example, the header emblems shown at right were produced using the code below. Dingbats from the NovelDeco font were specified, adjusted for size and position.</p>
 <p style="clear:both" class="code"><code>\SetEmblems{\charscale{1.1}{\raisebox{-0.05em}{\decoglyph{l9825}}}}%</code></p>
 <p class="code"><code>{\charscale{1.1}{\raisebox{-0.05em}{\decoglyph{l9826}}}}</code></p>
 <div style="clear:both"></div>
-<p>&bull; You may also use images, or combined images and text. If you use images, they must be at the exact resolution required by your print service (usually 300dpi for gray, 600dpi for b/w), and at exact size without scaling. The <code>\InlineImage</code> command must be used. See <i>novel's</i> image documentation details. You may find that a vertical offset of <code>\nfs</code> (normal font size) is useful, as this will place the top of the emblem image at the top margin.</p>
+<p class="item"><b>G.</b> You may also use images, or combined images and text. If you use images, they must be at the exact resolution required by your print service (usually 300dpi for gray, 600dpi for b/w), and at exact size without scaling. The <code>\InlineImage</code> command must be used. See <i>novel's</i> image documentation details. You may find that a vertical offset of <code>\nfs</code> (normal font size) is useful, as this will place the top of the emblem image at the top margin.</p>
 <p class="code" style="text-indent:0px"><img class="floatright" src="html-resources/emblemimg.png" width="295" height="77" alt="emblem image"/>
 <code>\SetHeadFootStyle{4}<br/>
 \SetEmblems{\InlineImage[0pt,b]{spy.png}}%<br/>
 {\InlineImage[0pt,b]{spy.png}}
 </code></p>
-<p>&bull; At the small size of an emblem, it is difficult to use detailed artwork. A black/white image at 600dpi will print similarly to a font dingbat. Grayscale at 300dpi will probably not be satisfactory unless the emblem is a single shade of gray. For the above example, a character from the <i>Fontawesome</i> font was converted to a png image at mid-gray. It is less distracting than a black character from the font, but hard to discern. Note that "gray ink" will not be used for your book.</p>
-<p>&bull; Ask your print service whether the presence of a small image in each page header will affect production costs. Probably not, but if there is a different per-page charge when pages have an image... Oops!</p>
-<p>&bull; The layout calculation does not care whether emblems intrude into the margins. You will have to inspect your PDF to determine whether a header emblem is too tall, or a footer emblem too deep, for the allowed top and bottom margin clearance. Class option <i>shademargins</i> (in draft mode only) is helpful.</p>
+<p class="item" style="position:relative"><b>H.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> At the small size of an emblem, it is difficult to use detailed artwork. A black/white image at 600dpi will print similarly to a font dingbat. Grayscale at 300dpi will probably not be satisfactory unless the emblem is a single shade of gray. For the above example, a character from the <i>Fontawesome</i> font was converted to a png image at mid-gray. It is less distracting than a black character from the font, but hard to discern. Note that "gray ink" will not be used for your book.</p>
+<p>Ask your print service whether the presence of a small image in each page header will affect production costs. Probably not, but if there is a different per-page charge when pages have an image... Oops!</p>
+<p class="item" style="position:relative"><b>I.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> The layout calculation does not care whether emblems intrude into the margins. You will have to inspect your PDF to determine whether a header emblem is too tall, or a footer emblem too deep, for the allowed top and bottom margin clearance. Class option <i>shademargins</i> (in draft mode only) is helpful.</p>
 <div style="clear:both"></div>
 </div><!-- end 4.3.4.5 -->
 
 <h5 id="h4.3.4.6">4.3.4.6. Setting and Changing Header Text</h5>
 <div class="d5" id="d4.3.4.6">
-<p class="noindent">If you are using head/foot style <i>1</i>, <i>4</i>, <i>5</i>, or <i>6</i>, it has text in the header. By default, that text is the author on verso pages, the title on recto pages. That is an accepted design for fiction, but it is not always the appropriate thing to do.</p>
+<p class="item"><b>A.</b> If you are using head/foot style <i>1</i>, <i>4</i>, <i>5</i>, or <i>6</i>, it has text in the header. By default, that text is the author on verso pages, the title on recto pages. That is an accepted design for fiction, but it is not always the appropriate thing to do.</p>
 <p>For example, in exotic cases you may use something such as <code>\SetTitle{ISBN9780123456789TEXTBLOCK}</code>, instead of the book's actual title, if required for the printer's database. Obviously you do not want that to appear in page headings!</p>
-<p>This is solved using these commands:</p>
+<p class="item"><b>B.</b> Header text may be changed to whatever you wish (as long as it fits):</p>
 <p class="code"><code>\SetVersoHeadText{<em>text</em>}</code><br/>
 <code>\SetRectoHeadText{<em>text</em>}</code></p>
-<p>Unlike other settings, these commands can be used <i>both</i> in Preamble <i>and</i> in the document body. Whatever you set will take effect immediately (for pages that have header text) and remain in effect until changed by repeating these commands. For example, you might want to do that for a collection of short stories, or if your book has a Preface.</p>
-<p>You may use ordinary LaTeX styling commands for the text:</p>
+<p class="item"><b>C.</b> These commands can be used <i>both</i> in Preamble <i>and</i> in the document body. Whatever you set will take effect immediately (for pages that have header text) and remain in effect until changed by repeating these commands. For example, you might want to do that for a collection of short stories, or if your book has a Preface.</p>
+<p class="item"><b>D.</b> You may use ordinary LaTeX styling commands for the text:</p>
 <p class="code"><code>\SetRectoHeadText{The \emph{Bad Boy} Chronicles}</code></p>
 <p>You may also do more complicated things, such as setting certain words in a font other than the <i>headfont</i>. This is not advised, because you do not want to distract the reader from the main text; but it can be done.</p>
-<p>&bull; Avoid bold. Avoid underline. Really. Don't do it. No, no, no!</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Avoid bold. Avoid underline. Really. Don't do it. No, no, no!</p>
 </div><!-- end 4.3.4.6 -->
 </div><!-- end 4.3.4 -->
 
@@ -1463,9 +1471,9 @@ ItalicFont=Montserrat-ExtraLightItalic.otf]%<br/>
 
 <h5 id="h4.3.5.1">4.3.5.1. <code>\thispagestyle{<em>choice</em>}</code></h5>
 <div class="d5" id="d4.3.5.1">
-<p>Command <code>\thispagestyle</code> is used in the document body, not Preamble. It changes the appearance of header/footer, only for the page on which the command appears. Ideally the command is used immediately after <code>\clearpage</code> or <code>\cleartorecto</code>, so that the applicable page is certain.</p>
-<p>However, the command will be effective if used anywhere on a page, as long as you are certain <i>which</i> page is current. So, if you know that a particular section is exactly two pages long, you can use <code>\thispagestyle</code> at the beginning and end of the section, so that it applies to both pages.</p>
-<p>The choice of page style is <i>not</i> one of the numbered global head/foot styles. Instead, choose from the following list. These are more versatile than the choices available in other TeX document classes. They are: <i>fancy</i>, <i>empty</i>, <i>footer</i>, <i>forcenumber</i>, <i>dropfoliobeneath</i>, and <i>dropfolioinside</i>.</p>
+<p class="item"><b>A.</b> Command <code>\thispagestyle</code> is used in the document body, not Preamble. It changes the appearance of header/footer, only for the page on which the command appears. Ideally the command is used immediately after <code>\clearpage</code> or <code>\cleartorecto</code>, so that the applicable page is certain.</p>
+<p class="item"><b>B.</b> The command will be effective if used anywhere on a page, as long as you are certain <i>which</i> page is current. So, if you know that a particular portion of text runs exactly two pages before <code>\clearpage</code>, you can use <code>\thispagestyle</code> at the beginning and end of the text, so that it applies to both pages.</p>
+<p class="item"><b>C.</b> The choice of page style is <i>not</i> one of the numbered global head/foot styles. Instead, choose from the following list. These are more versatile than the choices available in other TeX document classes. They are: <i>fancy</i>, <i>empty</i>, <i>footer</i>, <i>forcenumber</i>, <i>dropfoliobeneath</i>, and <i>dropfolioinside</i>.</p>
 <p class="overhang"><code><b>\thispagestyle{fancy}</b></code><br/>
 This applies the default (fancy) page style, so it is not normally needed. Only use this command to over-ride some other <code>\thispagestyle</code> command, or to over-ride the <code>\SetChapterStartStyle</code> setting.</p>
 <p class="overhang"><code><b>\thispagestyle{empty}</b></code><br/>
@@ -1489,9 +1497,9 @@ In this context, "folio" means page number. The header (if any) is blank. If the
 
 <h5 id="h4.3.5.2">4.3.5.2. <code>\SetChapterStartStyle{<em>choice</em>}</code></h5>
 <div class="d5" id="d4.3.5.2">
-<p class="noindent">The first page of each chapter, or of a section that is styled like a chapter, is usually an exception to the global page style.</p>
-<p>If you use the <i>ChapterStart</i> environment to begin them, <code>\SetChapterStartStyle</code> sets the style that will be applied at the starting page. This global setting is in Preamble, but may be over-ridden locally.</p>
-<p>The choices are the same as available for <code>\thispagestyle</code>. Default is <i>footer</i>.</p>
+<p class="item"><b>A.</b> The first page of each chapter, or of a section that is styled like a chapter, is usually an exception to the global page style.</p>
+<p class="item"><b>B.</b> In Preamble, <code>\SetChapterStartStyle</code> sets the default <code>thispagestyle</code> that will be applied on pages with the <i>ChapterStart</i> environment. You may still over-ride locally.</p>
+<p class="item"><b>B.</b> The choices are the same as available for <code>\thispagestyle</code>. Default is <i>footer</i>.</p>
 </div><!-- end 4.3.5.2 -->
 </div><!-- end 4.3.5 -->
 </div><!-- end 4.3 -->
@@ -1506,7 +1514,7 @@ In this context, "folio" means page number. The header (if any) is blank. If the
 <h2 id="h5">5. Chapters and Chapter-Like Sections</h2>
 <div class="d2" id="d5">
 <p class="noindent">This section describes how chapters are designed. The <i>novel</i> class has commands specifically for this purpose. Do not use the ordinary TeX <code>\chapter</code> command, or any other TeX partitioning such as <code>\section</code>.</p>
-<p>This also applies to content that is styled like a chapter, regardless of what it is called or where it appears. For example, if your book's front matter has a Preface, it is probably styled like a chapter. Something such as Acknowledgements might or might not be styled like a chapter, depending on length. Advice can be found in this documentation, in the part regarding Book Design.</p>
+<p>This also applies to content that is styled like a chapter, regardless of what it is called or where it appears. For example, if your book's front matter has a Preface, it is probably styled like a chapter. Something such as Acknowledgements might or might not be styled like a chapter, depending on length. Advice can be found in <a href="#h8">section 8</a> of this documentation, regarding Book Design.</p>
 
 <h3 id="h5.1">5.1. Starting a Chapter</h3>
 <div class="d3" id="d5.1">
@@ -1514,38 +1522,39 @@ In this context, "folio" means page number. The header (if any) is blank. If the
 
 <h4 id="h5.1.1">5.1.1. <code>\clearpage</code> or <code>\cleartorecto</code></h4>
 <div class="d4" id="d5.1.1">
-<p class="noindent">Unless your chapters run continuously without page break, begin a new chapter using <code>\clearpage</code> or <code>\cleartorecto</code>. The first of these provides a new page, which will be verso or recto, without skipping a page. The second forces the chapter to begin on a recto page, if necessary inserting a blank verso.</p>
-<p>Note that the common modern practice in fiction is to allow new chapters to begin either verso or recto, once you get past Chapter One. The only recent book I've read (from a major publisher), where chapters always started recto, had about 20 blank pages throughout the story. I believe the reason was to pad the book, so that it looked bigger. If you are using an American P.O.D. service, such padding might knock about $0.10 (estimated) from your profit, for each copy sold. So it's up to you to think about the tradeoffs between style, profit per book, and expected sales.</p>
-<p>Prologue (if any), Chapter One, Epilogue (if any), and other special sections always begin recto.</p>
-<p>Don't worry about using <code>\clearpage</code> or <code>\cleartorecto</code> twice. The compiler is smart enough to understand that you only meant to do it once, as long as there is no other code in between.</p>
+<p class="item"><b>A.</b> Unless your chapters run continuously without page break, begin a new chapter using <code>\clearpage</code> or <code>\cleartorecto</code>. The first of these provides a new page, which will be verso or recto, without skipping a page. The second forces the chapter to begin on a recto page, if necessary inserting a blank verso.</p>
+<p class="item"><b>B.</b> The common modern practice in fiction is to allow new chapters to begin either verso or recto, once you get past Chapter One. The only recent book I've read (from a major publisher), where chapters always started recto, had about 20 blank pages throughout the story. I believe the reason was to pad the book, so that it looked bigger. If you are using an American P.O.D. service, such padding might knock about $0.10 (estimated) from your profit, for each copy sold. So it's up to you to think about the tradeoffs between style, profit per book, and expected sales.</p>
+<p class="item"><b>C.</b> Prologue (if any), Chapter One, Epilogue (if any), and other special sections always begin recto.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Don't worry about using <code>\clearpage</code> or <code>\cleartorecto</code> twice. The compiler is smart enough to understand that you only meant to do it once, as long as there is no other code in between.</p>
 </div><!-- end 5.1.1 -->
 
 <h4 id="h5.1.2">5.1.2. ChapterStart Environment</h4>
 <div class="d4" id="d5.1.2">
-<p class="noindent">The ChapterStart environment creates a block of white space, with a fixed height (number of normal lines). If you do not place much inside it, or even if you place nothing inside it, the space is the same.</p>
-<p>If you place too much inside it, the space does not grow. Instead, the excess material overflows the bottom of the environment. There, the excess will underlie the main text. This is usually undesirable, but can sometimes be used for special effects.</p>
+<p class="item"><b>A.</b> The ChapterStart environment creates a block of white space, with a fixed height (number of normal lines). If you do not place much inside it, or even if you place nothing inside it, the space is the same.</p>
+<p class="item"><b>B.</b> If you place too much inside it, the space does not grow. Instead, the excess material overflows the bottom of the environment. There, the excess will underlie the main text. This is usually undesirable, but can sometimes be used for special effects.</p>
 
 <h5 id="h5.1.2.1">5.1.2.1. <code>\SetChapterStartStyle{<em>choice</em>}</code></h5>
 <div class="d5" id="d5.1.2.1">
-<p class="noindent">This command may be used in Preamble. Its default setting is <i>footer</i>.</p>
-<p>In most cases, a <i>ChapterStart</i> page has a head/foot style that differs from the global default. Instead of writing <code><a href="#h4.3.5.1">\thispagestyle</a></code> commands for every chapter, use <code>\SetChapterStartStyle</code> to pick a style that will be applied wherever <i>ChapterStart</i> is used. The available choices are: fancy, footer, empty, dropfoliobeneath, dropfolioinside, forcenumber.</p>
-<p>Regardless of the global header/footer style, and regardless of this setting, you can over-ride the style on a per-chapter basis, via an optional argument at the beginning of the <i>ChapterStart</i> environment.</p>
+<p class="item"><b>A.</b> This command may be used in Preamble. Its default setting is <i>footer</i>.</p>
+<p class="item"><b>B.</b> In most cases, a <i>ChapterStart</i> page has a head/foot style that differs from the global default. Instead of writing <code><a href="#h4.3.5.1">\thispagestyle</a></code> commands for every chapter, use <code>\SetChapterStartStyle</code> to pick a style that will be applied wherever <i>ChapterStart</i> is used. The available choices are: fancy, footer, empty, dropfoliobeneath, dropfolioinside, forcenumber.</p>
+<p class="item"><b>C.</b> Regardless of this setting, you can over-ride the style on a per-chapter basis, via an optional argument at the beginning of the <i>ChapterStart</i> environment.</p>
 </div><!-- end 5.1.2.1 -->
 
 <h5 id="h5.1.2.2">5.1.2.2. <code>\SetChapterStartHeight{<em>lines</em>}</code></h5>
 <div class="d5" id="d5.1.2.2">
-<p class="noindent">This command may be used in Preamble. Its default setting is <i>10</i>.</p>
-<p>This command sets the default height of the <i>ChapterStart</i> environment, measured as an integer number of normal lines. The smallest value is <i>3</i>. However, if the chapter also uses <i>dropfolioinside</i>, then the smallest value is <i>4</i>, because one line is lost when processing the <i>dropfolioinside</i> command.</p>
-<p>Regardless of this setting, you can over-ride the height on a per-chapter basis, via an optional argument at the beginning of the <i>ChapterStart</i> environment.</p>
+<p class="item"><b>A.</b> This command may be used in Preamble. Its default setting is <i>10</i>.</p>
+<p class="item"><b>B.</b> This command sets the default height of the <i>ChapterStart</i> environment, measured as an integer number of normal lines. The smallest value is <i>3</i>.</p>
+<p class="item"><b>C.</b> However, if the chapter also uses <i>dropfolioinside</i>, then the smallest value is <i>4</i>, because one line is lost when processing the <i>dropfolioinside</i> command.</p>
+<p class="item"><b>D.</b> Regardless of this setting, you can over-ride the height on a per-chapter basis, via an optional argument at the beginning of the <i>ChapterStart</i> environment.</p>
 </div><!-- end 5.1.2.2 -->
 
 <h5 id="h5.1.2.3">5.1.2.3. <code>\begin{ChapterStart}[<em>lines</em>][<em>style</em>]</code></h5>
 <div class="d5" id="d5.1.2.3">
-<p class="noindent">The <i>ChapterStart</i> environment takes up to two optional arguments.</p>
-<p>The first optional argument over-rides the default height of <i>ChapterStart</i>, for just this chapter. Its smallest value is <i>3</i>, except that its smalles value is <i>4</i> when <i>dropfolioinside</i> is used.</p>
-<p>The second optional argument over-rides the header/footer style, for just this chapter. If you use the second optional argument, it must be one of the allowed choices for <code>\thispagestyle</code>, namely: fancy, footer, empty, dropfoliobeneath, dropfolioinside, forcenumber.</p>
-<p>To use the second argument without the first, place an asterisk: <code>[*][<em>style</em>]</code></p>
-<p>Whatever you place within <i>ChapterStart</i> will probably be higher on the page than you would like. To move it down, use the <code>\vspace*{<em>length</em>}</code> command (with asterisk) immediately after the environment begins.</p>
+<p class="item"><b>A.</b> The <i>ChapterStart</i> environment takes up to two optional arguments.</p>
+<p class="item"><b>B.</b> The first optional argument over-rides the default height of <i>ChapterStart</i>, for just this chapter. Its smallest value is <i>3</i>, except that its smalles value is <i>4</i> when <i>dropfolioinside</i> is used.</p>
+<p class="item"><b>C.</b> The second optional argument over-rides the header/footer style, for just this chapter. If you use the second optional argument, it must be one of the allowed choices for <code>\thispagestyle</code>, namely: fancy, footer, empty, dropfoliobeneath, dropfolioinside, forcenumber.</p>
+<p class="item"><b>D.</b> To use the second argument without the first, place an asterisk: <code>[*][<em>style</em>]</code></p>
+<p class="item"><b>E.</b> Whatever you place within <i>ChapterStart</i> will probably be higher on the page than you would like. To move it down, use the <code>\vspace*{<em>length</em>}</code> command (with asterisk) immediately after the environment begins.</p>
 <p>As with all environments, this one must be closed using <code>\end{ChapterStart}</code>.</p>
 </div><!-- end 5.1.2.3 -->
 </div><!-- end 5.1.2 -->
@@ -1557,12 +1566,13 @@ In this context, "folio" means page number. The header (if any) is blank. If the
 <h5 id="h5.1.3.1">5.1.3.1. <code>\SetChapterFont[<em>features</em>]{<em>font</em>}</code><br/>
 <span class="dbloc">5.1.3.1 &nbsp; </span><code>\SetSubchFont[<em>features</em>]{<em>font</em>}</code></h5>
 <div class="d5" id="d5.1.3.1">
-<p class="noindent">These global commands may be used in Preamble. They create font commands <code>\chapterfont</code> and <code>\subchfont</code> that may be used to style text anywhere in your document, like this:</p>
+<p class="item"><b>A.</b> These global commands may be used in Preamble. They create font commands <code>\chapterfont</code> and <code>\subchfont</code> that may be used to style text anywhere in your document, like this:</p>
 <p class="code"><code>{\chapterfont <em>text</em>}<br/>
 {\subchfont <em>text</em>}</code></p>
-<p>The <i>chapterfont</i> is automatically applied to text in <code>\ChapterTitle</code> commands, and the <i>subch</i> font is automatically applied to text in chapter subtitles (see below).</p>
-<p>These fonts are pre-configured, based on the document's parent font. They have TeX ligatures and kerning, and use Lining numbers instead of Old Style. The <i>chapterfont</i> is scaled at 1.6, and the <i>subchfont</i> is scaled at 1.2, compared to normal font size. Ordinary (common) ligatures are not used, because such ligatures are best avoided with enlarged text.</p>
-<p>If you don't like the pre-configured fonts, then you may specify your own, using <i>fontspec</i> syntax. Here is what the default codes look like:</p>
+<p class="item"><b>B.</b> The <i>chapterfont</i> is automatically applied to text in <code>\ChapterTitle</code> commands.</p>
+<p class="item"><b>C.</b> The <i>subch</i> font is automatically applied to text in chapter subtitles (see below).</p>
+<p class="item"><b>D.</b> These fonts are pre-configured, based on the document's parent font. They have TeX ligatures and kerning, and use Lining numbers instead of Old Style. The <i>chapterfont</i> is scaled at 1.6, and the <i>subchfont</i> is scaled at 1.2, compared to normal font size. Ordinary (common) ligatures are not used, because such ligatures are best avoided with enlarged text.</p>
+<p class="item"><b>E.</b> If you don't like the pre-configured fonts, then you may specify your own, using <i>fontspec</i> syntax. Here is what the default codes look like:</p>
 <p class="code"><code>\SetChapterFont[Numbers=Lining,Scale=1.6]{\parentfont}<br/>
 \SetSubchFont[Numbers=Lining,Scale=1.2]{\parentfont}</code></p>
 </div><!-- end 5.1.3.1 -->
@@ -1570,10 +1580,11 @@ In this context, "folio" means page number. The header (if any) is blank. If the
 <h5 id="h5.1.3.2">5.1.3.2. <code>\ChapterTitle[<em>alignment</em>]{<em>text</em>}</code><br/>
 <span class="dbloc">5.1.3.2. &nbsp; </span><code>\ChapterSubtitle[<em>alignment</em>]{<em>text</em>}</code></h5>
 <div class="d5" id="d5.1.3.2">
-<p class="noindent">Text within <code>\ChapterTitle</code> is styled using the <i>chapterfont</i>, and text within <code>\ChapterSubtitle</code> is automatically styled using the <i>subchfont</i>. You can locally over-ride that, using font commands within the text.</p>
-<p>The optional <i>alignment</i> is one of <i>l</i>, <i>c</i>, <i>r</i> (left, center, right). Default <i>c</i>.</p>
-<p>You don't have to use either of these commands. Or, you can use either of them more than once! All these commands do is style the text.</p>
-<p>The styled text is limited to one line (no wrap). If you have a long chapter title or subtitle, then break it into pieces of manageable size, by repeating the command(s). Example:</p>
+<p class="item"><b>A.</b> Text within <code>\ChapterTitle</code> is styled using the <i>chapterfont</i>, and text within <code>\ChapterSubtitle</code> is automatically styled using the <i>subchfont</i>.</p>
+<p class="item"><b>B.</b> You can locally over-ride these fonts, using font commands in the text.</p>
+<p class="item"><b>C.</b> The optional <i>alignment</i> controls how the element is horizontally placed. Choices are <i>l</i>, <i>c</i>, <i>r</i> (left, center, right). Default <i>c</i>.</p>
+<p class="item"><b>D.</b> You don't have to use either of these commands. Or, you can use either of them more than once! All these commands do is style the text. They do not have any meaning that is controlled by other macros.</p>
+<p class="item"><b>E.</b> The styled text is limited to one line (no wrap) per command. If you have a long chapter title or subtitle, then break it into pieces of manageable size, by repeating the command(s). Example:</p>
 <p class="code"><img class="floatright" src="html-resources/chaptertitlesubtitle.png" width="338" height="179" title="chapter title and subtitle, left aligned" alt="chapter title and subtitle, left aligned"/>
 <code><small>
 \begin{ChapterStart}<br/>
@@ -1589,10 +1600,10 @@ Following the dark and stormy night, it was a bright and sunny day. That did not
 
 <h5 id="h5.1.3.3">5.1.3.3. <code>\ChapterDeco[<em>alignment scale</em>]{<em>text</em>}</code></h5>
 <div class="d5" id="d5.1.3.3">
-<p class="noindent">This command is simply a way for you to remember that its content is neither the title nor subtitle of the chapter. Typical usage is to place a decorative element.</p>
-<p>There is a single command option, which is parsed for a letter and/or a number, with our without comma or space. The <i>alignment</i> letter is one of <i>l</i>, <i>c</i>, <i>r</i> (left, center, right). Default <i>c</i>. The numerical <i>scale</i> (may be decimal) changes the size of the text, and tweaks its vertical position. Default scale is <i>1</i>.</p>
-<p>For your convenience, the <i>NovelDeco</i> font (included with <i>novel</i> has a few possibilities. they are accessed via the <code>\decoglyph</code> command. The list of available decorations, and codes to access them, are in the file <i>NovelDeco-glyphs.pdf</i>, which is in the <i>extras</i> folder within this documentation. Note that the decorations can be placed anywhere in your document, not just in <code>\ChapterDeco</code>.</p>
-<p><img class="floatright" src="html-resources/lowdown.png" width="300" height="141" title="chapter title with decoration" alt="chapter title with decoration"/>Most of the <code>\decoglyph</code> decorations look best when the optional <i>scale</i> is near <i>4</i>. Example:</p>
+<p class="item"><b>A.</b> This command is simply a way for you to remember that its content is neither the title nor subtitle of the chapter. Typical usage is to place a decorative element.</p>
+<p class="item"><b>B.</b> There is a single command option, which is parsed for a letter and/or a number, with our without comma or space. The <i>alignment</i> letter is one of <i>l</i>, <i>c</i>, <i>r</i> (left, center, right). Default <i>c</i>. The numerical <i>scale</i> (may be decimal) changes the size of the text, and tweaks its vertical position. Default scale is <i>1</i>.</p>
+<p class="item"><b>C.</b> For your convenience, the <i>NovelDeco</i> font (included with <i>novel</i> has a few possibilities. they are accessed via the <code>\decoglyph</code> command. The list of available decorations, and codes to access them, are in the file <i>NovelDeco-glyphs.pdf</i>, which is in the <i>extras</i> folder within this documentation. Note that the decorations can be placed anywhere in your document, not just in <code>\ChapterDeco</code>.</p>
+<p class="item"><b>D.</b> <img class="floatright" src="html-resources/lowdown.png" width="300" height="141" title="chapter title with decoration" alt="chapter title with decoration"/>Most of the <code>\decoglyph</code> decorations look best when the optional <i>scale</i> is near <i>4</i>. Example:</p>
 <p class="code"><code><small>
 \begin{ChapterStart}[8]<br/>
 \vspace{2\nbs}<br/>
@@ -1656,15 +1667,15 @@ In the latter days of the Dorf dynasty, a marvelous apparition sent the King's g
 
 <h4 id="h5.2.1">5.2.1. Reduced-Height ChapterStart</h4>
 <div class="d4" id="d5.2.1">
-<p class="noindent">Since the <i>ChapterStart</i> environment does not automatically begin a new page, you can use it for continuously running chapters. In Preamble, set a short height, such as <code>\SetChapterStartHeight{4}</code>. Also use <code>\SetChapterStartStyle{fancy}</code> so that headers don't disappear.</p>
-<p>Throughout the book, you can make local adjustments to the <i>ChapterStart</i> height, so that they don't fall at an inconvenient location (such as at the bottom of a page). Yes, I have seen this done in published works. If a particular chapter is sufficiently important that it deserves a page break, or a lot more space, you can do that easily.</p>
+<p class="item"><b>A.</b> Since the <i>ChapterStart</i> environment does not automatically begin a new page, you can use it for continuously running chapters. In Preamble, set a short height, such as <code>\SetChapterStartHeight{4}</code>. Also use <code>\SetChapterStartStyle{fancy}</code> so that headers don't disappear.</p>
+<p class="item"><b>B.</b> Throughout the book, you can make local adjustments to the <i>ChapterStart</i> height, so that they don't fall at an inconvenient location (such as at the bottom of a page). Yes, I have seen this done in published works. If a particular chapter is sufficiently important that it deserves a page break, or a lot more space, you can do that easily.</p>
 </div><!-- end 5.2.1 -->
 
 <h4 id="h5.2.2">5.2.2. <code>\QuickChapter[<em>linelength</em>]{<em>chapter title</em>}</code></h4>
 <div class="d4" id="d5.2.2">
-<p class="noindent">The <code>\QuickChapter</code> command inserts two blank lines. In the gap, the chapter title is left-justified using <i>subchfont</i> (not <i>chapterfont</i>). It is slightly raised from the normal baseline, because this looks better; but the following text is back on-grid. By default, the start of the following text will be un-indented.</p>
-<p>If the optional <i>linelength</i> is provided, then a dash will be written after the title, at the position and thickness typical of the em dash in <i>subchfont</i>. If <i>linelength</i> is specified in units of length, then that will be the length of the line. But if <i>linelength</i> is an asterisk, then the line will fill to the right margin.</p>
-<p>Note that this command is probably too obtrusive for mere scene changes within a chapter.</p>
+<p class="item"><b>A.</b> The <code>\QuickChapter</code> command inserts two blank lines. In the gap, the chapter title is left-justified using <i>subchfont</i> (not <i>chapterfont</i>). It is slightly raised from the normal baseline, because this looks better; but the following text is back on-grid. By default, the start of the following text will be un-indented.</p>
+<p class="item"><b>B.</b> If the optional <i>linelength</i> is provided, then a dash will be written after the title, at the position and thickness typical of the em dash in <i>subchfont</i>. If <i>linelength</i> is specified in units of length, then that will be the length of the line. But if <i>linelength</i> is an asterisk, then the line will fill to the right margin.</p>
+<p class="item"><b>C.</b> This command is probably too obtrusive for mere scene changes within a chapter.</p>
 <p>Example:</p>
 <p class="code"><code><small>Then he looked at me with a sneer, and barked, &ldquo;You better haul your can over to Vinny's joint, before the Boss finds out.&rdquo;\par<br/>
 \QuickChapter[3em]{16. At Vinny&rsquo;s}<br/>
@@ -1701,21 +1712,20 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <div class="d4" id="d5.3.1">
 <p class="noindent">This global command may only be used in the Preamble. Default is <i>false</i>.</p>
 <p>Normally, text begins without a paragraph indent, after each scene break. This is standard in fiction. If you prefer that each new scene begins indented, use this command. It works only with <code>\scenebreak</code>, <code>\sceneline</code>, and <code>\scenestars</code>.</p>
-<p><small>Note: <code>\SetScenebreakIndent</code> is new in version 1.40.3. When set to <i>true</i> it is identical to the <code>\IndentAfterScenebreak</code> command from prior versions. The older command is still honored. The new command has syntax more consistent with other <i>novel</i> settings.</small></p>
 </div><!-- end 5.3.1 -->
 </div><!-- end 5.3 -->
 
 <h3 id="h5.4">5.4. Automatic Chapter Numbering</h3>
 <div class="d3" id="d5.4">
 <p class="noindent">By popular demand, here is how to add automatic chapter numbering:</p>
-<p>Counter <i>novelcn</i> is pre-defined, and initialized to <i>1</i> (not zero). If you simply wish to print its value as a number, then increment the count, do something like this:</p>
+<p class="item"><b>A.</b> Counter <i>novelcn</i> is pre-defined, and initialized to <i>1</i> (not zero). If you simply wish to print its value as a number, then increment the count, do something like this:</p>
 <p class="code"><code>
 \ChapterTitle{Chapter \the\value{novelcn}\stepcounter{novelcn}}
 </code></p>
 <p>That will print Chapter 1, Chapter 2, and so forth. Of course, only do this for real, numbered chapters, not for "chapter-like" sections. If your book has several parts, and each part re-sets its own chapter count, use \setcounter{novelcn}{1} prior to the first chapter in each part.</p>
-<p>If you would like the number to be spelled out, as in Chapter One, Chapter Two, and so forth, then try the <i>fmtcount</i> package. It can also do ordinals such as First Chapter, Second Chapter. See the <i>fmtcount</i> package documentation for details.</p>
-<p>If your document's language is other than English, use <code>\setdefaultlanguage</code> <i>before</i> you load the <i>fmtcount</i> package. If you do it later, then positioning will be incorrect.</p>
-<p><b>Caution:</b> At the time I write this, <i>fmtcount</i> does not detect <i>luatex</i>. Without some hacking, it incorrectly positions its text, when used with <i>novel</i>. The maintainer has been informed. Until such time as <i>fmtcount</i> is fixed, here is the hack. In Preamble:</p>
+<p class="item"><b>B.</b> If you would like the number to be spelled out, as in Chapter One, Chapter Two, and so forth, then try the <i>fmtcount</i> package. It can also do ordinals such as First Chapter, Second Chapter. See the <i>fmtcount</i> package documentation for details.</p>
+<p class="item"><b>C.</b> If your document's language is other than English, use <code>\setdefaultlanguage</code> <i>before</i> you load the <i>fmtcount</i> package. If you do it later, then positioning will be incorrect.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Caution: At the time I write this, <i>fmtcount</i> does not detect <i>luatex</i>. Without some hacking, it incorrectly positions its text, when used with <i>novel</i>. The maintainer has been informed. Until such time as <i>fmtcount</i> is fixed, here is the hack. In Preamble:</p>
 <p class="code"><code>
 % if necessary, use \setdefaultlanguage first.<br/>
 \xetextrue % remove this command when <i>fmtcount</i> is fixed<br/>
@@ -1746,86 +1756,23 @@ Unfortunately, novelists of that era had so little to write about, or they would
 
 <h4 id="h5.5.2">5.5.2. First Line Small Caps</h4>
 <div class="d4" id="d5.5.2">
-<p class="noindent">If you want to place a portion of the first line in small caps, then simply do it using <code>\textsc{text}</code>. This effect can also continue to additional lines. That is, it does not automatically stop at the end of the first line.</p>
-<p>The <i>magaz</i> package is pre-loaded in <i>novel</i>. It provides the <code>\FirstLine</code> command, which takes the entire first paragraph as its argument. Place <code>\noindent</code> inside. You may also style the first letter (or more than one) as described above; the styled letter appears inside the <code>\FirstLine</code> command. Example:</p>
+<p class="item"><b>A.</b> If you want to place a portion of the first line in small caps, then simply do it using <code>\textsc{text}</code>. This effect can also continue to additional lines. That is, it does not automatically stop at the end of the first line.</p>
+<p class="item"><b>B.</b> The <i>magaz</i> package is pre-loaded in <i>novel</i>. It provides the <code>\FirstLine</code> command, which takes the entire first paragraph as its argument. Place <code>\noindent</code> inside. You may also style the first letter (or more than one) as described above; the styled letter appears inside the <code>\FirstLine</code> command. Example:</p>
 <p class="code"><code>
 \FirstLine{\noindent\charscale[1.6]{\alexbrush I}\hspace{0.2em}t was a dark and stormy night. Well, it really wasn't all that dark, seeing as how this story is set in Las Vegas.}
 </code></p>
 <p class="centerimg"><img src="html-resources/firstlinespecial.png" width="682" height="84" alt="first line small caps" title="first line small caps"/></p>
 </div><!-- end 5.5.2 -->
-</div><!-- end 5.5 -->
 
-<h3 id="h5.6">5.6. Drop Caps</h3>
-<div class="d3" id="d5.6">
-<p class="noindent">A <i>drop cap</i> is an enlarged letter (or image) at the beginning of chapter text, with the first few lines of text wrapped around it:</p>
+<h4 id="h5.5.3">5.5.3. Drop Caps</h4>
+<div class="d4" id="d5.5.3">
+<p class="item"><b>A.</b> The <i>drop cap</i> is an enlarged letter (or image) at the beginning of chapter text, with the first few lines of text wrapped around it:</p>
 <p class="centerimg"><img src="html-resources/dropcap.png" width="431" height="112" title="drop cap" alt="drop cap"/></p>
-<p>Works of popular fiction rarely use drop caps. Instead, having a special first character (<a href="#h5.5.1">section 5.5.1</a>) is more common, as it presents fewer layout problems, and is less distracting.</p>
-<p>If you expect to use the <code>\Rework</code> commands, be aware that you may need to manually adjust drop caps, because the rework algorithm is not fully effective there.</p>
-
-<h4 id="h5.6.1">5.6.1 Built-In Method vs. Lettrine</h4>
-<div class="d4" id="d5.6.1">
-<p class="item"><b>A.</b> In <i>novel</i>, the built-in <code>\dropcap</code> command is preferred to any other method for creating a drop cap. See the next section for its usage.</p>
-<p class="item"><b>B.</b> You may load the <i>lettrine</i> package, and use it as described in its own documentation. If <i>lettrine</i> is detected, <i>novel</i> will configure it so that lines remain on grid, and are not pushed down.</p>
-<p class="item"><b>C.</b> You may use both <code>\dropcap</code> and <code>\lettrine</code> in the same document, as they are independent, and use different settings.</p>
-<p class="item"><b>D.</b> In <i>novel</i>, the <code>\lettrine</code> command does not accept an image. Use <code>\dropcap</code>.</p>
-<p class="item"><b>E.</b> Only <i>lettrine</i> offers the rarely-used <i>slope</i> feature.</p>
-<p class="item"><b>F.</b> Both <code>\dropcap</code> and <code>\lettrine</code> are incompatible with <code>\FirstLine</code>. If you need to set the entire first line in small caps, you are more likely to be successful using <code>\dropcap</code> as described below.</p>
-<p class="item"><b>G.</b> Both commands allow you to precede the drop cap with something (such as quotation mark) using the <i>ante=</i> key. However, at least in American usage, the authoritative <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> recommends that an opening quotation mark be omitted preceding a drop cap.</p>
-</div><!-- end 5.6.1 -->
-
-<h4 id="h5.6.2">5.6.2. \dropcap[<em>options</em>]{<em>letter or image</em>} &nbsp; and starred version</h4>
-<div class="d4" id="d5.6.2">
-<p class="noindent">To ensure that this command works as described here, verify that font <i>NovelDeco.otf</i> is at least vrsion 1.48. If you use your own <i>decofont</i>, be sure that it is based on at least that version. Also, clear <i>luatex-cache</i> so that the version is updated. If you do not do that, the <code>\dropcap</code> command still works, but the appearance of the result will differ.</p>
-<p class="item"><b>A.</b> The <code>\dropcap</code> command is based on <i>lettrine</i> technology, but has different options and behavior.</p>
-<p class="item"><b>B.</b> In its starred form, <code>\dropcap*</code> will place a rectangular box around the drop cap letter (but not image). If the letter is in the Latin-1 or Latin Extended A character sets, then the box will ignore any upper diacritical mark, so that the mark sits above the box.</p>
-<p class="item"><b>C.</b> The <code>\dropcap</code> command (and starred) accepts the following options, written as comma-separated key values:</p>
-<p class="code"><code>lines=<em>integer</em></code> &nbsp; Number of lines indented by the drop cap. Default 3.</p>
-<p class="code"><code>gap=<em>length</em></code> &nbsp; Distance from drop cap to indented text. Default 0.25em. (note 1)</p>
-<p class="code"><code>hoffset=<em>length</em></code> &nbsp; Moves drop cap horizontally. Default 0em.</p>
-<p class="code"><code>voffset=<em>length</em></code> &nbsp; Moves drop cap vertically. Default 0em.</p>
-<p class="code"><code>ante={<em>text</em>}</code> &nbsp; Precedes drop cap with normal text. Default empty. (notes 2,4)</p>
-<p class="code"><code>ante*={<em>text</em>}</code> &nbsp; Like <code>ante={<em>text</em>}</code> but auto-hangs text in left margin. (notes 3,4)</p>
-<p class="code"><code>scale=<em>number</em></code> &nbsp; Scales drop cap letter (not image). Default 1.</p>
-<p class="code"><code>bloat=<em>number</em></code> &nbsp; Horizontally scales drop cap letter (not image). Default 1. (note5)</p>
-<p class="code"><code>depth=<em>integer</em></code> &nbsp; Adds blank line(s) beneath drop cap baseline. Default 0. (note 6)</p>
-<p>Note 1: The <code>gap</code> is equivalent to <i>lettrine's</i> <code>findent</code>. There is no equivalent to <code>nindent</code> or <code>slope</code>. If you wish to move the first line of text closer to the drop cap, use <code>\kern</code> or <code>\hspace</code> there.</p>
-<p>Note 2: <code>ante</code> is typically used for placing quotation mark before the drop cap. But the authoritative <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> recommends that such an opening mark be omitted, at least in American style. If the mark is placed, it is at normal text font, size, and position (this is the style used).</p>
-<p>Note 3: <code>ante</code> begins at the margin, and thus pushes the drop cap to the right. With <code>ante*</code> its text hangs in the left margin, so that the drop cap is aligned with the margin. This is visually better, providing that you have enough margin to accomodate the ante text.</p>
-<p>Note 4: You may use <code>\charscale</code> to manipulate the size and position of ante text. No other styling (such as font or color) may be applied. The ante text will always be black, in the main font. This is standard.</p>
-<p>Note 5: <code>bloat</code> multiplies <code>scale</code> horizontally. So, the result of <code>scale=1.2,bloat=0.75</code> is a drop cap letter that is scaled 1.2 vertically, 0.9 horizontally. The primary use of <code>bloat</code> is to tweak where the lines break, by making the drop cap slightly narrower or thicker.</p>
-<p>Note 6: If the drop cap character has a prominent descender, then you may need to create room underneath it using <code>depth</code>, or the descender wil intrude into the text beneath it. This can only be decided on a per-character basis, depending on the font.</p>
-<p class="item"><b>D.</b> An image is auto-detected by file extension png, PNG, jpg, JPG, jpeg, or JPEG. It will be aligned so that its bottom is at the lowest indented baseline. You may position the image using the <code>hoffset</code> and <code>voffset</code> option keys. The image cannot be scaled by <code>hscale</code> or <code>vscale</code>, because it must be at exact size and resolution. Thus, whether or not the image's top aligns in the desired location, depends on how you created the image.</p>
-<p class="item"><b>E.</b> If <code>lines=1</code>, then <code>\dropcap</code> has no effect. This applies whether or not the command or <code>ante</code> is starred. That is, the following lines of code have the same result:</p>
-<p class="code"><code>&ldquo;It was dark and stormy,&rdquo; he said.</code></p>
-<p class="code"><code>\dropcap*[<i>any keys</i>,lines=1,ante*=&ldquo;]{I}t was dark and stormy,&rdquo; he said.</code></p>
-<p class="item"><b>F.</b> When the drop cap is a letter (not image) at <code>scale=1</code>, its top will lie at the capital X-height of main text. This is the most commonly-used style. If the letter has upper diacritical mark, then the mark will be set higher.</p>
-</div><!-- end 5.6.2 -->
-
-<h4 id="h5.6.3">5.6.3. Drop Cap Font and Color</h4>
-<div class="d4" id="d5.6.3">
-<p class="item"><b>A.</b> These settings apply to <code>\dropcap</code>, but not <code>\lettrine</code>.</p>
-<p class="item"><b>B.</b> The default drop cap font is <i>NovelDeco.otf</i> with its Open Type feature <i>dcap</i>. These glyphs are modeled after the <i>Libertinus Serif Display</i> font, and are specially designed to look good at the enlarged size of drop caps, as well as align with the left margin.</p>
-<p class="item"><b>C.</b> To change the font used by <code>\dropcap</code>, you must first define one or more font commands in Preamble. For example:</p>
-<p class="code"><code>\NewFontFace\mynicedc[<em>features</em>]{font file name}</code></p>
-<p>Then, you set the font. This may be changed anywhere:</p>
-<p class="code"><code>\SetDropCapFont{\mynicedc}</code></p>
-<p class="item"><b>D.</b> Do not use Type1 or Metafont fonts. If the desired font is only available in one of those formats, you can use a font editor such as <a href="https://fontforge.github.io/en-US/" class="external" rel="external" target="new">FontForge</a> to convert it to Open Type or TrueType format. Then, as described above, load the converted file by its exact file name. If the font has mssing extrema, that is almost never a problem. Overlapped hints are rarely a problem. But self-intersecting glyphs and open paths may be a problem, if you use those glyphs.</p>
-<p class="item"><b>E.</b> Default drop cap color is black. To change it, use <i>xcolor</i> syntax. Either of these:</p>
-<p class="code"><code>\SetDropCapColor[<em>color model</em>]{<em>color value</em>}</code></p>
-<p class="code"><code>\SetDropCapColor{<em>color name</em>}</code></p>
-<p>Only grayscale may be used, and the <i>graytext</i> document class option must be enabled.</p>
-</div><!-- end 5.6.3 -->
-
-<h4 id="h5.6.4">5.6.4. Drop Cap With First Line Small Caps</h4>
-<div class="d4" id="d5.6.4">
-<p class="item"><b>A.</b> The <code>\FirstLine</code> command does not play well with either <code>\dropcap</code> or <code>\lettrine</code>. This is not a trivial fix.</p>
-<p class="item"><b>B.</b> If you require a drop cap to be followed by an entire first line in small caps, Then you must manually code it. You will probably get better results using <code>\dropcap</code> instead of <code>\lettrine</code>.
-<p class="item"><b>C.</b> Use <code>\dropcap{letter or image}\textsc{some text} rest of paragraph.</code></p>
-<p class="item"><b>D.</b> Guess at how much <code>{some text}</code> needs to be. Compile, look at result, then adjust and try again.</p>
-<p class="item"><b>E.</b> It is possible (although unsightly) to end <code>{some text}</code> at a hyphenation point in its final word.</p>
-<p class="item"><b>F.</b> Again: There is no known better way to do this.</p>
-</div><!-- end 5.6.4 -->
-</div><!-- end 5.6 -->
+<p class="item"><b>B.</b> Works of popular fiction rarely use drop caps. Instead, having a special first character (<a href="#h5.5.1">section 5.5.1</a>) is more common, as it presents fewer layout problems, and is less distracting.</p>
+<p class="item"><b>C.</b> The <code>\dropcap</code> command is native to <i>novel</i>. You may also load and use <i>lettrine</i>. An extensive discussion of drop caps is in <a href="#hF">Appendix F</a>.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you expect to use the <code>\Rework</code> commands, be aware that you may need to manually adjust drop caps, because the rework algorithm is not fully effective there.</p>
+</div><!-- end 5.5.3 -->
+</div><!-- end 5.5 -->
 
 
 </div><!-- end 5 -->
@@ -2323,7 +2270,7 @@ He would have taken the car, had it not been stolen. But that was why he was her
 
 <h4 id="h7.3.5">7.3.5. <code>\BlockImage</code> with Accompanying Text</h4>
 <div class="d4" id="d7.3.5">
-<p><b>Attention:</b> Changed behavior of <code>\BlockImage</code> in v. 1.46. See <a href="#hG">issue G.3</a></p>
+<p><b>Attention:</b> Changed behavior of <code>\BlockImage</code> in v. 1.46. See <a href="#hNI.3">Issue NI.3</a></p>
 <p class="noindent">The second optional argument of <code>\BlockImage</code>, following the image filename, may contain text that will accompany the image in the same block of space. The text may be more than one paragraph.</p>
 <p>If the image is aligned at left or right, then the accompanying text block will be separated from the image by the length of the normal paragraph indent. Within this block, the text will be justified. The usual indentation rules apply.</p>
 <p>If the image is aligned at center, then the accompanying text will also be centered (and usually will overlie the image). If you wish to confine the width of this text block to less than the full page text width, then wrap the accompanying text (inside the brackets) in an <i>adjustwidth</i> environment.</p>
@@ -2968,6 +2915,8 @@ Bad: <code>\vspace{0.5in}</code> &nbsp; Good: <code>\vspace{2.4\nbs}</code>
 </p>
 <p>&bull; When you use Rework, images are <em>not</em> scaled. Thus, they will have a different relationship to the surrounding text than they did before. In many cases, this is not a problem. However, an un-scaled image may disrupt the flow of text, or the number of lines in a page, or overlap text that was previously cleared. Look in the log file for an Alert message, which suggests an appropriate image scale, depending on how an image was placed. Problem areas can often be fixed be scaling the related image(s) in an external graphics program (see below, and also <a href="#h7">section 7</a>) then re-compiling with the scaled image(s).</p>
 <p>&bull; Note that you may see the Alert whether or not there are problem images, so scaling images will not make the Alert go away. It is a friendly message.</p>
+<p>&bull; Drop Caps are somewhat problematic, because they are enlarged using both baseline skip and font size. You will still have drop caps after rework, but the location of line breaks may change. In worst case, the paragraph will have an extra line (or one elss), and that will affect subsequent pagination.</p>
+<p>There are two ways to fix that issue: (1) If you created the drop caps using <code>\dropcap</code> command, try using its <code>bloat</code> key to stretch or shrink the letter horizontally. This does not affect images. (2) Locally change the height of the <i>ChapterStart</i> environment, using its optional argument.</p>
 <div style="clear:both"></div>
 </div><!-- end A.4 -->
 
@@ -3302,24 +3251,112 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 <div id="pageF" class="page">
 
 
-<h2 id="hF">Appendix F. Sample Document</h2>
+<h2 id="hF">Drop Caps</h2>
 <div class="d2" id="dF">
+<p class="item">A <i>drop cap</i> is an enlarged letter (or image) at the beginning of chapter text, with the first few lines of text wrapped around it:</p>
+<p class="centerimg"><img src="html-resources/dropcap.png" width="431" height="112" title="drop cap" alt="drop cap"/></p>
+
+<h3 id="hF.1">F.1 Built-In Method vs. Lettrine</h3>
+<div class="d3" id="dF.1">
+<p class="item"><b>A.</b> In <i>novel</i>, the built-in <code>\dropcap</code> command is preferred to any other method for creating a drop cap. See the next section for its usage.</p>
+<p class="item"><b>B.</b> Alternatively, you may load the <i>lettrine</i> package, and use it as described in its own documentation. If <i>lettrine</i> is detected, <i>novel</i> will configure it so that lines remain on grid, and are not pushed down.</p>
+<p class="item"><b>C.</b> You may use both <code>\dropcap</code> and <code>\lettrine</code> in the same document, as they are independent, and use different settings.</p>
+<p class="item"><b>D.</b> In <i>novel</i>, the <code>\lettrine</code> command does not accept an image. Use <code>\dropcap</code>.</p>
+<p class="item"><b>E.</b> Only <i>lettrine</i> offers the rarely-used <i>slope</i> feature.</p>
+<p class="item"><b>F.</b> Both <code>\dropcap</code> and <code>\lettrine</code> are incompatible with <code>\FirstLine</code>. If you need to set the entire first line in small caps, you are more likely to be successful using <code>\dropcap</code> as described below.</p>
+</div><!-- end F.1 -->
+
+<h3 id="hF.2">F.2. \dropcap[<em>options</em>]{<em>letter or image</em>}</h3>
+<div class="d3" id="dF.2">
+<p class="noindent">To ensure that this command works as described here, verify that font <i>NovelDeco.otf</i> is at least version 1.48. If you use your own <i>decofont</i>, be sure that it is based on at least that version. Also, clear <i>luatex-cache</i> so that the version is updated. If you do not do that, the <code>\dropcap</code> command still works, but the appearance of the result will differ.</p>
+<p class="item"><b>A.</b> The <code>\dropcap</code> command is based on <i>lettrine</i> technology, but has different options and behavior.</p>
+<p class="item"><b>B.</b> The <code>\dropcap</code> command accepts the following options as <span style="white-space:nowrap">comma-separated</a> key values:</p>
+<p class="code"><code>lines=<em>integer</em></code> &nbsp; Number of lines indented by the drop cap. Default 3.</p>
+<p class="code"><code>gap=<em>length</em></code> &nbsp; Distance from drop cap to indented text. Default 0.25em. (note 1)</p>
+<p class="code"><code>hoffset=<em>length</em></code> &nbsp; Moves drop cap horizontally. Default 0em.</p>
+<p class="code"><code>voffset=<em>length</em></code> &nbsp; Moves drop cap vertically. Default 0em.</p>
+<p class="code"><code>ante={<em>text</em>}</code> &nbsp; Precedes drop cap with normal text. Default empty. (notes 2,4)</p>
+<p class="code"><code>ante*={<em>text</em>}</code> &nbsp; Like <code>ante={<em>text</em>}</code> but auto-hangs text in left margin. (notes 3,4)</p>
+<p class="code"><code>scale=<em>number</em></code> &nbsp; Scales drop cap letter (not image). Default 1.</p>
+<p class="code"><code>bloat=<em>number</em></code> &nbsp; Horizontally scales drop cap letter (not image). Default 1. (note5)</p>
+<p class="code"><code>depth=<em>integer</em></code> &nbsp; Adds blank line(s) beneath drop cap baseline. Default 0. (note 6)</p>
+<p><img src="html-resources/" class="floatright" width="" height="" title="gap" alt="gap"/>&bull;Note 1: The <code>gap</code> is equivalent to <i>lettrine's</i> <code>findent</code>. There is no equivalent to <code>nindent</code> or <code>slope</code>. If you wish to move the first line of text closer to the drop cap, use <code>\kern</code> or <code>\hspace</code> there.</p>
+<p><img src="html-resources/" class="floatright" width="" height="" title="ante*=``" alt="ante*=``"/>&bull;Note 2: <code>ante</code> is typically used for placing quotation mark before the drop cap. But the authoritative <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> recommends that such an opening mark be omitted, at least in American style. If the mark is placed, it is at normal text font, size, and position (this is the style used).</p>
+<p>&bull;Note 3: <code>ante</code> begins at the margin, and thus pushes the drop cap to the right. With <code>ante*</code> its text hangs in the left margin, so that the drop cap is aligned with the margin. This is visually better, providing that you have enough margin to accomodate the ante text.</p>
+<p>Example at right: <code>\dropcap[ante*=``]{I}</code></p>
+<p>&bull;Note 4: You may use <code>\charscale</code> to manipulate the size and position of ante text. No other styling (such as font or color) may be applied. The ante text will always be black, in the main font. This is standard.</p>
+<p><img src="html-resources/" class="floatright" width="" height="" title="scale=1.2,bloat=.75" alt="scale=1.2,bloat=.75"/>&bull;Note 5: <code>bloat</code> multiplies <code>scale</code> horizontally. The primary use of <code>bloat</code> is to tweak where the lines break, by making the drop cap slightly narrower or thicker.</p>
+<p>Example at right: <code>\dropcap[scale=1.2,bloat=0.75]{I}</code>.</p>
+<p>&bull;Note 6: If the drop cap character has a prominent descender, then you may need to create room underneath it using <code>depth</code>, or the descender wil intrude into the text beneath it. This can only be decided on a per-character basis, depending on the font.</p>
+<p class="item"><img src="html-resources/" class="floatright" width="" height="" title="I-shade.png" alt="I-shade.png"/><b>C.</b> An image is auto-detected by file extension png, PNG, jpg, JPG, jpeg, or JPEG. It will be aligned so that its bottom is at the lowest indented baseline. You may position the image using the <code>hoffset</code> and <code>voffset</code> option keys. The image cannot be scaled by <code>hscale</code> or <code>vscale</code>, because it must be at exact size and resolution. Thus, whether or not the image's top aligns in the desired location, depends on how you created the image.</p>
+<p>Example at right: <code>\dropcap[voffset=-0.15em]{I-shade.png}</code>.</p>
+<p class="item"><b>D.</b> If <code>lines=1</code>, then <code>\dropcap</code> has no effect. This applies whether or not the command or <code>ante</code> is starred. That is, the following lines of code have the same result:</p>
+<p class="code"><code>&ldquo;It was dark and stormy,&rdquo; he said.</code></p>
+<p class="code"><code>\dropcap[<i>any keys</i>,lines=1,ante*=&ldquo;]{I}t was dark and stormy,&rdquo; he said.</code></p>
+<p class="item"><b>E.</b> When the drop cap is a letter (not image) at <code>scale=1</code>, its top will lie at the capital X-height of main text. This is the most commonly-used style. If the letter has upper diacritical mark, then the mark will be set higher.</p>
+</div><!-- end F.2 -->
+
+<h3 id="hF.3">F.3. \dropcap*[<em>options</em>]{<em>letter</em>} &nbsp; starred version</h3>
+<div class="d3" id="dF.3">
+<p class="item"><b>A.</b> <img src="html-resources/Iboxcap.png" class="floatright" width="84" height="191" title="starred dropcap and image" alt="starred dropcap and image"/>In its starred form, <code>\dropcap*</code> will place a rectangular box around the drop cap letter (but not image).</p>
+<p class="item"><b>B.</b> If the letter is in the Latin-1 or Latin Extended A character sets, then the box will ignore any upper diacritical mark, so that the mark sits above the box.</p>
+<p class="item"><b>C.</b> The boxed letter is a convenient reference frame, in case you wish to create an image of the letter in a graphics program. If you do that, then you will probably need to apply some negative <code>voffset</code> to the image. You may also wish to kern the first line closer to the image.</p>
+</div><!-- end F.3 -->
+
+<h3 id="hF.4">F.4. Drop Cap Font and Color</h3>
+<div class="d3" id="dF.4">
+<p class="item"><b>A.</b> These settings apply to <code>\dropcap</code>, but not <code>\lettrine</code>.</p>
+<p class="item"><b>B.</b> The default drop cap font is <i>NovelDeco.otf</i> with its Open Type feature <i>dcap</i>. These glyphs are modeled after the <i>Libertinus Serif Display</i> font, and are specially designed to look good at the enlarged size of drop caps, as well as align with the left margin. Also, characters with prominent descenders (such as Ccedilla) are designed so that the descender, rather than the base letter, sits at the baseline. This avoids the need for <code>depth</code> setting.</p>
+<p class="item"><b>C.</b> To change the font used by <code>\dropcap</code>, you must first define one or more font commands in Preamble. For example:</p>
+<p class="code"><code>\NewFontFace\mynicedc[<em>features</em>]{font file name}</code></p>
+<p>Then, you set the font. This may be changed anywhere:</p>
+<p class="code"><code>\SetDropCapFont{\mynicedc}</code></p>
+<p class="item"><b>D.</b> Do not use Type1 or Metafont fonts. If the desired font is only available in one of those formats, you can use a font editor such as <a href="https://fontforge.github.io/en-US/" class="external" rel="external" target="new">FontForge</a> to convert it to Open Type or TrueType format. Then, as described above, load the converted file by its exact file name. If the font has mssing extrema, that is almost never a problem. Overlapped hints are rarely a problem. But self-intersecting glyphs and open paths may be a problem, if you use those glyphs.</p>
+<p class="item"><b>E.</b> Default drop cap color is black. To change it, use <i>xcolor</i> syntax. Either of these:</p>
+<p class="code"><code>\SetDropCapColor[<em>color model</em>]{<em>color value</em>}</code></p>
+<p class="code"><code>\SetDropCapColor{<em>color name</em>}</code></p>
+<p>Only grayscale may be used, and the <i>graytext</i> document class option must be enabled.</p>
+</div><!-- end F.4 -->
+
+<h3 id="hF.5">F.5. Drop Cap With First Line Small Caps</h3>
+<div class="d3" id="dF.5">
+<p class="item"><b>A.</b> The <code>\FirstLine</code> command does not play well with either <code>\dropcap</code> or <code>\lettrine</code>. This is not a trivial fix.</p>
+<p class="item"><b>B.</b> If you require a drop cap to be followed by an entire first line in small caps, Then you must manually code it. You will probably get better results using <code>\dropcap</code> instead of <code>\lettrine</code>.
+<p class="item"><b>C.</b> Use <code>\dropcap{letter or image}\textsc{some text} rest of paragraph.</code></p>
+<p class="item"><b>D.</b> Guess at how much <code>{some text}</code> needs to be. Compile, look at result, then adjust and try again.</p>
+<p class="item"><b>E.</b> It is possible (although unsightly) to end <code>{some text}</code> at a hyphenation point in its final word.</p>
+<p class="item"><b>F.</b> Again: There is no known better way to do this.</p>
+</div><!-- end F.5 -->
+
+
+</div><!-- end F -->
+</div><!-- end Appendix F -->
+<!-- ************************************************************ -->
+
+<!-- Future appendices go here. -->
+
+<!-- ************************************************************ -->
+<div id="pageSD" class="page">
+
+
+<h2 id="hSD">Sample Document</h2>
+<div class="d2" id="dSD">
 <p class="noindent">If you click on a command, you will be taken to its documentation.
 There are many other commands available, but they are not specific to novel class.</p>
 <div class="sampledoc">
-<p>Non-empty default values are <em>shown like this</em>.<br/>
+<p class="noindent">Non-empty default values are <em>shown like this</em>.<br/>
 &nbsp;</p>
 <p style="text-indent:0">
 <a href="#h1.2.3">% !TeX TS-program = LuaLaTeX</a><br/>
 <a href="#h1.2.1">% !TeX encoding = UTF-8</a><br/>
 <a href="#h2">\documentclass{novel}</a> % See list of class options; usually none needed.<br/>
 %%% METADATA (FILE DATA):<br/>
-<a href="#h3.3.1">\SetTitle{}</a> % Default: empty. Required for PDF/X.<br/>
+<a href="#h3.3.1">\SetTitle{<em>IMPORTANT: Provide Book Title</em>}</a><br/>
 <a href="#h3.3.3">\SetSubtitle{}</a> % Default: empty.<br/>
 <a href="#h3.3.2">\SetAuthor{}</a> % Default: empty.<br/>
 <a href="#h3.3.4">\SetApplication{<em>LuaLaTeX with novel and microtype</em>}</a><br/>
 <a href="#h3.3.4">\SetProducer{<em>LuaLaTeX with novel-pdfx and hyperref</em>}</a><br/>
-<a href="#h3.4">\SetPDFX{<em>off</em>}</a><br/>
+<a href="#h3.4">\SetPDFX[<em>CGATS TR 001</em>]{<em>X-1a:2001</em>}</a><br/>
 %%% DIMENSIONS:<br/>
 <a href="#h4.1.1">\SetTrimSize{<em>5.5in</em>}{<em>8.5in</em>}</a> % Sets width, height of your book.<br/>
 % Default Media Size equals Trim Size (possibly after \Rework).<br/>
@@ -3328,7 +3365,7 @@ There are many other commands available, but they are not specific to novel clas
 % Cropmark gap is ignored unless document class option cropmarks:<br/>
 <a href="#h4.1.3">\SetCropmarkGap{<em>0.125in</em>}</a><br/>
 % Default margins vary with Trim Size. Defaults for {5.5in}{8.5in}:<br/>
-<a href="#h4.3.1">\SetMargins{<em>0.5in</em>}{<em>0.5in</em>}{<em>0.5in</em>}{<em>0.75in</em>}</a><br/>
+<a href="#h4.3.1">\SetMargins{<em>0.5in</em>}{<em>0.5in</em>}{<em>0.5in</em>}{<em>0.75in</em>}</a> % top, outside, bottom, inside<br/>
 %%% GENERAL FONTS:<br/>
 % Percent at end of line is necessary, when writing font settings multi-line:<br/>
 <a href="#h4.2.1.1">\SetParentFont[%<br/>
@@ -3346,9 +3383,9 @@ There are many other commands available, but they are not specific to novel clas
 % If used, \SetLinesPerPage manually chooses the value:<br/>
 % <a href="#h4.3.2">\SetLinesPerPage{<em>integer</em>}</a><br/>
 <a href="#h4.2.3">\SetDecoFont{<em>NovelDeco.otf</em>}</a><br/>
-<a href="#h4.2.4">\setsansfont{<em>Libertinus Sans</em>}</a><br/>
-<a href="#h4.2.4">\setmonofont{<em>Libertinus Mono</em>}</a><br/>
-<a href="#h4.2.4">\setmathfont{<em>Libertinus Math</em>}</a> % unicode-math<br/>
+<a href="#h4.2.4">\SetSansFont{<em>Libertinus Sans</em>}</a><br/>
+<a href="#h4.2.4">\SetMonoFont{<em>Libertinus Mono</em>}</a><br/>
+<a href="#h4.2.4">\SetMathFont{<em>Libertinus Math</em>}</a> % unicode-math<br/>
 %%% HEADERS/FOOTERS:<br/>
 <a href="#h4.3.3">\SetHeadFootStyle{<em>1</em>}</a> % This style has headers only.<br/>
 <a href="#h4.3.4.1">\SetHeadJump{<em>1.5</em>}</a><br/>
@@ -3372,6 +3409,8 @@ There are many other commands available, but they are not specific to novel clas
 %%% OTHER:<br/>
 <a href="#h1.2.1.1">\setdefaultlanguage[<em>variant=american</em>]{<em>english</em>}</a> % polyglossia<br/>
 <a href="#h6">\microtypesetup{<em>config=novel-microtype,stretch=20,shrink=20,final</em>}</a> % microtype<br/>
+<a href="#h5.6.3">\SetDropCapFont[<em>RawFeature=+dcap</em>]{<em>\decofontname</em>}</a> % \dropcap<br/>
+<a href="#h5.6.3">\SetDropCapColor{<em>black</em>}</a> % \dropcap<br/>
 %%% EMERGENCY USE:<br/>
 % <a href="#hA.1">\ReworkTrimSize{}{}</a> % Optional command.<br/>
 % <a href="#hA.2">\ReworkMargins{}{}{}{}</a> % Optional command.<br/>
@@ -3380,28 +3419,34 @@ There are many other commands available, but they are not specific to novel clas
 <a href="#h8.3.2">\frontmatter</a> % Required.<br/>
 % Typically <a href="#hB">six pages</a> of front matter, but <a href="#h8.3.2">could be more</a>.<br/>
 <a href="#h8.3.3">\mainmatter</a> % Required<br/>
-% <a href="#h5">Chapters</a> go here. SAMPLE Chapter structure:<br/>
+% <a href="#h5">Chapters</a> go here.<br/>
+<a href="#h8.3.4">\cleartoend</a><br/>
+\end{document}
+</p>
+<p>&nbsp;</p>
+<p class="noindent"><b>Sample structure for a Chapter or Chapter-Like Section:</b><br/>
+% New chapters do not automatically begin on a new page, so:<br/>
 <a href="#h5.1.1">\clearpage</a> % or <a href="#h5.1.1">\cleartorecto</a><br/>
 <a href="#h5.1.2.3">\begin{ChapterStart}</a><br/>
 \vspace*{2\nbs} % Space above chapter title. \nbs = normal baseline skip.<br/>
-<a href="#h5.1.3">\ChapterTitle{</a>— 1 —<a href="#h5.1.3">}</a> % Perhaps also <a href="#h5.1.3">ChapterSubtitle</a>, <a href="#h5.1.3">ChapterDeco</a>.<br/>
+<a href="#h5.1.3">\ChapterTitle{</a>— 1 —<a href="#h5.1.3">}</a><br/>
+<a href="#h5.1.3">ChapterSubtitle{At the Mansion}</a> % optional<br/>
+<a href="#h5.1.3">ChapterDeco[4]{\decoglyph{n9548}}</a> % optional<br/>
 <a href="#h5.1.2.3">\end{ChapterStart}</a><br/>
 It was a dark and stormy night, etc.<br/>
 <a href="#h5.1.1">\clearpage</a> % or <a href="#h5.1.1">\cleartorecto</a><br/>
-<a href="#h8.3.4">\cleartoend</a><br/>
-\end{document}
 </p>
 </div>
 
 
-</div><!-- end F -->
-</div><!-- end Appendix F -->
+</div><!-- end SD -->
+</div><!-- end page SD -->
 <!-- ************************************************************ -->
-<div id="pageG" class="page">
+<div id="pageNI" class="page">
 
 
-<h2 id="hG">Appendix G. News and Issues</h2>
-<div class="d2" id="dG">
+<h2 id="hNI">News and Issues</h2>
+<div class="d2" id="dNI">
 <p class="noindent">As versions change, some minor modifications have been made. Whevere existing behavior has changed, it is described here. These changes will affect very few users, if any.<p>
 <p>Also provided are known issues (and solutions, if known). Remember that "only compile with lualatex" is not an issue; it is a feature! Also remember that academic-like commands and modes are often disabled in this document class. That is a feature, not an issue.</p>
 <p>Issues may be reported at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel">GitHub project page</a> or by e-mail if you don't have a GitHub account. The e-mail address is near the top of the <i>novel.cls</i> file. These may change at some future time.</p>
@@ -3409,33 +3454,33 @@ It was a dark and stormy night, etc.<br/>
 <p>You may ask for new features, but don't expect any. The <i>novel</i> class is focused on doing one thing well, not several things poorly. That's why several standard LaTeX features are disabled.</p>
 
 
-<h3 id="hG.1"><span class="n"></span>G.1. (Solved) Incorrect string placement with package <i>fmtcount</i></h3>
-<div class="d3" id="uG.1">
+<h3 id="hNI.1"><span class="n"></span>NI.1. (Solved) Incorrect string placement with package <i>fmtcount</i></h3>
+<div class="d3" id="uNI.1">
 <p class="noindent">Solved. See <a href="#h5.4">section 5.4</a>.</p>
-</div><!-- end G.1 -->
+</div><!-- end NI.1 -->
 
-<h3 id="hG.2"><span class="n"></span>G.2. (Solved) Compile fails after changing default language</h3>
-<div class="d3" id="uG.2">
+<h3 id="hNI.2"><span class="n"></span>NI.2. (Solved) Compile fails after changing default language</h3>
+<div class="d3" id="uNI.2">
 <p class="noindent">Solved. If you compile a document sucessfully, then re-compile with a different <code>\setdefaultlanguage</code> setting, then compile may fail the second time. It may stop with error message "You can't use \relax after \the."<p>
 <p>This depends on which languages are involved. The solution is simple: Discard the <i>*.aux</i> and <i>*.synctex.gz</i> files generated by previous compilation. Then try again.</p>
-</div><!-- end G.2 -->
+</div><!-- end NI.2 -->
 
-<h3 id="hG.3"><span class="n"></span>G.3. (News, v.1.46) Changed Behavior of \BlockImage</h3>
-<div class="d3" id="uG.3">
+<h3 id="hNI.3"><span class="n"></span>NI.3. (News, v.1.46) Changed Behavior of \BlockImage</h3>
+<div class="d3" id="uNI.3">
 <p class="item"><b>A.</b> Prior to version 1.46, the <code>\BlockImage</code> command measured the height of the image. It also measured the height of optional text that accompanied the image within its block. Unfortunately, the text measurement was unreliable.</p>
 <p class="item"><b>B.</b> From version 1.46, <code>\BlockImage</code> still measures and clears the height of the image, with subsequent text (not in the same block as the image) on-grid.</p>
 <p class="item"><b>C.</b> However, the new behavior does <i>not</i> measure the height of optional text that accompanies <code>\BlockImage</code> within its block. If there is too much of it, then it will overflow down into the subsequent text. The subsequent text will not be pushed down or off-grid.</p>
 <p class="item"><b>D.</b> Very few users, if any, will be affected. But if you started a document using <i>novel</i> prior to v. 1.46, and you use <code>\BlockImage</code>, then be sure to review the results.</p>
-</div><!-- end G.3 -->
+</div><!-- end NI.3 -->
 
-<h3 id="hG.4"><span class="n"></span>G.4. (News, v.1.46.1) Printing This HTML File</h3>
-<div class="d3" id="uG.4">
+<h3 id="hNI.4"><span class="n"></span>NI.4. (News, v.1.46.1) Printing This HTML File</h3>
+<div class="d3" id="uNI.4">
 <p class="item"><b>A.</b> With some browsers, you can print this HTML file in the usual fashion. The printout will not show navigation as a right column, Instead, a brief list of contents will appear at the top.</p>
 <p class="item"><b>B.</b> If your user agent has trouble printing, do this: Edit this file, In a UNIX-compatible plain text editor with utf-8. About 83 lines from the top you will see a block of style that is commented out. Remove the comments so that the block is effective. Load the edited HTML file with JavaScript turned off. Then print.</p>
-</div><!-- end G.4 -->
+</div><!-- end NI.4 -->
 
-<h3 id="hG.5"><span class="n"></span>G.5. (News, v.1.46.1) Default Title and PDF/X Changed</h3>
-<div class="d3" id="uG.5">
+<h3 id="hNI.5"><span class="n"></span>NI.5. (News, v.1.46.1) Default Title and PDF/X Changed</h3>
+<div class="d3" id="uNI.5">
 <p class="item"><b>A.</b> Up to, and including version 1.46, the default title was empty, and PDF/X was <i>off</i>:</p>
 <p class="code"><code>\SetTitle{} % old default</code></p>
 <p class="code"><code>\SetPDFX{off} % old default</code></p>
@@ -3444,19 +3489,19 @@ It was a dark and stormy night, etc.<br/>
 <p class="code"><code>\SetPDFX[CGATSTR001]{X-1a:2001} % new default</code></p>
 <p class="item"><b>C.</b> You may return to the old behavior by manually setting <b>A</b>. You may change PDF/X to something else. Definitely change the title, unless merely testing.</p>
 <p class="item"><b>D.</b> Now, PDF/X is automatically turned off when in draft mode, regardless of your setting. There is also a warning message in the log file.</p> 
-</div><!-- end G.5 -->
+</div><!-- end NI.5 -->
 
-<h3 id="hG.6"><span class="n"></span>G.6. (News, v.1.46.1) Some Internal Macro Name Changes</h3>
-<div class="d3" id="uG.6">
+<h3 id="hNI.6"><span class="n"></span>NI.6. (News, v.1.46.1) Some Internal Macro Name Changes</h3>
+<div class="d3" id="uNI.6">
 <p class="item"><b>A.</b> Internal Macros are the kind with <code>@</code> in the name. They are normally hidden from the user, and not documented here.</p>
 <p class="item"><b>B.</b> If you have "dived into" the TeX code, and directly used an internal macro: Some of the macro names have changed. You may have to change your own code.</p>
 <p class="item"><b>C.</b> The revised names have more consistent style, for the benefit of developers.</p> 
 <p class="item"><b>D.</b> If you don't know what the above means, then it certainly does not apply to you.</p> 
-</div><!-- end G.6 -->
+</div><!-- end NI.6 -->
 
 
-</div><!-- end G -->
-</div><!-- end Appendix G -->
+</div><!-- end NI -->
+</div><!-- end page NI -->
 <!-- ************************************************************ -->
 
 

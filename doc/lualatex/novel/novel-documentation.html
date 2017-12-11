@@ -1159,7 +1159,7 @@ AnotherFeature=Setting,%<br/>
 <p class="item"><b>F.</b> The last-choice default is <i>Latin Modern Roman</i>, which really is not suitable for novels; but surely your TeX installation has it.</p>
 <p class="item"><b>G.</b> If you have the proper license, you can use a commercial font. For example:</p>
 <p class="code"><code>\SetParentFont{Adobe Garamond Pro}</code></p>
-<p><b>See how easy that is?</b> By default, <i>novel</i> will apply TeX Ligatures and Kerning to the <i>parentfont</i> and all its descendants. Common Ligatures and OldStyle numbers will be added for the main <i>textfont</i>. This is ideal for fiction.</p>
+<p><b>See how easy that is?</b> By default, <i>novel</i> will apply TeX Ligatures and Kerning to the <i>parentfont</i> and all its descendants. Common Ligatures and OldStyle numbers will be added for the <i>mainfont</i>. This is ideal for fiction.</p>
 
 </div><!-- end 4.2.1.1 -->
 
@@ -1175,13 +1175,13 @@ AnotherFeature=Setting,%<br/>
 </div><!-- end 4.2.1.2 -->
 </div><!-- end 4.2.1 -->
 
-<h4 id="h4.2.2">4.2.2. Descendant Fonts: textfont, chapterfont, subchfont, headfont</h4>
+<h4 id="h4.2.2">4.2.2. Descendant Fonts: mainfont, chapterfont, subchfont, headfont</h4>
 <div class="d4" id="d4.2.2">
 <p class="item"><b>A.</b> The descendant fonts are automatically set, as variations of the parent font:</p>
 <p class="centerimg"><img src="html-resources/font-tree.png" width="600" height="177" title="font tree" alt="font tree"/></p>
-<p>For example, the main <i>textfont</i> uses the parent font family. It has TeX Ligatures and Kerning (inherited from the parent font), and also Common Ligatures and OldStyle numbers. The main <i>textfont</i> is not configured directly. Instead, configure the <i>parentfont</i>, then the <i>textfont</i> (and other descendants) will obey. For example, if you don't want OldStyle numbers:</p>
+<p>For example, the <i>mainfont</i> uses the parent font family. It has TeX Ligatures and Kerning (inherited from the parent font), and also Common Ligatures and OldStyle numbers. The <i>mainfont</i> is not configured directly. Instead, configure the <i>parentfont</i>, then the <i>mainfont</i> (and other descendants) will obey. For example, if you don't want OldStyle numbers:</p>
 <p class="code"><code>\SetParentFont[<em>Numbers=Lining</em>]{<em>fontname</em>}</code></p>
-<p>Then, Lining numbers will be used for the <i>textfont</i> (and other descendants).<p>
+<p>Then, Lining numbers will be used for the <i>mainfont</i> (and other descendants).<p>
 <p class="item"><b>B.</b> If you don't like the defaults, you can address the other descendant fonts directly, in Preamble:</p>
 <p class="code">
 <code>\SetChapterFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.1">5.1.3.1</a></em><br/>
@@ -1220,7 +1220,7 @@ AnotherFeature=Setting,%<br/>
 \NewFontFace<em>\pickaname</em>[<em>features</em>]{<em>singlefont</em>}
 </code></p>
 <p class="item"><b>B.</b> Note that if you define a font <em>family</em> when you should have just defined a font <em>face</em>, there will be complaints in the log file, because the font loaded cannot find the (nonexistent) other members of the family. But the document will compile. On the other hand, if you define a font <em>face</em> when you should have defined a font <em>family</em>, then commands for bold or italic will have no effect, since the other family members were not loaded. Again, the document will compile.</p>
-<p class="item"><b>C.</b> <b>Example:</b> Suppose your work is science fiction, and one if its characters is a talking robot. You wish to depict its utterances in a robotic-looking font, which will be called using a new <code>\robovoice</code> command. You shop around, and find that the <em>Orbitron</em> font suits your purpose, except that it is too large compared to your <em>textfont</em>. So, you scale it.</p>
+<p class="item"><b>C.</b> <b>Example:</b> Suppose your work is science fiction, and one if its characters is a talking robot. You wish to depict its utterances in a robotic-looking font, which will be called using a new <code>\robovoice</code> command. You shop around, and find that the <em>Orbitron</em> font suits your purpose, except that it is too large compared to your <em>mainfont</em>. So, you scale it.</p>
 <p>In the Preamble, you define the new font command:</p>
 <p class="code"><code>\NewFontFace\robovoice[Scale=0.8]{Orbitron} % not part of a family</code></p>
 <p>After some experimentation, you realize that the \robovoice letters need to be spread apart a bit. Do not use the standard LaTeX <code>\textls</code> command. Instead, go back and change the font definition like this:
@@ -1784,9 +1784,9 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <h2 id="h6">6. Text Sizes and Styling</h2>
 <div class="d2" id="d6">
 <p class="noindent">This section describes how to change the size of text, how to style text (such as italics), and how to move it around. It also describes some miscellaneous commands that are intended to modify text.</p>
-<p>Information about how to choose the global, main text point size is described in <a href="#h4.2.1.2">section 4.2.1.2</a>. General information about choosing fonts and font features is in <a href="#hC">Appendix C</a> and <a href="#hE">Appendix E</a>. Styles particularly used at chapter openings are described in <a href="#h5">section 5</a>.</p>
-<p>There is no direct setting for normal baselineskip; it is automatically calculated from the size of the textblock (using Trim Size, Margins, and header/footer layouts) and <a href="#h4.3.2">lines per page</a>.</p>
-<p>The included <i>microtype</i> package is pre-configured, using these settings:</p>
+<p class="item"><b>A.</b> Information about how to choose the global, main text point size is described in <a href="#h4.2.1.2">section 4.2.1.2</a>. General information about choosing fonts and font features is in <a href="#hC">Appendix C</a> and <a href="#hE">Appendix E</a>. Styles particularly used at chapter openings are described in <a href="#h5">section 5</a>.</p>
+<p class="item"><b>B.</b> There is no direct setting for normal baselineskip; it is automatically calculated from the size of the textblock (using Trim Size, Margins, and header/footer layouts) and <a href="#h4.3.2">lines per page</a>.</p>
+<p class="item"><b>C.</b> The included <i>microtype</i> package is pre-configured, using these settings:</p>
 <p class="code"><code>\microtypesetup{config=novel-microtype,final,stretch=20,shrink=20}</code></p>
 <p>File <i>novel-microtype.cfg</i> uses settings typical of the kind of book-weight font that you are likely to use. The stretch and shrink factors are moderate. Calculation is always final, so that you see the same effect whether or not you use the <i>draft</i> class option. If you wish to change any of these, see the <i>microtype</i> package documentation. Note that since you are compiling with LuaLaTeX, some features of <i>microtype</i> may not be available.</p>
 
@@ -1796,49 +1796,67 @@ Unfortunately, novelists of that era had so little to write about, or they would
 
 <h4 id="h6.1.1">6.1.1. Surprise! Traditional TeX Font Size Commands Are Disabled.</h4>
 <div class="d4" id="d6.1.1">
-<p class="noindent">Ah, the simplicity of TeX font size commands, such as <code>\small</code> and <code>\LARGE</code>. But in <i>novel</i>, they don't work. If you write <code>{\LARGE text}</code>, then the included text appears at normal size. This is by design.</p>
-<p>Why? In <i>novel</i>, the focus is on maintaining a constant baselineskip, so that facing pages have text aligned. This is impossible with the standard TeX commands. In particular, commands to increase font size will change the baselineskip, whether you like it or not, even if you try to code for a constant baselineskip. That's just the way TeX works.</p>
-<p>The one exception is that <a href="#hXXXXX">footnotes</a> will appear with smaller than normal size and skip. But this is done automatically. You cannot manipulate it with a size command.</p>
-<p>Fortunately, there are not a lot of occasions where fiction needs to change font size. In <i>novel</i>, there are new commands to address each situation.</p>
+<p class="item"><b>A.</b> Standard LaTeX font size commands, such as <code>\small</code> and <code>\LARGE</code>, are disabled in <i>novel</i>. If you use them, they will be ignored, and the affected text will be printed without modification. This is by intent, for the purpose of maintaining the baseline grid.</p>
+<p class="item"><b>B.</b> The one exception is that <a href="#hXXXXX">footnotes</a> will appear with smaller than normal size and skip. But this is done automatically. You cannot manipulate it with a size command.</p>
+<p class="item"><b>C.</b> Use <i>novel's</i> own commands for manipulating font size. The correct command depends on the quantity of text involved.</p>
 </div><!-- end 6.1.1 -->
 
-<h4 id="h6.1.2">6.1.2. <code>\charscale[<em>scale,hoffset,voffset</em>]{<em>text</em>}</code> and starred</h4>
+<h4 id="h6.1.2">6.1.2. <code>\charscale[<em>scale,hoffset,voffset</em>]{<em>text, but not image</em>}</code> and starred</h4>
 <div class="d4" id="d6.1.2">
-<p class="noindent">The <code>\charscale</code> command may be used for a short amount of text, where there is no line break. The command will throw an error if the included text has <code>\\</code> or <code>\par</code> or any other command that breaks the line. Text within <code>\charscale</code> does not wrap. You may not place an image in <code>\charscale</code>.</p>
-<p>When used without the option, <code>\charscale</code> echoes the included text. However, the text gains the magical ability to extend above or below the normal line of text, without pushing apart the baselines. This is useful if the text has some unusual character that is extraordinarily tall or deep.</p>
-<p>Using the option, you may uniformly scale the text by any amount, and displace it horizontally and vertically. The text can overlie other text, or any previously-placed image.</p>
-<p>With the unstarred command, the scaled width of the text will occupy horizontal space, even if the text is displaced far away. But with the starred command, the text does not occupy any horizontal space.</p>
-<p>The single optional argument may include up to three comma-separated values. The first value is a number, indicating the scale. If a second argument is used, it is the length of horizontal offset (positive is right). If a third number is used, it is the length of the vertical offset (positive is up). Remember that if all you want to do is scale the text, without positioning it, then you only need to provide the scale.</p>
-<p>&bull; Note: <code>\charscale</code> does not commute with some other TeX commands. That is, the results of <code>\charscale{\othercommand{<em>text</em>}}</code> and <code>\othercommand{\charscale{<em>text</em>}}</code> may differ. That is just the way things are. Use the one that works for you.</p>
-<p>Here is an example illustrating the command in all its glory:</p>
-<p class="code"><img class="floatright" src="html-resources/badaboom.png" width="146" height="102" alt="badaboom"/><code>
-Bada \charscale*[1.25,5em,1.3\nbs]{Boom} Bam\par<br/>
-Bada Bam\par<br/>
-Bada\charscale[1.25,5em,1.3\nbs]{Bang} Bam\par<br/>
-Bada \charscale[1.25]{Bang} Bam\par
-</code></p>
-<p>In the result (above right), notice how the starred command leaves no gap where the word Boom would have been. The unstarred command leaves a gap where the word Bang would have been located. In each case, the baseline grid is maintained.</p>
-<p>The most practical application of <code>\charscale</code> is styling the first character of chapter text. Drop capitals are out of fashion, but enlarged capitals (rising above the baseline) are in fashion. Example, also using the <code>\FirstLine</code> command (from package <i>magaz</i>, included with <i>novel</i>:</p>
-<p class="code"><code>\FirstLine{\noindent\charscale[1.5]{I}t was a dark and stormy night. Lord Withens mounted his horse and rode through the gloom to Castle McDingle, where Baron von Feathering awaited. The pair had dirty deeds to do, but being members of the nobility, they commanded a high price.}</code></p>
-<p class="centerimg"><img src="html-resources/mcdingle.png" width="559" height="121" alt="larger first letter"/></p>
-<p>In the above example, the initial I is 1.5x its normal size. It appears larger than that, by comparison to the adjacent small caps letters.</p>
+<p class="item"><b>A.</b> The contents of <code>\charscale{}</code> occupy no vertical space. Thus, scaled text does not push baselines apart. Excessive scale may cause characters to overlap; in some cases this is a desirable special effect.</p>
+<p class="item"><b>B.</b> The optional argument has up to three comma-separated components. The first is a number, which scales the text relative to its natural size. If the text was already scaled by some other operation (such as using <i>fontspec</i> to define the font with Scale feature), then the effect is cumulative.</p>
+<p>Do not use a scale close to zero, or negative. The result is unpredictable.</p>
+<p class="item"><b>C.</b> <code>\charscale</code> may be used for a short amount of text, where there is no line break, and no wrap. The command will throw an error if the included text has <code>\\</code> or <code>\par</code> or any other method that breaks the line.</p>
+<p>Excessive text will not wrap. It will overflow into the right margin.</p>
+<p class="code" style="margin-left:0px"><img class="floatright" src="html-resources/jackbequick.png" width="278" height="120" title="use of \charscale" alt="use of \charscale"/><code><small>
+Jack be quick. (1)\par<br/>
+\charscale[1.2]{Jack be quick.} (2)\par<br/>
+\charscale[1.5]{Jack be quick.} (3)\par<br/>
+\charscale[2.5]{Jack be quick.} (4)\par<br/>
+\charscale[1.2]{Jack be quick, JACK} (5)\par
+</small></code></p>
+<p>In the above example, <code>\par</code> is not contained within <code>\charscale</code>. Line 4 is so enarged that its ascenders and descenders overlap other text.</p>
+<p class="item"><b>D.</b> The second optional component, if use, is horizontal offset. The third optional component, if used, is vertical offset. Offsets are lengths, measured in units such as <code>em</code> or <code>\nbs</code>.</p>
+<p class="item"><b>E.</b> In its starred form, the contents of <code>\charscale*{}</code> occupy neither vertical nor horizontal space.</p>
+<p class="code" style="margin-left:0px"><img class="floatright" src="html-resources/alphabetagamma.png" width="228" height="100" title="use of \charscale" alt="use of \charscale"/><code><small>
+Alpha \charscale[1.25]{Beta} Gamma. (1)\par<br/>
+Alpha \charscale[1.25,8em,1.3\nbs]{Beta} Gamma. (2)\par<br/>
+Alpha Gamma. (3)\par<br/>
+Alpha\charscale*[1.25,8em,1.3\nbs]{Beta} Gamma. (4)\par
+</small></code></p>
+<p>In line 1, Beta is enlarged, but not offset. It occupies slightly more width than it would have occupied unscaled. In line 2, Beta has been offset. Since the unstarred <code>\charscale</code> was used, the horizontal space is still there.</p>
+<p>Line 3 has no Beta. Line 4 uses the starred <code>\charscale*</code> to offset Beta, but no width is left behind. Note that the space between Alpha and Gamma is an ordinary inter-word space, because there is a space following the command.</p>
+<p class="item"><b>F.</b> <code>\charscale</code> is very effective on <a href="#h8.3.1.1">display pages</a>, where you can scale and move text however you wish. The starred version is especially useful, since back-to-back <code>\charscale*</code> will place text from a single vantage point.</p>
+<p class="item"><b>G.</b> In main text, the most practical application of <code>\charscale</code> is to enlarge the first character of chapter text. See <a href="#h5.5.1">section 5.5.1</a>. Otherwise, the command is rarely used, mostly for local correction of characters that need some size adjustment.</p>
+<p class="item" style="position:relative"><b>H.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> <code>\charscale</code> does not commute with some other TeX commands. That is, the results of <code>\charscale{\othercommand{<em>text</em>}}</code> and <code>\othercommand{\charscale{<em>text</em>}}</code> may differ.</p>
 </div><!-- end 6.1.2 -->
 
 <h4 id="h6.1.3">6.1.3. <code>\begin{parascale}[<em>scale</em>] ... \end{parascale}</code></h4>
 <div class="d4" id="d6.1.3">
-<p class="noindent">The parascale environment is used on a paragraph basis. More than one paragraph may be included. The scale is applied to the font size and to the baselineskip within.</p>
-<p>Since the text within parascale generally will not occupy an integral number of normal baselineskips, the following text will be off-grid. This may not be a problem, if parascale is used in places where maintaining the grid does not matter (such as on a title page or copyright page).</p>
-<p>&bull; If parascale is used within body text, then it will be necessary to restore the line grid  for the following text. This cannot be done automatically; you will have to make a preliminary run, look at the results, and adjust accordingly.</p>
-<p>For example, suppose you use <code>\begin{parascale}[0.92]...text...\end{parascale}</code>. The preliminary run shows that the included text occupies 7 lines. The following baseline will then be 7x(1&ndash;0.92)=0.56 normal baselineskip too high. This can be fixed by adding <code>\vspace{0.56\nbs}</code>. For best appearance, the <code>\vspace</code> should be split above and below the parascale environment, but not nessarily in half.</p>
-<p>&bull; If parascale crosses to the next page, then you will need to make vertical adjustment for each page independently. For example, if a 7-line parascale has 3 lines at the bottom of a page, followed by 4 lines on the following page, then you need to restore only a 4 line deficit on the following page.</p>
-<p>&bull; Within parascale you may need to manually indent paragraphs, or remove indents if necessary.</p>
+<p class="item"><b>A.</b> The <i>parascale</i> environment is used on a paragraph basis. More than one paragraph may be included. The scale is applied to the font size and to the baselineskip within.</p>
+<p class="item"><b>B.</b> Note that the scale is an <i>optional</i> argument.</p>
+<p class="item"><b>C.</b> Since the text within <i>parascale</i> generally will not occupy an integral number of normal baseline skips, the following text will be off-grid. This may not be a problem, if <i>parascale</i> is used on a <a href="#h8.3.1.1">display page</a>. It may not be a problem, if <i>parascale</i> is used inside <a href="#h5.1.2">ChapterStart</a>. But it is certainly a problem if <i>parascale</i> is used within main text.</p>
+<p class="item"><b>D.</b> To restore the main line grid, when <i>parascale</i> is used within main text, wrap <i>parascale</i> in the <a href="#h6.3.2">linegap</a> environment.</p>
+<p>The line gap is not automatic; you must compile, look at the result of <i>parascale</i>, then adjust the gap and re-compile. If your text is on more than one page, then you will need to use more than one <i>linegap</i>.</p>
+<p class="code"><code><small>
+Lord Withens sneaked out the door of the veranda, and hastily opened the letter. In it was a message that curled his jodphurs:\par<br/>
+\begin{linegap}{2} % Not always the same as the parascale line count.<br/>
+\begin{parascale}[0.87]<br/>
+\vspace{0.18\nbs}<br/>
+We know where youse been goin them dark and stormy nights. We knows what you been doin out there. We got yer number, Jack.\par<br/>
+\end{parascale}<br/>
+\end{linegap}<br/>
+Even after his jodphurs had finally uncurled, Lord Withens could not master his rage. ``My name's not Jack,'' he mumbled.\par
+</small></code></p>
+<p class="centerimg"><img src="html-resources/parascale.png" width="563" height="150" title="parascale inside linegap" alt="parascale inside linegap"/></p>
 </div><!-- end 6.1.3 -->
 
 <h4 id="h6.1.4">6.1.4. Open Type Scale (fontspec)</h4>
 <div class="d4" id="d6.1.4">
-<p class="noindent">If you will be using a font in a way that it will <em>always</em> be at a size different from the normal font size, you may use the <i>Scale</i> feature when you first define the font. This is defined by the <i>fontspec</i> package, which is automatically loaded with <i>novel</i>. Example:</p>
+<p class="item"><b>A.</b> If you will be using a font in a way that it will <em>always</em> be at a size different from the normal font size, you may use the <a href="#hE.2.1">Scale</a> feature when you first define the font. This is defined by the <i>fontspec</i> package, which is automatically loaded with <i>novel</i>. Example:</p>
 <p class="code"><code>\NewFontFamily\minifont[Scale=0.75,Numbers=Lining]{\parentfont}</code></p>
-<p>A scaled font can be used anywhere. It is not limited to a single line, and it will maintain the line grid at scales not exceeding 1. However, scaled text may disturb the line grid if its scale is more than 1.</p>
+<p class="item"><b>B.</b> The scaled font can be used anywhere. It is not limited to a single line, and it will maintain the line grid at scales not exceeding 1.</p>
+<p class="item" style="position:relative"><b>C.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Scaled text may disturb the line grid, if its scale is more than 1.</p>
 </div><!-- end 6.1.4 -->
 </div><!-- end 6.1 -->
 
@@ -1848,19 +1866,20 @@ Bada \charscale[1.25]{Bang} Bam\par
 
 <h4 id="h6.2.1">6.2.1. Italics and Emphasis</h4>
 <div class="d4" id="d6.2.1">
-<p class="noindent"><code><b>\textit{<em>text</em>}</b></code> puts the text in italics, provided that the font family has an Italic font. If it does not have an Italic font, then the letters will remain normal, <em>not</em> fake slanted.</p>
-<p>If the italicized text leans too far into the following space, try adding <code>\/</code> (back and forward slashes) just before closing the braces.</p>
-<p><code><b>\emph{<em>text</em>}</b></code> changes regular text to italics, and italic text to regular. You may nest <code>\emph</code> commands. Many writers opine that this is the preferred way to specify Italics.</p>
-<p>Sadly, the above two commands will fail if the styled text is in more than one paragraph. A more general command that is able to cross paragraphs is <code><b>\itshape{<em>text</em>}</b></code>.</p>.
+<p class="item"><b>A.</b> <code>\itshape{<em>text, may cross paragraphs</em>}</code> is a general-purpose command for italics.</p>
+<p class="item"><b>B.</b> <code>\textit{<em>text</em>}</code> will not cross paragraphs.</p>
+<p class="item"><b>C.</b> <code>\emph{<em>text</em>}</code> changes regular text to italics, and italic text to regular. You may nest <code>\emph</code> commands. Many writers opine that this is the preferred way to specify italics. It cannot cross paragraphs.</p>
+<p class="item"><b>D.</b> If the italicized text leans too far into the following space, try adding <code>\/</code> (back and forward slashes) just before closing the braces.</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Italics are not faked (such as by slanting). If the font does not have an italic font file, then regular text will appear. You may use <i>fontspec</i> syntax to substitute a different italic font, if necessary. See <a href="#hE.1.1">Appendix E.1.1</a> <i>file name combinations</i>.</p>
 </div><!-- end 6.2.1 -->
 
 <h4 id="h6.2.2">6.2.2. Bold, Semibold, etc.</h4>
 <div class="d4" id="d6.2.2">
-<p class="noindent"><code><b>\textbf{<em>text</em>}</b></code> puts the text in whatever font you specified as the Bold font, when you defined the currently-used font family. If the text is in more than one paragraph, use <code><b>\bfshape{<em>text</em>}</b></code> instead.</p>
-<p>If the font family has no Bold font, then it will <em>not</em> be faked.</p>
-<p>The default main font used by <i>novel</i>, namely <i>Libertinus Serif</i>, has both Bold and Semibold weights. Given this choice, <i>novel</i> explicitly calls for the Semibold weight. If you intend to use a font such as Adobe Garamond Pro, which also has a Semibold weight, then you can request it instead of Bold when you define the font family, using <i>fontspec</i> syntax.</p>
-<p>What if you want both Bold and Semibold, or maybe even a Light weight? Only one can be assigned as the bold weight when you define the font. For the others, use <code>\NewFontFace</code> to assign the desired weight to its own font command, which you will use (but inside the braces) instead of <code>\textbf</code>.</p>
-<p>Actually, you should not be using Bold in fiction. It <em>might</em> be the case that this weight is useful for titles, but you ought to consider a fancy-looking font for that purpose, rather than mere Bold. Or, make the letters big and bold, but balance the effect by using gray.</p>
+<p class="item"><b>A.</b> <code>\bfshape{<em>text, may cross paragraphs</em>}</code> is a general-purpose command for bold.</p>
+<p class="item"><b>B.</b> <code>\textbf{<em>text</em>}</code> will not cross paragraphs.</p>
+<p class="item"><b>C.</b> The default main font in <i>novel</i> is <i>Libertinus Serif</i>, which has both bold and semibold weights. The semicold weight is pre-configured to substitute for bold.</p>
+<p class="item"><b>D.</b> If you use a different font, and it has an alternative to bold weight, see <a href="#hE.1.1">Appendix E.1.1</a> <i>file name combinations</i> for how to configure the choice. Bold is not faked by thickening.</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Bold is rare in fiction. It <em>might</em> be the case that this weight is useful for titles, but you ought to consider a fancy-looking font for that purpose, rather than mere Bold. Or, make the letters big and bold, but balance the effect by using gray.</p>
 </div><!-- end 6.2.2 -->
 
 <h4 id="h6.2.3">6.2.3. Underlining</h4>
@@ -1871,16 +1890,17 @@ Bada \charscale[1.25]{Bang} Bam\par
 
 <h4 id="h6.2.4">6.2.4. Small Caps and Acronyms</h4>
 <div class="d4" id="d6.2.4">
-<p class="noindent"><code><b>\textsc{<em>text</em>}</b></code> converts lowercase letters to small caps, leaving uppercase unchanged. The font's <code>smcp</code> Open Type feature will be used. But if the font does not have <code>smcp</code>, it will <em>not</em> be faked. If you need to corss paragraphs, use <code><b>\scshape{<em>text</em>}</b></code>.</p>
-<p><code><b>\smcp{<em>text</em>}</b></code> is an alias for <code>\textsc{<em>text</em>}</code>.</p>
-<p><code><b>\allsmcp{<em>text</em>}</b></code> places both uppercase and lowercase letters in small caps. If the font has the <code>c2sc</code> feature, it will be used; if not, the letters will be converted to lowercase first. Then, <code>smcp</code> is applied.</p>
-<p>&bull; If you require small caps, but your font does not have them, you can fake them by scaling uppercase. But this is usually unattractive. A better method is described in the <i>fontspec</i> package documentation: You may appoint a different font that will provide small caps.</p>
-<p>&bull; If you insist on using old-fashioned TeX fonts, which do not have the <i>smcp</i> Open Type feature, then you may need to write this code in the Preamble:</p>
+<p class="item"><b>A.</b> <code>\scshape{text, may cross paragraphs}</code> is a general-purpose command for converting lowercase to small caps.</p>
+<p class="item"><b>B.</b> <code>\textsc{<em>text</em>}</code> does not cross paragraphs. Alias: <code>\smcp{<em>text</em>}</code>.</p>
+<p class="item"><b>C.</b> <code>\allsmcp{<em>text</em>}</code> places both uppercase and lowercase letters in small caps. It does not cross paragraphs.</p>
+<p class="item"><b>D.</b> Small caps are taken from the font's <i>smcp</i> Open Type feature. If the font is not Open Type, or does not have this feature, then small caps will not be faked. Command <code>\allsmcp</code> also uses feature <i>c2sc</i> if it is available; otherwise it converts letters to lowercase, then applies <i>smcp</i>.</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you require small caps, but your font does not have them, you can fake them by scaling uppercase. But this is usually unattractive. A better method is described in the <i>fontspec</i> package documentation: You may appoint a different font that will provide small caps.</p>
+<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you insist on using old-fashioned TeX fonts, which do not have the <i>smcp</i> Open Type feature, then you may need to write this code in the Preamble:</p>
 <p class="code"><code>\let\smcp\oldscshape\relax<br/>
 \let\textsc\oldscshape\relax<br/>
 \let\scshape\oldscshape\relax</code></p>
 <p>The above code sends you in a time machine back to the Twentieth Century.</p>
-<p><code><b>\acronym{<em>text</em>}</b></code> is special to <i>novel</i>. If the <i>NovelDeco</i> font is installed, uppercase letters in the text will be converted to "mid-size capitals," and lowercase will remain lowercase, but with ascenders slightly reduced. The purpose of this command is so that acronyms such as NASA and NATO blend well with surrounding text. I have found that whereas ordinary uppercase is too conspicuous, small caps also looks wrong. Example:</p>
+<p class="item"><b>G.</b> <code>\acronym{<em>text</em>}</code> is special to <i>novel</i>. If the <i>NovelDeco</i> font is installed, uppercase letters in the text will be converted to "mid-size capitals," and lowercase will remain lowercase, but with ascenders slightly reduced. The purpose of this command is so that acronyms such as NASA and NATO blend well with surrounding text. I have found that whereas ordinary uppercase is too conspicuous, small caps also looks wrong. Example:</p>
 <p class="code"><img class="floatright" src="html-resources/acronym2.png" width="192" height="89" alt="acronym"/>
 <code>
 The NATO alliance...\par<br/>
@@ -1892,21 +1912,31 @@ The \allsmcp{NATO} alliance...\par
 
 <h4 id="h6.2.5">6.2.5. Local Tracking Adjustment</h4>
 <div class="d4" id="d6.2.5">
-<p class="noindent"><code><b>\squeeze{<em>text</em>}</b></code> narrows the text by one percent.</p>
-<p class="noindent"><code><b>\crush{<em>text</em>}</b></code> narrows the text by two percent.</p>
-<p>These commands are for emergency use only. They temporarily apply a horizontal scale to the letters, so that they are very slightly narrower than usual. Inter-word spacing is not necessarily changed (it can even grow larger), because spacing is calculated during paragraph layout. The enclosed text may span paragraphs.</p>
-<p>The commands do not compound. That is, placing one crush inside another will not narrow the text by four percent. But any adjustments made by <i>microtype</i> will still apply, and may compound with these commands.</p>
+<p class="item"><b>A.</b> <i>Tracking</i> refers to how tight or loose is the space between adjacent letters. This is a property of the font itself, and is automatically tweaked by the included <i>microtype</i> package. Do not confuse tracking with <i>inter-word spacing</i>, which is more widely adjusted during paragraph layout calculations.</p>
+<p class="item"><b>B.</b> If only two adjacent letters are involved, use the <code>\kern</code> or <code>\hspace</code> command. The following examples have the same effect. Note that there is no added space character, and that the units of length are <code>em</code>:</p>
+<p class="code"><code>
+I\kern-.05emt was a dark and stormy night.<br/>
+I\hspace{-.05em}t was a dark and stormy night.
+</code></p> 
+<p class="item"><b>C.</b> Loose tracking is often used in page header text. In <i>novel</i>, this is addressed by a special command. See <a href="#h4.3.4.3">section 4.3.4.3</a>.</p>
+<p class="item"><b>D.</b> Do not use the <code>\textls</code> command. It will be ignored, and its contents will be rendered with ordinary tracking.</p>
+<p class="item"><b>E.</b> The included <i>fontspec</i> package allows you to globally set the tracking of an Open Type font, or locally change its tracking, using the <i>LetterSpace</i> feature. It is unlikely that you will need this capability. If you do, see <i>fontspec</i> package documentation 6.8.</p>
+<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> There are two <i>novel</i>-specific commands that are "for emergency use only." <code>\squeeze{<em>text</em>}</code> narrows the text by one percent. <code>\crush{<em>text</em>}</code> narrows the text by two percent.</p>
+<p>These commands use <i>microtype</i> to temporarily apply a horizontal scale to the letters. Inter-word spacing is not necessarily changed (it can even grow larger), because spacing is calculated during paragraph layout. The enclosed text may span paragraphs.</p>
+<p>The commands do not compound. That is, placing one crush inside another will not narrow the text by four percent.</p>
 <p>The only application for these commands is when a paragraph does not quite fit where you would like it to be. For example: Perhaps one short word, or part of a word, dangles to an extra line. Try <code>\squeeze</code> first, then <code>\crush</code>, for all or most of the paragraph. These do not always produce a useful effect, since the actual paragraph layout depends on other factors. But <em>if you are lucky,</em> then the paragraph re-flows to a better layout.</p>
-<p>&bull; If the commands do not help, then <em>be sure to remove them</em>, or the typography will be worse than it was before!</p>
+<p>If the commands do not help, then <em>be sure to remove them</em>, or the typography will be worse than it was before!</p>
 </div><!-- end 6.2.5 -->
 
 <h4 id="h6.2.6">6.2.6. Local Font Selection</h4>
 <div class="d4" id="d6.2.6">
-<p class="noindent"><code><b>{\<em>fontcode</em> <em>text</em>}</b></code> where <i>fontcode</i> is a previously-defined <a href="#h4.2">built-in</a> or <a href="#h4.2.5">user-defined</a> font command.</p>
-<p>You locally change the font in use, by calling its font command. For example, <code>\subchfont</code> is a built-in command, automatically used in certain macros. You can use it yourself:</p>
-<p class="code"><code>{\subchfont <em>text</em>} % Note that the braces go on the outside.</code></p>
-<p>Likewise, if you used <code>\NewFontFamily</code> or <code>\NewFontFace</code> to define your own font, giving it the command name <code>\mynewfont</code>, then you would use it like this:</p>
-<p class="code"><code>{\mynewfont <em>text</em>} % Again, the braces go on the outside.</code></p>
+<p class="item"><b>A.</b> The following font commands are pre-defined in <i>novel</i>: \rmfamily (alias <a href="#h4.2.2">\mainfont</a>) <a href="#h4.2.4">\sffamily</a> <a href="#h4.2.4">\ttfamily</a> <a href="#h5.1.3.1">\chapterfont</a> <a href="#h5.1.3.1">\subchfont</a> <a href="#h4.3.4.2">\headfont</a> <a href="#h4.2.3">\decofont</a> <a href="#hF.4">\decodropcapfont</a>.</p>
+<p class="item"><b>B.</b> Although most of the pre-defined font commands are automatically applied in specific situations, you may apply any of them yourself, in any location, using this syntax:</p>
+<p class="code"><code>{\subchfont This text will be in the subchfont.}</code></p>
+<p class="item"><b>C.</b> If you wish, use <i>fontspec</i> syntax to create additional font selection commands. See <a href="#h4.2.5">section 4.2.5</a> and <a href="#hE">Appendix E</a> for the essentials. For example, if you have the licensed font, this code would define the font selection command <code>\agarp</code> in Preamble:</p>
+<p class="code"><code>\NewFontFamily\agarp[Numbers=OldStyle,Ligatures=Common]{Adobe Garamond Pro}</code></p>
+<p>Then you would apply it to text:</p>
+<p class="code"><code>{\agarp Text to appear in that font.}</code></p>
 </div><!-- end 6.2.6 -->
 
 <h4 id="h6.2.7">6.2.7. Local Feature Changes</h4>
@@ -2262,7 +2292,7 @@ He would have taken the car, had it not been stolen. But that was why he was her
 <div class="d4" id="d7.3.4">
 <p>The <code>\BlockImage</code> command places its image as a block element, distinct from the preceding or following text. Be sure to close the preceding paragraph before writing <code>\BlockImage</code>.</p>
 <p>The command takes an optional argument with up to three comma-separated values. The first is <i>alignment</i>: <code>l</code>, <code>c</code>, or <code>r</code> for left, center, or right. The second and third values are lengths, <i>hoffset</i> and <i>voffset</i> for the image. Positive offsets are up and right.</p>
-<p>Unlike the <code>\InlineImage</code> command, you may not use "b" in the vertical offset. By default top of the image is aligned to the baseline of where text would be, if you did not place an image. You may find that <code>\normalXheight</code> is a useful vertical offset, at it aligns the top of the image to where the X-height would be.</p>
+<p>Unlike the <code>\InlineImage</code> command, you may not use "b" in the vertical offset. By default, the top of the image is aligned to the baseline of where text would be, if you did not place an image. You may find that <code>\normalXheight</code> is a useful vertical offset, at it aligns the top of the image to where the X-height would be.</p>
 <p>Following the mandatory image filename, an optional argument allows text to appear in the same block as the image. See the next section.</p>
 <p>An automatic calculation ensures that text after <code>\BlockImage</code> will comfortably clear the bottom of the image (taking its voffset into account). The text will be on-grid.</p>
 <p>Remember that TeX does not care if the image overflows into the margins. Thus, you must review the PDF to ensure that an image does not appear in an unsuitable location. You can visualize margins using the <i>draft,shademargins</i> document class options.</p>
@@ -2271,7 +2301,8 @@ He would have taken the car, had it not been stolen. But that was why he was her
 <h4 id="h7.3.5">7.3.5. <code>\BlockImage</code> with Accompanying Text</h4>
 <div class="d4" id="d7.3.5">
 <p><b>Attention:</b> Changed behavior of <code>\BlockImage</code> in v. 1.46. See <a href="#hNI.3">Issue NI.3</a></p>
-<p class="noindent">The second optional argument of <code>\BlockImage</code>, following the image filename, may contain text that will accompany the image in the same block of space. The text may be more than one paragraph.</p>
+<p class="noindent">The second optional argument of <code>\BlockImage</code>, following the image filename, may contain text that will accompany the image in the same block of vertical space. The text may be more than one paragraph.</p>
+<p>This feature is of limited usefulness in the main body of text. Its primary purpose is to assist with layout of things such as title page and chapter starts, where there might be an image mingled with text.</p>
 <p>If the image is aligned at left or right, then the accompanying text block will be separated from the image by the length of the normal paragraph indent. Within this block, the text will be justified. The usual indentation rules apply.</p>
 <p>If the image is aligned at center, then the accompanying text will also be centered (and usually will overlie the image). If you wish to confine the width of this text block to less than the full page text width, then wrap the accompanying text (inside the brackets) in an <i>adjustwidth</i> environment.</p>
 <p>Whatever the alignment of image offset, the first line of accompanying text will be vertically located on-grid, where the first line of text would ordinarily sit. If you wish to displace it vertically, then begin the accompanying text with <code>\pushtextdown{<em>length</em>}</code>. It is best to measure the length in terms of the normal baselineskip, <code>\nbs</code>.</p>
@@ -3152,7 +3183,7 @@ Some Frequently-Used Open Type Features
 <tr>
 <td><p>common ligatures</p></td>
 <td><p>liga</p></td>
-<td><p>Ligatures=Common<br/><em>enabled: textfont, sansfont</em></p></td>
+<td><p>Ligatures=Common<br/><em>enabled: mainfont, sansfont</em></p></td>
 </tr>
 <tr>
 <td><p>Tex ligatures</p></td>
@@ -3177,7 +3208,7 @@ Some Frequently-Used Open Type Features
 <tr>
 <td><p>oldstyle numerals</p></td>
 <td><p>onum</p></td>
-<td><p>Numbers=OldStyle<br/><em>enabled: textfont, sansfont</em></p></td>
+<td><p>Numbers=OldStyle<br/><em>enabled: mainfont, sansfont</em></p></td>
 </tr>
 </tbody>
 </table>

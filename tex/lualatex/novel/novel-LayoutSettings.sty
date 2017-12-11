@@ -526,6 +526,20 @@
 \defaultfontfeatures[\rmfamily,\sffamily]{Kerning=On,Numbers=OldStyle,Ligatures=Common}
 % Package `unicode-math' uses Latin Modern Math as default math font:
 \RequirePackage{unicode-math}
+% A default math font (which presumably you do not need) is chosen here.
+% You may over-ride using `unicode-math' \setmathfont in Preamble.
+\IfFontExistsTF{Libertinus Math}{
+  \setmathfont[BoldFont={libertinusmath-regular.otf}]{libertinusmath-regular.otf}
+}{
+  \IfFontExistsTF{Latin Modern Math}{}{% will be set AtBeginDocument by unicode-math.
+  }{ % This allows you to proceed without a real math font (but then you cannot print math):
+    \setmathfont[BoldFont={NovelDeco.otf}]{NovelDeco.otf} % has a fake math feature
+    \PackageWarning{novel}{Ignore this warning if you used \string\setmathfont.^^J%
+     Did not find suitable default math font. Used NovelDeco.otf.^^J%
+     But NovelDeco does not have real math symbols.^^J%
+     Math notation will print incorrectly. No problem if no math.^^J}%
+  }
+}%
 %
 %% This could have been easier, but fontspec allows mandatory and optional
 %   arguments to appear in either order. We wish to store the fontnames

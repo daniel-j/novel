@@ -1139,27 +1139,20 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 
 <h4 id="h4.2.1">4.2.1. Parent (Main) Font and Size</h4>
 <div class="d4" id="d4.2.1">
-<p class="noindent">The <i>novel</i> class has its own way of specifying the main font. You do <i>not</i> write <code>\usepackage{fontname}</code> or <code>\RequirePackage{fontname}</code>. If you do that, then a warning or error will result, and in any case the font you get won't be the one you were expecting.</p>
-<p>Choose only Open Type or TrueType fonts, not the ancient Type 1 (PostScript) or Metafonts. The font you choose does not have to be part of any TeX package, because you do not need any <i>*.sty</i> file or TeX metrics. All of that is built into the font itself. This is thanks to <i>LuaLaTeX</i> and the built-in <i>fontspec</i> package.</p>
+<p class="item"><b>A.</b> In <i>novel</i> you do not directly set the main font (also known as <i>roman default</i>). Instead, you set a parent font, from which the main font is derived.</p>
+<p class="item"><b>B.</b> The default parent font is <i>Libertinus Serif</i>, which is an up-to-date branch of <i>Linux Libertine O</i>. You must install it as package <i>libertinus</i>. If you do not have this font, then <i>Latin Modern Roman</i> will be used as fallback, but it is not really suitable for use in printed fiction.</p>
+<p class="item"><b>C.</b> Choose only Open Type or TrueType fonts, not the ancient Type 1 (PostScript) or Metafonts. The font you choose does not have to be part of any TeX package, because you do not need any <i>*.sty</i> file or TeX metrics. All of that is built into the font itself. This is thanks to <i>LuaLaTeX</i> and the built-in <i>fontspec</i> package.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/>  You do <i>not</i> write <code>\usepackage{fontname}</code> or <code>\RequirePackage{fontname}</code>. If you do that, then a warning or error will result, and in any case the font you get won't be the one you were expecting.</p>
 
 <h5 id="h4.2.1.1">4.2.1.1. <code>\SetParentFont[<em>features</em>]{<em>fontname</em>}</code></h5>
 <div class="d5" id="d4.2.1.1">
-<p class="item"><b>A.</b> In <i>novel</i> you set a parent font (<i>parentfont</i>), which is the ancestor of several pre-defined font styles, including the main text font. In Preamble:</p>
+<p class="item"><b>A.</b> In <i>novel</i> you set a parent font, which is the ancestor of several pre-defined font styles, including the main font. In Preamble:</p>
 <p class="code"><code>\SetParentFont[<em>features</em>]{<em>fontname</em>}</code><p>
 <p class="item"><b>B.</b> The command uses <i>fontspec</i> syntax, which is reviewed in <a href="#hE">Appendix E</a>, and described in full detail by the <i>fontspec</i> package documentation.</p>
-<p class="item"><b>C.</b> When you use <code>\SetParentFont</code>, its features and fontname are stored as strings in macros <code>\parentfontfeatures</code> and <code>\parentfontname</code>. If you don't use <code>\SetParentFont</code> then the default values will be provided. In any case, you can use <code>\parentfontfeatures</code> and <code>\parentfontname</code> as arguments to other font commands.</p>
-<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> In all font setting commands (<code>\SetParentFont</code> and others), you may <i>not</i> use a line break anywhere in the command. If you wish to break your code into multiple lines for ease of reading in the source document, be sure to use the percent symbol % at the end of each line, so that the line return character is nullified, like this:</p>
-<p class="code"><code>
-\SetParentFont[%<br/>
-Feature=Setting,%<br/>
-AnotherFeature=Setting,%<br/>
-]{fontname}
-</code></p>
-<p class="item"><b>E.</b> <b>Don't be intimidated.</b> If you don't use this command, then <i>novel</i> will attempt to use <i>Libertinus Serif</i> as the parent font family. It carries the SIL Open Font License, and was carefully chosen for its suitability in free-flowing text, such as a novel. It is a recent fork of the <i>Linux Libertine O</i> font family.</p>
-<p class="item"><b>F.</b> The last-choice default is <i>Latin Modern Roman</i>, which really is not suitable for novels; but surely your TeX installation has it.</p>
-<p class="item"><b>G.</b> If you have the proper license, you can use a commercial font. For example:</p>
+<p class="item"><b>C.</b> Whether you use <code>\SetParentFont</code> or accept the default, the features and fontname are stored as strings in macros <code>\parentfontfeatures</code> and <code>\parentfontname</code>. You may use <code>\parentfontfeatures</code> and <code>\parentfontname</code> as arguments to other font commands.</p>
+<p class="item"><b>D.</b> If you have the proper license, you can use a commercial font. For example:</p>
 <p class="code"><code>\SetParentFont{Adobe Garamond Pro}</code></p>
-<p><b>See how easy that is?</b> By default, <i>novel</i> will apply TeX Ligatures and Kerning to the <i>parentfont</i> and all its descendants. Common Ligatures and OldStyle numbers will be added for the <i>mainfont</i>. This is ideal for fiction.</p>
+<p>See how easy that is? By default, <i>novel</i> will apply TeX Ligatures and Kerning to the parent font and all its descendants. Common Ligatures and OldStyle numbers will be added for the main font. This is ideal for fiction.</p>
 
 </div><!-- end 4.2.1.1 -->
 
@@ -1175,14 +1168,14 @@ AnotherFeature=Setting,%<br/>
 </div><!-- end 4.2.1.2 -->
 </div><!-- end 4.2.1 -->
 
-<h4 id="h4.2.2">4.2.2. Descendant Fonts: mainfont, chapterfont, subchfont, headfont</h4>
+<h4 id="h4.2.2">4.2.2. Descendant Fonts: main font, chapter font, subch font, head font</h4>
 <div class="d4" id="d4.2.2">
-<p class="item"><b>A.</b> The descendant fonts are automatically set, as variations of the parent font:</p>
+<p class="item"><b>A.</b> The descendant fonts are automatically set, as variations of the <i>parent font</i>:</p>
 <p class="centerimg"><img src="html-resources/font-tree.png" width="600" height="177" title="font tree" alt="font tree"/></p>
-<p>For example, the <i>mainfont</i> uses the parent font family. It has TeX Ligatures and Kerning (inherited from the parent font), and also Common Ligatures and OldStyle numbers. The <i>mainfont</i> is not configured directly. Instead, configure the <i>parentfont</i>, then the <i>mainfont</i> (and other descendants) will obey. For example, if you don't want OldStyle numbers:</p>
+<p>For example, the <i>main font</i> uses the <i>parent font</i> family. It has TeX Ligatures and Kerning (inherited from the <i>parent font</i>), and also Common Ligatures and OldStyle numbers. The <i>main font</i> is not configured directly. Instead, configure the <i>parent font</i>, then the <i>main font</i> (and other descendants) will obey. For example, if you don't want OldStyle numbers:</p>
 <p class="code"><code>\SetParentFont[<em>Numbers=Lining</em>]{<em>fontname</em>}</code></p>
-<p>Then, Lining numbers will be used for the <i>mainfont</i> (and other descendants).<p>
-<p class="item"><b>B.</b> If you don't like the defaults, you can address the other descendant fonts directly, in Preamble:</p>
+<p>Then, Lining numbers will be used for the <i>main font</i> (and other descendants).<p>
+<p class="item"><b>B.</b> If you don't like the defaults, you can set the other descendant fonts directly, in Preamble:</p>
 <p class="code">
 <code>\SetChapterFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.1">5.1.3.1</a></em><br/>
 <code>\SetSubchFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.1">5.1.3.1</a></em><br/>
@@ -1193,7 +1186,7 @@ AnotherFeature=Setting,%<br/>
 
 <h4 id="h4.2.3">4.2.3. Advanced: The Deco Font</h4>
 <div class="d4" id="d4.2.3">
-<p class="item"><b>A.</b> Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <i>\decoglyph</i> and <i>\acronym</i> commands.</p>
+<p class="item"><b>A.</b> Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <code>\decoglyph</code> and <code>\acronym</code> commands.</p>
 <p class="item"><b>B.</b> Normally, you do not need to configure this font, as it is automatic. The only reason for changng it is if you are an advanced user, who wishes to use a substitute font with different decorations. However, you may <i>not</i> specify just any font! The substitute must be an edited version of <i>NovelDeco.otf</i>, with a different font name. If you don't know what that means, then don't do it.</p>
 <p class="code">
 <code>\SetDecoFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.3">5.1.3.3</a></em>
@@ -1202,25 +1195,29 @@ AnotherFeature=Setting,%<br/>
 
 <h4 id="h4.2.4">4.2.4. Advanced: Mono, Sans, and Math Fonts</h4>
 <div class="d4" id="d4.2.4">
-<p class="item"><b>A.</b> There are several pre-defined fonts that do not descend from the <i>parentfont</i>. In each case, an appropriate default font is selected. You will probably never need to use them; but TeX being what it is, default fonts are chosen "whether you like it or not."</p>
-<p class="item"><b>B.</b> The default sans-serif font will be <i>Libertinus Sans</i> if available. Second choice is <i>Linux Biolinum O</i>. Third choice is <i>Latin Modern Sans</i>. To choose your own, use this command in Preamble, with <i>fontspec</i> syntax:</p>
+<p class="item"><b>A.</b> There are several pre-defined fonts that do not descend from the <i>parent font</i>. In each case, an appropriate default font is selected. You will probably never need to use them; but TeX being what it is, default fonts are chosen "whether you like it or not."</p>
+<p class="item"><b>B.</b> The default sans-serif font will be <i>Libertinus Sans</i> if available. If not, the fallback font is <i>Latin Modern Sans</i>. To choose your own, use this command in Preamble, with <i>fontspec</i> syntax:</p>
 <p class="code"><code>\SetSansFont[<em>features</em>]{<em>fontname</em>}</code></p>
-<p class="item"><b>C.</b> The default monospaced font will be <i>Libertinus Mono</i> if available. Second choice is <i>Linux Libertine Mono O</i>. Third choice is <i>Latin Modern Mono</i>. To choose your own, use this command in Preamble, with <i>fontspec</i> syntax:</p>
+<p class="item"><b>C.</b> The default monospaced font will be <i>Libertinus Mono</i> if available. If not, the fallback font is <i>Latin Modern Mono</i>. To choose your own, use this command in Preamble, with <i>fontspec</i> syntax:</p>
 <p class="code"><code>\SetMonoFont[<em>features</em>]{<em>fontname</em>}</code></p>
-<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you need a math font, then may I gently suggest that maybe <i>novel</i> is not the right document class for you? Nevertheless, the (hopefully never used) math font will be <i>Libertinus Math</i>, or <i>Asana-Math</i>, or <i>Latin Modern Math</i>. You can choose your own in Preamble, using the built-in <i>unicode-math</i> package notation:</p>
-<p class="code"><code>\SetMathFont[<em>features</em>]{<em>fontname</em>}</code></p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you need a math font, then may I gently suggest that maybe <i>novel</i> is not the right document class for you?</p>
+<p>Nevertheless, <i>Libertinus Math</i> is loaded if available; otherwise <i>Latin Modern Math</i>.</p>
+<p>If neither of those fonts are found, then <i>NovelDeco.otf</i> will be loaded as a fake math font, with no actual math symbols. That allows you to proceed without a real math font. But if you attempt to print math, it will look wrong.</p>
+<p>You may choose your own math font using <code>\setmathfont</code> from package <i>unicode-math</i>. See that package documentation for details.</p>
 </div><!-- end 4.2.4 -->
 
 <h4 id="h4.2.5">4.2.5. Advanced: Defining New Font Commands</h4>
 <div class="d4" id="d4.2.5">
 <p class="item"><b>A.</b> You can define new font commands in Preamble. The syntax depends on whether the new font is part of a family (where you might have bold and italic variants), or just a single file (no variants). If part of a family, use <code>\NewFontFamily</code>. If alone, use <code>\NewFontFace</code>.</p>
-<p>The <code>\NewFontFamily</code> command (or <code>\NewFontFace</code>) takes three arguments: First, the name you assign to the new font command is required. Second, font features are optional. Third, the font name is required. The <i>fontspec</i> syntax is used:</p>
+<p>The <code>\NewFontFamily</code> command (or <code>\NewFontFace</code>) takes three arguments: First, the name you assign to the new font command is required. Second, font features are optional. Third, the font name is required. The <i>fontspec</i> syntax is used in Preamble:</p>
 <p class="code"><code>
 \NewFontFamily<em>\pickaname</em>[<em>features</em>]{<em>fontfamily</em>}<br/>
 \NewFontFace<em>\pickaname</em>[<em>features</em>]{<em>singlefont</em>}
 </code></p>
+<p>In the document body, you use the new font command:</p>
+<p class="code"><code>{\pickaname Text in the font selected by pickaname command.}</code></p>
 <p class="item"><b>B.</b> Note that if you define a font <em>family</em> when you should have just defined a font <em>face</em>, there will be complaints in the log file, because the font loaded cannot find the (nonexistent) other members of the family. But the document will compile. On the other hand, if you define a font <em>face</em> when you should have defined a font <em>family</em>, then commands for bold or italic will have no effect, since the other family members were not loaded. Again, the document will compile.</p>
-<p class="item"><b>C.</b> <b>Example:</b> Suppose your work is science fiction, and one if its characters is a talking robot. You wish to depict its utterances in a robotic-looking font, which will be called using a new <code>\robovoice</code> command. You shop around, and find that the <em>Orbitron</em> font suits your purpose, except that it is too large compared to your <em>mainfont</em>. So, you scale it.</p>
+<p class="item"><b>C.</b> Example: Suppose your work is science fiction, and one if its characters is a talking robot. You wish to depict its utterances in a robotic-looking font, which will be called using a new <code>\robovoice</code> command. You shop around, and find that the <em>Orbitron</em> font suits your purpose, except that it is too large compared to your <i>main font</i>. So, you scale it.</p>
 <p>In the Preamble, you define the new font command:</p>
 <p class="code"><code>\NewFontFace\robovoice[Scale=0.8]{Orbitron} % not part of a family</code></p>
 <p>After some experimentation, you realize that the \robovoice letters need to be spread apart a bit. Do not use the standard LaTeX <code>\textls</code> command. Instead, go back and change the font definition like this:
@@ -1234,11 +1231,11 @@ AnotherFeature=Setting,%<br/>
 </code></p>
 <p>The result:</p>
 <p class="centerimg"><img src="html-resources/human-robot-talk.png" width="483" height="127" alt="conversation, human-robot"/></p>
-<p>Caution: If you are using a new font within body text (as above), then it is a bad idea to use Scale greater than 1.0. Reason: An excessively tall font will cause lines to spread apart.</p>
-<p class="item"><b>D.</b> <img class="floatright" src="html-resources/fluffy-conspiracy.png" width="265" height="409" alt="the fluffy conspiracy"/> <b>Example:</b> Suppose that you wish to style the title of your book, in a font that is not used for other things such as chapter titles. You purchase a license for the <em>Bernhard Modern Std</em> fonts, in Regular and Italic.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Caution: If you are using a new font within body text (as above), then it is a bad idea to use Scale greater than 1.0. Reason: An excessively tall font will cause lines to spread apart.</p>
+<p class="item"><b>E.</b> <img class="floatright" src="html-resources/fluffy-conspiracy.png" width="265" height="409" alt="the fluffy conspiracy"/> Example: Suppose that you wish to style the title of your book, in a font that is not used for other things such as chapter titles. You purchase a license for the <em>Bernhard Modern Std</em> fonts, in Regular and Italic.</p>
 <p>In the Preamble:</p>
 <p class="code"><code>\NewFontFamily\booktitlefont{Bernhard Modern Std}</code></p>
-<p>The title page, using <code>\charscale</code> for size:</p>
+<p>The title page, using <code><a href="#h6.1.2">\charscale</a></code> for size:</p>
 <p class="code"><code>
 \thispagestyle{empty}<br/>
 \vspace*{7\nbs}<br/>
@@ -1361,7 +1358,7 @@ Default author verso, title recto.</p>
 <p>&bull; In the Preamble, you must use one of the above <code>\SetHeadFootStyle</code> choices to pick a starting point, in terms of whether or not there is a header and/or footer. <em>This is required, so that the layout engine knows how to calculate space.</em> After that, write the <i>fancyhdr</i> code for your custom header/footer in the Preamble. It will over-ride the numerical style in terms of appearance, but occupy the same space.</p>
 <p>&bull; You cannot use a header or footer with more than one line. No exceptions.</p>
 <p>&bull; See the file <i>novel-HeadFootStyles.sty</i> for how it is done in the pre-configured styles. In the file, the relevant portion follows <em>Look here for the pre-defined styles, for use as models.</em></p>
-<p>&bull; Particularly note that your own style will not automatically use the <i>headfont</i>, or add extra space between letters, unless you include the necessary code in your own definition. Do not use the <code>\textls</code> command.</p>
+<p>&bull; Particularly note that your own style will not automatically use the <i>head font</i>, or add extra space between letters, unless you include the necessary code in your own definition. Do not use the <code>\textls</code> command.</p>
 <p>&bull; No cheating! If you choose a numerical style that does not have a header, then do not attempt to write a custom style that includes a header. Same with footer. Also, if you you choose a numerical style with both header and footer, then you cannot only customize one of them; you must customize both.</p>
 </div><!-- end 4.3.3.2 -->
 </div><!-- end 4.3.3 -->
@@ -1384,19 +1381,19 @@ Default author verso, title recto.</p>
 
 <h5 id="h4.3.4.2">4.3.4.2. <code>\SetHeadFont[<em>features</em>]{<em>font</em>}</code></h5>
 <div class="d5" id="d4.3.4.2">
-<p class="item"><b>A.</b> The <i>novel</i> pre-configured header/footer styles automatically use the <em>headfont</em>, which is pre-defined as a variation of the parent font: scaled to slightly smaller size, using lining numbers (if available), and small caps (if available). This is a general-purpose style, widely used in fiction. It may not be the most artistic, but it is unlikely to cause visual distraction:</p>
-<p class="centerimg"><img src="html-resources/headfont-default.png" width="419" height="81" title="default headfont" alt="default headfont"/></p>
-<p class="item"><b>B.</b> If you would like to use something else as <i>headfont</i>, use <code>\SetHeadFont</code> to define it by its font name and Open Type features.</p>
+<p class="item"><b>A.</b> The <i>novel</i> pre-configured header/footer styles automatically use the <em>head font</em>, which is pre-defined as a variation of the parent font: scaled to slightly smaller size, using lining numbers (if available), and small caps (if available). This is a general-purpose style, widely used in fiction. It may not be the most artistic, but it is unlikely to cause visual distraction:</p>
+<p class="centerimg"><img src="html-resources/headfont-default.png" width="419" height="81" title="default head font" alt="default head font"/></p>
+<p class="item"><b>B.</b> If you would like to use something else as <i>head font</i>, use <code>\SetHeadFont</code> to define it by its font name and Open Type features.</p>
 <p>In the simplest case, you merely pick an Open Type (or TrueType) font, and <i>novel</i> automatically adds some Open Type features, including small caps:</p>
 <p class="code"><code>\SetHeadFont{Roboto}</code></p>
-<p class="centerimg"><img src="html-resources/headfont-roboto.png" width="419" height="81" title="Roboto headfont" alt="Roboto headfont"/></p>
-<p class="item"><b>C.</b> The above example is not best if your style has header text, because the <i>headfont</i> is too pronounced, compared to the main text. A more complex example uses <i>fontspec</i> syntax to customize the Open Type Features:</p>
+<p class="centerimg"><img src="html-resources/headfont-roboto.png" width="419" height="81" title="Roboto head font" alt="Roboto head font"/></p>
+<p class="item"><b>C.</b> The above example is not best if your style has header text, because the <i>head font</i> is too pronounced, compared to the main text. A more complex example uses <i>fontspec</i> syntax to customize the Open Type Features:</p>
 <p class="code"><code>\SetHeadFont[Scale=0.75,Numbers=Lining,%<br/>
 Letters=SmallCaps,%<br/>
 Letters=UppercaseSmallCaps,%<br/>
 ItalicFont=Montserrat-ExtraLightItalic.otf]%<br/>
 {Montserrat-ExtraLight.otf}</code></p>
-<p class="centerimg"><img src="html-resources/headfont-montserrat-el.png" width="419" height="81" title="Montserrat EL headfont" alt="Montserrat EL headfont"/></p>
+<p class="centerimg"><img src="html-resources/headfont-montserrat-el.png" width="419" height="81" title="Montserrat EL head font" alt="Montserrat EL head font"/></p>
 <p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you do <i>not</i> want SmallCaps to be automatically added, use <code>Letters=ResetAll</code> as a feature:</p>
 <p class="code"><code>\SetHeadFont[Letters=ResetAll]{\parentfontname}</code></p>
 <div style="clear:both"></div>
@@ -1415,11 +1412,11 @@ ItalicFont=Montserrat-ExtraLightItalic.otf]%<br/>
 
 <h5 id="h4.3.4.4">4.3.4.4. <code>\SetPageNumberStyle{<em>code using \thepage</em>}</code></h5>
 <div class="d5" id="d4.3.4.4">
-<p class="item"><b>A.</b> By default, the page number is styled using <i>headfont</i>, but without small caps (so that page roman xiv does not show as XIV).</p>
+<p class="item"><b>A.</b> By default, the page number is styled using <i>head font</i>, but without small caps (so that page roman xiv does not show as XIV).</p>
 <p class="item"><b>B.</b> If you wish to change how the page number is displayed, you can style it using <code>\SetPageNumber</code> with an argument that uses <code>\thepage</code>. Examples:</p>
 <p class="code" style="text-indent:0px"><code>\SetPageNumberStyle{\textit{\thepage}} % Page number in italics.<br/>
 \SetPageNumberStyle{-- \thepage{} --} % En-dashes, head/foot style 3 or 5.</code></p>
-<p class="item"><b>C.</b> The <i>headfont</i> is applied automatically, unless you over-ride it in your code. For example, suppose you would like the page numbers (but not anything else in header/footer) to be in a different font, which you have defined in Preamble as <code>\yourpnfont</code> using <code>\NewFontFamily</code> or <code>\NewFontFace</code>. Then you could write:</p>
+<p class="item"><b>C.</b> The <i>head font</i> is applied automatically, unless you over-ride it in your code. For example, suppose you would like the page numbers (but not anything else in header/footer) to be in a different font, which you have defined in Preamble as <code>\yourpnfont</code> using <code>\NewFontFamily</code> or <code>\NewFontFace</code>. Then you could write:</p>
 <p class="code"><code>\SetPageNumberStyle{{\yourpnfont\thepage}}</code> % note double braces</p>
 <p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Avoid over-doing it. If you are tempted to use a macro that counts page numbers backwards, or writes them upside-down, be aware that your print service will likely reject it. Anyway, it has already been done in fiction.</p>
 <div style="clear:both"></div>
@@ -1432,7 +1429,7 @@ ItalicFont=Montserrat-ExtraLightItalic.otf]%<br/>
 <p class="item"><b>C.</b> <img class="floatright" src="html-resources/emblembar.png" width="380" height="104" alt="simple emblems using vertical bar"/>&bull; Most books do not use an emblem. When they do, it is typically a vertical bar, or a bullet, like this:</p>
 <p class="code"><code>\SetHeadFootStyle{4}</code></p>
 <p class="code"><code>\SetEmblems{|}{|}</code></p>
-<p class="item"><b>D.</b> The font used for emblems will be the same as the <i>headfont</i>, unless you specifically code the emblem to use a different font, or unless you use one of the built-in <code>\decoglyph</code> codes.</p>
+<p class="item"><b>D.</b> The font used for emblems will be the same as the <i>head font</i>, unless you specifically code the emblem to use a different font, or unless you use one of the built-in <code>\decoglyph</code> codes.</p>
 <p class="item"><b>E.</b> The verso and recto emblems may be different. If you set one side, you must also set the other. Blanks are allowed.</p>
 <p class="item"><b>F.</b> <img class="floatright" src="html-resources/emblemdingbats.png" width="380" height="104" alt="dingbat emblems"/>&bull; Emblems may be styled. For example, the header emblems shown at right were produced using the code below. Dingbats from the NovelDeco font were specified, adjusted for size and position.</p>
 <p style="clear:both" class="code"><code>\SetEmblems{\charscale{1.1}{\raisebox{-0.05em}{\decoglyph{l9825}}}}%</code></p>
@@ -1460,7 +1457,7 @@ ItalicFont=Montserrat-ExtraLightItalic.otf]%<br/>
 <p class="item"><b>C.</b> These commands can be used <i>both</i> in Preamble <i>and</i> in the document body. Whatever you set will take effect immediately (for pages that have header text) and remain in effect until changed by repeating these commands. For example, you might want to do that for a collection of short stories, or if your book has a Preface.</p>
 <p class="item"><b>D.</b> You may use ordinary LaTeX styling commands for the text:</p>
 <p class="code"><code>\SetRectoHeadText{The \emph{Bad Boy} Chronicles}</code></p>
-<p>You may also do more complicated things, such as setting certain words in a font other than the <i>headfont</i>. This is not advised, because you do not want to distract the reader from the main text; but it can be done.</p>
+<p>You may also do more complicated things, such as setting certain words in a font other than the <i>head font</i>. This is not advised, because you do not want to distract the reader from the main text; but it can be done.</p>
 <p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Avoid bold. Avoid underline. Really. Don't do it. No, no, no!</p>
 </div><!-- end 4.3.4.6 -->
 </div><!-- end 4.3.4 -->
@@ -1569,9 +1566,9 @@ In this context, "folio" means page number. The header (if any) is blank. If the
 <p class="item"><b>A.</b> These global commands may be used in Preamble. They create font commands <code>\chapterfont</code> and <code>\subchfont</code> that may be used to style text anywhere in your document, like this:</p>
 <p class="code"><code>{\chapterfont <em>text</em>}<br/>
 {\subchfont <em>text</em>}</code></p>
-<p class="item"><b>B.</b> The <i>chapterfont</i> is automatically applied to text in <code>\ChapterTitle</code> commands.</p>
+<p class="item"><b>B.</b> The <i>chapter font</i> is automatically applied to text in <code>\ChapterTitle</code> commands.</p>
 <p class="item"><b>C.</b> The <i>subch</i> font is automatically applied to text in chapter subtitles (see below).</p>
-<p class="item"><b>D.</b> These fonts are pre-configured, based on the document's parent font. They have TeX ligatures and kerning, and use Lining numbers instead of Old Style. The <i>chapterfont</i> is scaled at 1.6, and the <i>subchfont</i> is scaled at 1.2, compared to normal font size. Ordinary (common) ligatures are not used, because such ligatures are best avoided with enlarged text.</p>
+<p class="item"><b>D.</b> These fonts are pre-configured, based on the document's parent font. They have TeX ligatures and kerning, and use Lining numbers instead of Old Style. The <i>chapter font</i> is scaled at 1.6, and the <i>subch font</i> is scaled at 1.2, compared to normal font size. Ordinary (common) ligatures are not used, because such ligatures are best avoided with enlarged text.</p>
 <p class="item"><b>E.</b> If you don't like the pre-configured fonts, then you may specify your own, using <i>fontspec</i> syntax. Here is what the default codes look like:</p>
 <p class="code"><code>\SetChapterFont[Numbers=Lining,Scale=1.6]{\parentfont}<br/>
 \SetSubchFont[Numbers=Lining,Scale=1.2]{\parentfont}</code></p>
@@ -1580,7 +1577,7 @@ In this context, "folio" means page number. The header (if any) is blank. If the
 <h5 id="h5.1.3.2">5.1.3.2. <code>\ChapterTitle[<em>alignment</em>]{<em>text</em>}</code><br/>
 <span class="dbloc">5.1.3.2. &nbsp; </span><code>\ChapterSubtitle[<em>alignment</em>]{<em>text</em>}</code></h5>
 <div class="d5" id="d5.1.3.2">
-<p class="item"><b>A.</b> Text within <code>\ChapterTitle</code> is styled using the <i>chapterfont</i>, and text within <code>\ChapterSubtitle</code> is automatically styled using the <i>subchfont</i>.</p>
+<p class="item"><b>A.</b> Text within <code>\ChapterTitle</code> is styled using the <i>chapter font</i>, and text within <code>\ChapterSubtitle</code> is automatically styled using the <i>subch font</i>.</p>
 <p class="item"><b>B.</b> You can locally over-ride these fonts, using font commands in the text.</p>
 <p class="item"><b>C.</b> The optional <i>alignment</i> controls how the element is horizontally placed. Choices are <i>l</i>, <i>c</i>, <i>r</i> (left, center, right). Default <i>c</i>.</p>
 <p class="item"><b>D.</b> You don't have to use either of these commands. Or, you can use either of them more than once! All these commands do is style the text. They do not have any meaning that is controlled by other macros.</p>
@@ -1673,8 +1670,8 @@ In the latter days of the Dorf dynasty, a marvelous apparition sent the King's g
 
 <h4 id="h5.2.2">5.2.2. <code>\QuickChapter[<em>linelength</em>]{<em>chapter title</em>}</code></h4>
 <div class="d4" id="d5.2.2">
-<p class="item"><b>A.</b> The <code>\QuickChapter</code> command inserts two blank lines. In the gap, the chapter title is left-justified using <i>subchfont</i> (not <i>chapterfont</i>). It is slightly raised from the normal baseline, because this looks better; but the following text is back on-grid. By default, the start of the following text will be un-indented.</p>
-<p class="item"><b>B.</b> If the optional <i>linelength</i> is provided, then a dash will be written after the title, at the position and thickness typical of the em dash in <i>subchfont</i>. If <i>linelength</i> is specified in units of length, then that will be the length of the line. But if <i>linelength</i> is an asterisk, then the line will fill to the right margin.</p>
+<p class="item"><b>A.</b> The <code>\QuickChapter</code> command inserts two blank lines. In the gap, the chapter title is left-justified using <i>subch font</i> (not <i>chapter font</i>). It is slightly raised from the normal baseline, because this looks better; but the following text is back on-grid. By default, the start of the following text will be un-indented.</p>
+<p class="item"><b>B.</b> If the optional <i>linelength</i> is provided, then a dash will be written after the title, at the position and thickness typical of the em dash in <i>subch font</i>. If <i>linelength</i> is specified in units of length, then that will be the length of the line. But if <i>linelength</i> is an asterisk, then the line will fill to the right margin.</p>
 <p class="item"><b>C.</b> This command is probably too obtrusive for mere scene changes within a chapter.</p>
 <p>Example:</p>
 <p class="code"><code><small>Then he looked at me with a sneer, and barked, &ldquo;You better haul your can over to Vinny's joint, before the Boss finds out.&rdquo;\par<br/>
@@ -1907,7 +1904,7 @@ The NATO alliance...\par<br/>
 The \acronym{NATO} alliance...\par<br/>
 The \allsmcp{NATO} alliance...\par
 </code></p>
-<p>Whether or not to use the \acronym command, is up to you. Since its letters are drawn from the <i>NovelDeco</i> font, rather than your main font, there may be some stylistic differences if your <i>parentfont</i> is not Libertinus&nbsp;Serif.</p>
+<p>Whether or not to use the \acronym command, is up to you. Since its letters are drawn from the <i>NovelDeco</i> font, rather than your main font, there may be some stylistic differences if your <i>parent font</i> is not Libertinus&nbsp;Serif.</p>
 </div><!-- end 6.2.4 -->
 
 <h4 id="h6.2.5">6.2.5. Local Tracking Adjustment</h4>
@@ -1932,7 +1929,7 @@ I\hspace{-.05em}t was a dark and stormy night.
 <div class="d4" id="d6.2.6">
 <p class="item"><b>A.</b> The following font commands are pre-defined in <i>novel</i>: \rmfamily (alias <a href="#h4.2.2">\mainfont</a>) <a href="#h4.2.4">\sffamily</a> <a href="#h4.2.4">\ttfamily</a> <a href="#h5.1.3.1">\chapterfont</a> <a href="#h5.1.3.1">\subchfont</a> <a href="#h4.3.4.2">\headfont</a> <a href="#h4.2.3">\decofont</a> <a href="#hF.4">\decodropcapfont</a>.</p>
 <p class="item"><b>B.</b> Although most of the pre-defined font commands are automatically applied in specific situations, you may apply any of them yourself, in any location, using this syntax:</p>
-<p class="code"><code>{\subchfont This text will be in the subchfont.}</code></p>
+<p class="code"><code>{\subchfont This text will be in the subch font.}</code></p>
 <p class="item"><b>C.</b> If you wish, use <i>fontspec</i> syntax to create additional font selection commands. See <a href="#h4.2.5">section 4.2.5</a> and <a href="#hE">Appendix E</a> for the essentials. For example, if you have the licensed font, this code would define the font selection command <code>\agarp</code> in Preamble:</p>
 <p class="code"><code>\NewFontFamily\agarp[Numbers=OldStyle,Ligatures=Common]{Adobe Garamond Pro}</code></p>
 <p>Then you would apply it to text:</p>
@@ -3183,7 +3180,7 @@ Some Frequently-Used Open Type Features
 <tr>
 <td><p>common ligatures</p></td>
 <td><p>liga</p></td>
-<td><p>Ligatures=Common<br/><em>enabled: mainfont, sansfont</em></p></td>
+<td><p>Ligatures=Common<br/><em>enabled: main font, sans font</em></p></td>
 </tr>
 <tr>
 <td><p>Tex ligatures</p></td>
@@ -3208,7 +3205,7 @@ Some Frequently-Used Open Type Features
 <tr>
 <td><p>oldstyle numerals</p></td>
 <td><p>onum</p></td>
-<td><p>Numbers=OldStyle<br/><em>enabled: mainfont, sansfont</em></p></td>
+<td><p>Numbers=OldStyle<br/><em>enabled: main font, sans font</em></p></td>
 </tr>
 </tbody>
 </table>
@@ -3299,7 +3296,7 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 
 <h3 id="hF.2">F.2. \dropcap[<em>options</em>]{<em>letter or image</em>}</h3>
 <div class="d3" id="dF.2">
-<p class="noindent">To ensure that this command works as described here, verify that font <i>NovelDeco.otf</i> is at least version 1.48. If you use your own <i>decofont</i>, be sure that it is based on at least that version. Also, clear <i>luatex-cache</i> so that the version is updated. If you do not do that, the <code>\dropcap</code> command still works, but the appearance of the result will differ.</p>
+<p class="noindent">To ensure that this command works as described here, verify that font <i>NovelDeco.otf</i> is at least version 1.48. If you use your own <i>deco font</i>, be sure that it is based on at least that version. Also, clear <i>luatex-cache</i> so that the version is updated. If you do not do that, the <code>\dropcap</code> command still works, but the appearance of the result will differ.</p>
 <p class="item"><b>A.</b> The <code>\dropcap</code> command is based on <i>lettrine</i> technology, but has different options and behavior.</p>
 <p class="item"><b>B.</b> The <code>\dropcap</code> command accepts the following options as <span style="white-space:nowrap">comma-separated</a> key values:</p>
 <p class="code"><code>lines=<em>integer</em></code> &nbsp; Number of lines indented by the drop cap. Default 3.</p>
@@ -3416,7 +3413,6 @@ There are many other commands available, but they are not specific to novel clas
 <a href="#h4.2.3">\SetDecoFont{<em>NovelDeco.otf</em>}</a><br/>
 <a href="#h4.2.4">\SetSansFont{<em>Libertinus Sans</em>}</a><br/>
 <a href="#h4.2.4">\SetMonoFont{<em>Libertinus Mono</em>}</a><br/>
-<a href="#h4.2.4">\SetMathFont{<em>Libertinus Math</em>}</a> % unicode-math<br/>
 %%% HEADERS/FOOTERS:<br/>
 <a href="#h4.3.3">\SetHeadFootStyle{<em>1</em>}</a> % This style has headers only.<br/>
 <a href="#h4.3.4.1">\SetHeadJump{<em>1.5</em>}</a><br/>

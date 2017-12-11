@@ -167,18 +167,6 @@
   %
 \fi% end \if@gotdeco
 %
-% Math font is not needed, because `novel' does not typeset math.
-% If you have the Libertinus fonts installed, might as will specify for math.
-% Then Latin Modern Math if installed.
-% If not, NovelDeco.otf "fakes" math capability, just to fool the fontloader:
-\IfFontExistsTF{Libertinus Math}{
-  \setmathfont[BoldFont={libertinusmath-regular.otf}]{libertinusmath-regular.otf}
-}{
-  \IfFontExistsTF{Latin Modern Math}{}{% already set as default by unicode-math.
-  }{
-    \setmathfont[BoldFont={NovelDeco.otf}]{NovelDeco.otf}
-  }
-}%
 % New in version 1.48:
 \if@gotdeco
   \NewFontFace\decodropcapfont[RawFeature=+dcap]{\@decofontname}

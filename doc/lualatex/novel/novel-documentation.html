@@ -252,9 +252,8 @@ function closeall() {
     <ul id="u4">
       <li id="l4.1"><span class="n"></span><a href="#h4.1">4.1 Book Dimensions</a>
         <ul id="u4.1">
-          <li><a href="#h4.1.1">4.1.1 Trim Size</a></li>
-          <li><a href="#h4.1.2">4.1.2 Media Size, TrimBox</a></li>
-          <li><a href="#h4.1.3">4.1.3 Advanced: Cropmark Gap</a></li>
+          <li><a href="#h4.1.1">4.1.1 Trim Size, TrimBox</a></li>
+          <li><a href="#h4.1.2">4.1.2 Media Size, MediaBox</a></li>
         </ul>
       </li><!-- end 4.1 -->
       <li id="l4.2"><span class="n"></span><a href="#h4.2">4.2 Fonts, Normal Font Size</a>
@@ -591,7 +590,7 @@ function closeall() {
 <div id="main">
 <!-- **************************************************************************************** -->
 
-<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.46.4, 2017/12/07</span></h1>
+<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.46.4f, 2017/12/11</span></h1>
 <p class="noindent"><span id="screennoscript" class="screennoscript"><b>For enchanced navigation of this file, turn on JavaScript.</b></span></p>
 <div><script type="text/javascript">if(document.getElementById("screennoscript")){document.getElementById("screennoscript").style.display="none";}</script></div>
 <p class="noindent">The <i>novel</i> document class provides an integrated method for creating original works of fiction, such as a novel or collection of short stories. It may also be used for popular non-fiction, using design similar to that seen for fiction. It does not provide support for academic or mathematical works.</p>
@@ -809,21 +808,21 @@ function closeall() {
 <h3 id="h2.4">2.4. cropmarks <em>(do not use unless required)</em></h3>
 <div class="d3" id="d2.4">
 <p class="item"><img class="floatright" style="margin-top:6px" src="html-resources/cropmarks.png" width="205" height="265" title="cropmarks" alt="cropmarks"/><b>A.</b> May be used with or without <i>draft</i> option.</p>
-<p class="item"><b>B.</b> Ignored if Media Size is same as Trim Size.</p>
+<p class="item"><b>B.</b> Ignored if <a href="#h4.1.1">Trim Size</a> is same as <a href="#h4.1.2">Media Size</a>.</p>
 <p class="item"><b>C.</b> Do not load any package that provides other cropmarks.</p>
 <p class="item"><b>D.</b> Most print-on-demand services do NOT want crop marks (also known as trim marks). Do not use this option unless you are certain that you need crop marks!</p>
-<p class="item"><b>E.</b> Whether or not you use cropmarks: With PDF/X, the file contains invisible information (TrimBox) that is understood by automatic print/cut machines.</p>
-<p class="item"><b>F.</b> If Trim Size is placed off-center in Media Size, then only one pair of cropmarks will be visible.</p>
-<p class="item"><b>G.</b> Cropmarks are very basic. There is only one setting, which may be used in the Preamble:</p>
+<p class="item"><b>E.</b> Whether or not you use <code>cropmarks</code> option: In PDF/X, the file contains invisible information (TrimBox) that is understood by automatic print/cut machines.</p>
+<p class="item"><b>F.</b> If Trim Size is placed off-center in Media Size, then you will not see all four pairs of crop marks.</p>
+<p class="item"><b>G.</b> The crop marks are very basic. There is only one setting, which may be used in the Preamble:</p>
 <p class="code"><img class="floatright" style="margin-top:6px" src="html-resources/cropmarkgap.png" width="140" height="141" title="cropmark gap" alt="cropmark gap"/><code>\SetCropmarkGap{<em>length</em>}</code></p>
-<p>The cropmark gap is the distance between the Trim Box and where the crop lines begin. The purpose of the gap is so that the marks do not show on the trimmed paper, if the cut is a little bit off. In all cases, the far end of the cropmarks is 0.5in from the Trim Area. The gap is marked G in this diagram. The length must be least 0pt, and is more typically 0.125in or 0.250in. The default is 0.125in. </p>
+<p>In the accompanying diagram, the invisible TrimBox is shown as a green line. The cropmark gap is the distance from there to the black crop marks. Default is 0.125in (commonly used in the U.S.A.). In all cases, the far end of the crop marks is 0.5in from the TrimBox.</p>
 <div style="clear:both"></div>
 </div><!-- end 2.4 -->
 
 <h3 id="h2.5">2.5. cropview</h3>
 <div class="d3" id="d2.5">
 <p class="item"><img class="floatright" style="margin-top:6px" src="html-resources/cropview.png" width="132" height="203" title="cropview" alt="cropview"/><b>A.</b> Only effective with <i>draft</i> option. May NOT be used for final, print-ready PDF.</p>
-<p class="item"><b>B.</b> Ignored if Media Size is same as Trim Size.</p>
+<p class="item"><b>B.</b> Ignored if <a href="#h4.1.1">Trim Size</a> is same as <a href="#h4.1.2">Media Size</a>.</p>
 <p class="item"><b>C.</b> Instructs PDF viewer: Only display Trim Size on screen.</p>
 <p class="item"><b>D.</b> Helps to visualize trimmed book size, when Media Size is larger than Trim Size.</p>
 <p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Technical Info: Normally, the PDF CropBox is equal to the MediaBox. This option sets the CropBox equal to the TrimBox.</p>
@@ -832,12 +831,11 @@ function closeall() {
 
 <h3 id="h2.6">2.6. closecrop</h3>
 <div class="d3" id="d2.6">
-<p class="item"><img class="floatright" style="margin-top:6px" src="html-resources/closecrop.png" width="110" height="186" title="closecrop" alt="closecrop"/><b>A.</b> Only effective with <i>draft</i> option. May NOT be used for final, print-ready PDF.</p>
-<p class="item"><b>B.</b> Shrinks Trim Size and margins, so that text/head/foot just barely clears.</p>
-<p class="item"><b>C.</b> Does not waste visual space on a hand-held device.</p>
-<p class="item"><b>D.</b> Purpose: Helps to to visualize your own book, while traveling, before you make final edits.</p>
-<p class="item"><b>E.</b> This is NOT an e-book. It does not meet e-book standards, and cannot be changed to meet e-book standards.</p>
-<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Technical Info: First, the live area (text plus head/foot) is calculated from the original settings. Then, small margins are added, and the TrimSize is reduced to fit.</p>
+<p class="item"><img class="floatright" style="margin-top:6px" src="html-resources/closecrop.png" width="110" height="186" title="closecrop" alt="closecrop"/><b>A.</b> Only effective with <i>draft</i> option.</p>
+<p class="item"><b>B.</b> Minimizes white space surrounding the text/header/footer, so that the result may be viewed on a hand-held device at largest practical text size.</p>
+<p class="item"><b>C.</b> Purpose: Helps you to visualize your own book, while traveling, before you make final edits.</p>
+<p class="item"><b>D.</b> This is NOT an e-book. It does not meet e-book standards, and cannot be changed to meet e-book standards.</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Technical Info: First, the live area (text plus head/foot) is calculated from the original settings. Then, small margins are added, and the Trim Size is reduced to fit. So, the closecrop PDF size is not the same as in the print-ready PDF, although the page layout is the same.</p>
 <div style="clear:both"></div>
 </div><!-- end 2.6 -->
 
@@ -846,7 +844,7 @@ function closeall() {
 <p class="item"><b>A.</b> May NOT be used in draft mode. Only effective with PDF/X.</p>
 <p class="item"><b>B.</b> Copies internal XMP Metadata to a separate <i>jobname-XMPasXML.xml</i> file.</p>
 <p class="item"><b>C.</b> Not necessary. Only informative. Does not affect structure or content of PDF.</p>
-<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Technical Info: XMP packet may be isolated by editing the *.xml file, in a plain text editor (requires UNIX line endings, utf-8). Necessary edits are obvious.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Technical Info: XMP packet may be isolated by editing the *.xml file, in a plain text editor (requires utf-8). Necessary edits are obvious.</p>
 </div><!-- end 2.7 -->
 
 <h3 id="h2.8">2.8. coverart</h3>
@@ -1103,35 +1101,34 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <h3 id="h4.1">4.1. Book Dimensions</h3>
 <div class="d3" id="d4.1">
 
-<h4 id="h4.1.1">4.1.1. Trim Size</h4>
+<h4 id="h4.1.1">4.1.1. Trim Size and TrimBox</h4>
 <div class="d4" id="d4.1.1">
-<p class="item"><b>A.</b> <b>Trim Size</b> is the finished size of your book, width and height (but not thickness). In the case of softcover books, it is the exact size. In the case of hardcover books, where the cover is larger than the contents, it is (usually) the cover size that is measured, with the internal trim size being slightly smaller than nominal (some of the margins shaved away).</p>
-<p class="item"><b>B.</b> Your print service has a list of standard trim sizes. For fiction, you probably want creme (off-white) paper, which eliminates a few of the choices. Choice of size may also be limited by the distribution channels you choose.</p>
-<p class="item"><b>C.</b> Trim Size is set using this command in Preamble:</p>
+<p class="item"><b>A.</b> <b>Trim Size</b> is the finished size of your book, width and height (but not thickness). In the case of softcover books, it is the exact size.</p>
+<p>In the case of hardcover books, where the cover is slightly larger than the pages, your print service will tell you whether they mean the cover size or the page size.</p>
+<p class="item"><b>B.</b> PDF/X internally specifies the Trim Size as a rectangular <b>TrimBox</b>. This provides invisible instructions to an automated cutting machine, when the Trim Size is smaller than the actual paper sheet.</p>
+<p class="item"><b>C.</b> Your print service has a list of standard trim sizes. For fiction, you probably want "creme" (off-white) paper, which eliminates a few of the choices. Choice of size may also be limited by the distribution channels.</p>
+<p class="item"><b>D.</b> Trim Size is set using this command in Preamble:</p>
 <p class="code"><code>\SetTrimSize{<em>width</em>}{<em>height</em>}</code></p>
 <p>The width and height must have dimensions, such as <i>in</i> or <i>cm</i>.</p>
-<p class="item"><b>D.</b> If you do not specify the Trim Size, the default is <i>5.5in</i> wide, <i>8.5in</i> high. This is a widely-used "trade" size for softcover print-on-demand fiction in the U.S.A. If in doubt, leave the default.</p>
-<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you ever need to <i>retroactively</i> change Trim Size, see <a href="#hA">Appendix A</a>.</p>
-<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/>  Do not request a <em>mass-market paperback</em> Trim Size unless you really, truly, know what you are doing. Since you are not a major writer for a major publishing house, you don't know; so, don't do it.</p>
+<p class="item"><b>E.</b> If you do not specify the Trim Size, the default is <i>5.5in</i> wide, <i>8.5in</i> high. This is a widely-used "trade" size for softcover print-on-demand fiction in the U.S.A. If in doubt, leave the default.</p>
+<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you ever need to <i>retroactively</i> change Trim Size, see <a href="#hA">Appendix A</a>.</p>
+<p class="item" style="position:relative"><b>G.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/>  Do not request a <i>mass-market paperback</i> Trim Size unless you really, truly, know what you are doing. Since you are not a major writer for a major publishing house, you don't know; so, don't do it.</p>
 </div><!-- end 4.1.1 -->
 
-<h4 id="h4.1.2">4.1.2. Media Size and TrimBox</h4>
+<h4 id="h4.1.2">4.1.2. Media Size and MediaBox</h4>
 <div class="d4" id="d4.1.2">
-<p class="item"><b>A.</b> In PDF terminology, <b>Media Size</b> is the size of the PDF page. By default, it is identical to the Trim Size. Do not set it manually, unless you must.</p>
-<p class="item"><b>B.</b> Some print services insist that the Trim Size be floated in a larger Media Size, which is likely to be U.S. Letter or A4 paper. This quietly happens when you print at home: The printout is at tray paper size, whether you like it or not.</p>
-<p><img class="floatright" src="html-resources/mediasize.png" width="202" height="264" title="Trim Size floated in larger Media Size" alt="Trim Size floated in larger Media Size"/>This is illustrated at right, where the Trim Size (green border) is centered in a larger PDF Media Size. The green border, known as the <b>TrimBox</b> is invisible, and does not print. Anything outside the green border does not appear when the book is finished.</p>
-<p class="item"><b>C.</b> If you are required to float the Trim Size in a larger Media Size, here is the command in Preamble:</p>
+<p class="item"><b>A.</b> In PDF terminology, <b>Media Size</b> is the size of the PDF page. It is internally defined by the <b>MediaBox</b>. By default, it is identical to the Trim Size. Do not set it manually, unless you must.</p>
+<p class="item"><b>B.</b> When you print at home, most printers will automatically adjust the Media Size, so that it fits the actual paper in the printer's tray.</p>
+<p>Some advanced printers will halt, and inform you that the PDF Media Size does not fit the available paper; then you will be asked whether you wish to proceed.</p>
+<p class="item"><b>C.</b> Sheet-fed commercial printers work the same way as your home printer. Usually, the PDF Media Size is automatically adjusted to fit the available paper. Trim Size is unaffected.</p>
+<p>Some printers are programmed to halt when they see a Media Size misfit. This is a big nuisance, because commercial printers rely on rapid production. In this case, the print service will demand that you set the PDF Media Size equal to their actual paper sheet size. The TrimBox will float within the MediaBox.</p>
+<p class="item"><b>D.</b> <img class="floatright" src="html-resources/mediasize.png" width="202" height="264" title="Trim Size floated in larger Media Size" alt="Trim Size floated in larger Media Size"/>At right, the book's Trim Size (green border) is centered in a larger PDF Media Size. The invisible <b>TrimBox</b> is outlined in green. Anything outside the TrimBox does not appear in the finished book.</p>
+<p class="item"><b>E.</b> When you request PDF/X compliance, the TrimBox is automatically added. If Trim Size equals Media Size, then the TrimBox is at the outer edges of the PDF.</p>
+<p class="item"><b>F.</b> If you are required to float the Trim Size in a larger Media Size, use this command in Preamble:</p>
 <p class="code"><code>\SetMediaSize[<em>alignment</em>]{<em>width</em>}{<em>height</em>}</code></p>
-<p>If the optional <i>alignment</i> is set to <i>edge</i> then the Trim Size will be placed at the edge of the Media Size, rather than vertically and horizontally centered.</p>
+<p>By default, the TrimBox is horizontally and vertically centered in the MediaBox. If the optional <i>alignment</i> is set to <code>corner</code> then the TrimBox will be placed at a corner of the MediaBox (verso at upper left, recto at upper right, so they are back-to-back). Do not use <code>corner</code> unless requested by your print service. However, if you are hand-making a sample copy at home, using <code>corner</code> will reduce the amount of cutting.</p>
 <p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/>  Again: You usually will <i>not</i> set Media Size manually.</p>
 </div><!-- end 4.1.2 -->
-
-<h4 id="h4.1.3">4.1.3. Advanced: <code>\SetCropmarkGap{<em>length</em>}</code></h4>
-<div class="d4" id="d4.1.3">
-<p class="noindent"><img class="floatright" src="html-resources/cropmarkgap.png" width="140" height="141" alt="media size larger than trim size"/> This command is only effective if you use the <i>cropmarks</i> class option, as described in <a href="#h2.4">section 2.4</a>. Note that user-provided cropmarks are <em>very unusual</em> in the print-on demand market. <i>Do not use them</i> unless your print service specifically requests them. The built-in cropmark capability is very elementary, and cannot be easily enhanced by adding other LaTeX packages.</p>
-<p>In the accompanying image with cropmarks, a corner of the Trim Size is at lower right. The invisible TrimBox has been drawn with a green line. The cropmark gap is G.</p>
-<p>Default gap is <i>0.125in</i>.</p>
-</div><!-- end 4.1.3 -->
 </div><!-- end 4.1 -->
 
 <h3 id="h4.2">4.2. Fonts and Normal Font Size</h3>
@@ -1153,7 +1150,6 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <p class="item"><b>D.</b> If you have the proper license, you can use a commercial font. For example:</p>
 <p class="code"><code>\SetParentFont{Adobe Garamond Pro}</code></p>
 <p>See how easy that is? By default, <i>novel</i> will apply TeX Ligatures and Kerning to the parent font and all its descendants. Common Ligatures and OldStyle numbers will be added for the main font. This is ideal for fiction.</p>
-
 </div><!-- end 4.2.1.1 -->
 
 <h5 id="h4.2.1.2">4.2.1.2. <code>\SetFontSize{<em>length</em>}</code></h5>
@@ -1172,21 +1168,22 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <div class="d4" id="d4.2.2">
 <p class="item"><b>A.</b> The descendant fonts are automatically set, as variations of the <i>parent font</i>:</p>
 <p class="centerimg"><img src="html-resources/font-tree.png" width="600" height="177" title="font tree" alt="font tree"/></p>
-<p>For example, the <i>main font</i> uses the <i>parent font</i> family. It has TeX Ligatures and Kerning (inherited from the <i>parent font</i>), and also Common Ligatures and OldStyle numbers. The <i>main font</i> is not configured directly. Instead, configure the <i>parent font</i>, then the <i>main font</i> (and other descendants) will obey. For example, if you don't want OldStyle numbers:</p>
+<p>For example, the <i>main font</i> uses the <i>parent font</i> family. It has TeX Ligatures and Kerning (inherited from the <i>parent font</i>), and also Common Ligatures and OldStyle numbers.</p>
+<p class="item"><b>B.</b> The <i>main font</i> is not configured directly. Instead, configure the <i>parent font</i>, then the <i>main font</i> (and other descendants) will obey. For example, if you don't want OldStyle numbers:</p>
 <p class="code"><code>\SetParentFont[<em>Numbers=Lining</em>]{<em>fontname</em>}</code></p>
 <p>Then, Lining numbers will be used for the <i>main font</i> (and other descendants).<p>
-<p class="item"><b>B.</b> If you don't like the defaults, you can set the other descendant fonts directly, in Preamble:</p>
+<p class="item"><b>C.</b> If you don't like the defaults, you can set the other descendant fonts directly, in Preamble:</p>
 <p class="code">
 <code>\SetChapterFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.1">5.1.3.1</a></em><br/>
 <code>\SetSubchFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.1">5.1.3.1</a></em><br/>
 <code>\SetHeadFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h4.3.4.2">4.3.4.2</a></em>
 </p>
-<p class="item"><b>C.</b> You may use <code>\parentfontfeatures</code> and/or <code>\parentfontname</code> as arguments, if you wish.</p>
+<p class="item"><b>D.</b> You may use <code>\parentfontfeatures</code> and/or <code>\parentfontname</code> as arguments, if you wish.</p>
 </div><!-- end 4.2.2 -->
 
 <h4 id="h4.2.3">4.2.3. Advanced: The Deco Font</h4>
 <div class="d4" id="d4.2.3">
-<p class="item"><b>A.</b> Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <code>\decoglyph</code> and <code>\acronym</code> commands.</p>
+<p class="item"><b>A.</b> Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <code><a href="#h5.1.3.3">\decoglyph</a></code> and <code><a href="#h6.2.4">\acronym</a></code> commands.</p>
 <p class="item"><b>B.</b> Normally, you do not need to configure this font, as it is automatic. The only reason for changng it is if you are an advanced user, who wishes to use a substitute font with different decorations. However, you may <i>not</i> specify just any font! The substitute must be an edited version of <i>NovelDeco.otf</i>, with a different font name. If you don't know what that means, then don't do it.</p>
 <p class="code">
 <code>\SetDecoFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.3">5.1.3.3</a></em>
@@ -1216,7 +1213,8 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 </code></p>
 <p>In the document body, you use the new font command:</p>
 <p class="code"><code>{\pickaname Text in the font selected by pickaname command.}</code></p>
-<p class="item"><b>B.</b> Note that if you define a font <em>family</em> when you should have just defined a font <em>face</em>, there will be complaints in the log file, because the font loaded cannot find the (nonexistent) other members of the family. But the document will compile. On the other hand, if you define a font <em>face</em> when you should have defined a font <em>family</em>, then commands for bold or italic will have no effect, since the other family members were not loaded. Again, the document will compile.</p>
+<p class="item"><b>B.</b> If you define a font <em>family</em> when you should have just defined a font <em>face</em>, there will be complaints in the log file, because the font loader cannot find the (nonexistent) other members of the family. But the document will compile.</p>
+<p>On the other hand, if you define a font <em>face</em> when you should have defined a font <em>family</em>, then commands for bold or italic will have no effect, since the other family members were not loaded. Again, the document will compile.</p>
 <p class="item"><b>C.</b> Example: Suppose your work is science fiction, and one if its characters is a talking robot. You wish to depict its utterances in a robotic-looking font, which will be called using a new <code>\robovoice</code> command. You shop around, and find that the <em>Orbitron</em> font suits your purpose, except that it is too large compared to your <i>main font</i>. So, you scale it.</p>
 <p>In the Preamble, you define the new font command:</p>
 <p class="code"><code>\NewFontFace\robovoice[Scale=0.8]{Orbitron} % not part of a family</code></p>
@@ -1231,7 +1229,7 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 </code></p>
 <p>The result:</p>
 <p class="centerimg"><img src="html-resources/human-robot-talk.png" width="483" height="127" alt="conversation, human-robot"/></p>
-<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Caution: If you are using a new font within body text (as above), then it is a bad idea to use Scale greater than 1.0. Reason: An excessively tall font will cause lines to spread apart.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Caution: If you are using a new font within body text (as above), then it is a bad idea to use Scale greater than 1.0. Reason: An excessively tall font will cause lines to spread apart, and you will lose the line grid.</p>
 <p class="item"><b>E.</b> <img class="floatright" src="html-resources/fluffy-conspiracy.png" width="265" height="409" alt="the fluffy conspiracy"/> Example: Suppose that you wish to style the title of your book, in a font that is not used for other things such as chapter titles. You purchase a license for the <em>Bernhard Modern Std</em> fonts, in Regular and Italic.</p>
 <p>In the Preamble:</p>
 <p class="code"><code>\NewFontFamily\booktitlefont{Bernhard Modern Std}</code></p>
@@ -2477,10 +2475,15 @@ Lord Withens shrugged, and rode on. There was nothing to do but remain silent, t
 
 <h4 id="h8.2.3">8.2.3 Other Bindings</h4>
 <div class="d4" id="d8.2.3">
+<p class="noindent">If the print service offers to provide a hardcover version, you must carefully inquire as to the production method. The cheapest hardcover uses the same basic technology as Perfect-Bound softcover, except that the cover is harder. That can be done in production, or retroactively. But such a book is unlikely to be of much value, except as a personal memento.</p>
+<p class="noindent">The <b>side-sewn</b> method involves stitching the pages sideways, near the spine. The resulting book is very inflexible and will not open flat, but this is the strongest method for retaining pages. Side-sewn books often are used for archival purposes (patent applications, living trusts, dissertations, etc.). This may be done in production, or retroactively. The result is of high quality, but very inappropriate for a novel. Do not do this, except as a peronal memento.</p>
+<p class="noindent">In general: For general fiction where you hope for a wide audience, do not request hardcover unless you are certain that it is Smyth-Sewn, preferably with flexible binding.</p>
+<p class="noindent">When you change the binding, you must also get a different ISBN. Only exception is for a private copy that will not be marketed.</p>
+
 <p class="noindent">A Perfect Bound softcover cannot be retroactively converted to a Smyth Sewn, Library Bound hardcover. However, it is possible to convert a softcover book to some other kinds of hardcover.</p>
-<p>In the simplest method, the soft cover is removed, and a hard cover is glued on. The pages may be shaved in size, so that they don't edge beyond the new cover; or the new cover may be slightly over-sized. Part of the soft cover may be pasted onto the hard cover. That won't look the same as original manufacture, but it avoids creating a dust jacket. Such a hard cover book is no more durable than the softcover, no more flexible at the spine, and perhaps no more resistant to losing pages. But it has a harder cover.</p>
-<p>A more advanced method involves adding strength to the glued spine, by sewing it <em>sideways</em>, before adding the hard cover. This results in a book that is less flexible at the spine, but less likely to lose pages. Sometimes, small (page count) books are made this way, when there are a limited number stored for archival purposes, rather than reading. In other words, it does not concern novels.</p>
-<p>I only mention this because there are services that will create a hardcover book from an existing softcover copy. That is how they do it. Not very useful to you, except possibly as a personal souvenir. If you want a "real" hardcover book, you want a Smyth Sewn Library Binding with hard cover and curved (flexible) spine. Those must be made directly from PDF, not by re-working an existing book. There are services that will do it (not cheaply), but you must remove the ISBN from wherever it appears, because it does not apply to the book in any binding but its original.</p>
+<p>If your book is converted, remove the ISBN, as it is inapplicable.</p>
+<p>In the simplest method, the soft cover is removed, and a hard cover is glued on. The pages may be shaved in size, so that they don't edge beyond the new cover; or the new cover may be slightly over-sized. Part of the soft cover may be pasted onto the hard cover. That won't look the same as original manufacture, but it avoids creating a dust jacket. Such a hard cover book is no more durable than the softcover, no more flexible at the spine, and perhaps no more resistant to losing pages. But it has a harder cover. The only reason for doing this is to provide souvenir copies for yourself and your family.</p>
+<p>A more advanced method involves adding strength to the glued spine, by <b>side-sewing</b> the pages, before adding the hard cover. This results in a book that is much less flexible at the spine, and much less likely to lose pages. Papers of legal signficance (patent applications, real estate trusts, dissertations, etc.) are often done this way. Beware of services that offer to convert your softcover to hardcover by this method, since it is inappropriate for something such as a novel.</p>
 </div><!-- end 8.2.3 -->
 
 <h4 id="h8.2.4">8.2.4. Paper and Cover Materials</h4>

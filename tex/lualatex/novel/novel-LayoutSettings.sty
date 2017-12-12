@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/12/04 v1.46.3 LaTeX file (layout settings)]
+[2017/12/04 v1.46.3f LaTeX file (layout settings)]
 %%
 
 
@@ -165,7 +165,7 @@
 %
 \newif \if@offcenterTrim \@offcenterTrimfalse
 \newcommand\SetMediaSize[3][center]{ % [alignment] width, height
-  \ifthenelse{\equal{#1}{center} \OR \equal{#1}{edge}}{
+  \ifthenelse{\equal{#1}{center} \OR \equal{#1}{corner} \OR \equal{#1}{edge}}{
     \global\@MediaSizeSettrue
     \setlength\Old@MediaWidth{#2}
     \setlength\New@MediaWidth{#2}
@@ -173,9 +173,11 @@
     \setlength\New@MediaHeight{#3}
   }{
     \ClassError{novel}{Bad optional argument for \string\SetMediaSize}%
-    {\string\SetMediaSize\space optional argument must be `center' or `edge'.}%
+    {\string\SetMediaSize\space optional argument must be `center' or `corner'.}%
   }
   \if@coverart\else % new in version 1.2
+    \ifthenelse{\equal{#1}{corner}}{\global\@offcenterTrimtrue}{}
+    % `corner' was once called `edge'. Allowed for compatibility:
     \ifthenelse{\equal{#1}{edge}}{\global\@offcenterTrimtrue}{}
   \fi
 }

@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-HeadFootStyles.sty}%
-[2017/12/04 v1.46.3 LaTeX file (header and footer layouts and styles)]
+[2017/12/12 v1.46.4g LaTeX file (header and footer layouts and styles)]
 %% 
 
 
@@ -54,13 +54,16 @@
 %   will be applied \AtEndPreamble.
 \LetLtxMacro{\@tempFancyhead}{\fancyhead} % from package `letltxmacro'
 \renewcommand\fancyhead[2][]{%
-  \@styledHeadertrue%
+  \global\@styledheadertrue%
   \@tempFancyhead[#1]{\toggletrue{@inheadfoot}{\normalsize#2}}%
 }
-%
+\newif \if@stylehasheader
+\newif \if@stylehasfooter
+% Booleans \@gotheader \@gotfooter \@styledheader and \@styledfooter
+%   are defined in `novel-LayoutSettings.sty'.
 \LetLtxMacro{\@tempFancyfoot}{\fancyfoot}
 \renewcommand\fancyfoot[2][]{%
-  \@styledFootertrue%
+  \global\@styledfootertrue%
   \FPsub{\@footraise}{\@footjump}{1}%
   \FPmul{\@footraise}{-\@footraise}{\Current@BaselineSkipNum}%
   \@tempFancyfoot[#1]{%
@@ -89,13 +92,13 @@
   }{}%
   \ifthenelse{\equal{#1}{plain}\OR\equal{#1}{fancyplain}\OR\equal{#1}{footer}}{%
     \gdef\@pagestyleOK{true}%
-    \if@gotFooter \@myTempTPS{fancyplain}%
+    \if@gotfooter \@myTempTPS{fancyplain}%
     \else \@myTempTPS{empty}%
     \fi%
   }{}%
   \ifthenelse{\equal{#1}{forcenumber}}{%
     \gdef\@pagestyleOK{true}%
-    \if@gotFooter \@myTempTPS{fancyplain}%
+    \if@gotfooter \@myTempTPS{fancyplain}%
     \else \@myTempTPS{fancynumber}%
     \fi%
   }{}%
@@ -103,7 +106,7 @@
   \ifthenelse{\equal{#1}{dropfolioinside}% after \clearpage
     \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{% compatibility
     \gdef\@pagestyleOK{true}%
-    \if@gotFooter%
+    \if@gotfooter%
       \@myTempTPS{fancyplain}%
     \else%
       \global\@addCTlinefalse%
@@ -119,7 +122,7 @@
   %  the document class does not know the printer's limitations.
   \ifthenelse{\equal{#1}{dropfoliobeneath}}{% after \clearpage
     \gdef\@pagestyleOK{true}%
-    \if@gotFooter%
+    \if@gotfooter%
       \@myTempTPS{fancyplain}%
     \else%
       \@myTempTPS{empty}%
@@ -154,9 +157,9 @@
   % IF YOU ARE WRITING YOUR OWN HEADER/FOOTER LAYOUT:
   % Look here for the pre-defined layouts, for use as models.
   % Note that if you write \fancyhead or \fancyfoot in the Preamble,
-  % that sets the \@styledHeader flag, so these codes do not over-ride yours.
+  % that sets the \@styledheader flag, so these codes do not over-ride yours.
   \ifthenelse{\equal{\@myHeadFootStyle}{1}}{ % default
-    \if@styledHeader\else
+    \if@styledheader\else
       \fancyhead[LE]{\makebox[2.5em][l]{%
         {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\@myVersoEmblem%
       }
@@ -169,7 +172,8 @@
   }{}
   %
   \ifthenelse{\equal{\@myHeadFootStyle}{2}}{
-    \if@styledFooter\else
+    \global\@styledheaderfalse
+    \if@styledfooter\else
       \fancyfoot[LE]{\makebox[2.5em][l]{%
         {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\@myVersoEmblem%
       }
@@ -180,7 +184,7 @@
   }{}
   %
   \ifthenelse{\equal{\@myHeadFootStyle}{3}}{
-    \if@styledFooter\else
+    \if@styledfooter\else
       \fancyfoot[CO,CE]{%
         {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}%
       }
@@ -188,7 +192,7 @@
   }{}
   %
   \ifthenelse{\equal{\@myHeadFootStyle}{4}}{
-    \if@styledHeader\else
+    \if@styledheader\else
       \fancyhead[LE]{\makebox[2.5em][l]{%
         {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
         \@myVersoEmblem\hspace{1em}%
@@ -202,11 +206,11 @@
   }{}
   %
   \ifthenelse{\equal{\@myHeadFootStyle}{5}}{
-    \if@styledHeader\else
+    \if@styledheader\else
         \fancyhead[CE]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}}
         \fancyhead[CO]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\rectoheadtext}}}
     \fi
-    \if@styledFooter\else
+    \if@styledfooter\else
       \fancyfoot[CO,CE]{%
         {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}%
       }
@@ -214,7 +218,7 @@
   }{}
   %
   \ifthenelse{\equal{\@myHeadFootStyle}{6}}{
-    \if@styledHeader\else
+    \if@styledheader\else
       \fancyhead[LE]{\makebox[2.5em][l]{%
         {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\@myVersoEmblem%
       }
@@ -270,16 +274,15 @@
   \enlargethispage{-\nbs}%
   \setlength\temp@pgnumwidth{%
     \widthof{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}%
-  \if@offcenterTrim%
+  \ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
     \setlength\temp@pgnumraise{%
       \dimexpr\New@BottomMargin+\New@MediaHeight-\New@TrimHeight}%
     \global\temp@pgnumraise=\temp@pgnumraise%
-  \else%
+  }{%
     \setlength\temp@pgnumraise{%
       \dimexpr\New@BottomMargin+0.5\New@MediaHeight-0.5\New@TrimHeight}%
     \global\temp@pgnumraise=\temp@pgnumraise%
-  \fi%
-  %%%%%
+  }%
   \ifodd\c@page%
     \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
      \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%
@@ -300,13 +303,13 @@
 \newcommand\@dropfoliobeneath{%
   \setlength\temp@pgnumwidth{%
     \widthof{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}%
-  \if@offcenterTrim%
+  \ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
     \setlength\temp@pgnumraise{%
       \New@BottomMargin-\nbs+\New@MediaHeight-\New@TrimHeight}%
-  \else%
+  }{%
     \setlength\temp@pgnumraise{%
       \New@BottomMargin-\nbs+0.5\New@MediaHeight-0.5\New@TrimHeight}%
-  \fi%
+  }%
   \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
     \ifodd\c@page%
       \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%

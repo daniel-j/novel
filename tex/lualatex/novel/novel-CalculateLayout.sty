@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-CalculateLayout.sty}%
-[2017/12/04 v1.46.3 LaTeX file (layout calculations)]
+[2017/12/12 v1.46.4g LaTeX file (layout calculations)]
 %%
 
 %%
@@ -182,18 +182,18 @@
 
 %% PRELIMINARY CALCULATION OF BASELINESKIP
 %% -----------------------------------------------------------------------------
-% Get values of \@gotHeader and \@gotFooter booleans:
+% Get values of \@gotheader and \@gotfooter booleans:
 \@reserveHFspace % defined in `novel-LayoutSettings.sty'.
 % Adjusted LinesPerPage will include header, footer, and added separations:
 \let\adj@LinesPerPage\@myLinesPerPage % Start with the textblock lines.
 % The footskip is always "there" even if no content. Remove it:
 \FPsub{\adj@LinesPerPage}{\adj@LinesPerPage}{1}
 %
-\if@gotHeader % allow for header jump
+\if@gotheader % allow for header jump
   \FPadd{\adj@LinesPerPage}{\adj@LinesPerPage}{\@headjump}
 \fi
 %
-\if@gotFooter % allow for footer jump
+\if@gotfooter % allow for footer jump
   \FPadd{\adj@LinesPerPage}{\adj@LinesPerPage}{\@footjump}
 \fi
 %
@@ -349,7 +349,7 @@
 
 %% BEGIN LAYOUT CALCULATIONS
 %% -----------------------------------------------------------------------------
-\if@gotHeader
+\if@gotheader
   \setlength\headheight{\nbs}
   \FPsub{\@headsepmul}{\@headjump}{1}
   \FPmul{\@headsep}{\@headsepmul}{\Current@BaselineSkipNum}
@@ -398,12 +398,12 @@
 % Measured 1in (72.27pt) inside the MediaBox, to the textblock. May be negative.
 % When the TrimBox equals the MediaBox, or is centered within it,
 % the value is \New@InsideMargin+0.5\New@MediaWidth-0.5\New@TrimWidth-72.27pt
-\if@offcenterTrim
+\ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
   \setlength\oddsidemargin{\New@InsideMargin-72.27pt}
-\else
+}{%
   \setlength\oddsidemargin{%
     \New@InsideMargin+0.5\New@MediaWidth-0.5\New@TrimWidth-72.27pt}
-\fi
+}%
 %
 \if@closecrop
   \setlength\oddsidemargin{-0.9in}
@@ -411,12 +411,12 @@
 %
 % \evensidemargin is at the left (outside edge) of verso pages.
 % Calculation as above, but using \New@OutsideMargin
-\if@offcenterTrim
+\ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
   \setlength\evensidemargin{\New@OutsideMargin-72.27pt}
-\else
+}{%
   \setlength\evensidemargin{%
     \New@OutsideMargin+0.5\New@MediaWidth-0.5\New@TrimWidth-72.27pt}
-\fi
+}%
 %
 \if@closecrop
   \setlength\evensidemargin{-0.9in}
@@ -426,15 +426,15 @@
 % whatever comes first (header or textblock). May be negative.
 % When the TrimBox equals the MediaBox, or is centered within it,
 % the value is \New@TopMargin+0.5\New@MediaHeight-0.5\New@TrimHeight-72.27pt
-\if@offcenterTrim
+\ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
   \setlength\topmargin{\New@TopMargin-72.27pt}
-\else
+}{%
   \setlength\topmargin{%
     \New@TopMargin+0.5\New@MediaHeight-0.5\New@TrimHeight-72.27pt}
-\fi
+}%
 %
 \if@closecrop
-  \if@gotHeader
+  \if@gotheader
     \setlength\topmargin{-1in}
   \else
     \setlength\topmargin{-0.9in}
@@ -457,8 +457,8 @@
 \setlength\footskip{\nbs}
 %
 \if@closecrop
-  \if@gotFooter
-    \if@gotHeader
+  \if@gotfooter
+    \if@gotheader
       \setlength\paperheight{%
         \textheight+\headsep+\headheight+\@footjump\nbs+1pt}
     \else
@@ -492,12 +492,12 @@
 \newlength\temp@Hoffset
 \newlength\temp@Voffset
 %
-\if@offcenterTrim
+\ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
   \setlength\temp@PaperWidth{\New@TrimWidth}
   \setlength\temp@PaperHeight{\New@TrimHeight}
   \setlength\temp@Hoffset{0pt}
   \setlength\temp@Voffset{0pt}
-\else
+}{%
   \setlength\temp@PaperWidth{\New@MediaWidth}
   \setlength\temp@PaperHeight{\New@MediaHeight}
   \setlength\temp@Hoffset{\temp@PaperWidth}
@@ -506,7 +506,7 @@
   \setlength\temp@Voffset{\temp@PaperHeight}
   \addtolength\temp@Voffset{-\New@TrimHeight}
   \setlength\temp@Voffset{0.5\temp@Voffset}
-\fi
+}%
 % End when Media Size exceeds Trim Size.
 
 
@@ -538,13 +538,13 @@
     \setlength\Trim@Rx{\Trim@Lx+\New@TrimWidth}
     \setlength\Live@Lx{\evensidemargin+72.27pt}
   \fi
-  \if@offcenterTrim
+  \ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
     \setlength\Trim@By{\New@MediaHeight-\New@TrimHeight}
     \setlength\Trim@Ty{\New@MediaHeight}
-  \else
+  }{%
     \setlength\Trim@By{0.5\New@MediaHeight-0.5\New@TrimHeight}
     \setlength\Trim@Ty{0.5\New@MediaHeight+0.5\New@TrimHeight}
-  \fi
+  }%
   \setlength\Live@By{\Trim@By+\New@BottomMargin-0.3\normalFontSize}
 }
 %
@@ -552,40 +552,66 @@
 
 %% With class option `shademargins' (only effective in draft mode):
 % Based on code by Ulrike Fischer at tex.stackexchange.com, CC-by-sa-3.0:
-% The 0.903215 is a value that the user would not be likely to choose.
-% The re-defined color command makes an exception for that value.
+% The 0.903215 and 0.949123 are values that the user would not be likely to choose.
+% The re-defined \color command makes an exception for those values.
 \definecolor[named]{hingledingle}{gray}{1} % fake white, when white disallowed
 %
-\if@shademargins
-  \pagecolor{hingledingle}%
-  \if@offcenterTrim%
-    \AddToShipoutPictureBG{\@getPageXY%
+\if@shademargins % not used when \@mediatrimalignment is `bottom'.
+  \ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
+    \pagecolor{hingledingle}% alias for white
+    \AddToShipoutPictureBG{%
+      \@getPageXY%
       \AtPageLowerLeft{\color[gray]{0.903215}%
-        \hspace{\Trim@Lx}\rule[\Trim@By]{\New@TrimWidth}{\New@TrimHeight}}%
+        \hspace{\Trim@Lx}\rule[\Trim@By]{\New@TrimWidth}{\New@TrimHeight}%
+      }%
     }%
     %
-    \AddToShipoutPictureBG{\@getPageXY%
+    \AddToShipoutPictureBG{%
+      \@getPageXY%
       \AtPageLowerLeft{\color{hingledingle}%
-        \hspace{\Live@Lx}\rule[\Live@By]{\New@LiveWidth}{\adj@NewLiveHeight}}%
+        \hspace{\Live@Lx}\rule[\Live@By]{\New@LiveWidth}{\adj@NewLiveHeight}%
+      }%
     }%
-  \else% trim is centered
-    \AddToShipoutPictureBG{\@getPageXY%
+  }{% trim is centered
+    \pagecolor{hingledingle}% alias for white
+    \AddToShipoutPictureBG{%
+      \@getPageXY%
       \AtPageLowerLeft{\color[gray]{0.903215}%
-        \hspace{\Trim@Lx}\rule[\Trim@By]{\New@TrimWidth}{\New@TrimHeight}}%
+        \hspace{\Trim@Lx}\rule[\Trim@By]{\New@TrimWidth}{\New@TrimHeight}%
+      }%
     }%
     %
-    \AddToShipoutPictureBG{\@getPageXY%
+    \AddToShipoutPictureBG{%
+      \@getPageXY%
       \AtPageLowerLeft{\color{hingledingle}%
-        \hspace{\Live@Lx}\rule[\Live@By]{\New@LiveWidth}{\adj@NewLiveHeight}}%
+        \hspace{\Live@Lx}\rule[\Live@By]{\New@LiveWidth}{\adj@NewLiveHeight}%
+      }%
+      \if@gotheader% provides lighter gray header area (including jump)
+        \AtPageLowerLeft{\color[gray]{0.949123}%
+          \if@gotfooter%
+            \hspace{\Live@Lx}\rule[\Live@By+\textheight+\nfs-\@headjump\nbs+\nbs+\@footjump\nbs]{\New@LiveWidth}{\@headjump\nbs}%
+          \else%
+            \hspace{\Live@Lx}\rule[\Live@By+\textheight+\nfs-\@headjump\nbs+\nbs]{\New@LiveWidth}{\@headjump\nbs}%
+          \fi%
+        }%
+      \fi%
+      \if@gotfooter% provides lighter gray footer area (including jump)
+        \AtPageLowerLeft{\color[gray]{0.949123}%
+          \hspace{\Live@Lx}\rule[\Live@By]{\New@LiveWidth}{\@footjump\nbs}%
+        }%
+      \fi%
     }%
-  \fi%
+  }%
 \fi % end \if@shademargins
 %
 
 % Labels each page with DRAFT at upper left, if in draft mode:
 \ifdraftdoc
-  \AddToShipoutPictureBG{\@getPageXY%
-    \AtPageUpperLeft{\raisebox{-\nbs}{\textbf{~DRAFT}}}
+  \AddToShipoutPictureBG{%
+  \@getPageXY%
+    \AtPageUpperLeft{%
+      \raisebox{-\nbs}{\textbf{~DRAFT}}%
+    }%
   }%
 \fi
 %
@@ -599,8 +625,8 @@
 % then only one pair of marks will be written.
 % The marks are turned on using `cropmarks' class option. The gap is set
 % in Preamble using \SetCropmarkGap{length}.
-\if@cropmarks
-  \if@offcenterTrim
+\if@cropmarks%
+  \ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
     \ifodd\c@page
       % H bottom right:
       \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
@@ -616,7 +642,7 @@
       \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
       \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
     \fi
-  \else
+  }{%
     % H top left:
     \AddToShipoutPictureBG{\@getPageXY%
     \AtPageLowerLeft{%
@@ -642,7 +668,7 @@
     % V bottom right:
     \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
     \hspace{\Trim@Rx}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
-  \fi
+  }%
 \fi
 %
 %% end cropmarks

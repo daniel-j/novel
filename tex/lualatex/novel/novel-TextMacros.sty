@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2017/12/04 v1.46.3 LaTeX file (text macros usable within document body)]
+[2017/12/12 v1.46.4g LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -121,7 +121,8 @@
   \let\color\relax
   \DeclareDocumentCommand \color { o m }
    {%
-   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.903215}}{\@undeclaredcolor[gray]{0.903215}}{}% shademargins
+   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.903215}}{\@undeclaredcolor[gray]{0.903215}}{}% shademargins (margins)
+   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.949123}}{\@undeclaredcolor[gray]{0.949123}}{}% shademargins (head/foot)
    \ifthenelse{\equal{#2}{hingledingle}}{\@declaredcolor{white}}{}% hingledingle is internal alias for white
    }
 \fi
@@ -133,8 +134,8 @@
 %   conditions of the LaTeX Project Public License, either version 1.3 of this 
 %   license or (at your option) any later version."
 % My rationale for not simply loading the package: Other parts of the package
-% generate warning messages, but the warnings do not apply. Also, I might
-% wish to hack the code at some point.
+%   generate warning messages, but the warnings do not apply in `novel'
+%   Also, I might wish to hack the code at some point.
 \newcount\nov@ettl@fter
 \newrobustcmd\nov@AfterGroup{%
   \@ifstar{\nov@ettl@AfterGroup\@firstofone}{\nov@ettl@AfterGroup\unexpanded}%

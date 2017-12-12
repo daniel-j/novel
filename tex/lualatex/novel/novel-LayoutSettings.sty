@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/12/04 v1.46.3f LaTeX file (layout settings)]
+[2017/12/12 v1.46.4g LaTeX file (layout settings)]
 %%
 
 
@@ -154,35 +154,33 @@
    and page breaks are where you expect them to be.^^J}%
   \fi
 }
-% \SetMediaSize[]{}{} such as {8.5in}{11in}.
+% \SetMediaSize[alignment]{width}{height}
 %   This command is only used when the Trim Size must be placed in a larger
 %   Media Size. Otherwise, Media Size is automatically set to Trim Size.
-%   This command cannot be used until after Trim Size is set, either by
-%   class option or by \SetTrimSize{}{}.
-% Trim will be horizontally and vertically centered in media.
+% Optional alignment may be center, corner, bottom. Also edge (alias for corner).
+%   center (default): Trim will be horizontally and vertically centered in media.
+%     Alignment center is preferred by most commercial printers, often home and office as well.
+%   corner: Verso Trim at upper left of Media; recto Trim at upper right of Media.
+%     Alignment corner might be useful for making a mock-up copy at home.
+%   bottom: Only used by some commercial printers, for some cover artwork with bleed.
 % No `rework' is needed for Media Size, because interior layout is relative
 %   to Trim Size, not Media Size.
 %
-\newif \if@offcenterTrim \@offcenterTrimfalse
+\gdef\@mediatrimalignment{center}
 \newcommand\SetMediaSize[3][center]{ % [alignment] width, height
-  \ifthenelse{\equal{#1}{center} \OR \equal{#1}{corner} \OR \equal{#1}{edge}}{
-    \global\@MediaSizeSettrue
+  \ifthenelse{\equal{#1}{center} \OR \equal{#1}{corner} \OR \equal{#1}{edge} \OR \equal{#1}{bottom}}{
+    \gdef\@mediatrimalignment{#1}
     \setlength\Old@MediaWidth{#2}
     \setlength\New@MediaWidth{#2}
     \setlength\Old@MediaHeight{#3}
     \setlength\New@MediaHeight{#3}
   }{
     \ClassError{novel}{Bad optional argument for \string\SetMediaSize}%
-    {\string\SetMediaSize\space optional argument must be `center' or `corner'.}%
+    {\string\SetMediaSize\space optional argument must be one of: center, corner, bottom.}%
   }
-  \if@coverart\else % new in version 1.2
-    \ifthenelse{\equal{#1}{corner}}{\global\@offcenterTrimtrue}{}
-    % `corner' was once called `edge'. Allowed for compatibility:
-    \ifthenelse{\equal{#1}{edge}}{\global\@offcenterTrimtrue}{}
-  \fi
 }
 % \SetLinesPerPage{} limited due to fontsize and Trim Size constraints.
-% There is no `rework' command, because as long as the number of lines fit,
+% There is no `rework' linesperpage, because as long as the number of lines fit,
 %   the line spacing will be automatically changed to fit a reworked size.
 %   The only possible problem is if lines were originally so tight that
 %   a reworked size cannot fit. In that case, the user's best plan is remove
@@ -253,33 +251,33 @@
 % See novel.cls for the accompanying AtBeginDocument routine.
 
 %
-\newif \if@gotHeader
-\newif \if@gotFooter
-\newif \if@styledHeader
-\newif \if@styledFooter
+\newif \if@gotheader
+\newif \if@gotfooter
+\newif \if@styledheader
+\newif \if@styledfooter
 \newif \if@validHF
 %
 \gdef\@reserveHFspace{ % used for layout calculations
   \ifthenelse{\equal{\@myHeadFootStyle}{0}}{
-    \@gotHeaderfalse\@gotFooterfalse\@validHFtrue
+    \@gotheaderfalse\@gotfooterfalse\@validHFtrue
   }{}
   \ifthenelse{\equal{\@myHeadFootStyle}{1}}{ % default
-    \@gotHeadertrue\@gotFooterfalse\@validHFtrue
+    \@gotheadertrue\@gotfooterfalse\@validHFtrue
   }{}
   \ifthenelse{\equal{\@myHeadFootStyle}{2}}{
-    \@gotHeaderfalse\@gotFootertrue\@validHFtrue
+    \@gotheaderfalse\@gotfootertrue\@validHFtrue
   }{}
   \ifthenelse{\equal{\@myHeadFootStyle}{3}}{
-    \@gotHeaderfalse\@gotFootertrue\@validHFtrue
+    \@gotheaderfalse\@gotfootertrue\@validHFtrue
   }{}
   \ifthenelse{\equal{\@myHeadFootStyle}{4}}{
-    \@gotHeadertrue\@gotFooterfalse\@validHFtrue
+    \@gotheadertrue\@gotfooterfalse\@validHFtrue
   }{}
   \ifthenelse{\equal{\@myHeadFootStyle}{5}}{
-    \@gotHeadertrue\@gotFootertrue\@validHFtrue
+    \@gotheadertrue\@gotfootertrue\@validHFtrue
   }{}
   \ifthenelse{\equal{\@myHeadFootStyle}{6}}{
-    \@gotHeadertrue\@gotFootertrue\@validHFtrue
+    \@gotheadertrue\@gotfootertrue\@validHFtrue
   }{}
   % Ensure that user choice was on the allowed list:
   \if@validHF\else

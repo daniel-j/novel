@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/12/12 v1.46.4g LaTeX file (layout settings)]
+[2017/12/12 v1.46.4h LaTeX file (layout settings)]
 %%
 
 
@@ -37,6 +37,11 @@
 \newlength\New@MediaWidth % Initialized to \Old@MediaWidth.
 \newlength\New@MediaHeight % Initialized to \Old@MediaHeight.
 \newlength\Old@FontSize
+% New in version 1.48:
+\newlength\@topdeadzonewidth
+\newlength\@outsidedeadzonewidth
+\newlength\@bottomdeadzonewidth
+\newlength\@insidedeadzonewidth
 %
 \gdef\@myHeadFootStyle{1} % default: header but not footer
 \gdef\@myVersoEmblem{} % no default emblem
@@ -98,7 +103,7 @@
     \setlength\New@MediaWidth{#1}%
     \setlength\New@MediaHeight{#2}%
   \fi
-}
+}% end set trimsize
 %
 % Retroactively change Trim Size after layout. See documentation:
 \newcommand\ReworkTrimSize[2]{%
@@ -116,7 +121,7 @@
      Carefully review your PDF to ensure that line breaks, paragraphs,^^J%
      and page breaks are where you expect them to be.^^J}%
   \fi
-}
+}% end rework trimsize
 % Margins at top and bottom are relative to:
 %   top of header, or top of textblock if no header;
 %   bottom of footer, or bottom of textblock if no footer.
@@ -136,7 +141,8 @@
   \setlength\New@BottomMargin{#3}
   \setlength\Old@InsideMargin{#4}
   \setlength\New@InsideMargin{#4}
-}
+}% end set margins
+\LetLtxMacro\SetMargin{\SetMargins}\relax
 % Retroactively change margins after layout. See documentation:
 \newcommand\ReworkMargins[4]{
   \if@coverart % New in version 1.2
@@ -153,7 +159,41 @@
    Carefully review your PDF to ensure that line breaks, paragraphs,^^J%
    and page breaks are where you expect them to be.^^J}%
   \fi
-}
+}% end rework margins
+\LetLtxMacro\ReworkMargin{\ReworkMargins}\relax
+%
+% New in version 1.48: \SetDeadZones{top}{outside}{bottom}{inside}
+% The dead zone (may be called forbidden area, or similar term)
+%   is the page periphery, where nothing may be printed.
+% Does not apply to cover artwork, which has bleed area.
+% Margins must always be at least as wide as the corresponding dead zones.
+% Note that margins define where you do not `wish' to print,
+%   but the dead zones define where you are not `allowed' to print.
+% Some printers define fairly narrow dead zones, such as 0.25in top outside bottom,
+%   and 0.375in inside (spine). But unless your book Trim Size is very small,
+%   pushing the margins out to the dead zone will be unattractive.
+% So, there is usually some `wiggle room' that lies outside the margins,
+%   but does not intrude into the dead zone. Sometimes, you may choose
+%   to print something in that wiggle room. Your printer allows that.
+%   But if you print into the dead zone, your file may be rejected at the printer.
+% PDF, even compliant PDF/X, does not know or care about the dead zone.
+% Whether or not you set it, the dead zone is not written into the final PDF,
+%   and does not affect layout in any way.
+% If you choose to set the dead zone, it will be visualized in draft mode only,
+%   with the `shademargins' class option. The dead zone will be darker than the margins.
+% \AtBeginDocument checks that margins are at least as wide as their dead zones.
+% Default dead zones are 0pt.
+% Note that there is no \Rework for dead zones, since they do not affect layout.
+\newif \if@deadzoneset
+\newcommand\SetDeadZones[4]{% top, outside, bottom, inside.
+  \global\@deadzonesettrue
+  \setlength\@topdeadzonewidth{#1}
+  \setlength\@outsidedeadzonewidth{#2}
+  \setlength\@bottomdeadzonewidth{#3}
+  \setlength\@insidedeadzonewidth{#4}
+} % end set deadzones
+\LetLtxMacro\SetDeadZone{\SetDeadZones}\relax
+%
 % \SetMediaSize[alignment]{width}{height}
 %   This command is only used when the Trim Size must be placed in a larger
 %   Media Size. Otherwise, Media Size is automatically set to Trim Size.
@@ -169,6 +209,7 @@
 \gdef\@mediatrimalignment{center}
 \newcommand\SetMediaSize[3][center]{ % [alignment] width, height
   \ifthenelse{\equal{#1}{center} \OR \equal{#1}{corner} \OR \equal{#1}{edge} \OR \equal{#1}{bottom}}{
+    \global\@MediaSizeSettrue
     \gdef\@mediatrimalignment{#1}
     \setlength\Old@MediaWidth{#2}
     \setlength\New@MediaWidth{#2}
@@ -178,7 +219,7 @@
     \ClassError{novel}{Bad optional argument for \string\SetMediaSize}%
     {\string\SetMediaSize\space optional argument must be one of: center, corner, bottom.}%
   }
-}
+}% end set mediasize
 % \SetLinesPerPage{} limited due to fontsize and Trim Size constraints.
 % There is no `rework' linesperpage, because as long as the number of lines fit,
 %   the line spacing will be automatically changed to fit a reworked size.
@@ -193,7 +234,7 @@
   \else\fi %
   \FPround{\temp@IntegerLines}{#1}{0}
   \def\@myLinesPerPage{\temp@IntegerLines}
-}
+}% end set linesperpage
 % \SetFontSize{} may be in any units, even decimals: 12.2pt, 11.5bp, etc.
 % When packages load, the font size is temporarily set to 11pt at 15pt skip,
 % so that moldy-oldie packages don't get confused about metrics.
@@ -202,7 +243,7 @@
 \newcommand\SetFontSize[1]{
   \global\@FontSizeSettrue
   \global\setlength\Old@FontSize{#1}
-}
+}% end set fontsize
 %
 %% End size-related commands available in Preamble.
 

@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-CalculateLayout.sty}%
-[2017/12/12 v1.46.4g LaTeX file (layout calculations)]
+[2017/12/12 v1.46.5 LaTeX file (layout calculations)]
 %%
 
 %%
@@ -22,6 +22,17 @@
 
 \newlength\normalFontSize % becomes 1em in normal text, also abbreviated as \nfs
 \newlength\normalBaselineSkip % also abbreviated as \nbs
+
+
+%% `Enclosed Area' is the rectangular area that (normally) contains all print
+%%   in the text block, both text and images. It is bounded by the margins.
+%% Its width is `Enclosed Width' which is same as final \textwidth.
+%% Its height is `EnclosedHeight', which includes header and/or footer,
+%%   if they are in the global layout.
+%% Anything outside the Enclosed Area is sitting in the margins.
+%% Whether or not you can print in the margins, depends or printer requirements.
+%% Printers specify a `Dead Zone' at the periphery, where you cannot print
+%%   unless your layout includes bleed. In `novel' the interior text has no bleed.
 
 
 %% SET DEFAULT SIZES, AND INITIAL CORRECTIONS
@@ -89,9 +100,9 @@
   \FPmul{\@tempOBSnum}{\@tempOFSnum}{1.3} % for a nice, uncramped baselineskip
   \def\@tempTH{\strip@pt\Old@TrimHeight}
   \def\@tempTM{\strip@pt\Old@TopMargin}
-  \FPsub{\@tempLH}{\@tempTH}{\@tempTM}
-  \FPsub{\@tempLH}{\@tempLH}{\@tempTM} %  \@tempLH is available live height
-  \FPdiv{\@tempLPP}{\@tempLH}{\@tempOBSnum}
+  \FPsub{\@tempEH}{\@tempTH}{\@tempTM}
+  \FPsub{\@tempEH}{\@tempEH}{\@tempTM} %
+  \FPdiv{\@tempLPP}{\@tempEH}{\@tempOBSnum}
   \FPsub{\@tempLPP}{\@tempLPP}{1.5} % allows for default header
   \FPround{\@tempLPP}{\@tempLPP}{0} % integer
   \FPclip{\@tempLPP}{\@tempLPP} % remove excess trailing 0.
@@ -116,7 +127,7 @@
 
 
 
-%% OLD, NEW, CURRENT, LIVE, TEXT MACRO DEFINITIONS
+%% OLD, NEW, CURRENT, ENCLOSED, TEXT MACRO DEFINITIONS
 %% -----------------------------------------------------------------------------
 % The \Rework commands are special to `novel' class.
 % Situation: You compile the book with certain settings. Looks good.
@@ -140,42 +151,40 @@
 %   as calculations progress.
 % Widths and Heights are lengths, stored by \setlength.
 % Expressions ending in "Num" are pure numbers, suitable for FP calculations.
-% "Live" refers to the area available to text (including header/footer).
-%   That is, the "live area" is the Trim Size, excluding the Margins.
 %
-% Find the Old and New Live Width and Height, and initialize
-% Text Width and Height to Old Live. Initialize Font Size.
-\newlength\Old@LiveWidth
-  \setlength\Old@LiveWidth{\Old@TrimWidth}
-  \addtolength\Old@LiveWidth{-\Old@OutsideMargin}
-  \addtolength\Old@LiveWidth{-\Old@InsideMargin}
-  \def\Old@LiveWidthNum{\strip@pt\Old@LiveWidth}
-\newlength\Old@LiveHeight
-  \setlength\Old@LiveHeight{\Old@TrimHeight}
-  \addtolength\Old@LiveHeight{-\Old@TopMargin}
-  \addtolength\Old@LiveHeight{-\Old@BottomMargin}
+% Find the Old and New Enclosed Width and Height, and initialize
+%   Text Width and Height to Old Enclosed. Initialize Font Size.
+\newlength\Old@EnclosedWidth
+  \setlength\Old@EnclosedWidth{\Old@TrimWidth}
+  \addtolength\Old@EnclosedWidth{-\Old@OutsideMargin}
+  \addtolength\Old@EnclosedWidth{-\Old@InsideMargin}
+  \def\Old@EnclosedWidthNum{\strip@pt\Old@EnclosedWidth}
+\newlength\Old@EnclosedHeight
+  \setlength\Old@EnclosedHeight{\Old@TrimHeight}
+  \addtolength\Old@EnclosedHeight{-\Old@TopMargin}
+  \addtolength\Old@EnclosedHeight{-\Old@BottomMargin}
 \newlength\Current@FontSize
   \setlength\Current@FontSize{\Old@FontSize}
   \def\Current@FontSizeNum{\strip@pt\Current@FontSize}
   \def\Old@FontSizeNum{\strip@pt\Old@FontSize}
-  \addtolength\Old@LiveHeight{-\Current@FontSizeNum pt}
-  \def\Old@LiveHeightNum{\strip@pt\Old@LiveHeight}
+  \addtolength\Old@EnclosedHeight{-\Current@FontSizeNum pt}
+  \def\Old@EnclosedHeightNum{\strip@pt\Old@EnclosedHeight}
 \newlength\Current@TextWidth
-  \setlength\Current@TextWidth{\Old@LiveWidth}
+  \setlength\Current@TextWidth{\Old@EnclosedWidth}
   \def\Current@TextWidthNum{\strip@pt\Current@TextWidth}
 \newlength\Current@TextHeight
-  \setlength\Current@TextHeight{\Old@LiveHeight}
+  \setlength\Current@TextHeight{\Old@EnclosedHeight}
   \def\Current@TextHeightNum{\strip@pt\Current@TextHeight}
-\newlength\New@LiveWidth
-  \setlength\New@LiveWidth{\New@TrimWidth}
-  \addtolength\New@LiveWidth{-\New@OutsideMargin}
-  \addtolength\New@LiveWidth{-\New@InsideMargin}
-  \def\New@LiveWidthNum{\strip@pt\New@LiveWidth}
-\newlength\New@LiveHeight
-  \setlength\New@LiveHeight{\New@TrimHeight}
-  \addtolength\New@LiveHeight{-\New@TopMargin}
-  \addtolength\New@LiveHeight{-\New@BottomMargin}
-  \def\New@LiveHeightNum{\strip@pt\New@LiveHeight}
+\newlength\New@EnclosedWidth
+  \setlength\New@EnclosedWidth{\New@TrimWidth}
+  \addtolength\New@EnclosedWidth{-\New@OutsideMargin}
+  \addtolength\New@EnclosedWidth{-\New@InsideMargin}
+  \def\New@EnclosedWidthNum{\strip@pt\New@EnclosedWidth}
+\newlength\New@EnclosedHeight
+  \setlength\New@EnclosedHeight{\New@TrimHeight}
+  \addtolength\New@EnclosedHeight{-\New@TopMargin}
+  \addtolength\New@EnclosedHeight{-\New@BottomMargin}
+  \def\New@EnclosedHeightNum{\strip@pt\New@EnclosedHeight}
 %
 %% End old, new... macro definitions.
 
@@ -197,10 +206,10 @@
   \FPadd{\adj@LinesPerPage}{\adj@LinesPerPage}{\@footjump}
 \fi
 %
-% Baseline Skip is Live Height divided by adjusted number of lines.
-% Thus initially, Text (with header/footer) occupies full Live Height.
+% Baseline Skip is Enclosed Height divided by adjusted number of lines.
+% Thus initially, Text (with header/footer) occupies full Enclosed Height.
 \newlength\Current@BaselineSkip
-\FPdiv{\Current@BaselineSkipNum}{\Old@LiveHeightNum}{\adj@LinesPerPage}
+\FPdiv{\Current@BaselineSkipNum}{\Old@EnclosedHeightNum}{\adj@LinesPerPage}
 % Check to see if Baseline Skip is insufficient:
 \FPdiv{\@ratioBStoFS}{\Current@BaselineSkipNum}{\Current@FontSizeNum}
 \FPiflt{\@ratioBStoFS}{1.2}%
@@ -219,22 +228,22 @@
 
 
 
-%% FIT CurrentTextWidth TO NewLiveWidth
+%% FIT CurrentTextWidth TO New@EnclosedWidth
 %% -----------------------------------------------------------------------------
-\FPdiv{\@myTextRescaleNum}{\New@LiveWidthNum}{\Current@TextWidthNum}
+\FPdiv{\@myTextRescaleNum}{\New@EnclosedWidthNum}{\Current@TextWidthNum}
 \FPmul{\Current@FontSizeNum}{\Current@FontSizeNum}{\@myTextRescaleNum}
 \setlength\Current@FontSize{\Current@FontSizeNum pt}
 \FPmul{\Current@TextWidthNum}{\Current@TextWidthNum}{\@myTextRescaleNum}
 \setlength\Current@TextWidth{\Current@TextWidthNum pt}
 %
-%% end fit CurrentTextWidth to NewLiveWidth
+%% end fit CurrentTextWidth to New@EnclosedWidth
 
 
-%% ADJUST CurrentBaselineSkip TO FIT NewLiveHeight
+%% ADJUST CurrentBaselineSkip TO FIT New@EnclosedHeight
 %% -----------------------------------------------------------------------------
-% Test if New Text Height fits within New Live Height:
-\FPifgt{\Current@TextHeightNum}{\New@LiveHeightNum} % does not fit, so fix it
-  \FPdiv{\@myNBSrescaleNum}{\New@LiveHeightNum}{\Current@TextHeightNum}
+% Test if New Text Height fits within New Enclosed Height:
+\FPifgt{\Current@TextHeightNum}{\New@EnclosedHeightNum} % does not fit, so fix it
+  \FPdiv{\@myNBSrescaleNum}{\New@EnclosedHeightNum}{\Current@TextHeightNum}
   \FPmul{\Current@BaselineSkipNum}{\Current@BaselineSkipNum}{\@myNBSrescaleNum}
   \setlength\Current@BaselineSkip{\Current@BaselineSkipNum pt}
   \FPmul{\Current@TextHeightNum}{\Current@BaselineSkipNum}{\adj@LinesPerPage}
@@ -247,7 +256,7 @@
   \setlength\Current@FontSize{\Current@FontSizeNum pt}
   \FPmul{\Current@TextWidthNum}{\Current@TextWidthNum}{\@rescaleFontSize}
   \setlength\Current@TextWidth{\Current@TextWidthNum pt}
-  \FPdiv{\Current@BaselineSkipNum}{\New@LiveHeightNum}{\adj@LinesPerPage}
+  \FPdiv{\Current@BaselineSkipNum}{\New@EnclosedHeightNum}{\adj@LinesPerPage}
   \setlength\Current@BaselineSkip{\Current@BaselineSkipNum pt}
   \FPmul{\Current@TextHeightNum}{\Current@BaselineSkipNum}{\adj@LinesPerPage}
 \fi
@@ -255,14 +264,14 @@
 % Note that if the revised skip is larger than desired, it is easy to change.
 % Simply increase the top/bottom margin, which does not affect line breaks.
 %
-%% end adjust CurrentBaselineSkip to fit NewLiveHeight.
+%% end adjust CurrentBaselineSkip to fit New@EnclosedHeight.
 
 
 %% DISTRIBUTE SIDE EXCESS
 %% -----------------------------------------------------------------------------
-%% The prior calculation may have shrunk CurrentTextWidth below NewLiveWidth.
+%% The prior calculation may have shrunk Current@TextWidth below New@EnclosedWidth.
 \newlength\fix@SideMargin
-  \setlength\fix@SideMargin{\New@LiveWidth}
+  \setlength\fix@SideMargin{\New@EnclosedWidth}
   \addtolength\fix@SideMargin{-\Current@TextWidth}
 \addtolength\New@OutsideMargin{0.5\fix@SideMargin}
 \addtolength\New@InsideMargin{0.5\fix@SideMargin}
@@ -519,89 +528,130 @@
 % end disabling `cropmarks' option.
 
 % Left, Right, Top, Bottom, x and y
-\newlength\Trim@Lx
-\newlength\Trim@Rx
-\newlength\Trim@Ty
-\newlength\Trim@By
-\newlength\Live@Lx
-\newlength\Live@By
-\newlength\adj@NewLiveHeight
-\setlength\adj@NewLiveHeight{\New@LiveHeight+0.3\normalFontSize}
+\newlength\Trim@Left % Position of left edge of TrimBox, rightwards from left edge of MediaBox.
+\newlength\Trim@Bottom % Position of bottom of TrimBox, upwards from bottom of MediaBox.
+\newlength\Enclosed@Left % Position of left edge of Enclosed Area, rightwards from left edge of MediaBox.
+\newlength\Enclosed@Bottom % Position of bottom edge of Enclosed Area, upwards from bottom edge of MediaBox.
+\newlength\Dead@Left % Width of Dead Zone at left of TrimBox.
+\newlength\Dead@Right % Width of Dead Zone ar right of TrimBox.
+\newlength\adj@New@EnclosedHeight
+\setlength\adj@New@EnclosedHeight{\New@EnclosedHeight+0.3\normalFontSize} % Ensures that final line descenders are Enclosed.
 %
-\gdef\@getPageXY{
-  \ifodd\c@page
-    \setlength\Trim@Lx{\oddsidemargin-\New@InsideMargin+72.27pt}
-    \setlength\Trim@Rx{\Trim@Lx+\New@TrimWidth}
-    \setlength\Live@Lx{\oddsidemargin+72.27pt}
+\gdef\@getPageXY{% Used in conjunction with `shademargins'.
+  \ifodd\c@page % Adjusts for left-right margin switching, verso/recto,
+    % and also for horizontal position of TrimBox within MediaBox:
+    \setlength\Trim@Left{\oddsidemargin-\New@InsideMargin+72.27pt}
+    \setlength\Enclosed@Left{\oddsidemargin+72.27pt}
+    \setlength\Dead@Left{\@insidedeadzonewidth}
+    \setlength\Dead@Right{\@outsidedeadzonewidth}
   \else
-    \setlength\Trim@Lx{\evensidemargin-\New@OutsideMargin+72.27pt}
-    \setlength\Trim@Rx{\Trim@Lx+\New@TrimWidth}
-    \setlength\Live@Lx{\evensidemargin+72.27pt}
+    \setlength\Trim@Left{\evensidemargin-\New@OutsideMargin+72.27pt}
+    \setlength\Enclosed@Left{\evensidemargin+72.27pt}
+    \setlength\Dead@Left{\@outsidedeadzonewidth}
+    \setlength\Dead@Right{\@insidedeadzonewidth}
   \fi
+  % Adjusts for vertical position of TrimBox within MediaBox:
   \ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
-    \setlength\Trim@By{\New@MediaHeight-\New@TrimHeight}
-    \setlength\Trim@Ty{\New@MediaHeight}
-  }{%
-    \setlength\Trim@By{0.5\New@MediaHeight-0.5\New@TrimHeight}
-    \setlength\Trim@Ty{0.5\New@MediaHeight+0.5\New@TrimHeight}
+    \setlength\Trim@Bottom{\New@MediaHeight-\New@TrimHeight}
+  }{% Bottom alignment does not apply when `shademargins', so this is center alignment:
+    \setlength\Trim@Bottom{0.5\New@MediaHeight-0.5\New@TrimHeight}
   }%
-  \setlength\Live@By{\Trim@By+\New@BottomMargin-0.3\normalFontSize}
+  \setlength\Enclosed@Bottom{\Trim@Bottom+\New@BottomMargin-0.3\normalFontSize}
 }
 %
 
 
 %% With class option `shademargins' (only effective in draft mode):
 % Based on code by Ulrike Fischer at tex.stackexchange.com, CC-by-sa-3.0:
-% The 0.903215 and 0.949123 are values that the user would not be likely to choose.
+% 0.542763, 0.883215 and 0.949123 are values that the user would be unlikely to choose.
 % The re-defined \color command makes an exception for those values.
 \definecolor[named]{hingledingle}{gray}{1} % fake white, when white disallowed
 %
 \if@shademargins % not used when \@mediatrimalignment is `bottom'.
+  % Margins are visualized by filling the TrimBox background with gray.
+  % Then, the rectangle defining the Englosed area is filled with white.
+  % Then header and/or footer, if present, are filled with a lighter gray background.
+  % Then Dead Zone sits atop the other background fills, as darker gray.
+  % The Dead Zone is constructed from four strips, one at each side.
   \ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
     \pagecolor{hingledingle}% alias for white
     \AddToShipoutPictureBG{%
       \@getPageXY%
-      \AtPageLowerLeft{\color[gray]{0.903215}%
-        \hspace{\Trim@Lx}\rule[\Trim@By]{\New@TrimWidth}{\New@TrimHeight}%
+      \AtPageLowerLeft{\color[gray]{0.883215}%
+        \hspace{\Trim@Left}\rule[\Trim@Bottom]{\New@TrimWidth}{\New@TrimHeight}%
       }%
     }%
     %
     \AddToShipoutPictureBG{%
       \@getPageXY%
       \AtPageLowerLeft{\color{hingledingle}%
-        \hspace{\Live@Lx}\rule[\Live@By]{\New@LiveWidth}{\adj@NewLiveHeight}%
+        \hspace{\Enclosed@Left}\rule[\Enclosed@Bottom]{\New@EnclosedWidth}{\adj@New@EnclosedHeight}%
       }%
     }%
-  }{% trim is centered
+  }{% end corner alignment, now center alignment:
     \pagecolor{hingledingle}% alias for white
-    \AddToShipoutPictureBG{%
+    \AddToShipoutPictureBG{% fills trim area with gray
       \@getPageXY%
-      \AtPageLowerLeft{\color[gray]{0.903215}%
-        \hspace{\Trim@Lx}\rule[\Trim@By]{\New@TrimWidth}{\New@TrimHeight}%
+      \AtPageLowerLeft{\color[gray]{0.883215}%
+        \hspace{\Trim@Left}\rule[\Trim@Bottom]{\New@TrimWidth}{\New@TrimHeight}%
       }%
     }%
     %
-    \AddToShipoutPictureBG{%
+    \AddToShipoutPictureBG{% fills enclosed area with white
       \@getPageXY%
       \AtPageLowerLeft{\color{hingledingle}%
-        \hspace{\Live@Lx}\rule[\Live@By]{\New@LiveWidth}{\adj@NewLiveHeight}%
+        \hspace{\Enclosed@Left}\rule[\Enclosed@Bottom]{\New@EnclosedWidth}{\adj@New@EnclosedHeight}%
       }%
-      \if@gotheader% provides lighter gray header area (including jump)
+    }%
+    \if@gotheader% provides lighter gray header area (including jump)
+      \AddToShipoutPictureBG{%
+        \@getPageXY%
         \AtPageLowerLeft{\color[gray]{0.949123}%
           \if@gotfooter%
-            \hspace{\Live@Lx}\rule[\Live@By+\textheight+\nfs-\@headjump\nbs+\nbs+\@footjump\nbs]{\New@LiveWidth}{\@headjump\nbs}%
+            \hspace{\Enclosed@Left}\rule[\Enclosed@Bottom+\textheight+\nfs-\@headjump\nbs+\nbs+\@footjump\nbs]{\New@EnclosedWidth}{\@headjump\nbs}%
           \else%
-            \hspace{\Live@Lx}\rule[\Live@By+\textheight+\nfs-\@headjump\nbs+\nbs]{\New@LiveWidth}{\@headjump\nbs}%
+            \hspace{\Enclosed@Left}\rule[\Enclosed@Bottom+\textheight+\nfs-\@headjump\nbs+\nbs]{\New@EnclosedWidth}{\@headjump\nbs}%
           \fi%
         }%
-      \fi%
-      \if@gotfooter% provides lighter gray footer area (including jump)
+      }%
+    \fi% end @ifgotheader
+    \if@gotfooter% provides lighter gray footer area (including jump)
+      \AddToShipoutPictureBG{%
+        \@getPageXY%
         \AtPageLowerLeft{\color[gray]{0.949123}%
-          \hspace{\Live@Lx}\rule[\Live@By]{\New@LiveWidth}{\@footjump\nbs}%
+          \hspace{\Enclosed@Left}\rule[\Enclosed@Bottom]{\New@EnclosedWidth}{\@footjump\nbs}%
         }%
-      \fi%
-    }%
-  }%
+      }%
+    \fi% end if@gotfooter
+%%%%%
+    \if@deadzoneset%
+      \AddToShipoutPictureBG{% top dead zone
+        \@getPageXY%
+        \AtPageLowerLeft{\color[gray]{0.542763}%
+          \hspace{\Trim@Left}\rule[\Trim@Bottom+\New@TrimHeight-\@topdeadzonewidth]{\New@TrimWidth}{\@topdeadzonewidth}%
+        }%
+      }%
+      \AddToShipoutPictureBG{% outside dead zone
+        \@getPageXY%
+        \AtPageLowerLeft{\color[gray]{0.542763}%
+          \hspace{\dimexpr\Trim@Left+\New@TrimWidth-\Dead@Right}\rule[\Trim@Bottom]{\Dead@Right}{\New@TrimHeight}%
+        }%
+      }%
+      \AddToShipoutPictureBG{% bottom dead zone
+        \@getPageXY%
+        \AtPageLowerLeft{\color[gray]{0.542763}%
+          \hspace{\Trim@Left}\rule[\Trim@Bottom]{\New@TrimWidth}{\@bottomdeadzonewidth}%
+        }%
+      }%
+      \AddToShipoutPictureBG{% inside dead zone
+        \@getPageXY%
+        \AtPageLowerLeft{\color[gray]{0.542763}%
+          \hspace{\Trim@Left}\rule[\Trim@Bottom]{\Dead@Left}{\New@TrimHeight}%
+        }%
+      }%
+    \fi% end if@deadzoneset
+%%%%%
+  }% end center alignment
 \fi % end \if@shademargins
 %
 
@@ -630,44 +680,44 @@
     \ifodd\c@page
       % H bottom right:
       \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-      \hspace{\dimexpr\Trim@Rx+\@mygap}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
+      \hspace{\dimexpr\Trim@Left+\New@TrimWidth+\@mygap}\rule[\Trim@Bottom-0.5pt]{0.5in-\@mygap}{0.5pt}}}
       % V bottom right:
       \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-      \hspace{\Trim@Rx}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
+      \hspace{\dimexpr\Trim@Left+\New@TrimWidth}\rule[\Trim@Bottom-0.5in]{0.5pt}{0.5in-\@mygap}}}
     \else
       % H bottom left:
       \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-      \hspace{\dimexpr\Trim@Lx-0.5in}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
+      \hspace{\dimexpr\Trim@Left-0.5in}\rule[\Trim@Bottom-0.5pt]{0.5in-\@mygap}{0.5pt}}}
       % V bottom left:
       \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-      \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
+      \hspace{\dimexpr\Trim@Left-0.5pt}\rule[\Trim@Bottom-0.5in]{0.5pt}{0.5in-\@mygap}}}
     \fi
   }{%
     % H top left:
     \AddToShipoutPictureBG{\@getPageXY%
     \AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Lx-0.5in}\rule[\Trim@Ty]{0.5in-\@mygap}{0.5pt}}}
+    \hspace{\dimexpr\Trim@Left-0.5in}\rule[0.5\New@MediaHeight+0.5\New@TrimHeight]{0.5in-\@mygap}{0.5pt}}}
     % H bottom left:
     \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Lx-0.5in}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
+    \hspace{\dimexpr\Trim@Left-0.5in}\rule[\Trim@Bottom-0.5pt]{0.5in-\@mygap}{0.5pt}}}
     % H top right:
     \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Rx+\@mygap}\rule[\Trim@Ty]{0.5in-\@mygap}{0.5pt}}}
+    \hspace{\dimexpr\Trim@Left+\New@TrimWidth+\@mygap}\rule[0.5\New@MediaHeight+0.5\New@TrimHeight]{0.5in-\@mygap}{0.5pt}}}
     % H bottom right:
     \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Rx+\@mygap}\rule[\Trim@By-0.5pt]{0.5in-\@mygap}{0.5pt}}}
+    \hspace{\dimexpr\Trim@Left+\New@TrimWidth+\@mygap}\rule[\Trim@Bottom-0.5pt]{0.5in-\@mygap}{0.5pt}}}
     % V top left:
     \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@Ty+\@mygap]{0.5pt}{0.5in-\@mygap}}}
+    \hspace{\dimexpr\Trim@Left-0.5pt}\rule[0.5\New@MediaHeight+0.5\New@TrimHeight+\@mygap]{0.5pt}{0.5in-\@mygap}}}
     % V bottom left:
     \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Lx-0.5pt}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
+    \hspace{\dimexpr\Trim@Left-0.5pt}\rule[\Trim@Bottom-0.5in]{0.5pt}{0.5in-\@mygap}}}
     % V top right:
     \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\Trim@Rx}\rule[\Trim@Ty+\@mygap]{0.5pt}{0.5in-\@mygap}}}
+    \hspace{\dimexpr\Trim@Left+\New@TrimWidth}\rule[0.5\New@MediaHeight+0.5\New@TrimHeight+\@mygap]{0.5pt}{0.5in-\@mygap}}}
     % V bottom right:
     \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\Trim@Rx}\rule[\Trim@By-0.5in]{0.5pt}{0.5in-\@mygap}}}
+    \hspace{\dimexpr\Trim@Left+\New@TrimWidth}\rule[\Trim@Bottom-0.5in]{0.5pt}{0.5in-\@mygap}}}
   }%
 \fi
 %

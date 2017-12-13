@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2017/12/12 v1.46.4g LaTeX file (text macros usable within document body)]
+[2017/12/12 v1.46.5 LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -121,7 +121,8 @@
   \let\color\relax
   \DeclareDocumentCommand \color { o m }
    {%
-   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.903215}}{\@undeclaredcolor[gray]{0.903215}}{}% shademargins (margins)
+   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.542763}}{\@undeclaredcolor[gray]{0.542763}}{}% shademargins (dead zone)
+   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.883215}}{\@undeclaredcolor[gray]{0.883215}}{}% shademargins (margins)
    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.949123}}{\@undeclaredcolor[gray]{0.949123}}{}% shademargins (head/foot)
    \ifthenelse{\equal{#2}{hingledingle}}{\@declaredcolor{white}}{}% hingledingle is internal alias for white
    }

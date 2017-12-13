@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/12/12 v1.46.4h LaTeX file (layout settings)]
+[2017/12/12 v1.46.5a LaTeX file (layout settings)]
 %%
 
 
@@ -93,15 +93,15 @@
      {\string\SetTrimSize\space cannot follow \string\ReworkTrimSize^^J%
       and cannot follow \string\ReworkMargins.}%
   \fi
-  \setlength\Old@TrimWidth{#1}%
-  \setlength\Old@TrimHeight{#2}%
-  \setlength\New@TrimWidth{#1}%
-  \setlength\New@TrimHeight{#2}%
+  \setlength\Old@TrimWidth{#1} \global\Old@TrimWidth=\Old@TrimWidth%
+  \setlength\Old@TrimHeight{#2} \global\Old@TrimHeight=\Old@TrimHeight%
+  \setlength\New@TrimWidth{#1} \global\New@TrimWidth=\New@TrimWidth%
+  \setlength\New@TrimHeight{#2} \global\New@TrimHeight=\New@TrimHeight%
   \if@MediaSizeSet\else
-    \setlength\Old@MediaWidth{#1}%
-    \setlength\Old@MediaHeight{#2}%
-    \setlength\New@MediaWidth{#1}%
-    \setlength\New@MediaHeight{#2}%
+    \setlength\Old@MediaWidth{#1} \global\Old@MediaWidth=\Old@MediaWidth%
+    \setlength\Old@MediaHeight{#2} \global\Old@MediaHeight=\Old@MediaHeight%
+    \setlength\New@MediaWidth{#1} \global\New@MediaWidth=\New@MediaWidth%
+    \setlength\New@MediaHeight{#2} \global\New@MediaHeight=\New@MediaHeight%
   \fi
 }% end set trimsize
 %
@@ -112,10 +112,10 @@
   {Instead of reworking document size, you must re-do the artwork.}
   \else
     \global\@ReworkTrimSettrue
-    \setlength\New@TrimWidth{#1}%
-    \setlength\New@TrimHeight{#2}%
-    \setlength\New@MediaWidth{#1}%
-    \setlength\New@MediaHeight{#2}%
+    \setlength\New@TrimWidth{#1} \global\New@TrimWidth=\New@TrimWidth%
+    \setlength\New@TrimHeight{#2} \global\New@TrimHeight=\New@TrimHeight%
+    \setlength\New@MediaWidth{#1} \global\New@MediaWidth=\New@MediaWidth%
+    \setlength\New@MediaHeight{#2} \global\New@MediaHeight=\New@MediaHeight%
     \typeout{^^J Class `novel' Info: %
      Used \string\ReworkTrimSize{}{} command.^^J%
      Carefully review your PDF to ensure that line breaks, paragraphs,^^J%
@@ -133,14 +133,14 @@
     \ClassError{novel}{^^JCannot set Margins after reworking them}%
      {\string\SetMargins\space cannot follow \string\ReworkMargins.}%
   \fi
-  \setlength\Old@TopMargin{#1}
-  \setlength\New@TopMargin{#1}
-  \setlength\Old@OutsideMargin{#2}
-  \setlength\New@OutsideMargin{#2}
-  \setlength\Old@BottomMargin{#3}
-  \setlength\New@BottomMargin{#3}
-  \setlength\Old@InsideMargin{#4}
-  \setlength\New@InsideMargin{#4}
+  \setlength\Old@TopMargin{#1} \global\Old@TopMargin=\Old@TopMargin
+  \setlength\New@TopMargin{#1} \global\New@TopMargi=\New@TopMargi
+  \setlength\Old@OutsideMargin{#2} \global\Old@OutsideMargin=\Old@OutsideMargin
+  \setlength\New@OutsideMargin{#2} \global\New@OutsideMargin=\New@OutsideMargin
+  \setlength\Old@BottomMargin{#3} \global\Old@BottomMargin=\Old@BottomMargin
+  \setlength\New@BottomMargin{#3} \global\New@BottomMargin=\New@BottomMargin
+  \setlength\Old@InsideMargin{#4} \global\Old@InsideMargin=\Old@InsideMargin
+  \setlength\New@InsideMargin{#4} \global\New@InsideMargin=\New@InsideMargin
 }% end set margins
 \LetLtxMacro\SetMargin{\SetMargins}\relax
 % Retroactively change margins after layout. See documentation:
@@ -150,10 +150,10 @@
   {Instead of reworking document size, you must re-do the artwork.}
   \else
   \global\@ReworkMarginsSettrue
-  \setlength\New@TopMargin{#1}
-  \setlength\New@OutsideMargin{#2}
-  \setlength\New@BottomMargin{#3}
-  \setlength\New@InsideMargin{#4}
+  \setlength\New@TopMargin{#1} \global\New@TopMargin=\New@TopMargin
+  \setlength\New@OutsideMargin{#2} \global\New@OutsideMargin=\New@OutsideMargin
+  \setlength\New@BottomMargin{#3} \global\New@BottomMargin=\New@BottomMargin
+  \setlength\New@InsideMargin{#4} \global\New@InsideMargin=\New@InsideMargin
   \typeout{^^J Class novel Info: %
    Used \string\ReworkMargins{}{} command.^^J%
    Carefully review your PDF to ensure that line breaks, paragraphs,^^J%
@@ -187,10 +187,10 @@
 \newif \if@deadzoneset
 \newcommand\SetDeadZones[4]{% top, outside, bottom, inside.
   \global\@deadzonesettrue
-  \setlength\@topdeadzonewidth{#1}
-  \setlength\@outsidedeadzonewidth{#2}
-  \setlength\@bottomdeadzonewidth{#3}
-  \setlength\@insidedeadzonewidth{#4}
+  \setlength\@topdeadzonewidth{#1} \global\@topdeadzonewidth=\@topdeadzonewidth
+  \setlength\@outsidedeadzonewidth{#2} \global\@outsidedeadzonewidth=\@outsidedeadzonewidth
+  \setlength\@bottomdeadzonewidth{#3} \global\@bottomdeadzonewidth=\@bottomdeadzonewidth
+  \setlength\@insidedeadzonewidth{#4} \global\@insidedeadzonewidth=\@insidedeadzonewidth
 } % end set deadzones
 \LetLtxMacro\SetDeadZone{\SetDeadZones}\relax
 %
@@ -211,10 +211,10 @@
   \ifthenelse{\equal{#1}{center} \OR \equal{#1}{corner} \OR \equal{#1}{edge} \OR \equal{#1}{bottom}}{
     \global\@MediaSizeSettrue
     \gdef\@mediatrimalignment{#1}
-    \setlength\Old@MediaWidth{#2}
-    \setlength\New@MediaWidth{#2}
-    \setlength\Old@MediaHeight{#3}
-    \setlength\New@MediaHeight{#3}
+    \setlength\Old@MediaWidth{#2} \global\Old@MediaWidth=\Old@MediaWidth
+    \setlength\New@MediaWidth{#2} \global\New@MediaWidth=\New@MediaWidth
+    \setlength\Old@MediaHeight{#3} \global\Old@MediaHeight=\Old@MediaHeight
+    \setlength\New@MediaHeight{#3} \global\New@MediaHeight=\New@MediaHeight
   }{
     \ClassError{novel}{Bad optional argument for \string\SetMediaSize}%
     {\string\SetMediaSize\space optional argument must be one of: center, corner, bottom.}%
@@ -329,7 +329,21 @@
 } % end \@reserveHFspace
 % Each new chapter generally has its own header/footer style. This allows a
 % default setting when chapters begin with ChapterStart environment:
-\gdef\SetChapterStartStyle#1{\gdef\@setchapterstart{#1}} % from v1.40.3.
+\gdef\SetChapterStartStyle#1{% from v. 1.40.3
+  \def\@pagestyleOK{false}%
+  \ifthenelse{\equal{#1}{fancy}}{\def\@pagestyleOK{true}}{}%
+  \ifthenelse{\equal{#1}{empty}}{\def\@pagestyleOK{true}}{}%
+  \ifthenelse{\equal{#1}{plain}\OR\equal{#1}{fancyplain}\OR\equal{#1}{footer}}{\def\@pagestyleOK{true}}{}%
+  \ifthenelse{\equal{#1}{forcenumber}}{\def\@pagestyleOK{true}}{}%
+  \ifthenelse{\equal{#1}{dropfolioinside} \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{\def\@pagestyleOK{true}}{}%
+  \ifthenelse{\equal{#1}{dropfoliobeneath}}{\def\@pagestyleOK{true}}{}%
+  \ifthenelse{\equal{\@pagestyleOK}{true}}{%
+    \gdef\@setchapterstart{#1}%
+  }{%
+    \ClassError{novel}{Invalid choice for \string\SetChapterStartStyle}%
+     {Choose: fancy, empty, footer, forcenumber, dropfolioinside, dropfoliobeneath.}%
+  }%
+}
 \let\SetChapterStart\SetChapterStartStyle\relax % deprecated from v1.40.3.
 \SetChapterStartStyle{footer} % default
 % New in version 1.40.2:
@@ -445,9 +459,9 @@
 \newlength\@mygap
 \def\SetCropmarkGap#1{
   \ifthenelse{\lengthtest{#1 < 0pt}}{
-    \setlength\@mygap{0pt}
+    \setlength\@mygap{0pt} \global\@mygap=\@mygap
   }{
-  \setlength\@mygap{#1}
+  \setlength\@mygap{#1} \global\@mygap=\@mygap
   }
 }
 \SetCropmarkGap{0.125in} % default

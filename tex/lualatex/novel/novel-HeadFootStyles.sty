@@ -81,31 +81,31 @@
 %
 \gdef\thispagestyle#1{%
   \global\@thispagestylesettrue%
-  \gdef\@pagestyleOK{false}%
+  \def\@pagestyleOK{false}%
   \ifthenelse{\equal{#1}{fancy}}{%
-    \gdef\@pagestyleOK{true}%
+    \def\@pagestyleOK{true}%
     \@myTempTPS{fancy}%
   }{}%
   \ifthenelse{\equal{#1}{empty}}{%
-    \gdef\@pagestyleOK{true}%
+    \def\@pagestyleOK{true}%
     \@myTempTPS{empty}%
   }{}%
   \ifthenelse{\equal{#1}{plain}\OR\equal{#1}{fancyplain}\OR\equal{#1}{footer}}{%
-    \gdef\@pagestyleOK{true}%
+    \def\@pagestyleOK{true}%
     \if@gotfooter \@myTempTPS{fancyplain}%
     \else \@myTempTPS{empty}%
     \fi%
   }{}%
   \ifthenelse{\equal{#1}{forcenumber}}{%
-    \gdef\@pagestyleOK{true}%
+    \def\@pagestyleOK{true}%
     \if@gotfooter \@myTempTPS{fancyplain}%
     \else \@myTempTPS{fancynumber}%
     \fi%
   }{}%
   %
   \ifthenelse{\equal{#1}{dropfolioinside}% after \clearpage
-    \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{% compatibility
-    \gdef\@pagestyleOK{true}%
+    \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{% compatibility w/ old code
+    \def\@pagestyleOK{true}%
     \if@gotfooter%
       \@myTempTPS{fancyplain}%
     \else%
@@ -121,7 +121,7 @@
   %  Whether the margin is wide enough, is for the user to determine, because
   %  the document class does not know the printer's limitations.
   \ifthenelse{\equal{#1}{dropfoliobeneath}}{% after \clearpage
-    \gdef\@pagestyleOK{true}%
+    \def\@pagestyleOK{true}%
     \if@gotfooter%
       \@myTempTPS{fancyplain}%
     \else%
@@ -272,25 +272,23 @@
 %   where the last line would have been, the styled page number is centered.
 \newcommand\@dropfolioinside{%
   \enlargethispage{-\nbs}%
-  \setlength\temp@pgnumwidth{%
-    \widthof{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}%
+  \setlength\temp@pgnumwidth{\widthof{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}%
+  \global\temp@pgnumwidth=\temp@pgnumwidth%
   \ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
-    \setlength\temp@pgnumraise{%
-      \dimexpr\New@BottomMargin+\New@MediaHeight-\New@TrimHeight}%
+    \setlength\temp@pgnumraise{\dimexpr\New@BottomMargin+\New@MediaHeight-\New@TrimHeight}%
     \global\temp@pgnumraise=\temp@pgnumraise%
   }{%
-    \setlength\temp@pgnumraise{%
-      \dimexpr\New@BottomMargin+0.5\New@MediaHeight-0.5\New@TrimHeight}%
+    \setlength\temp@pgnumraise{\dimexpr\New@BottomMargin+0.5\New@MediaHeight-0.5\New@TrimHeight}%
     \global\temp@pgnumraise=\temp@pgnumraise%
   }%
   \ifodd\c@page%
     \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
-     \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%
+     \hspace{\dimexpr\Trim@Left+\New@InsideMargin-0.5\temp@pgnumwidth}%
       \charscale[1,0.5\textwidth,\temp@pgnumraise]{%
        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
   \else%
     \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
-     \hspace{\dimexpr\Trim@Lx+\New@OutsideMargin+0.5\textwidth-0.5\temp@pgnumwidth}\raisebox{%
+     \hspace{\dimexpr\Trim@Left+\New@OutsideMargin+0.5\textwidth-0.5\temp@pgnumwidth}\raisebox{%
       \temp@pgnumraise}{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
   \fi%
 } % end \@dropfolioinside
@@ -301,22 +299,14 @@
 % \@dropfoliobeneath does not change the textblock height. The styled page
 %   number is centered where an extra line would be, within the bottom margin.
 \newcommand\@dropfoliobeneath{%
-  \setlength\temp@pgnumwidth{%
-    \widthof{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}%
-  \ifthenelse{\equal{\@mediatrimalignment}{corner}}{%
-    \setlength\temp@pgnumraise{%
-      \New@BottomMargin-\nbs+\New@MediaHeight-\New@TrimHeight}%
-  }{%
-    \setlength\temp@pgnumraise{%
-      \New@BottomMargin-\nbs+0.5\New@MediaHeight-0.5\New@TrimHeight}%
-  }%
+  \setlength\temp@pgnumwidth{\widthof{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}%
+  \global\temp@pgnumwidth=\temp@pgnumwidth%
   \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
-    \ifodd\c@page%
-      \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%
-    \else%
-      \hspace{\dimexpr\Trim@Lx+\New@OutsideMargin-0.5\temp@pgnumwidth}%
-    \fi%
-    \charscale[1,0.5\textwidth,\temp@pgnumraise]{%
+    \@getPageXY%
+    \setlength\temp@pgnumraise{\Trim@Bottom+\New@BottomMargin-\nbs}%
+    \global\temp@pgnumraise=\temp@pgnumraise%
+    \hspace{\dimexpr\Enclosed@Left+0.5\textwidth-0.5\temp@pgnumwidth}%
+    \charscale[1,0pt,\temp@pgnumraise]{%
       {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
     }%
   }%
@@ -337,6 +327,7 @@
 \gdef\NewVersoHeadText#1{
   \FPdiv{\@myk}{\@loosehead}{500}
   \setlength\@mykem{\@myk em}
+  \global\@mykem=\@mykem
   \gdef\versoheadtext{#1}
 }
 \let\SetVersoHeadText\NewVersoHeadText\relax % for convenience
@@ -345,6 +336,7 @@
 \gdef\NewRectoHeadText#1{
   \FPdiv{\@myk}{\@loosehead}{500}
   \setlength\@mykem{\@myk em}
+  \global\@mykem=\@mykem
   \gdef\rectoheadtext{#1}
 }
 \let\SetRectoHeadText\NewRectoHeadText\relax % for convenience

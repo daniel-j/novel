@@ -242,7 +242,7 @@
 % the defaults for Trim Size, or on the effects of \Rework.
 \newcommand\SetFontSize[1]{
   \global\@FontSizeSettrue
-  \global\setlength\Old@FontSize{#1}
+  \setlength\Old@FontSize{#1}\global\Old@FontSize=\Old@FontSize
 }% end set fontsize
 %
 %% End size-related commands available in Preamble.

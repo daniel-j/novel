@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/12/12 v1.46.5 LaTeX document class]
+\ProvidesClass{novel}[2017/12/25 v1.46.5k LaTeX document class]
 %%
 %% Version 1.46: Possibly final version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
@@ -105,8 +105,8 @@
 \RequirePackage{xparse} % for writing cool-looking commands
 %
 % In addition, the following packages are required, but they are not loaded now.
-% They must wait for something else to happen first. They will be loaded
-% with suitable arguments, when the time comes:
+% They must wait for something else to happen first. Then they will be loaded
+%   with suitable arguments, when the time comes:
 % fontspec -- in novel-LayoutSettings.sty
 % unicode-math -- in novel-LayoutSettings.sty
 % polyglossia -- in novel-LayoutSettings.sty
@@ -117,6 +117,28 @@
 % adjustbox -- lower on this page
 % eso-pic -- lower on this page
 % lipsum -- lower on this page
+%%
+
+
+%% Global lengths are often passed around in `novel'.
+%% But \setlength is not always global in effect.
+%% This code defines a global command. Via Heiko Oberdiek at tex.stackexchange.com:
+\gdef\gsetlength#1#2{% #1 is the length command, #2 is the length value
+  \begingroup%
+    \setlength\skip@{#2}% Local assignment to a TeX scratch register.
+    \global#1=\skip@% Global assignment to #1; \relax is not necessary because of the following \endgroup.
+  \endgroup% \skip@ is restored by end of group.
+}% end \gsetlength
+\newlength\@TrimWidth
+\newlength\@TrimHeight
+\newlength\@TopMargin
+\newlength\@OuterMargin
+\newlength\@BottomMargin
+\newlength\@InnerMargin
+\newlength\@FontSize % = normal font point size
+\newlength\@tempLength % scratch length for local calculations
+%%
+\newif \if@tempTF % scratch boolean for local tests
 %%
 
 
@@ -145,13 +167,12 @@
 \StrDel{\@mycol}{test}[\@mycol]
 %
 \ifthenelse{\equal{\@mycol}{}}{}{
-  \ClassWarning{novel}{Unrecognized class option: \@mycol^^J%
-   The unrecognized option was ignored!^^J%
-   If `debug' it is obsolete from v.1.40.^^J%
-   Note that font size, document size, and language^^J%
+  \ClassWarning{novel}{Unrecognized class option: \@mycol. ^^J%
+   The unrecognized option was ignored! ^^J%
+   If `debug' it is obsolete from v.1.40. ^^J%
+   Note that font size, document size, and language ^^J%
    are not `novel' class options. See documentation.}%
 }
-%
 % If used, option `draft' shows overflow rule.
 % Prior to v. 1.46.1, the following was \if@useDraftMode.
 % Changed for possible compatibility with packages that detect draft mode.
@@ -160,7 +181,7 @@
 \DeclareOption{draft}{
   \setlength\overfullrule{6pt}
   \draftdoctrue
-  \ClassWarning{novel}{Compiled using draft mode. Not for final release!^^J}
+  \ClassWarning{novel}{Compiled using draft mode. Not for final release!}
 }
 \newif \ifmsdoc % manuscript, always false. Compatibility with other packages.
 % If used, option `xml' creates a file `\jobname-XMPasXML.xml` that contains
@@ -168,43 +189,31 @@
 % Only works when \SetPDFX is not `off'. Note that you do not need to use
 % this option to get PDF/X. It is only for your own usage.
 \newif \if@wantXMPasXML
-\DeclareOption{xml}{
-  \@wantXMPasXMLtrue
-}
+\DeclareOption{xml}{\@wantXMPasXMLtrue}
 \DeclareOption{xmp}{ % in case you mis-type.
-  \ClassError{novel}{No class option `xmp'. Want `xml' ?^^J}%
-   {There is no class option named `xmp'. It is `xml'.^^J}
+  \ClassError{novel}{No class option `xmp'. Use `xml'}%
+   {There is no class option named `xmp'. It is `xml'.}
 }
 % Option `shademargins' does just that. Ignored unless in draft mode.
 % Does not matter if `graytext' option in use.
 \newif \if@shademargins
-\DeclareOption{shademargins}{
-  \@shademarginstrue
-}
+\DeclareOption{shademargins}{\@shademarginstrue}
 % Option `graytext' allows text in grayscale. Images unaffected.
 % If this option is not used, all text will be K black.
 \newif \if@graytext
-\DeclareOption{graytext}{
-  \@graytexttrue
-}
+\DeclareOption{graytext}{\@graytexttrue}
 % For the Brits:
-\DeclareOption{greytext}{
-  \@graytexttrue
-}
+\DeclareOption{greytext}{\@graytexttrue}
 % Usually you do NOT want crop (trim) marks!
 % Configurable by \SetCropMarks[]{}.
 \newif \if@cropmarks
-\DeclareOption{cropmarks}{
-  \@cropmarkstrue
-}
+\DeclareOption{cropmarks}{\@cropmarkstrue}
 % PDF viewers display CropBox, which normally is identical to MediaBox.
 % Option `cropview', sets CropBox to TrimBox instead, so that's all you see.
 % Only makes a difference when MediaBox is larger than TrimBox.
 % Ignored unless in draft mode.
 \newif \if@cropview
-\DeclareOption{cropview}{
-  \@cropviewtrue
-}
+\DeclareOption{cropview}{\@cropviewtrue}
 % With `closecrop', the TrimSize and margins are re-sized, to preserve the
 % live area, but with reduced margins on all sides (same for verso/recto).
 % This option is available only in draft mode, and disables shademargins.
@@ -212,16 +221,12 @@
 % so you can think about edits while traveling. It is NOT an e-book, since
 % it has no hyperlinks and is missing some features that an e-book should have.
 \newif \if@closecrop
-\DeclareOption{closecrop}{
-  \@cropviewtrue\@closecroptrue
-}
+\DeclareOption{closecrop}{\@cropviewtrue\@closecroptrue}
 % New in version 1.2: `coverart' option. See documentation.
 % This is used to create a 1-page file with no text, just an image.
 % Intended purpose is PDF/X for novel cover.
 \newif \if@coverart
-\DeclareOption{coverart}{
-  \@coverarttrue
-}
+\DeclareOption{coverart}{\@coverarttrue}
 % New in version 1.34: unblock option, for developer use only.
 % Normally, a number of packages known to be incompatible with this document class
 % are blocked from loading. If the user tries to get them via \usepackage
@@ -229,29 +234,20 @@
 % then compile halts with an error. The `unblock' option turns off blocking,
 % and allows incompatible packages to load. Use only at own risk!
 \newif \if@novelunblock % For developer use.
-\DeclareOption{unblock}{
-  \@novelunblocktrue
-}
+\DeclareOption{unblock}{\@novelunblocktrue}
 % New in version 1.44: mtoff option, primarily for developer use.
 % With mtoff, the microtype package is not loaded.
 \newif \if@mtoff
-\DeclareOption{mtoff}{
-  \@mtofftrue
-}
+\DeclareOption{mtoff}{\@mtofftrue}
 % New in version 1.44: polyoff option, primarily for developer use.
 % With polyoff, the polyglossia package is not loaded.
 % You may need to load babel, or not, via \RequirePackage[options]{babel}.
 \newif \if@polyoff
-\DeclareOption{polyoff}{
-  \@polyofftrue
-}
+\DeclareOption{polyoff}{\@polyofftrue}
 % New in version 1.46: test option, primarily for developer use.
-% Throws error if Liberintus and Latin Modern Roman fonts are unavailable.
-% Throws error is file novel-testimage.png is not in same folder.
 \newif \if@testsuite
-\DeclareOption{test}{
-  \@testsuitetrue
-}
+\DeclareOption{test}{\@testsuitetrue}
+%
 %% Note that document size and normal font size are not class options.
 %% They are set by commands in the Preamble, and have default values.
 %
@@ -293,7 +289,6 @@
 % In draft mode only, the `shademargins' option requires `grayscale',
 %   which will be temporarily enabled, even if not specifically requested.
 \newif \if@grayenabled
-%
 \ifdraftdoc
   \RequirePackage[gray,hyperref]{xcolor} % allows some layout checks
   \global\@grayenabledtrue
@@ -308,7 +303,6 @@
 % adjustbox and eso-pic cannot precede xcolor.
 \RequirePackage{adjustbox} % for scaling and moving
 \RequirePackage{eso-pic} % background effects in draft mode
-%
 %% end activate xcolor and adjustbox
 
 
@@ -318,15 +312,8 @@
 %% It will be modified later, during layout calculations.
 %% Actual default font size will be 11pt-12pt, with 11.4pt average.
 %% But that is for typical book-weight fonts. The closest LMR eqivalent is 10pt.
-\def\Current@FontSizeNum{10}
-\def\Current@BaselineSkipNum{13}
-\renewcommand\normalsize{%
-  \@setfontsize\normalsize{\Current@FontSizeNum}{\Current@BaselineSkipNum}%
-}
+\renewcommand\normalsize{\@setfontsize\normalsize{10}{13}}
 \normalsize
-%
-\RequirePackage{lipsum} % generates dummy text for examples
-%
 %% end temporary normal point size and baselineskip
 
 
@@ -344,12 +331,13 @@
 %% Also sets a variety of miscellaneous lengths:s \parsep, \parindent, etc.
 \RequirePackage{novel-LayoutSettings}
 %%
-\RequirePackage{novel-DropCap}
-%%
 
 
-%% Additional Preamble Settings and Commands.
+%% Additional Macros, Loaded in Preamble.
 %% -----------------------------------------------------------------------------
+\RequirePackage{lipsum} % generates dummy text for examples
+%% New in version 1.48:
+\RequirePackage{novel-DropCap}
 % Macros for use in document body:
 \RequirePackage{novel-TextMacros}
 % Standard header footer styles, based on `fancyhdr':
@@ -363,8 +351,11 @@
 %%
 
 
-%% Special features of test suite.
+%% Special features of test suite (for developers and error reporting)
 %% -----------------------------------------------------------------------------
+% Files `novel-testsuite.tex' and `novel-testimage.png' are located in the novel
+%   documentation extras folder. To run the test suite, copy these files to
+%   a writeable location (such as your home directory) and compile there.
 \newcommand\testsuiteoops[1]{%
   \ClassError{novel}{#1 missing}{Install the necessary file(s).}%
 }
@@ -378,56 +369,56 @@
 %% end special features of test suite.
 
 
-%% \AtEndPreamble sets defaults and calculates layout
+%% \AtEndPreamble sets defaults, calculates layout, and writes PDF/X
 %% -----------------------------------------------------------------------------
+% This is prior to \AtBeginDocument, and ensures that the results are available
+%   prior to any \AtBeginDocument routines from user macros or loaded packages. 
 \AtEndPreamble{
   % New in v. 1.44. Sets default resolution for images without internal dpi:
   \pdfimageresolution=\@novimgres % from \SetFlexResolution. Default 300.
   % If user did not choose language, default is here. Sorry, Brits:
   % Macro \xpg@main@language is gdef'd by \setdefaultlanguage in polyglossia.
-  \if@polyoff\else % polyoff v 1.44.
-    \@ifundefined{xpg@main@language}{\setdefaultlanguage[variant=american]{english}}{}
-  \fi
-  \RequirePackage{novel-CalculateLayout}
-  \RequirePackage{novel-FontDefaults}
-  \providecommand\textls[2][]{#2} % when mtoff option
+
+  %%%%%
+
+  \RequirePackage{novel-CalculateLayout} % loads novel-ChangeLayout.sty if needed
+  \RequirePackage{novel-PostLayout} % calculates shademargins, cropmarks, etc.
+  \RequirePackage{novel-FontDefaults} % provides default fonts, if not set by user
+  \providecommand\textls[2][]{#2} % nullifies this microtype command (problems)
   \renewcommand\textls[2][]{#2} % nullifies this microtype command (problems)
   \RequirePackage{novel-pdfx}%
 }
-%%
+%% end AtEndPreamble
 
 
 %% \AtBeginDocument finishes the setup
 %% -----------------------------------------------------------------------------
-\newlength\normalparindent
-%
 \AtBeginDocument{ %
-  % Find some useful measurements:
-  \setlength\normalparindent{\parindent}
-  \global\normalparindent=\parindent
-  \gdef\@normalxheight{\heightof{x}}
-  \setlength\normalxheight{\@normalxheight}
-  \global\normalxheight=\normalxheight
-  \gdef\@normalXheight{\heightof{X}}
-  \setlength\normalXheight{\@normalXheight}
-  \global\normalXheight=\normalXheight
-  \gdef\@normalscxheight{\heightof{\textsc{x}}}
-  \setlength\normalscxheight{\@normalscxheight}
-  \global\normalscxheight=\normalscxheight
-  \gdef\@normalAringheight{\heightof{Å}}
-  \setlength\normalAringheight{\@normalAringheight}
-  \global\normalAringheight=\normalAringheight
-  \gdef\@normaldescender{\depthof{gjpqy}}
-  \setlength\normaldescender{\@normaldescender}
-  \global\normaldescender=\normaldescender
+  % Store some normal values (main font) for global use in document body:
+  \newlength\nfs % abbreviation for normal font point size
+    \gsetlength\nfs{\@FontSize}
+  \newlength\nbs % abbreviation for normal baselineskip
+    \gsetlength\nbs{\baselineskip}
+  \gsetlength\parindent{1.5em} % may be locally changed
+  \newlength\normalparindent
+    \gsetlength\normalparindent{\parindent}
+  \newlength\normalxheight % height of lowercase x
+    \gsetlength\normalxheight{\heightof{x}}
+  \newlength\normalXheight % height of uppercase X
+    \gsetlength\normalXheight{\heightof{X}}
+  \newlength\normalscxheight % height of small cap x
+    \gsetlength\normalscxheight{\heightof{\textsc{x}}}
+  \newlength\normalAringheight % height of Å (usually tallest in Latin-1)
+    \gsetlength\normalAringheight{\heightof{Å}}
+  \newlength\normaldescender % depth of lowercase gjpqy
+    \gsetlength\normaldescender{\depthof{gjpqy}}
   % Configure lettrine, if loaded by user:
   \@ifpackageloaded{lettrine}{%
     \global\LettrineOnGridtrue % Necessary.
-    \setlength\DiscardVskip{10\nbs} % effectively infinite
-    \global\DiscardVskip=\DiscardVskip %
+    \gsetlength\DiscardVskip{10\nbs} % effectively infinite
   }{}%
   % Activate user choice of whether or not to indent after scenebreak commands:
-  \if@indentAfterScenebreak\else
+  \if@IndentAfterScenebreak\else
     \NoIndentAfterCmd{\scenebreak}
     \NoIndentAfterCmd{\sceneline}
     \NoIndentAfterCmd{\scenestars}
@@ -436,138 +427,87 @@
   \@activateHeadFootStyles % in file `novel-HeadFootStyles.sty'
   \@novelPDFinfo % in file `novel-pdfx.sty'.
   % Commands that cannot be used after Preamble:
-  \let\indentAfterScenebreak\relax
   \let\title\relax
   \let\author\relax
   \let\subtitle\relax
+  \LetLtxMacro\SetAuthor\relax
+  \LetLtxMacro\SetTitle\relax
+  \LetLtxMacro\SetSubtitle\relax
   \LetLtxMacro\SetMediaSize\relax
   \LetLtxMacro\SetTrimSize\relax
   \LetLtxMacro\ReworkTrimSize\relax
   \LetLtxMacro\SetMargins\relax
   \LetLtxMacro\ReworkMargins\relax
+  \LetLtxMacro\SetLinesPerPage\relax
+  \LetLtxMacro\SetFontSize\relax
+  \LetLtxMacro\SetHeadFootStyle\relax
+  \LetLtxMacro\IndentAfterScenebreak\relax
+  \LetLtxMacro\SetScenebreakIndent\relax
   % Dealing with known incompatible packages:
   \if@novelunblock
     \gdef\sorry@no#1{} % let them be used
   \else % block them (default)
     \gdef\sorry@no#1{\@ifpackageloaded{#1}{%
       \ClassError{novel}{Sorry, package `#1' cannot be used}%
-      {The `novel' class does not allow use of package `#1'.^^J%
-      You must remove it from the Preamble, and also remove its commands^^J%
-        from the body of your document. In rare cases, the offending package^^J%
-        was loaded by some other package.^^J}%
+      {The `novel' class does not allow use of package `#1'. ^^J%
+      You must remove it from the Preamble, and also remove its commands ^^J%
+        from the body of your document. In rare cases, the offending package ^^J%
+        was loaded by some other package.}%
       }{}%
     }
   \fi
   % List of blocked packages (not exhaustive, since TeX has so many):
-  \sorry@no{pdfx}
-  \sorry@no{xmpincl}
-  \sorry@no{hyperxmp}
-  \sorry@no{pdfxmult}
-  \sorry@no{inputenc}
-  \sorry@no{fontenc}
-  \sorry@no{showkeys}
-  \sorry@no{wrapfigure}
-  \sorry@no{wrapfig}
-  \sorry@no{float}
-  \sorry@no{morefloats}
-  \sorry@no{footmisc}
-  \sorry@no{footnote}
-  \sorry@no{manyfoot}
-  \sorry@no{caption}
-  \sorry@no{subcaption}
-  \sorry@no{multirow}
-  \sorry@no{tabu}
-  \sorry@no{tabularx}
-  \sorry@no{tabulary}
+  \sorry@no{pdfx} \sorry@no{xmpincl} \sorry@no{hyperxmp} \sorry@no{pdfxmult}
+  \sorry@no{inputenc} \sorry@no{fontenc}
+  \sorry@no{wrapfigure} \sorry@no{wrapfig}
+  \sorry@no{float} \sorry@no{morefloats}
+  \sorry@no{footmisc} \sorry@no{footnote} \sorry@no{manyfoot}
+  \sorry@no{caption} \sorry@no{subcaption}
+  \sorry@no{multirow} \sorry@no{tabu} \sorry@no{tabularx} \sorry@no{tabulary}
   \sorry@no{array}
+  \sorry@no{showkeys}
   \sorry@no{booktabs}
   \sorry@no{eqparbox}
   \sorry@no{pdfpages}
-  \sorry@no{nth}
-  \sorry@no{engord}
+  \sorry@no{nth} \sorry@no{engord}
   \sorry@no{endnotes}
   \sorry@no{acronym}
   % end list of incompatible packages
   \@ifpackageloaded{pagegrid}{
-    \ifdraftdoc\else
-      \ClassError{novel}{\string\pagegrid\space needs `draft' mode^^J}%
-       {\string\pagegrid\space may only be used with class option `draft'^^J}%
+    \ifdraftdoc
+      \if@shademargins
+        \ClassWarning{novel}{Grid from `pagegrid' is concealed. ^^J%
+         Document class option `shademargins' over-writes page grid. ^^J%
+         To see the grid, use `draft' but not `shademargins'.}
+      \else\fi
+    \else
+      \ClassError{novel}{Package `pagegrid' needs `draft' mode}%
+       {Package `pagegrid' only with document class option `draft'.}%
     \fi
   }{} % end pagegrid
   % Pertains to novel-LayoutSettings.sty:
   \ifcsname pagenumberstyle\endcsname\else
     \SetPageNumberStyle{\thepage}% no small caps
   \fi
-  % initialize defaults for chapterstart:
-  \def\@setchapterstartOK{false}%
-  \ifthenelse{\equal{\@setchapterstart}{empty}}{%
-    \def\@setchapterstartOK{true}%
-  }{}%
-  \ifthenelse{\equal{\@setchapterstart}{plain}}{%
-    \def\@setchapterstartOK{true}%
-  }{}%
-  \ifthenelse{\equal{\@setchapterstart}{footer}}{%
-    \def\@setchapterstartOK{true}%
-  }{}%
-  \ifthenelse{\equal{\@setchapterstart}{fancyplain}}{%
-    \def\@setchapterstartOK{true}%
-  }{}%
-  \ifthenelse{\equal{\@setchapterstart}{fancy}}{%
-    \def\@setchapterstartOK{true}%
-  }{}%
-  \ifthenelse{\equal{\@setchapterstart}{forcenumber}}{%
-    \def\@setchapterstartOK{true}%
-  }{}%
-  \ifthenelse{\equal{\@setchapterstart}{dropfolioinside}}{%
-    \def\@setchapterstartOK{true}%
-  }{}%
-  \ifthenelse{\equal{\@setchapterstart}{dropfoliobeneath}}{%
-    \def\@setchapterstartOK{true}%
-  }{}%
-  \ifthenelse{\equal{\@setchapterstartOK}{true}}{}{%
-    \ClassError{novel}{\string\SetChapterStartStyle\space bad argument}%
-    {\string\SetChapterStartStyle\space only allows certain choices.^^J}%
-  }%
   % Pertains to novel-TextMacros.sty:
-  \setlength\forceparlength{\parindent}
-  \global\forceparlength=\forceparlength
-  \gdef\forceindent{\ifvmode\else\unskip\fi\stake\hspace{\forceparlength}}
-  \gdef\backindent{\ifvmode\else\unskip\fi\hspace{-\forceparlength}}
+  \gdef\forceindent{\ifvmode\else\unskip\fi\stake\hspace{\normalparindent}}
+  \gdef\backindent{\ifvmode\else\unskip\fi\hspace{-\normalparindent}}
   % Pertains to novel-footnotes.sty:
   \gdef\SetFootnoteMarker#1{%
     \typeout{^^JClass `novel' Alert: %
-    \string\SetFootnoteMarker\space ineffective after Preamble.^^J}%
+    \string\SetFootnoteMarker\space ineffective after Preamble.}%
   }
-  % Must wait for \nbs to be calculated:
-  \setlength\footnotesep{0.8\nbs}
-  % Must wait for main font and its size to be active:
-  \newlength\@hoaring
-  \setlength\@hoaring{\heightof{Å}}
-  \global\@hoaring=\@hoaring
-  \newlength\@twast % tweaks asterisk
-  \setlength\@twast{\heightof{*}}
-  \addtolength\@twast{-\@hoaring}
-  \global\@twast=\@twast
-  \newlength\@twdag % tweaks dagger
-  \setlength\@twdag{\heightof{†}}
-  \addtolength\@twdag{-0.2\@twdag}
-  \addtolength\@twdag{-\@hoaring}
-  \global\@twdag=\@twdag
-  \newlength\@twdbldag % tweaks double dagger
-  \setlength\@twdbldag{\heightof{‡}}
-  \addtolength\@twdbldag{-0.2\@twdbldag}
-  \addtolength\@twdbldag{-\@hoaring}
-  \global\@twdbldag=\@twdbldag
-  \newlength\@twsect % tweaks section mark
-  \setlength\@twsect{\heightof{§}}
-  \addtolength\@twsect{-0.2\@twsect}
-  \addtolength\@twsect{-\@hoaring}
-  \global\@twsect=\@twsect
-  \newlength\@tweight % tweaks 8, reliably the tallest digit
-  \setlength\@tweight{\heightof{8}}%
-  \addtolength\@tweight{-0.2\@tweight}%
-  \addtolength\@tweight{-\@hoaring}%
-  \global\@tweight=\@tweight%
+  \gsetlength\footnotesep{0.8\nbs}
+  % Adjusted position of footnote markers. Must wait for main font size:
+  \gsetlength\@twast{\heightof{*}-\normalAringheight}
+  \gsetlength\@twdag{\heightof{†}}
+  \gsetlength\@twdag{0.8\@twdag-\normalAringheight}
+  \gsetlength\@twdbldag{\heightof{‡}}
+  \gsetlength\@twdbldag{0.8\@twdbldag-\normalAringheight}
+  \gsetlength\@twsect{\heightof{§}}
+  \gsetlength\@twsect{0.8\@twsect-\normalAringheight}
+  \gsetlength\@tweight{\heightof{8}}%
+  \gsetlength\@tweight{0.8\@tweight-\normalAringheight}%
   % Must wait to see how \SetFootnoteMarker was used:
   \ifthenelse{\equal{\@myfnsymbols}{*}}{\setcounter{@maxfnsymbol}{8}}{}
   \ifthenelse{\equal{\@myfnsymbols}{†}}{\setcounter{@maxfnsymbol}{6}}{}
@@ -589,14 +529,6 @@
 }
 %%
 
-
-%% AtBeginShipout occurs at the completion of each page layout, in document body.
-\AtBeginShipout{%
-  \gdef\@fnafter{}% Pertains to some standard LaTeX footnote code.
-  \stepcounter{runningpages}%
-  \global\@thispagestylesetfalse%
-}
-%%
 
 
 %%

@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-FontDefaults.sty}%
-[2017/12/12 v1.46.5 LaTeX file (default fonts)]
+[2017/12/25 v1.46.5k LaTeX file (default fonts)]
 %%
 
 
@@ -21,7 +21,6 @@
 %% This file is loaded \AtEndPreamble.
 %%
 
-%%%%%
 
 %% Most TeX installations will use Latin Modern or Computer Modern
 %%   as default fonts. These are unsuitable for commercial fiction.
@@ -32,7 +31,7 @@
 %
 %% Now to activate the font definitions:
 %% The parent font, ancestor of the main font, and some others:
-\if@parentfontset\else % fixed in v. 1.43.1
+\if@ParentFontSet\else % fixed in v. 1.43.1
   \ifthenelse{\equal{\rmdefault}{lmr}}{%
     % At this point, if \rmdefault is lmr, it means that the user did not choose
     %   a different font. Then, Libertinus Serif or Latin Modern Roman
@@ -53,12 +52,12 @@
     % If the choice was made via \SetParentFont, no problem. But if done by
     %   incorrect method such as \setmainfont, \renewcommand\rmdefault,
     %   or \usepackage{fontname}, then an error is thrown (warning prior to v 1.44):
-    \if@parentfontset\else
+    \if@ParentFontSet\else
       \ClassError{novel}{Wrong command used to set main font}%
-      {You attempted to define the main document font using a command such as^^J%
-      \string\renewcommand\string\rmdefault\space or \string\usepackage^^J%
-      or \string\setmainfont. These are incorrect in `novel' class.^^J%
-      Use \string\SetParentFont\space instead. See `novel' documentation.^^J}%
+      {You attempted to define the main document font using a command such as ^^J%
+      \string\renewcommand\string\rmdefault\space or \string\usepackage\space ^^J%
+      or \string\setmainfont. These are incorrect in `novel' class. ^^J%
+      Use \string\SetParentFont\space instead. See `novel' documentation.}%
     \fi
   }%
 \fi
@@ -97,25 +96,23 @@
 %%
 
 %% The novel-specific fonts:
-\if@chapterfontset\else
+\if@ChapterFontSet\else
   \SetChapterFont[\parentfontfeatures,Scale=1.6]{\parentfontname}
 \fi
 \newfontfamily\chapterfont[\@chapterfontfeatures]{\@chapterfontname}
 %%
-\if@subchfontset\else
+\if@SubchFontSet\else
   \SetSubchFont[\parentfontfeatures,Scale=1.2]{\parentfontname}
 \fi
 \newfontfamily\subchfont[\@subchfontfeatures]{\@subchfontname}
 %%
-\newif \if@headfontdefault
-\if@headfontset\else
+\if@HeadFontSet\else
   \SetHeadFont[Letters=SmallCaps,\parentfontfeatures,Scale=0.92]{\parentfontname}
-  \global\@headfontdefaulttrue
 \fi
 \newfontfamily\headfont[\@headfontfeatures]{\@headfontname}
 %%
 %% The decofont must be NovelDeco.otf or a user modification of that font:
-\if@decofontset\else
+\if@DecoFontSet\else
   \IfFontExistsTF{NovelDeco.otf}{
     \SetDecoFont{NovelDeco}
   }{}
@@ -127,7 +124,7 @@
 % Decorative glyphs, only in this font. Should not be re-set by user:
 \gdef\decoglyph#1{~}% If decofont not found, nonbreaking space in main text.
 %
-\if@gotdeco % NovelDeco or a user-defined alternative was found:
+\if@HasDecoFont % NovelDeco or a user-defined alternative was found:
   \newfontface\@decoglyph[%
     \@decofontfeatures,%
   ]{\@decofontname}
@@ -165,22 +162,22 @@
   % weights adjusted, the placed in NovelDeco.otf.
   \gdef\acronym#1{{\decofont{#1}}}
   %
-\fi% end \if@gotdeco
+\fi% end \if@HasDecoFont
 %
 % New in version 1.48:
-\if@gotdeco
+\if@HasDecoFont
   \NewFontFace\decodropcapfont[RawFeature=+dcap]{\@decofontname}
 \else
   \NewFontFace\decodropcapfont[\parentfontfeatures,Numbers=Lining]{\parentfontname}
 \fi
-\ifNDC@dropcapfontset\else
-  \SetDropCapFont{\decodropcapfont}
+\if@HasDropCapFont\else
+  \SetDropCapFont{\decodropcapfont} % default
 \fi
 %
 %% This provides default microtype settings, allows the user to over-ride,
 %    and hopefully prevents the user from choosing inappropriate settings:
 \let\microtypesetup\relax % fake command no longer needed
-\if@setmicrotype % user wrote \microtypesetup{} in Preamble
+\if@MicrotypeSet % true if user wrote \microtypesetup{} in Preamble
   \IfSubStr{\@mymicrotypesetup}{config}{% user specified own config file
     \gdef\@mymicrotypeset{\@mymicrotypesetup}
   }{ % default to novel's config file

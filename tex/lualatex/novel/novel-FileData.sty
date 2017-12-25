@@ -13,8 +13,14 @@
 %% 
 %%
 \ProvidesFile{novel-FileData.sty}%
-[2017/12/12 v1.46.5 LaTeX file (File Data settings)]
+[2017/12/25 v1.46.5k LaTeX file (File Data settings)]
 %% 
+
+
+% \@pdfxSEToff refers to the setting, rather than whether or not it really is off.
+% \@pdfxISoff refers to whether it really is off (perhaps something over-rode the setting).
+\newif \if@pdfxSEToff % Prior to v. 1.46.1, was \ifpdfx@isOFF.
+\newif \if@pdfxISoff % New in v. 1.46.1.
 
 
 %% FILE DATA (PDF Metadata)
@@ -24,6 +30,7 @@
 % Copied to File Data at end of Preamble, unless not set.
 % Provides \theTitle anywhere.
 % If not set, PDF cannot conform to PDF/X.
+\newif \if@HasTitle % true if \SetTitle or \title used
 \gdef\SetTitle#1{\gdef\@title{#1}} % for stylistic consistency
 \gdef\title#1{\gdef\@title{#1}}
 \gdef\thetitle{\@title} % for convenience
@@ -82,15 +89,6 @@
 %% Default up to and including v. 1.46: \SetPDFX{off}
 %% Default as of v. 1.46.1: \SetPDFX[CGATSTR001]{X-1a:2001}
 %
-\newif \if@chosenComplianceOK
-\newif \if@chosenOutputIntentOK
-\newif \if@chosenEmbedOK
-\newif \if@gotConformance
-\newif \if@noembedicc \@noembedicctrue
-% \@pdfxSEToff refers to the setting, rather than whether or not it really is off.
-% \@pdfxISoff refers to whether it really is off (perhaps something over-rode the setting).
-\newif \if@pdfxSEToff % Prior to v. 1.46.1, was \ifpdfx@isOFF.
-\newif \if@pdfxISoff % New in v. 1.46.1.
 % These will get meaningful info when an output intent file is loaded:
 \gdef\@OIidentifier{}
 \gdef\@OIcondition{}
@@ -99,68 +97,72 @@
 \gdef\@OIprofile{}
 %
 %%
+\newif \if@HasConformance
+\newif \if@EmbedICC
 \gdef\SetPDFX{\@ifstar\@setpdfxst\@setpdfxns}
 \newcommand\@setpdfxst[2][CGATSTR001]{
-  \global\@noembediccfalse
+  \global\@EmbedICCtrue
   \@setpdfx{#1}{#2}
 }
 \newcommand\@setpdfxns[2][CGATSTR001]{
-  \global\@noembedicctrue
+  \global\@EmbedICCfalse
   \@setpdfx{#1}{#2}
 }
 %
 \newcommand\@setpdfx[2]{
+  \@tempTFfalse
   \ifthenelse{\equal{#2}{off}}{
+    \@tempTFtrue
     \global\@pdfxSETofftrue
     \global\@pdfxISofftrue
-    \@chosenComplianceOKtrue
   }{}
   \ifthenelse{\equal{#2}{X-1a:2001}}{
+    \@tempTFtrue
     \global\@pdfxSETofffalse
     \global\@pdfxISofffalse
-    \@chosenComplianceOKtrue
     \gdef\@PDFversion{PDF/X-1}
     \gdef\@PDFXversion{PDF/X-1a:2001}
     \gdef\@PDFXconformance{PDF/X-1a:2001}
-    \global\@gotConformancetrue
+    \global\@HasConformancetrue
     \global\pdfminorversion=3
   }{}
   \ifthenelse{\equal{#2}{X-1a:2003}}{
+    \@tempTFtrue
     \global\@pdfxSETofffalse
     \global\@pdfxISofffalse
-    \@chosenComplianceOKtrue
     \gdef\@PDFversion{PDF/X-1}
     \gdef\@PDFXversion{PDF/X-1a:2003}
     \gdef\@PDFXconformance{PDF/X-1a:2003}
-    \global\@gotConformancetrue
+    \global\@HasConformancetrue
     \global\pdfminorversion=3
   }{}
   \ifthenelse{\equal{#2}{X-3:2002}}{
+    \@tempTFtrue
     \global\@pdfxSETofffalse
     \global\@pdfxISofffalse
-    \@chosenComplianceOKtrue
     \gdef\@PDFversion{PDF/X-3}
     \gdef\@PDFXversion{PDF/X-3:2002}
     \global\pdfminorversion=3
   }{}
   \ifthenelse{\equal{#2}{X-3:2003}}{
+    \@tempTFtrue
     \global\@pdfxSETofffalse
     \global\@pdfxISofffalse
-    \@chosenComplianceOKtrue
     \gdef\@PDFversion{PDF/X-3}
     \gdef\@PDFXversion{PDF/X-3:2003}
     \global\pdfminorversion=4
   }{}
-  \if@chosenComplianceOK\else
+  \if@tempTF\else
     \ClassError{novel}{Bad compliance argument for \string\SetPDFX}%
-     {Choose: X-1a:2001, X-1a:2003, X-3:2002, X-3:2003, off.^^J}%
+     {Choose: X-1a:2001, X-1a:2003, X-3:2002, X-3:2003, off.}%
   \fi
   % Prior to version 1.46.2, this info was in separate files:
   \if@pdfxSEToff\else % Output Intent ignored if compliance set `off'.
+    \@tempTFfalse
     % Ignore spaces, so that CGATS TR 001 = CGATSTR001:
     \StrDel{#1}{\space}[\@NPDFXOINS]
     \ifthenelse{\equal{\@NPDFXOINS}{CGATSTR001}}{%
-      \global\@chosenOutputIntentOKtrue
+      \global\@tempTFtrue
       % Data for Output Intent CGATS TR 001:
       \gdef\@OIidentifier{CGATS TR 001} % also called "reference name"
       \gdef\@OIcondition{SWOP (Publication) printing in USA (Printing process definition: ANSI CGATS.6).}
@@ -170,7 +172,7 @@
       % end CGATS TR 001.
     }{} %
     \ifthenelse{\equal{\@NPDFXOINS}{FOGRA39}}{%
-      \global\@chosenOutputIntentOKtrue
+      \global\@tempTFtrue
       % Data for Output Intent FOGRA39:
       \gdef\@OIidentifier{FOGRA39} % also called "reference name"
       \gdef\@OIcondition{Offset commercial and specialty printing according to ISO 12647-2:2004 / Amd 1, paper type 1 or 2 (gloss or matte coated offset, 115 g/m2), screen frequency 60/cm.}
@@ -180,7 +182,7 @@
       % end FOGRA39.
     }{} %
     \ifthenelse{\equal{\@NPDFXOINS}{JC200103}}{%
-      \global\@chosenOutputIntentOKtrue
+      \global\@tempTFtrue
       % Data for Output Intent JC200103:
       \gdef\@OIidentifier{JC200103} % also called "reference name"
       \gdef\@OIcondition{Japan Color 2001 Coated: Printing process definition: ISO 12647-2:2004, sheet-fed offset printing, positive plates, paper type 3 (coated, 105 gsm), screen frequency 69/cm.}
@@ -189,7 +191,7 @@
       \gdef\@OIprofile{JapanColor2001Coated.icc}
       % end JC200103.
     }{} %
-    \if@chosenOutputIntentOK\else
+    \if@tempTF\else
       % Grab the file that defines the Output Intent information:
       % File name format: novel-YourIntent.clo
       % Setting: \SetPDFX[YourIntent]{compliance}
@@ -197,11 +199,11 @@
       \makeatletter % Apparently needed when non-*.sty is input within a command!
       \IfFileExists{novel-\@NPDFXOINS.clo}{\input{novel-\@NPDFXOINS.clo}}{%
         \PackageError{novel-PDFX}{Bad Output Intent argument for \string\SetPDFX}%
-         {Use filename (without extension) of a file with *.clo extension.^^J%
-          Filename must begin with novel-^^J%
-          Example: File novel-FOGRA39.clo is called as [FOGRA39].^^J%
-          The file must be where TeX can find it.^^J%
-          For contents of the file, see package documentation,^^J%
+         {Use filename (without extension) of a file with *.clo extension. ^^J%
+          Filename must begin with novel- ^^J%
+          Example: File novel-FOGRA39.clo is called as [FOGRA39]. ^^J%
+          The file must be where TeX can find it. ^^J%
+          For contents of the file, see package documentation, ^^J%
           or look inside `novel-PDFX.sty' for MODEL CODE FOR OUTPUT INTENTS.}%
       }{}%
       \makeatother % back to usual

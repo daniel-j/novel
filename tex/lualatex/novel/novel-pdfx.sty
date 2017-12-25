@@ -24,7 +24,7 @@
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesFile{novel-pdfx.sty}%
-[2017/12/12 v1.46.5 LaTeX file (PDF/X support for novel class)]
+[2017/12/25 v1.46.5k LaTeX file (PDF/X support for novel class)]
 % This package supports, and is part of, class `novel'.
 % No support for anything but LuaLaTeX.
 
@@ -40,9 +40,9 @@
 \ifdraftdoc
   \global\@pdfxISofftrue
   \if@pdfxSEToff
-    \ClassWarning{novel}{You requested PDF/X compliance in draft mode.^^J%
-     Sorry, but you cannot have both at the same time.^^J%
-     Your document was processed with \string\SetPDFX\{off\}.^^J}%
+    \ClassWarning{novel}{You requested PDF/X compliance in draft mode. ^^J%
+     Sorry, but you cannot have both at the same time. ^^J%
+     Your document was processed with \string\SetPDFX\{off\}.}%
   \fi
 \fi
 %%
@@ -62,28 +62,27 @@
 \fi
 \Hy@bookmarksfalse
 %
-\newif \if@gottitle % refers to PDF File Data
-\ifthenelse{\equal{\@title}{} \OR \equal{\@title}{ }}{\global\@gottitlefalse}{\global\@gottitletrue}
+\ifthenelse{\equal{\@title}{} \OR \equal{\@title}{ }}{\global\@HasTitlefalse}{\global\@HasTitletrue}
 \ifthenelse{\equal{\@title}{IMPORTANT: Provide Book Title}}{%
-  \ClassWarning{novel}{^^JYou did not provide a title using \string\SetTitle.^^J%
-   Default used: `IMPORTANT: Provide Book Title'. Be sure to change it!^^J}%
+  \ClassWarning{novel}{^^JYou did not provide a title using \string\SetTitle. ^^J%
+   Default used: `IMPORTANT: Provide Book Title'. Be sure to change it!}%
 }{}%
 %
 % Sanity check: If title is missing at this step, then compliance must be off:
 \if@pdfxISoff\else
-  \if@gottitle\else
+  \if@HasTitle\else
     \ClassError{novel}{PDF/X requires non-empty \string\SetTitle\space}%
-     {Unless \string\SetPDFX\space is off, must use \string\SetTitle\space^^J%
-      with non-empty title. Blank space counts as empty.^^J}%
+     {Unless \string\SetPDFX\space is off, must use \string\SetTitle\space ^^J%
+      with non-empty title. Blank space counts as empty.}%
   \fi
 \fi
 %
-\if@gottitle\else
-  \ClassWarning{novel}{Your file has been compiled without standard^^J %
-    PDF internal metadata, such as the title. This is allowable, and in ^^J %
-    some cases desirable. But in most cases it is not what you intended. ^^J %
-    If you want title and other metadata to be in PDF internal metadata, ^^J %
-    then you must place them prior to the \string\SetPDFX.^^J}
+\if@HasTitle\else
+  \ClassWarning{novel}{Your file has been compiled without standard ^^J%
+    PDF internal metadata, such as the title. This is allowable, and in ^^J%
+    some cases desirable. But in most cases it is not what you intended. ^^J%
+    If you want title and other metadata to be in PDF internal metadata, ^^J%
+    then you must place them prior to the \string\SetPDFX.}
 \fi
 %
 \expandafter\ifx\csname pdfresetpageorigin\endcsname\relax\else
@@ -105,30 +104,30 @@
 %   by professional PDF software. For that reason, and for proper centering
 %   of TrimBox when MediaBox is larger, CropBox is created (= MediaBox).
 %
-\newcommand\@myMWnum{\strip@pt\New@MediaWidth}
-\FPmul{\@myMWnum}{\@myMWnum}{0.99626401}
-\FPround{\@myMWnum}{\@myMWnum}{3}
-\FPclip{\@myMWnum}{\@myMWnum}
-\newcommand\@myMHnum{\strip@pt\New@MediaHeight}
-\FPmul{\@myMHnum}{\@myMHnum}{0.99626401}
-\FPround{\@myMHnum}{\@myMHnum}{3}
-\FPclip{\@myMHnum}{\@myMHnum}
-\newcommand\@myTWnum{\strip@pt\New@TrimWidth}
-\FPmul{\@myTWnum}{\@myTWnum}{0.99626401}
-\FPround{\@myTWnum}{\@myTWnum}{3}
-\newcommand\@myTHnum{\strip@pt\New@TrimHeight}
-\FPmul{\@myTHnum}{\@myTHnum}{0.99626401}
-\FPround{\@myTHnum}{\@myTHnum}{3}
+\newcommand\@myMWN{\strip@pt\paperwidth}
+\FPmul{\@myMWN}{\@myMWN}{0.99626401}
+\FPround{\@myMWN}{\@myMWN}{3}
+\FPclip{\@myMWN}{\@myMWN}
+\newcommand\@myMHN{\strip@pt\paperheight}
+\FPmul{\@myMHN}{\@myMHN}{0.99626401}
+\FPround{\@myMHN}{\@myMHN}{3}
+\FPclip{\@myMHN}{\@myMHN}
+\newcommand\@myTWN{\strip@pt\@TrimWidth}
+\FPmul{\@myTWN}{\@myTWN}{0.99626401}
+\FPround{\@myTWN}{\@myTWN}{3}
+\newcommand\@myTHN{\strip@pt\@TrimHeight}
+\FPmul{\@myTHN}{\@myTHN}{0.99626401}
+\FPround{\@myTHN}{\@myTHN}{3}
 %
-\FPsub{\@myTWorigin}{\@myMWnum}{\@myTWnum}
+\FPsub{\@myTWorigin}{\@myMWN}{\@myTWN}
 \FPmul{\@myTWorigin}{\@myTWorigin}{0.5}
 \FPround{\@myTWorigin}{\@myTWorigin}{3}
-\FPadd{\@myTWcorner}{\@myTWorigin}{\@myTWnum}
+\FPadd{\@myTWcorner}{\@myTWorigin}{\@myTWN}
 \FPround{\@myTWcorner}{\@myTWcorner}{3}
-\FPsub{\@myTHorigin}{\@myMHnum}{\@myTHnum}
+\FPsub{\@myTHorigin}{\@myMHN}{\@myTHN}
 \FPmul{\@myTHorigin}{\@myTHorigin}{0.5}
 \FPround{\@myTHorigin}{\@myTHorigin}{3}
-\FPadd{\@myTHcorner}{\@myTHorigin}{\@myTHnum}
+\FPadd{\@myTHcorner}{\@myTHorigin}{\@myTHN}
 \FPround{\@myTHcorner}{\@myTHcorner}{3}
 %
 \FPclip{\@myTWorigin}{\@myTWorigin}
@@ -140,7 +139,7 @@
  \if@cropview%
    /CropBox[\@myTWorigin\space\@myTHorigin\space\@myTWcorner\space\@myTHcorner]%
  \else%
-   /CropBox[0\space0\space\@myMWnum\space\@myMHnum]%
+   /CropBox[0\space0\space\@myMWN\space\@myMHN]%
  \fi%
 }
 %
@@ -151,7 +150,7 @@
 % New in version 1.2: BleedBox, only for cover art. Same size as MediaBox.
 \newcommand\novel@BleedBox{%
   \if@coverart%
-   /BleedBox[0\space0\space\@myMWnum\space\@myMHnum]%
+   /BleedBox[0\space0\space\@myMWN\space\@myMHN]%
   \else\fi%
 }
 %
@@ -229,7 +228,7 @@
 \else
   \gdef\@verconfString{
     \pad@vi<pdfx:GTS_PDFXVersion>\@PDFXversion</pdfx:GTS_PDFXVersion>^^J
-    \if@gotConformance
+    \if@HasConformance
       \pad@vi<pdfx:GTS_PDFXConformance>\@PDFXconformance</pdfx:GTS_PDFXConformance>^^J
     \fi
   }
@@ -311,7 +310,7 @@
 %% the result at the start of the PDF, right now, before the document.
 %
 \if@pdfxISoff\else
-  \if@gottitle
+  \if@HasTitle
     \begingroup
       \makeatletter
       \input{novel-xmppacket.sty}
@@ -392,14 +391,14 @@
     \edef\){\string\)} % PDF Catalog requires escaped parentheses.
     \catcode`\_ 12 % The icc file name might contain underscores.
     %
-    \if@noembedicc\else
+    \if@EmbedICC
       \IfFileExists{\@OIprofile}{%
         \immediate\pdfobj stream attr{/N 4} file{\@OIprofile}%
         \edef\OBJ@OI{\the\pdflastobj\space 0 R}%
       }{%
         \ClassError{novel}{Requested icc color profile not found}%
-          {You used the starred \string\SetPDFX*\space which embeds the^^J%
-            associated icc color profile. But the file could not be located.^^J%
+          {You used the starred \string\SetPDFX*\space which embeds the ^^J%
+            associated icc color profile. But the file could not be located. ^^J%
             If necessary, place it in the same folder as your *.tex document.}%
       }
     \fi
@@ -431,7 +430,7 @@
       \@OIidentifierString%
       \@OIinfoString%
       \@OIregistryString%
-      \if@noembedicc\else/DestOutputProfile \OBJ@OI\fi%
+      \if@EmbedICC/DestOutputProfile \OBJ@OI\fi%
       >> ]%
     }%
   \endgroup
@@ -463,7 +462,7 @@
 %% The \novel@PDFinfo command is used AtBeginDocument in novel.cls.
 %
 \gdef\@novelPDFinfo{ % rather than \PDF@FinishDoc
-  \if@gottitle
+  \if@HasTitle
     \pdfinfo{
       \ifx\@infotitle\@empty\else /Title(\@infotitle)\fi
       \ifx\@infoauthor\@empty\else /Author(\@infoauthor)\fi
@@ -482,7 +481,7 @@
       /Trapped/False%
       \if@pdfxISoff\else
         /GTS_PDFXVersion(\@PDFXversion)%
-        \if@gotConformance /GTS_PDFXConformance(\@PDFXconformance)\fi%
+        \if@HasConformance /GTS_PDFXConformance(\@PDFXconformance)\fi%
       \fi
     }
   \fi

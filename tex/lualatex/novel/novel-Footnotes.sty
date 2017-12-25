@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Footnotes.sty}%
-[2017/12/12 v1.46.5 LaTeX file (commands for footnotes and endnotes)]
+[2017/12/25 v1.46.5k LaTeX file (commands for footnotes and endnotes)]
 %%
 
 
@@ -27,6 +27,13 @@
 % You can manually reset them at any time.
 % You can also make a non-marked footnote, which does not increment the count.
 
+
+% Lengths used to tweak vertical position of symbolic (text) footnote markers:
+\newlength\@twast % tweaks asterisk
+\newlength\@twdag % tweaks dagger
+\newlength\@twdbldag % tweaks double dagger
+\newlength\@twsect % tweaks section mark
+\newlength\@tweight % tweaks 8, reliably the tallest digit
 
 
 %% footnotesize is calculated by layout, based on normal font size and skip.
@@ -55,8 +62,8 @@
 \let\footnote\relax % so it can be re-defined, below
 %
 \gdef\@fourem{% length of rule separating footnotes from main text
-  \vspace{-\nbs}
-  \noindent\strut\smash{\rule[-2pt]{0.33\textwidth}{0.05\normalFontSize}}
+  \vspace{-\nbs}%
+  \noindent\strut\smash{\rule[-2pt]{0.33\textwidth}{0.05\@FontSize}}%
 }
 \let\footnoterule\@fourem
 %
@@ -80,7 +87,7 @@
   \gdef\footnoterule{\@fourem}%
   \begingroup%
   \def\footnotesize{% Not gdef. Only here in footnote. Calculated during layout.
-    \@setfontsize\footnotesize{\@myfootnotesizenum pt}{\@myfootnoteskipnum pt}%
+    \@setfontsize\footnotesize{\@myfootnotesizeN pt}{\@myfootnoteskipN pt}%
   }%
   \unskip\@myoldfootnote{#2}%
   \endgroup%
@@ -199,14 +206,12 @@
 %% end endnotes
 
 
-
-%% See novel.cls for the accompanying AtBeginDocument routine.
-
-%% See novel.cls for the accompanying AtEndDocument routine.
+%% See novel.cls for the accompanying \AtBeginDocument routine.
 
 
-
-
+%% Pertains to some standard LaTeX footnote code:
+\AtBeginShipout{\gdef\@fnafter{}}
+%%
 
 
 %% ATENDDOCUMENT
@@ -214,18 +219,17 @@
 %% Write a list of endnote (number,page) into log file,
 % and Big Bad Warning if numerical footnotes and endnotes both used:
 \AtEndDocument{%
-  \iftoggle{@gotendnotes}%
-    {\typeout{^^J^^JClass `novel' Alert: You placed endnotes (number,page):^^J%
-    \@endnotelist%
-    ^^J^^J}%
-    }{}
+  \iftoggle{@gotendnotes}{%
+    \typeout{Class `novel' Alert: You placed endnotes (number,page): ^^J%
+     \@endnotelist ^^J}%
+  }{}
   %
-  \iftoggle{@placedfootnotenumber}%
-    {\iftoggle{@gotendnotes}%
-      {\typeout{^^JClass `novel' BIG BAD WARNING:^^J%
-        Numbered footnotes and endnotes! Better use symbolic footnotes!^^J^^J}%
-      }{}%
-    }{}%
+  \iftoggle{@placedfootnotenumber}{%
+    \iftoggle{@gotendnotes}{%
+      \ClassWarning{novel}{BIG BAD WARNING! You used numbered footnotes ^^J%
+        and numbered endnotes. Better change to symbolic footnotes!}%
+    }{}
+  }{}%
 }% end \AtEndDocument
 %%
 

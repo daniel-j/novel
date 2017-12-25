@@ -13,55 +13,33 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/12/12 v1.46.5a LaTeX file (layout settings)]
+[2017/12/25 v1.46.5k LaTeX file (layout settings)]
 %%
 
 
 %% Note that nearly all layout settings are pre-configured based on Trim Size.
 %% In general, these user commands may be used to over-ride the presets.
 
-\newlength\Old@TrimWidth % finished width of printed book
-\newlength\Old@TrimHeight % finished height of printed book
-\newlength\New@TrimWidth % Initialized to \Old@TrimWidth.
-\newlength\New@TrimHeight % Initialized to \Old@TrimHeight.
-\newlength\Old@TopMargin
-\newlength\Old@OutsideMargin
-\newlength\Old@BottomMargin
-\newlength\Old@InsideMargin
-\newlength\New@TopMargin
-\newlength\New@OutsideMargin
-\newlength\New@BottomMargin
-\newlength\New@InsideMargin
-\newlength\Old@MediaWidth % Defaults to trim width, but can be set larger.
-\newlength\Old@MediaHeight % Defaults to trim height, but can be set larger.
-\newlength\New@MediaWidth % Initialized to \Old@MediaWidth.
-\newlength\New@MediaHeight % Initialized to \Old@MediaHeight.
-\newlength\Old@FontSize
-% New in version 1.48:
-\newlength\@topdeadzonewidth
-\newlength\@outsidedeadzonewidth
-\newlength\@bottomdeadzonewidth
-\newlength\@insidedeadzonewidth
-%
-\gdef\@myHeadFootStyle{1} % default: header but not footer
+
+%%
+\gdef\@HeadFootStyle{1} % default: header but not footer
 \gdef\@myVersoEmblem{} % no default emblem
 \gdef\@myRectoEmblem{} % no default emblem
 \gdef\novel@checkfeatures#1{} % re-defined below
 %
-\newif \if@TrimSizeSet
-\newif \if@MarginsSet
-\newif \if@MediaSizeSet
-\newif \if@LinesPerPageSet
-\newif \if@FontSizeSet
-\newif \if@ReworkTrimSet
-\newif \if@ReworkMarginsSet
-%
-\newlength\normalxheight
-\newlength\normalXheight
-\newlength\normalscxheight
-\newlength\normalAringheight
-\newlength\normaldescender
 %%
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 %% SIZE-RELATED COMMANDS AVAILABLE IN PREAMBLE.
@@ -73,9 +51,17 @@
 % Note: This class does not ask you to set the width/height of the textblock.
 % Instead, these values are automatically calculated from other dimensions.
 %
-% \SetTrimSize{}{} width and height of printed book.
+% Trim Size is the finished width and height of the book (not thickness).
+% Books are (usually) manufactured to a small number of standard Trim Sizes.
+% The available choice of sizes will depend on your print service,
+%   and may by limited by binding method, paper, or distribution channels.
+% These are NOT the usual TeX "paper size" choices, such as A4 or letterpaper.
+% In the U.S.A., 5.5in W x 8.5in H is very common for softcover fiction,
+%   so it will (later) be set as default, unless you set your own.
+\newif \if@TrimSizeSet % true if \SetTrimSize rather than defaults.
+\newlength\@SetTrimWidth
+\newlength\@SetTrimHeight
 \newcommand\SetTrimSize[2]{%
-  \global\@TrimSizeSettrue
   \ifthenelse{\dimtest{#1}{<}{2.99in}}{
     \ClassError{novel}{Unacceptably small Trim Width}%
      {Trim Width must be at least 3in.}%
@@ -84,165 +70,266 @@
     \ClassError{novel}{Unacceptably small Trim Height}%
      {Trim Height must be at least 3in.}%
   }{}
-  \if@ReworkTrimSet
-    \ClassError{novel}{^^JCannot set Trim after reworking Trim or Margins}%
+  \if@TrimSizeRework
+    \ClassError{novel}{Cannot set Trim after reworking Trim or Margins}%
      {\string\SetTrimSize\space cannot follow \string\ReworkTrimSize.}%
   \fi
-  \if@ReworkMarginsSet
-    \ClassError{novel}{^^JCannot set Trim after reworking Trim or Margins}%
-     {\string\SetTrimSize\space cannot follow \string\ReworkTrimSize^^J%
+  \if@MarginsRework
+    \ClassError{novel}{Cannot set Trim after reworking Trim or Margins}%
+     {\string\SetTrimSize\space cannot follow \string\ReworkTrimSize ^^J%
       and cannot follow \string\ReworkMargins.}%
   \fi
-  \setlength\Old@TrimWidth{#1} \global\Old@TrimWidth=\Old@TrimWidth%
-  \setlength\Old@TrimHeight{#2} \global\Old@TrimHeight=\Old@TrimHeight%
-  \setlength\New@TrimWidth{#1} \global\New@TrimWidth=\New@TrimWidth%
-  \setlength\New@TrimHeight{#2} \global\New@TrimHeight=\New@TrimHeight%
-  \if@MediaSizeSet\else
-    \setlength\Old@MediaWidth{#1} \global\Old@MediaWidth=\Old@MediaWidth%
-    \setlength\Old@MediaHeight{#2} \global\Old@MediaHeight=\Old@MediaHeight%
-    \setlength\New@MediaWidth{#1} \global\New@MediaWidth=\New@MediaWidth%
-    \setlength\New@MediaHeight{#2} \global\New@MediaHeight=\New@MediaHeight%
-  \fi
+  \@TrimSizeSettrue
+  \gsetlength\@SetTrimWidth{#1}
+  \gsetlength\@SetTrimHeight{#2}
 }% end set trimsize
 %
-% Retroactively change Trim Size after layout. See documentation:
+% \ReworkTrimSize retroactively changes Trim Size after layout. See documentation.
+% If you use \ReworkTrimSize, you must first use \SetTrimSize (not defaults):
+\newif \if@TrimSizeRework % true if \ReworkTrimSize used.
+\newlength\@ReworkTrimWidth
+\newlength\@ReworkTrimHeight
 \newcommand\ReworkTrimSize[2]{%
-  \if@coverart % New in version 1.2
-  \ClassError{novel}{Rework command cannot be used with coverart option}%
-  {Instead of reworking document size, you must re-do the artwork.}
-  \else
-    \global\@ReworkTrimSettrue
-    \setlength\New@TrimWidth{#1} \global\New@TrimWidth=\New@TrimWidth%
-    \setlength\New@TrimHeight{#2} \global\New@TrimHeight=\New@TrimHeight%
-    \setlength\New@MediaWidth{#1} \global\New@MediaWidth=\New@MediaWidth%
-    \setlength\New@MediaHeight{#2} \global\New@MediaHeight=\New@MediaHeight%
-    \typeout{^^J Class `novel' Info: %
-     Used \string\ReworkTrimSize{}{} command.^^J%
-     Carefully review your PDF to ensure that line breaks, paragraphs,^^J%
-     and page breaks are where you expect them to be.^^J}%
+  \if@TrimSizeSet\else
+    \ClassError{novel}{Must use \string\SetTrimSize\space before \string\ReworkTrimSize}%
+     {\string\ReworkTrimSize\space cannot be applied to default Trim Size. ^^J%
+      You must manually \string\SetTrimSize\space prior to \string\ReworkTrimSize.}%
   \fi
-}% end rework trimsize
+  \if@coverart % New in version 1.2
+    \ClassError{novel}{\string\Rework\space commands cannot be used with `coverart' option}%
+     {Instead of \string\Rework, you must re-do the graphics artwork.}
+  \else
+    \global\@TrimSizeReworktrue
+    \gsetlength\@ReworkTrimWidth{#1}
+    \gsetlength\@ReworkTrimHeight{#2}
+      \typeout{^^J Class `novel' Info: %
+       Used \string\ReworkTrimSize{}{} command. ^^J%
+       Carefully review your PDF to ensure that line breaks, paragraphs, ^^J%
+       and page breaks are where you expect them to be.}%
+  \fi
+}% end \ReworkTrimSize
+
+% Margins are measured from Trim Size inwards, always positive.
+% If the Media Size is larger than Trim Size, then the area beyond
+%   the Trim Size is NOT margins. It is discarded scrap paper.
+% However, word processors (in general) do not understand the difference
+%   between Trim Size and Media Size. So, if you are ever asked to
+%   lay out the book in a word processor, using a standard (A4 or letter)
+%   physical paper size, then you will be asked to set the "margins"
+%   very wide, because the word processor margins include both
+%   the finished book margins, and the discarded scrap paper.
+% In certain circumstances, text or images may intrude into the margin area.
+%   This is not an error, because it may be intentional.
 % Margins at top and bottom are relative to:
 %   top of header, or top of textblock if no header;
 %   bottom of footer, or bottom of textblock if no footer.
-% Inside margin generally greater than outside, due to gutter.
+% Inner margin generally greater than Outer, due to gutter.
 % Standard margins command ("TOBI, or not TOBI, that is the question."):
-\newcommand\SetMargins[4]{ % top, outside, bottom, inside
-  \global\@MarginsSettrue
-  \if@ReworkMarginsSet
-    \ClassError{novel}{^^JCannot set Margins after reworking them}%
+\newif \if@MarginsSet % true if \SetMargins rather than defaults.
+\newlength\@SetTopMargin
+\newlength\@SetOuterMargin
+\newlength\@SetBottomMargin
+\newlength\@SetInnerMargin
+\newcommand\SetMargins[4]{ % top, outer, bottom, inner
+  \if@MarginsRework
+    \ClassError{novel}{Cannot set Margins after reworking them}%
      {\string\SetMargins\space cannot follow \string\ReworkMargins.}%
   \fi
-  \setlength\Old@TopMargin{#1} \global\Old@TopMargin=\Old@TopMargin
-  \setlength\New@TopMargin{#1} \global\New@TopMargi=\New@TopMargi
-  \setlength\Old@OutsideMargin{#2} \global\Old@OutsideMargin=\Old@OutsideMargin
-  \setlength\New@OutsideMargin{#2} \global\New@OutsideMargin=\New@OutsideMargin
-  \setlength\Old@BottomMargin{#3} \global\Old@BottomMargin=\Old@BottomMargin
-  \setlength\New@BottomMargin{#3} \global\New@BottomMargin=\New@BottomMargin
-  \setlength\Old@InsideMargin{#4} \global\Old@InsideMargin=\Old@InsideMargin
-  \setlength\New@InsideMargin{#4} \global\New@InsideMargin=\New@InsideMargin
+  \global\@MarginsSettrue
+  \gsetlength\@SetTopMargin{#1}
+  \gsetlength\@SetOuterMargin{#2}
+  \gsetlength\@SetBottomMargin{#3}
+  \gsetlength\@SetInnerMargin{#4}
 }% end set margins
-\LetLtxMacro\SetMargin{\SetMargins}\relax
-% Retroactively change margins after layout. See documentation:
+\LetLtxMacro\SetMargin{\SetMargins}\relax % for those who mis-type
+% Retroactively change margins after layout. See documentation.
+% If you use \ReworkMargins, you must first use \SetMargins (not defaults):
+\newif \if@MarginsRework % true if \ReworkMargins used.
+\newlength\@ReworkTopMargin
+\newlength\@ReworkOuterMargin
+\newlength\@ReworkBottomMargin
+\newlength\@ReworkInnerMargin
 \newcommand\ReworkMargins[4]{
   \if@coverart % New in version 1.2
-  \ClassError{novel}{Rework command cannot be used with coverart option}%
-  {Instead of reworking document size, you must re-do the artwork.}
+    \ClassError{novel}{Rework command cannot be used with coverart option}%
+    {Instead of reworking document size, you must re-do the artwork.}
   \else
-  \global\@ReworkMarginsSettrue
-  \setlength\New@TopMargin{#1} \global\New@TopMargin=\New@TopMargin
-  \setlength\New@OutsideMargin{#2} \global\New@OutsideMargin=\New@OutsideMargin
-  \setlength\New@BottomMargin{#3} \global\New@BottomMargin=\New@BottomMargin
-  \setlength\New@InsideMargin{#4} \global\New@InsideMargin=\New@InsideMargin
-  \typeout{^^J Class novel Info: %
-   Used \string\ReworkMargins{}{} command.^^J%
-   Carefully review your PDF to ensure that line breaks, paragraphs,^^J%
-   and page breaks are where you expect them to be.^^J}%
+    \global\@MarginsReworktrue
+    \gsetlength\@ReworkTopMargin{#1}
+    \gsetlength\@ReworkOuterMargin{#2}
+    \gsetlength\@ReworkBottomMargin{#3}
+    \gsetlength\@ReworkInnerMargin{#4}
+    \typeout{Class novel Info: %
+     Used \string\ReworkMargins{}{} command. ^^J%
+     Carefully review your PDF to ensure that line breaks, paragraphs, ^^J%
+     and page breaks are where you expect them to be.}%
   \fi
-}% end rework margins
-\LetLtxMacro\ReworkMargin{\ReworkMargins}\relax
-%
-% New in version 1.48: \SetDeadZones{top}{outside}{bottom}{inside}
-% The dead zone (may be called forbidden area, or similar term)
-%   is the page periphery, where nothing may be printed.
-% Does not apply to cover artwork, which has bleed area.
-% Margins must always be at least as wide as the corresponding dead zones.
-% Note that margins define where you do not `wish' to print,
-%   but the dead zones define where you are not `allowed' to print.
-% Some printers define fairly narrow dead zones, such as 0.25in top outside bottom,
-%   and 0.375in inside (spine). But unless your book Trim Size is very small,
-%   pushing the margins out to the dead zone will be unattractive.
-% So, there is usually some `wiggle room' that lies outside the margins,
-%   but does not intrude into the dead zone. Sometimes, you may choose
-%   to print something in that wiggle room. Your printer allows that.
-%   But if you print into the dead zone, your file may be rejected at the printer.
-% PDF, even compliant PDF/X, does not know or care about the dead zone.
-% Whether or not you set it, the dead zone is not written into the final PDF,
-%   and does not affect layout in any way.
-% If you choose to set the dead zone, it will be visualized in draft mode only,
-%   with the `shademargins' class option. The dead zone will be darker than the margins.
-% \AtBeginDocument checks that margins are at least as wide as their dead zones.
-% Default dead zones are 0pt.
-% Note that there is no \Rework for dead zones, since they do not affect layout.
-\newif \if@deadzoneset
-\newcommand\SetDeadZones[4]{% top, outside, bottom, inside.
-  \global\@deadzonesettrue
-  \setlength\@topdeadzonewidth{#1} \global\@topdeadzonewidth=\@topdeadzonewidth
-  \setlength\@outsidedeadzonewidth{#2} \global\@outsidedeadzonewidth=\@outsidedeadzonewidth
-  \setlength\@bottomdeadzonewidth{#3} \global\@bottomdeadzonewidth=\@bottomdeadzonewidth
-  \setlength\@insidedeadzonewidth{#4} \global\@insidedeadzonewidth=\@insidedeadzonewidth
-} % end set deadzones
-\LetLtxMacro\SetDeadZone{\SetDeadZones}\relax
-%
-% \SetMediaSize[alignment]{width}{height}
-%   This command is only used when the Trim Size must be placed in a larger
-%   Media Size. Otherwise, Media Size is automatically set to Trim Size.
+}% end \ReworkMargins
+\LetLtxMacro\ReworkMargin{\ReworkMargins}\relax % for those who mis-type
+%%
+
+
+%% New in v. 1.48: \ReworkPriority{aspect or margins} % default aspect.
+% The \Rework commands scale the text (including head/foot) so that
+%   pagragraph line breaks, and pagination, remain the same as before.
+% It does this by scaling the font size, and the baselineskip.
+% The algorithm almost always works, unless images (which are not scaled)
+%   are mingled with the text. In that case, scaling the images in a
+%   graphics program will restore the line breaks and pagination.
+% The default algorithm is used when \ReworkPriority{aspect}.
+%   This preserves the aspect ratio of the text area (incl. head/foot).
+%   Primary advantage is that it is easy to scale images, because they
+%   will all have the same scale value.
+%   However, either the horizontal or vertical margins will be slightly
+%   larger than specified values. This will be the same for every page,
+%   so it looks OK. Whether the excess is H or V depends on the
+%   various values involved. The other direction will meet margin specs.
+% If \ReworkPriority{margins}, then the algorithm will attempt to comply
+%   with both H and V margins, by changing baselineskip so that it is
+%   no longer proportional the changed text size. Thus, the aspect ratio
+%   of the text area will be changed from its original.
+%   The only advantage is if you don't like excess margins.
+%   Disadvantage is that the new baseline might be very tight or loose.
+%   Also, images must be scaled non-uniformly, which can be a nuisance
+%   if you have a lot of them, especially drop cap images.
+% In some cases, there is not enough vertical space to comply with
+%   the new aspect ratio. Then, there will be a warning in the log file.
+%   You must either accept that the reworked aspect wasn't enough,
+%   or attempt a layout change by removing a header/footer or
+%   reducing the size of head/foot jumos. The choice is yours.
+\newif \if@AspectPriority % true if \ReworkPriority{aspect}
+\gdef\ReworkPriority#1{%
+  \@tempTFfalse
+  \ifthenelse{\equal{#1}{aspect}}{\@tempTFtrue\@AspectPrioritytrue}{}
+  \ifthenelse{\equal{#1}{margins}}{\@tempTFtrue\@AspectPriorityfalse}{}
+  \ifthenelse{\equal{#1}{margin}}{\@tempTFtrue\@AspectPriorityfalse}{}
+  \if@tempTF\else
+    \ClassError{novel}{Incorrect choice in \string\ReworkPriority}%
+     {\string\ReworkPriority\space choice aspect or margins. Default aspect.}%
+  \fi
+}%
+\ReworkPriority{aspect} % default
+%%
+
+
+
+% New in version 1.48: Unsafe Zone (opposite of "safe area").
+% This feature only applies with class options `draft,shademargins'
+%   and does NOT apply in `coverart'.
+% The purpose of margins is to confine the main text (and header/footer).
+% In `novel' (unlike most other TeX document classes) there is no provision
+%   for marginal notes, because they are not used in popular fiction.
+% Yet there may be circumstances where you intentionally or accidentally
+%   have text, or part of an image, placed or overflowing into a margin.
+% In PDF, even PDF/X, that is not a problem. It cannot read your mind.
+% However, every print service specifies a "safe area." All text, and
+%   all images without bleed, must remain within the safe area.
+% The limits of the safe area are typically 0.125in to 0.5in inside the
+%   Trim Size, depending on technology. This defines how close you may
+%   place anything near the page edges.
+% In `novel' the opposite of the safe area is the "unsafe zone" (UZ).
+%   So, the UZ lies just inside the perimeter of the Trim Size.
+% Each margin is at least as wide as its corresponding UZ.
+%   Some print services use "minimum margin" to mean the UZ.
+% When you are in draft mode with `shademargins' class option,
+%   the UZ (if it is set) will be displayed in dark gray.
+%   Then, you can inspect the PDF for any intrusion into the UZ.
+%   If you intrude into the UZ, there is no warning or error.
+%   The UZ is strictly for visualization. It does not affect the final PDF.
+% If you do not use \SetUnsafeZone, then no UZ will be displayed.
+\newif \if@UnsafeZoneSet % true if \SetUnsafeZone used
+\newlength\@TopUZWidth
+\newlength\@OuterUZWidth
+\newlength\@BottomUZWidth
+\newlength\@InnerUZWidth
+\newcommand\SetUnsafeZone[4]{% top, outer, bottom, inner.
+  \global\@UnsafeZoneSettrue
+  \gsetlength\@TopUZWidth{#1}
+  \gsetlength\@OuterUZWidth{#2}
+  \gsetlength\@BottomUZWidth{#3}
+  \gsetlength\@InnerUZWidth{#4}
+} % end \SetUnsafeZone
+\LetLtxMacro\SetUnsafeZones{\SetUnsafeZone}\relax % convenience
+
+
+% PDF Media Size is already known to TeX as \paperwidth and \paperheight.
+%   For this reason, there is no need to define additional lengths.
+% Sheet-fed printers use a small number of standard paper sizes.
+%   Whether you use P.O.D. or print at home or office, your print job will
+%   almost certainly be sheet-fed. After printing, the sheet is trimmed
+%   to the specified Trim Size. Note that the sheet sizes used in
+%   commercial printing are specialized for the purpose, and may be
+%   different from the routine A4 and USletter sizes familiar to you.
+% In most cases (except for cover artwork), your PDF Media Size will be
+%   exactly the same as the finished Trim Size. Placement of the Trim Size
+%   onto a larger sheet of paper is done automatically at the print service,
+%   a procedure known as "imposition." Several small Trim Sizes may be
+%   printed onto a single sheet, in order to waste less paper in trimming.
+% In some cases the print service will ask you to provide a PDF that has
+%   the Trim Size placed (usually centered H/V) onto a larger Media Size.
+%   Sometimes (especially for cover artwork), that's because you are
+%   doing the imposition yourself. In other cases (especially for interiors)
+%   it is because most of the files seen at the print service came from
+%   word processors, and the writers (not knowing better) created layouts
+%   on A4 or USletter with large "margins," rather than correct Trim Size.
+%   Then, if you submit a file at actual Trim Size, it looks wrong,
+%   not because it is wrong, but because it stands out from the crowd.
+% You may use \SetMediaSize to deal with this situation.
+%   The Trim Size is unaffected.
+% Media Size does not have a \Rework command. If necessary, just change it.
+% You do not need \SetMediaSize, if (as usual) it is identical to TrimSize.
+% Class option `cropview' and `closecrop' (only in draft mode)
+%   affect Media Size. See their descriptions below.
+% \SetMediaSize[alignment]{width}{height} usage:
 % Optional alignment may be center, corner, bottom. Also edge (alias for corner).
 %   center (default): Trim will be horizontally and vertically centered in media.
 %     Alignment center is preferred by most commercial printers, often home and office as well.
 %   corner: Verso Trim at upper left of Media; recto Trim at upper right of Media.
 %     Alignment corner might be useful for making a mock-up copy at home.
 %   bottom: Only used by some commercial printers, for some cover artwork with bleed.
-% No `rework' is needed for Media Size, because interior layout is relative
-%   to Trim Size, not Media Size.
-%
-\gdef\@mediatrimalignment{center}
+\newif \if@MediaSizeSet % true if \SetMediaSize rather than default = Trim Size.
+\gdef\@AlignTrim{center} % default
 \newcommand\SetMediaSize[3][center]{ % [alignment] width, height
   \ifthenelse{\equal{#1}{center} \OR \equal{#1}{corner} \OR \equal{#1}{edge} \OR \equal{#1}{bottom}}{
     \global\@MediaSizeSettrue
-    \gdef\@mediatrimalignment{#1}
-    \setlength\Old@MediaWidth{#2} \global\Old@MediaWidth=\Old@MediaWidth
-    \setlength\New@MediaWidth{#2} \global\New@MediaWidth=\New@MediaWidth
-    \setlength\Old@MediaHeight{#3} \global\Old@MediaHeight=\Old@MediaHeight
-    \setlength\New@MediaHeight{#3} \global\New@MediaHeight=\New@MediaHeight
+    \gdef\@AlignTrim{#1}
+    \gsetlength\paperwidth{#2}
+    \gsetlength\paperheight{#3}
   }{
     \ClassError{novel}{Bad optional argument for \string\SetMediaSize}%
     {\string\SetMediaSize\space optional argument must be one of: center, corner, bottom.}%
   }
-}% end set mediasize
+}% end \SetMediaSize
+
 % \SetLinesPerPage{} limited due to fontsize and Trim Size constraints.
 % There is no `rework' linesperpage, because as long as the number of lines fit,
 %   the line spacing will be automatically changed to fit a reworked size.
 %   The only possible problem is if lines were originally so tight that
 %   a reworked size cannot fit. In that case, the user's best plan is remove
 %   header or footer (if possible), or reduce vertical margins (if possible).
+\newif \if@LinesPerPageSet % true if \SetLinesPerPage rather than default.
 \newcommand\SetLinesPerPage[1]{
+  \IfInteger{#1}{}{%
+    \ClassError{novel}{\string\SetLinesPerPage\space must be integer >=10}%
+     {Do not write period, comma, or space within \string\SetLinesPerPage.}%
+  }
+  \FPiflt{#1}{10}
+    \ClassError{novel}{\string\SetLinesPerPage\ must be at least 10}%
+      {LinesPerPage were set or calculated at less than 10.}%
+  \fi
   \global\@LinesPerPageSettrue
-  \FPiflt{#1}{1}%
-    \ClassError{novel}{\string\SetLinesPerPage\ must be at least 1}%
-      {You requested less than one line per page. Naughty!^^J}%
-  \else\fi %
-  \FPround{\temp@IntegerLines}{#1}{0}
-  \def\@myLinesPerPage{\temp@IntegerLines}
+  \gdef\@LinesPerPage{#1}
 }% end set linesperpage
 % \SetFontSize{} may be in any units, even decimals: 12.2pt, 11.5bp, etc.
 % When packages load, the font size is temporarily set to 11pt at 15pt skip,
 % so that moldy-oldie packages don't get confused about metrics.
 % Then the size is changed to its actual value based on this command, or on
 % the defaults for Trim Size, or on the effects of \Rework.
+\newif \if@FontSizeSet % true if \SetFontSize rather than default.
+\newlength\@SetFontSize
 \newcommand\SetFontSize[1]{
   \global\@FontSizeSettrue
-  \setlength\Old@FontSize{#1}\global\Old@FontSize=\Old@FontSize
+  \gsetlength\@SetFontSize{#1}
 }% end set fontsize
 %
 %% End size-related commands available in Preamble.
@@ -263,23 +350,95 @@
 % These "jumps" are measured baseline-to-baseline. So, \SetHeadJump{1} means
 %   that the baseline of the header is 1 baselineskip above the baseline of
 %   the first line of textblock. In other words, on-grid. Value 2 would be
-%   equivalent to double-spaced vertically. A value of 1.5 is default, based
-%   on observations of actual novels.
-% If \SetHeadJump is less than 1, then a warning appears in the log.
-\gdef\SetHeadJump#1{\gdef\@headjump{#1}}
+%   equivalent to double-spaced vertically, also on-grid.
+% Minimum jump is 1, maximum 3.
+% Jumps may be non-integers. Defaults are 1.5, typical of actual novels.
+\gdef\SetHeadJump#1{%
+  \IfDecimal{#1}{%
+    \FPiflt{#1}{1}
+      \ClassError{novel}{\string\SetHeadJump\space must be at least 1}%
+      {\string\SetHeadJump\string from 1 to 3, may be decimal.}%
+    \fi
+    \FPifgt{#1}{3}
+      \ClassError{novel}{\string\SetHeadJump\space must not exceed 3}%
+      {\string\SetHeadJump\string from 1 to 3, may be decimal. ^^J%
+       Must be a number, but may not be a macro.}%
+    \fi
+    \gdef\@HeadJump{#1}
+  }{%
+    \ClassError{novel}{Unable to parse \string\SetHeadJump\space argument}%
+    {Needs integer or decimal, but not ending in decimal point or comma. ^^J%
+     Must be a number, but may not be a macro.}%
+  }%
+}
 \SetHeadJump{1.5} % default
-\gdef\SetFootJump#1{\gdef\@footjump{#1}}
+%
+\gdef\SetFootJump#1{%
+  \IfDecimal{#1}{%
+    \FPiflt{#1}{1}
+      \ClassError{novel}{\string\SetFootJump\space must be at least 1}%
+      {\string\SetFootJump\string from 1 to 3, may be decimal.}%
+    \fi
+    \FPifgt{#1}{3}
+      \ClassError{novel}{\string\SetFootJump\space must not exceed 3}%
+      {\string\SetFootJump\string from 1 to 3, may be decimal. ^^J%
+       Must be a number, but may not be a macro.}%
+    \fi
+    \gdef\@FootJump{#1}
+  }{%
+    \ClassError{novel}{Unable to parse \string\SetFootJump\space argument}%
+    {Needs integer or decimal, but not ending in decimal point or comma. ^^J%
+     Must be a number, but may not be a macro.}%
+  }%
+}
 \SetFootJump{1.5} % default
+%
 % New in version 1.2, coverart.
-\if@coverart % cover art has no header or footer
-  \gdef\SetHeadFootStyle#1{\gdef\@myHeadFootStyle{0}}
-  \gdef\SetHeadStyle#1{\gdef\@myHeadFootStyle{0}} % deprecated
+\newif \if@HasHeader % true if global page style has header
+\newif \if@HasFooter % true if global page style has footer
+\gdef\SetHeadFootStyle#1{%
+  \if@coverart
+    \ClassWarning{novel}{Class option `coverart' does not allow header/footer.}
+  \else
+    \@tempTFfalse
+    \ifthenelse{\equal{#1}{0}}{
+      \global\@HasHeaderfalse\global\@HasFooterfalse\@tempTFtrue
+    }{}
+    \ifthenelse{\equal{#1}{1}}{ % default
+      \global\@HasHeadertrue\global\@HasFooterfalse\@tempTFtrue
+    }{}
+    \ifthenelse{\equal{#1}{2}}{
+      \global\@HasHeaderfalse\global\@HasFootertrue\@tempTFtrue
+    }{}
+    \ifthenelse{\equal{#1}{3}}{
+      \global\@HasHeaderfalse\global\@HasFootertrue\@tempTFtrue
+    }{}
+    \ifthenelse{\equal{#1}{4}}{
+      \global\@HasHeadertrue\global\@HasFooterfalse\@tempTFtrue
+    }{}
+    \ifthenelse{\equal{#1}{5}}{
+      \global\@HasHeadertrue\global\@HasFootertrue\@tempTFtrue
+    }{}
+    \ifthenelse{\equal{#1}{6}}{
+      \global\@HasHeadertrue\global\@HasFootertrue\@tempTFtrue
+    }{}
+    % Ensure that user choice was on the allowed list:
+    \if@tempTF\else
+      \ClassError{novel}{Invalid choice for \string\SetHeadFootStyle}%
+        {\string\SetHeadFootStyle\space needs choice of 0,1,2,3,4,5,6, ^^J%
+        even if you wish to customize using fancyhdr syntax.}%
+    \fi
+    \gdef\@HeadFootStyle{#1}
+  \fi
+}%
+\let\SetHeadStyle\SetHeadFootStyle\relax % deprecated
+%
+\if@coverart
   \SetHeadFootStyle{0}
 \else
-  % See docs for available layout choices:
-  \gdef\SetHeadFootStyle#1{\gdef\@myHeadFootStyle{#1}}
-  \gdef\SetHeadStyle#1{\gdef\@myHeadFootStyle{#1}} % deprecated
+  \SetHeadFootStyle{1} % default
 \fi
+%
 % See docs for what these emblems do, if used:
 \newcommand\SetEmblems[2]{ % verso, recto
   \gdef\@myVersoEmblem{{\headfont #1}}
@@ -291,58 +450,23 @@
 
 % See novel.cls for the accompanying AtBeginDocument routine.
 
-%
-\newif \if@gotheader
-\newif \if@gotfooter
-\newif \if@styledheader
-\newif \if@styledfooter
-\newif \if@validHF
-%
-\gdef\@reserveHFspace{ % used for layout calculations
-  \ifthenelse{\equal{\@myHeadFootStyle}{0}}{
-    \@gotheaderfalse\@gotfooterfalse\@validHFtrue
-  }{}
-  \ifthenelse{\equal{\@myHeadFootStyle}{1}}{ % default
-    \@gotheadertrue\@gotfooterfalse\@validHFtrue
-  }{}
-  \ifthenelse{\equal{\@myHeadFootStyle}{2}}{
-    \@gotheaderfalse\@gotfootertrue\@validHFtrue
-  }{}
-  \ifthenelse{\equal{\@myHeadFootStyle}{3}}{
-    \@gotheaderfalse\@gotfootertrue\@validHFtrue
-  }{}
-  \ifthenelse{\equal{\@myHeadFootStyle}{4}}{
-    \@gotheadertrue\@gotfooterfalse\@validHFtrue
-  }{}
-  \ifthenelse{\equal{\@myHeadFootStyle}{5}}{
-    \@gotheadertrue\@gotfootertrue\@validHFtrue
-  }{}
-  \ifthenelse{\equal{\@myHeadFootStyle}{6}}{
-    \@gotheadertrue\@gotfootertrue\@validHFtrue
-  }{}
-  % Ensure that user choice was on the allowed list:
-  \if@validHF\else
-    \ClassError{novel}{Invalid choice for \string\SetHeadFootStyle}%
-      {\string\SetHeadFootStyle\space needs choice of 0,1,2,3,4,5,6,^^J%
-      even if you wish to customize using fancyhdr syntax.^^J}%
-  \fi
-} % end \@reserveHFspace
+
 % Each new chapter generally has its own header/footer style. This allows a
 % default setting when chapters begin with ChapterStart environment:
 \gdef\SetChapterStartStyle#1{% from v. 1.40.3
-  \def\@pagestyleOK{false}%
-  \ifthenelse{\equal{#1}{fancy}}{\def\@pagestyleOK{true}}{}%
-  \ifthenelse{\equal{#1}{empty}}{\def\@pagestyleOK{true}}{}%
-  \ifthenelse{\equal{#1}{plain}\OR\equal{#1}{fancyplain}\OR\equal{#1}{footer}}{\def\@pagestyleOK{true}}{}%
-  \ifthenelse{\equal{#1}{forcenumber}}{\def\@pagestyleOK{true}}{}%
-  \ifthenelse{\equal{#1}{dropfolioinside} \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{\def\@pagestyleOK{true}}{}%
-  \ifthenelse{\equal{#1}{dropfoliobeneath}}{\def\@pagestyleOK{true}}{}%
-  \ifthenelse{\equal{\@pagestyleOK}{true}}{%
+  \@tempTFfalse%
+  \ifthenelse{\equal{#1}{fancy}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{#1}{empty}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{#1}{plain}\OR\equal{#1}{fancyplain}\OR\equal{#1}{footer}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{#1}{forcenumber}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{#1}{dropfolioinside} \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{#1}{dropfoliobeneath}}{\@tempTFtrue}{}%
+  \if@tempTF%
     \gdef\@setchapterstart{#1}%
-  }{%
+  \else%
     \ClassError{novel}{Invalid choice for \string\SetChapterStartStyle}%
-     {Choose: fancy, empty, footer, forcenumber, dropfolioinside, dropfoliobeneath.}%
-  }%
+     {Choose: fancy, empty, plain, footer, forcenumber, dropfolioinside, dropfoliobeneath.}%
+  \fi%
 }
 \let\SetChapterStart\SetChapterStartStyle\relax % deprecated from v1.40.3.
 \SetChapterStartStyle{footer} % default
@@ -361,43 +485,43 @@
 \SetChapterStartHeight{10} % default
 % See novel.cls for the accompanying AtBeginDocument routine.
 % Scene breaks:
-\newif\if@indentAfterScenebreak \@indentAfterScenebreakfalse
-\newcommand\IndentAfterScenebreak{\@indentAfterScenebreaktrue} % deprected from v. 1.40.3
 % \SetScenebreakIndent controls whether line after \scenebreak, \sceneline, or \scenestars
 %   will be indented. Set true or false, default false.
+%% End reserve space for header/footer and set default ChapterStart
+\newif\if@IndentAfterScenebreak
 \newcommand\SetScenebreakIndent[1]{% true or false, default false. From v. 1.40.3
-  \def\ngoodarg{no}
+  \@tempTFfalse
   \ifthenelse{\equal{#1}{true}}{%
-    \def\ngoodarg{yes}
-    \@indentAfterScenebreaktrue
+    \@tempTFtrue
+    \global\@IndentAfterScenebreaktrue
   }{}%
   \ifthenelse{\equal{#1}{false}}{%
-    \def\ngoodarg{yes}
-    \@indentAfterScenebreakfalse
+    \@tempTFtrue
+    \global\@IndentAfterScenebreakfalse
   }{}%
-  \ifthenelse{\equal{\ngoodarg}{no}}{%
+  \if@tempTF\else%
     \ClassError{novel}{Bad argument for \string\SetScenebreakIndent\space}%
     {\string\SetScenebreakIndent\space argument must be true or false.}%
-  }{}%
+  \fi%
 }
 \SetScenebreakIndent{false} % default
 %
-%% End reserve space for header/footer and set default ChapterStart
+\newcommand\IndentAfterScenebreak{\global\@IndentAfterScenebreaktrue} % deprected from v. 1.40.3
 
 
 %% New in version 1.2: cover image.
 \newcommand\SetCoverImage[1]{
-  \def\coverimageok{false}
-  \IfSubStr{#1}{jpg}{\def\coverimageok{true}}{}
-  \IfSubStr{#1}{jpeg}{\def\coverimageok{true}}{}
-  \IfSubStr{#1}{JPG}{\def\coverimageok{true}}{}
-  \IfSubStr{#1}{JPEG}{\def\coverimageok{true}}{}
-  \ifthenelse{\equal{\coverimageok}{true}}{%
+  \@tempTFfalse
+  \IfSubStr{#1}{jpg}{\@tempTFtrue}{}
+  \IfSubStr{#1}{jpeg}{\@tempTFtrue}{}
+  \IfSubStr{#1}{JPG}{\@tempTFtrue}{}
+  \IfSubStr{#1}{JPEG}{\@tempTFtrue}{}
+  \if@tempTF%
     \gdef\novelcoverimage{#1}
-  }{%
+  \else%
     \ClassError{novel}{Cover image has wrong file extension}%
     {Cover image must be jpg, JPG, jpeg, or JPEG.}
-  }%
+  \fi%
 }
 %%
 
@@ -456,12 +580,12 @@
 
 
 %% Sets the gap between cropmarks and trim area:
-\newlength\@mygap
+\newlength\@CropmarkGap
 \def\SetCropmarkGap#1{
   \ifthenelse{\lengthtest{#1 < 0pt}}{
-    \setlength\@mygap{0pt} \global\@mygap=\@mygap
+    \gsetlength\@CropmarkGap{0pt}
   }{
-  \setlength\@mygap{#1} \global\@mygap=\@mygap
+  \gsetlength\@CropmarkGap{#1}
   }
 }
 \SetCropmarkGap{0.125in} % default
@@ -470,10 +594,10 @@
 
 
 %% Fake \microtypesetup until package is loaded later:
-\newif \if@setmicrotype
+\newif \if@MicrotypeSet
 \gdef\microtypesetup#1{
   \gdef\@mymicrotypesetup{#1} % used in novel-FontDefaults.sty
-  \global\@setmicrotypetrue
+  \global\@MicrotypeSettrue
 }
 %%
 
@@ -481,7 +605,11 @@
 
 %% MISCELLANOUS SETTINGS. Mostly remove "glue". Best to leave as-is.
 %% --------------------------------------------------------------------------
-%%
+% Standard TeX \hoffset and \voffset is not relative to the MediaBox, but is
+%   relative to 1in from the top left corner of the MediaBox. Ouch.
+% When necessary, the 1in (72.27pt) is compensated in later calculations.
+\setlength\hoffset{0pt} % relative to 1in built-in offset at left
+\setlength\voffset{0pt} % relative to 1in built-in offset at top
 %
 \@twocolumnfalse
 \@twosidetrue
@@ -490,7 +618,7 @@
 \abovedisplayskip \z@
 \abovedisplayshortskip \z@
 \belowdisplayshortskip \z@
-\belowdisplayskip \abovedisplayskip
+\belowdisplayskip \z@
 \global\@topnum \z@
 %
 \setlength\smallskipamount{0pt}
@@ -504,7 +632,10 @@
 \setlength\marginparpush{0pt}
 \setlength\textfloatsep{0pt}
 \setlength\dbltextfloatsep{0pt}
-%
+% \topskip will be set as normal baslineskip, which must first be calculated.
+% That is done in novel-CalculateLayout.sty.
+\widowpenalty 150 % same as TeX default
+\clubpenalty 150 % same as TeX default
 \setlength\lineskip{0pt}
 \setlength\normallineskip{0pt}
 \renewcommand\baselinestretch{1} % multiplier
@@ -536,7 +667,7 @@
 \setlength\columnseprule{0pt}
 \pagestyle{empty} % will be over-ridden by fancyhead in separate file
 \pagenumbering{arabic} % may be over-ridden in document
-\flushbottom % may be over-ridden in document, but not advised
+\flushbottom % best for continuous text
 %
 %% End miscellaneous settings.
 
@@ -555,7 +686,7 @@
   \IfSubStr{#1}{opacity}{\def\@featuresareok{no}}{}%
   \ifthenelse{\equal{\@featuresareok}{yes}}{}{%
     \ClassError{novel}{Color and Opacity forbidden as font features}%
-    {You defined a font, or added a font feature, with Color or Opacity.^^J%
+    {You defined a font, or added a font feature, with Color or Opacity. ^^J%
      That is disallowed in `novel' class.}%
   }
 }
@@ -589,10 +720,10 @@
   \IfFontExistsTF{Latin Modern Math}{}{% will be set AtBeginDocument by unicode-math.
   }{ % This allows you to proceed without a real math font (but then you cannot print math):
     \setmathfont[BoldFont={NovelDeco.otf}]{NovelDeco.otf} % has a fake math feature
-    \PackageWarning{novel}{Ignore this warning if you used \string\setmathfont.^^J%
-     Did not find suitable default math font. Used NovelDeco.otf.^^J%
-     But NovelDeco does not have real math symbols.^^J%
-     Math notation will print incorrectly. No problem if no math.^^J}%
+    \PackageWarning{novel}{Ignore this warning if you used \string\setmathfont. ^^J%
+     Did not find suitable default math font. Used NovelDeco.otf. ^^J%
+     But NovelDeco does not have real math symbols. ^^J%
+     Math notation will print incorrectly. No problem if no math.}%
   }
 }%
 %
@@ -602,47 +733,47 @@
 %% Store settings for the parent font:
 % \AtEndPreamble, the parent font becomes becomes
 %   the default ancestor of all novel-defined fonts, except the deco font.
-\newif \if@parentfontset
+\newif \if@ParentFontSet
 \gdef\parentfontfeatures{}
 \gdef\parentfontname{}
 \DeclareDocumentCommand \SetParentFont { O{} m O{} } {% from version 1.1.
   \novel@checkfeatures{#1,#3}
   \gdef\parentfontfeatures{#1,#3}
   \gdef\parentfontname{#2}
-  \global\@parentfontsettrue
+  \global\@ParentFontSettrue
 }%
 \DeclareDocumentCommand \SetMasterFont { O{} m O{} } {% DEPRECATED
   \novel@checkfeatures{#1,#3}
   \gdef\parentfontfeatures{#1,#3}
   \gdef\parentfontname{#2}
-  \global\@parentfontsettrue
+  \global\@ParentFontSettrue
 }%
 
 %% Store settings for the chapterfont:
 % The chapter font is used by the \ChapterTitle{} command.
-\newif \if@chapterfontset
+\newif \if@ChapterFontSet
 \gdef\@chapterfontfeatures{}
 \gdef\@chapterfontname{}
 \DeclareDocumentCommand \SetChapterFont { O{} m O{} } {%
   \novel@checkfeatures{#1,#3}
   \gdef\@chapterfontfeatures{Numbers=Lining,#1,#3}
   \gdef\@chapterfontname{#2}
-  \global\@chapterfontsettrue
+  \global\@ChapterFontSettrue
 }%
 %% Store settings for the subchfont:
 % The subch font is used by the \ChapterSubtitle{} command.
-\newif \if@subchfontset
+\newif \if@SubchFontSet
 \gdef\@subchfontfeatures{}
 \gdef\@subchfontname{}
 \DeclareDocumentCommand \SetSubchFont { O{} m O{} } {%
   \novel@checkfeatures{#1,#3}
   \gdef\@subchfontfeatures{Numbers=Lining,#1,#3}
   \gdef\@subchfontname{#2}
-  \global\@subchfontsettrue
+  \global\@SubchFontSettrue
 }%
 %% Store settings for the headfont:
 % The headfont is used in headers and footers.
-\newif \if@headfontset
+\newif \if@HeadFontSet
 \gdef\@headfontfeatures{}
 \gdef\@headfontname{}
 \DeclareDocumentCommand \SetHeadFont { O{} m O{} } {% revised v 1.40.3
@@ -650,20 +781,20 @@
   \gdef\@headfontfeatures{Numbers=Lining,%
     WordSpace=\@looseheadword,LetterSpace=\@loosehead,#1,#3}
   \gdef\@headfontname{#2}
-  \global\@headfontsettrue
+  \global\@HeadFontSettrue
 }%
 %% Store settings for the deco font:
 % The deco font is used for decorations and acronyms.
 % It must be NovelDeco.otf or a font based on NovelDeco.otf. No other!
-\newif \if@decofontset
-\newif \if@gotdeco
+\newif \if@DecoFontSet
+\newif \if@HasDecoFont
 \gdef\@decofontfeatures{}
 \gdef\@decofontname{}
 \DeclareDocumentCommand \SetDecoFont { O{} m O{} } {%
   \novel@checkfeatures{#1,#3}
   \gdef\@decofontname{#2}
-  \global\@decofontsettrue
-  \global\@gotdecotrue
+  \global\@DecoFontSettrue
+  \global\@HasDecoFonttrue
   \newfontface\decofont[#1,#3]{#2}
 }%
 %% For syntax consistency:
@@ -719,29 +850,25 @@
 %% FRONTMATTER, MAINMATTER. BUT NO BACKMATTER!
 %% --------------------------------------------------------------------------
 %
-% These do not have @ in name, so that they can be used in document body:
-\newif \ifWithinFrontmatter \WithinFrontmatterfalse
-\newif \ifWithinMainmatter \WithinMainmatterfalse
-\newcounter{frontmatterpages}
-\newcounter{runningpages}
-%
 % See novel.cls for the AtBeginShipout routine.
 %
+% These do not have @ in name, so that they can be used in document body:
+\newif \ifWithinFrontmatter % true within frontmatter
+\newif \ifWithinMainmatter % true within mainmatter
 \def\frontmatter{ % starts page count and frontmatter count at 1.
   \ifWithinFrontmatter
     \ClassError{novel}{\string\frontmatter\ used more than once}%
-    {You issued \string\frontmatter\ more than once.^^J}%
+    {You issued \string\frontmatter\ more than once.}%
   \fi
   \ifWithinMainmatter
    \ClassError{novel}{\string\frontmatter\ cannot follow \mainmatter}%
-   {In order: \string\frontmatter\ \string\mainmatter^^J%
-    but you do not need both of them.^^J}%
+   {In order: \string\frontmatter\ \string\mainmatter ^^J%
+    but you do not need both of them.}%
   \fi
-  \WithinFrontmattertrue\WithinMainmatterfalse
+  \global\WithinFrontmattertrue\global\WithinMainmatterfalse
   \clearpage
   \pagenumbering{roman}
   \setcounter{page}{1}
-  \setcounter{frontmatterpages}{1}
 }
 %
 \def\mainmatter{ % restarts page to 1, arabic numbers; freeze frontpagecount
@@ -750,32 +877,30 @@
     {You issued \string\mainmatter\ more than once.}%
   \fi
   \cleartorecto % added v. 1.40.1
-  \WithinFrontmatterfalse\WithinMainmattertrue
-  \setcounter{frontmatterpages}{\value{page}}
-  \addtocounter{frontmatterpages}{-1}
+  \global\WithinFrontmatterfalse\global\WithinMainmattertrue
   \pagenumbering{arabic}
   \setcounter{page}{1}
 }
 %
 \def\backmatter{\@ifstar\@backmatterst\@backmatterns} % asterisk obsolete from v. 1.40.
 \def\@backmatterst{%
-  \ClassWarning{novel}{Command \string\backmatter*\ ignored. Do not use.^^J}%
+  \ClassWarning{novel}{Command \string\backmatter*\ ignored. Do not use.}%
 }
 %
 \def\@backmatterns{%
   \cleartorecto% v. 1.40.2
-  \typeout{Class `novel' Alert: \string\backmatter\space merely clears to recto. See docs.^^J}% v. 1.42
+  \typeout{Class `novel' Alert: \string\backmatter\space merely clears to recto. See docs.}% v. 1.42
 %
 }
 %
 \def\Backmatter{\@ifstar\@Backmatterst\@Backmatterns} % obsolete from v. 1.40.
 %
 \def\@Backmatterst{% continues frontmatter count w/ uppercase Roman numerals
-  \ClassWarning{novel}{Command \string\Backmatter*\ ignored. Do not use.^^J}%
+  \ClassWarning{novel}{Command \string\Backmatter*\ ignored. Do not use.}%
 }
 %
 \def\@Backmatterns{%
-  \ClassWarning{novel}{Command \string\Backmatter\ ignored. Do not use.^^J}%
+  \ClassWarning{novel}{Command \string\Backmatter\ ignored. Do not use.}%
 }
 %
 %% end frontmatter, mainmatter. No backmatter!
@@ -814,7 +939,7 @@
 % In some situations, the use will be interrupted:
 \gdef\@nodocommand#1{
   \ClassError{novel}{No command `\string\#1' in this class}%
-    {The `\string\#1' command is not implemented in `novel' class.^^J}%
+    {The `\string\#1' command is not implemented in `novel' class.}%
 }
 % Here is the interruption list:
 \long\gdef\maketitle\@nodocommand{maketitle}
@@ -829,15 +954,17 @@
 %% polyglossia
 % Language-specific settings:
 \if@polyoff % polyoff is new in v 1.44.
-  \ClassWarning{novel}{^^JYou chose the `polyoff' class option.^^J%
-    So, the polyglossia package was not loaded. But like it or not,^^J%
-    the babel package was loaded, with generic hyphenation.^^J%
-    This behavior, or choice of language, cannot be changed.^^J%
-    If you want a specific language, you will have to use polyglossia.^^J}%
+  \ClassWarning{novel}{^^JYou chose the `polyoff' class option. ^^J%
+    So, the polyglossia package was not loaded. But like it or not, ^^J%
+    the babel package was loaded, with generic hyphenation. ^^J%
+    This behavior, or choice of language, cannot be changed. ^^J%
+    If you want a specific language, you will have to use polyglossia.}%
 \else
   \RequirePackage{polyglossia} % loading order changed in v. 1.40.3.
+  \setdefaultlanguage[variant=american]{english} % may be changed by user
 \fi
 %% end polyglossia
+
 
 
 %%

@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2017/12/12 v1.46.5 LaTeX file (text macros usable within document body)]
+[2017/12/25 v1.46.5k LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -64,7 +64,6 @@
 %
 % \forceindent and \backindent perform or remove indent, using \hspace{}.
 % Rationale: Sometimes \indent and \noindent are neutralized by another command.
-\newlength\forceparlength % holds default value, even when \parindent changed
 
 % See novel.cls for accompanying AtBeginDocument routine.
 
@@ -121,7 +120,7 @@
   \let\color\relax
   \DeclareDocumentCommand \color { o m }
    {%
-   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.542763}}{\@undeclaredcolor[gray]{0.542763}}{}% shademargins (dead zone)
+   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.542763}}{\@undeclaredcolor[gray]{0.542763}}{}% shademargins (unsafe zone)
    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.883215}}{\@undeclaredcolor[gray]{0.883215}}{}% shademargins (margins)
    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.949123}}{\@undeclaredcolor[gray]{0.949123}}{}% shademargins (head/foot)
    \ifthenelse{\equal{#2}{hingledingle}}{\@declaredcolor{white}}{}% hingledingle is internal alias for white
@@ -156,10 +155,9 @@
 % Optional first argument is minimum width of box.
 % Second argument is contents of box.
 % Box width will be the greater of #1 or the width of #2.
-\newlength\@mylen
 \newcommand{\flexbox}[2][\parindent]{%
-  \settowidth{\@mylen}{#2}%
-  \ifdim\@mylen < #1%
+  \settowidth{\@tempLength}{#2}%
+  \ifdim\@tempLength < #1%
     \makebox[#1][l]{#2}%
   \else%
     #2%
@@ -202,9 +200,9 @@
 % First argument is scale. Number>=0.5. Default 1. Relative to what the size
 %   would otherwise be. May multiply with an already-scaled font.
 % Second and third arguments are x-offset and y-offset, respectively.
-% Offsets are lengths, best measured in em or \nfs for x,
-%   and em or \nfs or \nbs for y. Default 0pt. Can abbreviate as 0.
-% Posiive offsets are x right, y up.
+% Offsets are lengths, best measured in em or \nfs for horizontal,
+%   and em or \nfs or \nbs for vertical. Default 0pt. Can abbreviate as 0.
+% Posiive offsets are horizontal right, vertical up.
 % Text is "smashed" and may go anywhere, even overlying other text or image.
 % The unstarred command occupies width equal to the scaled text,
 %   thus leaving a "hole" where the text would have been.
@@ -261,12 +259,12 @@
 %   do the calculations yourself.
 \newenvironment{parascale}[1][1]
 {\begingroup%
-\FPmax{\@mytempDetailsNum}{#1}{0.5}% must be at least half normal.
-\FPmul{\@mytempDetailsFontNum}{\@mytempDetailsNum}{\Current@FontSizeNum}%
-\FPround{\@mytempDetailsFontNum}{\@mytempDetailsFontNum}{2}%
-\FPmul{\@mytempDetailsSkipNum}{\@mytempDetailsNum}{\Current@BaselineSkipNum}%
-\FPround{\@mytempDetailsSkipNum}{\@mytempDetailsSkipNum}{2}%
-\fontsize{\@mytempDetailsFontNum pt}{\@mytempDetailsSkipNum pt}\selectfont}%
+\FPmax{\@mytempDetailsN}{#1}{0.5}% must be at least half normal.
+\FPmul{\@mytempDetailsFontN}{\@mytempDetailsN}{\strip@pt\@FontSize}%
+\FPround{\@mytempDetailsFontN}{\@mytempDetailsFontN}{2}%
+\FPmul{\@mytempDetailsSkipN}{\@mytempDetailsN}{\strip@pt\baselineskip}%
+\FPround{\@mytempDetailsSkipN}{\@mytempDetailsSkipN}{2}%
+\fontsize{\@mytempDetailsFontN pt}{\@mytempDetailsSkipN pt}\selectfont}%
 {\endgroup}
 %
 %%
@@ -278,12 +276,13 @@
 \newenvironment{toc}[2][0]%
 {%
   \begin{adjustwidth}{#2}{#2}%
-  \begingroup% lengths not global
-  \setlength\parindent{0pt}%
-  \setlength\@tocnumwid{\widthof{00.~}}%
-  \setlength\@tocskip{#1\nbs}%
+  \begingroup%
+  \setlength\parindent{0pt}% local
+  \setlength\@tocnumwid{\widthof{00.~}}% local
+  \setlength\@tocskip{#1\nbs}% local
 }{%
-  \endgroup\end{adjustwidth}\par%
+  \endgroup%
+  \end{adjustwidth}\par%
 }%
 %% \tocitem[number]{description}{page} provides a one-line table entry in toc.
 % optional number might be chapter number. Can use ~ to offset.
@@ -324,9 +323,8 @@
 {}
 %
 \gdef\hangleft#1{% places content to left of usual position.
-  \newlength\@temphangl%
-  \setlength\@temphangl{\widthof{#1}}%
-  \stake\hspace{-\@temphangl}#1%
+  \setlength\@tempLength{\widthof{#1}}% local
+  \stake\hspace{-\@tempLength}#1%
 }
 %%
 % \showlength[decimal places]{length}{units}
@@ -335,24 +333,23 @@
 % units may be pt, bp, mm, cm, in
 % decimal places for rounding (0=integer, 1=one decimal point, etc.)
 % Example: \showlength[3]{17bp}{in}  returns  0.236in
-\newlength{\temp@showlength}
 \newcommand\showlength[3][]{%
-  \setlength\temp@showlength{#2}%
-  \def\temp@lengthnum{\strip@pt\temp@showlength}%
+  \setlength\@tempLength{#2}%
+  \def\@tempLengthN{\strip@pt\@tempLength}%
   \ifthenelse{\equal{#3}{bp}}{%
-    \FPmul{\temp@lengthnum}{\temp@lengthnum}{0.99626401}%
+    \FPmul{\@tempLengthN}{\@tempLengthN}{0.99626401}%
   }{}%
   \ifthenelse{\equal{#3}{mm}}{%
-    \FPmul{\temp@lengthnum}{\temp@lengthnum}{0.351459804}%
+    \FPmul{\@tempLengthN}{\@tempLengthN}{0.351459804}%
   }{}%
   \ifthenelse{\equal{#3}{cm}}{%
-    \FPmul{\temp@lengthnum}{\temp@lengthnum}{0.0351459804}%
+    \FPmul{\@tempLengthN}{\@tempLengthN}{0.0351459804}%
   }{}%
   \ifthenelse{\equal{#3}{in}}{%
-    \FPmul{\temp@lengthnum}{\temp@lengthnum}{0.013837}%
+    \FPmul{\@tempLengthN}{\@tempLengthN}{0.013837}%
   }{}%
-  \ifthenelse{\equal{#1}{}}{}{\FPround{\temp@lengthnum}{\temp@lengthnum}{#1}}%
-  \temp@lengthnum#3%
+  \ifthenelse{\equal{#1}{}}{}{\FPround{\@tempLengthN}{\@tempLengthN}{#1}}%
+  \@tempLengthN{#3}%
 }
 %% end \showlength
 
@@ -374,7 +371,6 @@
 \let\sups\relax
 \let\textsuperscript\relax
 \let\textsubscript\relax
-\newlength\@hoAhl % measured when needed.
 % Perhaps superscripts and subscripts (scientific) are in the font, or not.
 % Problem: The best fonts have these characters at size/weight designed
 %   to mingle with normal size. But many fonts merely scaled characters,
@@ -385,8 +381,9 @@
 % 
 
 % Note that the effect of these commands continues, not just one-shot:
-\gdef\realmarker{\toggletrue{@realmarker}} % anywhere in text
-\gdef\fakemarker{\togglefalse{@realmarker}} % anywhere in text
+\gdef\realmarker{\global\toggletrue{@realmarker}} % anywhere in text
+\gdef\fakemarker{\global\togglefalse{@realmarker}} % anywhere in text
+\newlength\@hoAhl % height of Ahl, locally measured and set when needed
 %%
 \ExplSyntaxOn
 %
@@ -396,11 +393,11 @@
     \fontspec_if_feature:nTF {sups}{%
       \ifvmode\else\unskip\fi{\addfontfeature{VerticalPosition=Superior}\smash{#1}}%
     }{%
-      \setlength\@hoAhl{\heightof{Ahl}}%
+      \setlength\@hoAhl{\heightof{Ahl}}% local
       \ifvmode\else\unskip\fi\charscale[0.7,0pt,0.5\@hoAhl]{#1}%
     }%
   }{%
-    \setlength\@hoAhl{\heightof{Ahl}}%
+    \setlength\@hoAhl{\heightof{Ahl}}% local
     \ifvmode\else\unskip\fi{\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,0.5\@hoAhl]{#1}}%
   }%
  }% end \sups
@@ -414,12 +411,12 @@
       \fontspec_if_feature:nTF {subs}{%
         \ifvmode\else\unskip\fi{\addfontfeature{VerticalPosition=Inferior}\smash{#1}}%
       }{%
-        \setlength\@hoAhl{\heightof{Ahl}}%
+        \setlength\@hoAhl{\heightof{Ahl}}% local
         \ifvmode\else\unskip\fi\charscale[0.7,0pt,-0.2\@hoAhl]{#1}%
       }%
     }%
   }{%
-    \setlength\@hoAhl{\heightof{Ahl}}%
+    \setlength\@hoAhl{\heightof{Ahl}}% local
     \ifvmode\else\unskip\fi{\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,-0.2\@hoAhl]{#1}}%
   }%
  }% end \subs
@@ -433,8 +430,8 @@
 
 
 %% New in v. 1.46: Allows text to be placed (potentially) off-grid, with grid resuming after.
+\newif \if@WithinLinegap % true within linegap environment
 \newcounter{currentlinegap} % 0 when not within a linegap environment, >0 otherwise.
-\newif \if@withinlinegap
 \ExplSyntaxOn
 \DeclareDocumentEnvironment {linegap} { m } {%
   \FPifint{#1}\else%
@@ -448,14 +445,14 @@
   \par%
   \null%
   \vspace*{-\nbs}%
-  \global\@withinlinegaptrue%
+  \global\@WithinLinegaptrue%
   \begin{textblock*}{\textwidth}[0,0](0pt,0pt)%
   \setcounter{currentlinegap}{#1}%
   \strut\par%
   \vspace*{-\nbs}%
 }{% close the environment:
   \end{textblock*}%
-  \global\@withinlinegapfalse%
+  \global\@WithinLinegapfalse%
   \par%
   \vspace*{#1\nbs}%
   \setcounter{currentlinegap}{0}%
@@ -469,18 +466,18 @@
 % May only be used within `linegap' environment.
 % Mandatory argument: column width.
 % Optional argument: column offset from left.
-\newif \if@withincolumn
+\newif \if@WithinColumn % true within column environment
 \newenvironment{column}[2][0pt]{%
-  \if@withinlinegap\else%
+  \if@WithinLinegap\else%
     \ClassError{novel}{Must nest `column' within `linegap' on p. \thepage}%
      {The `column' environment(s) must be nested within `linegap'}%
   \fi%
-  \global\@withincolumntrue%
+  \global\@WithinColumntrue%
   \begin{textblock*}{#2}(#1,0pt)\strut%
   \ignorespaces%
 }{%
   \end{textblock*}%
-  \global\@withincolumnfalse%
+  \global\@WithinColumnfalse%
 }%
 %%
 

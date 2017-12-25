@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-ChapterScene.sty}%
-[2017/12/12 v1.46.5 LaTeX file (chapter and scene macros)]
+[2017/12/25 v1.46.5k LaTeX file (chapter and scene macros)]
 %%
 
 
@@ -21,8 +21,8 @@
 % Class `novel' does not use \maketitle.
 \gdef\maketitle{%
   \ClassError{novel}{\string\maketitle does not exist in this class}%
-   {Sorry, but there is no \string\maketitle command in `novel' class.^^J%
-    You must make your own title pages! See documentation.^^J}%
+   {Sorry, but there is no \string\maketitle command in `novel' class. ^^J%
+    You must make your own title pages! See documentation.}%
 }
 %
 
@@ -81,21 +81,16 @@
 % calls \thispagestyle if set for all chapter displays.
 % This environment is not restricted to chapters. It is also used for chapter-like
 % sections in front matter or main matter, as long as they are styled like a chapter.
-\newif \if@addCTline \@addCTlinetrue
 \newcounter{@linequarter}
-\newif \if@csalignok \@csalignokfalse
-\newlength\@oldparindent
+
 %
-% The argument is the number of normal baselineskips high (integer GTE 4).
+% The argument is the number of normal baselineskips high (integer GTE 3, or GTE 4 when dropfolioinside).
 \ExplSyntaxOn
 \DeclareDocumentEnvironment {ChapterStart} { O{\@setchapterstartheight} O{\@setchapterstart} }
 {%
   \gdef\@thiscsstyle{#2}%
   \thispagestyle{\@thiscsstyle}%
-  \setlength\@oldparindent{\parindent}%
-  \global\@oldparindent=\@oldparindent%
-  \setlength\parindent{0pt}%
-  \global\parindent=\parindent%
+  \gsetlength\parindent{0pt}% within environment
   \ResetFootnoteSymbol% resets symbolic markers, but not numerical markers
   \IfStrEq{#1}{*}{\gdef\@thiscsheight{\@setchapterstartheight}}{\gdef\@thiscsheight{#1}}%
   \FPsub{\@fixlines}{\@thiscsheight}{2}%
@@ -129,10 +124,9 @@
   }{\vspace{0.25\nbs}}{}%
   \end{textblock*}%
   \vspace{\@fixlines\nbs}%
-  \if@addCTline\null\fi%
+  \if@DeleteCSline\else\null\fi%
   \vfill% make bad vbox warning go away
-  \setlength\parindent{\@oldparindent}%
-  \global\parindent=\parindent%
+  \gsetlength\parindent{\normalparindent}% restored
   \nov@AfterGroup\NoIndentAfterThis% etextools and noindentafter
 }
 \ExplSyntaxOff % end ChapterStart environment
@@ -145,13 +139,13 @@
 \newcommand\ChapterTitle[2][c]{% optional alignment l, c, r
   \ignorespaces%
   \vspace{0.5\nbs}\addtocounter{@linequarter}{2}%
-  \@csalignokfalse%
-  \ifthenelse{\equal{#1}{l}}{\let\@csalign\relax\@csalignoktrue}{}%
-  \ifthenelse{\equal{#1}{c}}{\let\@csalign\centering\relax\@csalignoktrue}{}%
-  \ifthenelse{\equal{#1}{r}}{\let\@csalign\hfill\relax\@csalignoktrue}{}%
-  \if@csalignok\else%
+  \@tempTFfalse%
+  \ifthenelse{\equal{#1}{l}}{\let\@csalign\relax\@tempTFtrue}{}%
+  \ifthenelse{\equal{#1}{c}}{\let\@csalign\centering\relax\@tempTFtrue}{}%
+  \ifthenelse{\equal{#1}{r}}{\let\@csalign\hfill\relax\@tempTFtrue}{}%
+  \if@tempTF\else%
     \ClassError{novel}{Chapter Title, Deco, Subtitle align must be l, c, or r}%
-    {On page \thepage you wrote a Chapter command with alignment^^J%
+    {On page \thepage you wrote a Chapter command with alignment ^^J%
      other than the allowed l, c, or r.}%
   \fi%
   {\@csalign\stake\smash{{\chapterfont{}#2}}\par}%
@@ -159,13 +153,13 @@
 %
 \newcommand\ChapterSubtitle[2][c]{% optional alignment l, c, r
   \vspace{0.25\nbs}\addtocounter{@linequarter}{1}
-  \@csalignokfalse%
-  \ifthenelse{\equal{#1}{l}}{\let\@csalign\relax\@csalignoktrue}{}
-  \ifthenelse{\equal{#1}{c}}{\let\@csalign\centering\relax\@csalignoktrue}{}
-  \ifthenelse{\equal{#1}{r}}{\let\@csalign\hfill\relax\@csalignoktrue}{}
-  \if@csalignok\else%
+  \@tempTFfalse%
+  \ifthenelse{\equal{#1}{l}}{\let\@csalign\relax\@tempTFtrue}{}
+  \ifthenelse{\equal{#1}{c}}{\let\@csalign\centering\relax\@tempTFtrue}{}
+  \ifthenelse{\equal{#1}{r}}{\let\@csalign\hfill\relax\@tempTFtrue}{}
+  \if@tempTF\else%
     \ClassError{novel}{Chapter Title, Deco, Subtitle align must be l, c, or r}%
-    {On page \thepage you wrote a Chapter command with alignment^^J%
+    {On page \thepage you wrote a Chapter command with alignment ^^J%
      other than the allowed l, c, or r.}%
   \fi%
   {\@csalign{\stake\smash{\subchfont #2}}\par}%
@@ -176,22 +170,23 @@
 % This works because one is a letter, and the other is a number.
 % So it is easy to separte them by parsing.
 \newcommand\ChapterDeco[2][c1]{% optional alignment and scale, either order
+  \@tempTFfalse
   \StrDel{#1}{ }[\temp@cds]% may use space separator
   \StrDel{\temp@cds}{,}[\temp@cd]% may use comma separator
   \IfSubStr{#1}{l}{% left align
-    \let\@csalign\relax\@csalignoktrue%
+    \let\@csalign\relax\@tempTFtrue%
     \StrDel{\temp@cd}{l}[\temp@cd]%
   }{}%
   \IfSubStr{#1}{c}{% centered
-    \let\@csalign\centering\relax\@csalignoktrue%
+    \let\@csalign\centering\relax\@tempTFtrue%
     \StrDel{\temp@cd}{c}[\temp@cd]%
   }{}%
   \IfSubStr{#1}{r}{% right align
-    \let\@csalign\hfill\relax\@csalignoktrue%
+    \let\@csalign\hfill\relax\@tempTFtrue%
     \StrDel{\temp@cd}{r}[\temp@cd]%
   }{}%
-  \if@csalignok\else%
-    \let\@csalign\centering\relax\@csalignoktrue%
+  \if@tempTF\else%
+    \let\@csalign\centering\relax\@tempTFtrue%
   \fi%
   % Now for scaling, with adjusted vertical position:
   \IfEndWith{\temp@cd}{.}{\StrSubstitute{\temp@cd}{.}{.0}[\temp@cd]}{}%
@@ -211,21 +206,15 @@
 % is the text, using subchfont. Optional line follows using \bigemdash style.
 % If option is empty, no line. If a length, then the line is that length.
 % If option * then the line fills to end of text line.
-\newlength\@tempscfx%
 \newcommand\QuickChapter[2][]{%
   \null%
-  \def\@qctweak{0.3} % raise above grid, em of subchfont
-  \noindent{\subchfont\charscale[1,0pt,\@qctweak em]{#2}%
-    \setlength\@tempscfx{\heightof{x}}%
-    \global\@tempscfx=\@tempscfx%
+  \noindent{\subchfont\charscale[1,0pt,0.3em]{#2}%
+    \gsetlength\@tempLength{\heightof{x}}% height of x in subchfont
   }% end subchfont
-  \def\@tempscfxnum{\strip@pt\@tempscfx}%
-  \def\nxhnum{\strip@pt\normalxheight}%
-  \FPdiv{\@qclineth}{\@tempscfxnum}{\nxhnum}% scale of subchfont
+  \FPdiv{\@qclineth}{\strip@pt\@tempLength}{\strip@pt\normalxheight}% scale of subchfont
   \FPmul{\@howthick}{\@qclineth}{0.049}% typical emdash thickness, em.
   \FPadd{\@howraise}{\@qctweak}{0.23}% typical emdash height em raised.
   \FPmul{\@howraise}{\@howraise}{\@qclineth}%
-  \def\@tempscfxnum{\strip@pt\@tempscfx}%
   \ifthenelse{\equal{#1}{} \OR \equal{#1}{ }}{}{% no line, else:
     \ifthenelse{\equal{#1}{*}}{% line fills:
       ~\leaders\hbox{\smash{\rule[\@howraise em]{1pt}{\@howthick em}}}\hfill\stake\par%

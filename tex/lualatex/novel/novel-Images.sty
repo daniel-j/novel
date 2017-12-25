@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Images.sty}%
-[2017/12/12 v1.46.5 LaTeX file (image placement)]
+[2017/12/25 v1.46.5k LaTeX file (image placement)]
 %%
 
 
@@ -24,6 +24,18 @@
 %% (4) Image file must contain its resolution. (5) Exact size, without scaling.
 %% (6) No private metadata. (7) Be sure grayscale is 1-channel, not rgb gray.
 %%
+
+
+% Pertains to images:
+\newlength\imagewidth
+\newlength\imageheight
+\newlength\imagehoffset
+\newlength\imagevoffset
+\newlength\@imagewidth
+\newlength\@imageheight
+\newlength\@imagehoffset
+\newlength\@imagevoffset
+\newlength\@mytotalht
 
 
 
@@ -61,14 +73,7 @@
 %
 \def\Aring{Å} % has typical maximum accented character height in Latin-1.
 %
-\newlength\imagewidth
-\newlength\imageheight
-\newlength\imagehoffset
-\newlength\imagevoffset
-\newlength\@imagewidth
-\newlength\@imageheight
-\newlength\@imagehoffset
-\newlength\@imagevoffset
+
 \gdef\imagestarred{false}
 \gdef\imagefilename{unknown}
 % Neutralize \includegraphics, so it is no longer a user command:
@@ -76,7 +81,7 @@
 \LetLtxMacro\includegraphics\relax
 \newcommand\includegraphics[2][]{
   \ClassError{novel}{Cannot use \string\includegraphics\space on page \thepage}
-   {The `novel' class has its own commands for placing images. See docs.^^J%
+   {The `novel' class has its own commands for placing images. See docs. ^^J%
     You cannot use the \string\includegraphics\space command.}%
 }
 %
@@ -89,9 +94,6 @@
   ~\par\vspace*{-\nbs}\vspace*{\@howmuchdown}\par%
 }
 %
-\newlength\@mytotalht
-\newif\if@imgExtOK%
-%
 % \InlineImage can be used in body, header, footer.
 % However, macros such as \imagefilename, \imagewidth, etc.
 %   are only set or re-set when the image in in the body.
@@ -102,18 +104,18 @@
 %
 \ExplSyntaxOn
 \DeclareDocumentCommand \InlineImage { s O{0pt} m }{%
-  \@imgExtOKfalse%
-  \IfEndWith{#3}{png}{\@imgExtOKtrue}{}%
-  \IfEndWith{#3}{PNG}{\@imgExtOKtrue}{}%
-  \IfEndWith{#3}{jpg}{\@imgExtOKtrue}{}%
-  \IfEndWith{#3}{JPG}{\@imgExtOKtrue}{}%
-  \IfEndWith{#3}{jpeg}{\@imgExtOKtrue}{}%
-  \IfEndWith{#3}{JPEG}{\@imgExtOKtrue}{}%
-  \if@imgExtOK\else%
+  \@tempTFfalse%
+  \IfEndWith{#3}{png}{\@tempTFtrue}{}%
+  \IfEndWith{#3}{PNG}{\@tempTFtrue}{}%
+  \IfEndWith{#3}{jpg}{\@tempTFtrue}{}%
+  \IfEndWith{#3}{JPG}{\@tempTFtrue}{}%
+  \IfEndWith{#3}{jpeg}{\@tempTFtrue}{}%
+  \IfEndWith{#3}{JPEG}{\@tempTFtrue}{}%
+  \if@testtOK\else%
     \ClassError{novel}{^^JImage~`#3'~format~not~allowed}%
-    {^^JImage~`#3'~has~file~type~not~allowed~in~`novel'~class.^^J%
-     Must~have~file~extension~png,~jpg,~jpeg~(or~capitalized).^^J%
-     Others~such~as~pdf~bmp,~tiff,~eps,~pdf,~svg~are~not~allowed.^^J}%
+    {Image~`#3'~has~file~type~not~allowed~in~`novel'~class.~ ^^J%
+     Must~have~file~extension~png,~jpg,~jpeg~(or~capitalized).~ ^^J%
+     Others~such~as~pdf~bmp,~tiff,~eps,~pdf,~svg~are~not~allowed.}%
   \fi%
   \StrDel{#2}{\space}[\@myila]%
   \StrCut{\@myila}{,}{\@myilxa}{\@myilya}%
@@ -133,8 +135,8 @@
   \iftoggle{@inheadfoot}{}{%
     \setlength\imageheight{\@imageheight}%
     \global\imageheight=\imageheight%
-    \typeout{^^JClass~`novel'~Info:~An~image~was~placed~on~page~\thepage.^^J%
-      Review~layout~to~ensure~that~it~does~not~overflow~into~margins.^^J}%
+    \typeout{Class~`novel'~Info:~An~image~was~placed~on~page~\thepage.\space ^^J%
+      Review~layout~to~ensure~that~it~does~not~overflow~into~margins.}%
   }%
   %
   \setlength\@imagehoffset{\@myilx}%
@@ -197,18 +199,18 @@
     \ClassError{novel}{Cannot~use~BlockImage~in~header~or~footer}%
       {Header~footer~allow~InlineImage~but~not~BlockImage.}%
   }{}%
-  \@imgExtOKfalse%
-  \IfEndWith{#2}{png}{\@imgExtOKtrue}{}%
-  \IfEndWith{#2}{PNG}{\@imgExtOKtrue}{}%
-  \IfEndWith{#2}{jpg}{\@imgExtOKtrue}{}%
-  \IfEndWith{#2}{JPG}{\@imgExtOKtrue}{}%
-  \IfEndWith{#2}{jpeg}{\@imgExtOKtrue}{}%
-  \IfEndWith{#2}{JPEG}{\@imgExtOKtrue}{}%
-  \if@imgExtOK\else%
-    \ClassError{novel}{^^JImage~`#2'~format~not~allowed,~page~\thepage}%
-    {^^JImage~`#2'~has~file~type~not~allowed~in~`novel'~class.^^J%
-     Must~have~file~extension~png,~jpg,~jpeg~(or~capitalized).^^J%
-     Others~such~as~pdf~bmp,~tiff,~eps,~pdf,~svg~are~not~allowed.^^J}%
+  \@tempTFfalse%
+  \IfEndWith{#2}{png}{\@tempTFtrue}{}%
+  \IfEndWith{#2}{PNG}{\@tempTFtrue}{}%
+  \IfEndWith{#2}{jpg}{\@tempTFtrue}{}%
+  \IfEndWith{#2}{JPG}{\@tempTFtrue}{}%
+  \IfEndWith{#2}{jpeg}{\@tempTFtrue}{}%
+  \IfEndWith{#2}{JPEG}{\@tempTFtrue}{}%
+  \if@tempTF\else%
+    \ClassError{novel}{Image~`#2'~format~not~allowed,~page~\thepage}%
+    {Image~`#2'~has~file~type~not~allowed~in~`novel'~class.~ ^^J%
+     Must~have~file~extension~png,~jpg,~jpeg~(or~capitalized).~ ^^J%
+     Others~such~as~pdf~bmp,~tiff,~eps,~pdf,~svg~are~not~allowed.}%
   \fi%
   % Allows empty or blank to be used, and still provide default values:
   \ifthenelse{\equal{#1}{} \OR \equal{#1}{\space}}{%
@@ -242,12 +244,12 @@
   \addtolength\@mytotalht{\@imageheight}%
   \addtolength\@mytotalht{-\@myy}%
   \addtolength\@mytotalht{1em}%
-  \def\@mytotalhtnum{\strip@pt\@mytotalht}%
-  \FPdiv{\@mytotalhtnum}{\@mytotalhtnum}{\nbsnum}%
-  \FPadd{\@mytotalhtnum}{\@mytotalhtnum}{0.5}%
-  \FPround{\@mytotalhtnum}{\@mytotalhtnum}{0}%
+  \def\@mytotalhtN{\strip@pt\@mytotalht}%
+  \FPdiv{\@mytotalhtN}{\@mytotalhtN}{\strip@pt\nbs}%
+  \FPadd{\@mytotalhtN}{\@mytotalhtN}{0.5}%
+  \FPround{\@mytotalhtN}{\@mytotalhtN}{0}%
   %
-  \begin{linegap}{\@mytotalhtnum}%
+  \begin{linegap}{\@mytotalhtN}%
   %
   \ifthenelse{\equal{\@myalign}{c}\OR\equal{\@myalign}{}}{%
     {\centering%

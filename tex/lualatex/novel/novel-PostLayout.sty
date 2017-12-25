@@ -164,12 +164,13 @@
 %% end shademargins and unsafe zone
 
 
-% Labels each page with DRAFT at upper left, if in draft mode:
+% Labels each page with DRAFT at upper left of TrimBox, if in draft mode:
 \ifdraftdoc
   \AddToShipoutPictureBG{%
   \@getPageXY%
-    \AtPageUpperLeft{%
-      \raisebox{-\@FontSize}{\textbf{~DRAFT}}%
+    \AtPageLowerLeft{%
+      \hspace{\Trim@Left}%
+      \raisebox{\dimexpr\Trim@Bottom+\@TrimHeight-\@FontSize}{\textbf{~DRAFT}}%
     }%
   }%
 \fi

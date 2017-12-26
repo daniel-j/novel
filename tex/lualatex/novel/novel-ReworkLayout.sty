@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-ReworkLayout.sty}%
-[2017/12/25 v1.46.5k LaTeX file (reworked layout calculations)]
+[2017/12/25 v1.46.5m LaTeX file (reworked layout calculations)]
 %%
 
 %%
@@ -58,52 +58,43 @@
 \fi
 
 
-% These values were calculated in novel-CalculateLayout.sty:
-\newlength\@InitialWorkingHeight
-  \gsetlength\@InitialWorkingHeight{\@WorkingHeight}
-\newlength\@InitialTextWidth
-  \gsetlength\@InitialTextWidth{\textwidth}
-
-
-% Change \textwidth to the rework values:
+% Discover what happens if scaled according to text width:
+\newlength\@ReWorkingHeight
 \gsetlength\textwidth{\@TrimWidth-\@OuterMargin-\@InnerMargin}
 \FPdiv{\@TWratio}{\strip@pt\textwidth}{\strip@pt\@InitialTextWidth}
-\FPdiv{\@THratio}{\strip@pt\@WorkingHeight}{\strip@pt\@InitialWorkingHeight}
-
-
-\if@AspectPriority
-  % Simply scale both font size and baselineskip to the minimum ratio:
-  \FPmin{\@TMratio}{\@TWratio}{\@THratio}
-  \gsetlength\@FontSize{\@TMratio\@SetFontSize}
-  \gsetlength\@WorkingHeight{\@TrimHeight-\@TopMargin-\@BottomMargin-1.3\@FontSize}
-  \gsetlength\baselineskip{\@TMratio\baselineskip}
-  \FPmul{\@tempN}{\@AdjLPP}{\strip@pt\baselineskip}
-  \FPsub{\@VdiffN}{\strip@pt\@WorkingHeight}{\@tempN}
-  \FPdiv{\@VdiffN}{\@VdiffN}{2}
-  \gsetlength\@TopMargin{\@TopMargin+\@VdiffN pt}
-  \gsetlength\@BottomMargin{\@BottomMargin+\@VdiffN pt}
-\else
-  % \baselineskip will be the largest that will fit.
-  % Try with font size adjusted using \@TWratio:
-  \gsetlength\@FontSize{\@TWratio\@SetFontSize}
-  \gsetlength\@WorkingHeight{\@TrimHeight-\@TopMargin-\@BottomMargin-1.3\@FontSize}
-  \FPdiv{\@tempN}{1}{\@AdjLPP}
-  \gsetlength\baselineskip{\@tempN\@WorkingHeight}
-  \ifdimcomp{\baselineskip}{<}{1.2\@FontSize}{
-    % Does not fit vertically when \@FontSize adjusted to fit width.
-    % Change \@FontSize to (1/1.2)\baselineskip, and scale \textwidth:
-    \gsetlength\@FontSize{0.8333\baselineskip}
-    \FPmul{\@tempN}{\@TWratio}{\strip@pt\@SetFontSize}
-    \FPdiv{\@tempN}{1}{\@tempN}
-    \FPmul{\@tempN}{\@tempN}{\strip@pt\@FontSize}
-    \gsetlength\textwidth{\@tempN\textwidth}
-    \FPsub{\@tempN}{1}{\@tempN}
-    \FPdiv{\@tempN}{\@tempN}{2}
-    \gsetlength\@OuterMargin{\@OuterMargin+\@tempN\textwidth}
-    \gsetlength\@InnerMargin{\@InnerMargin+\@tempN\textwidth}
-  }{} % OK, fits horizontally and vertically.
-\fi
-
+\gsetlength\@FontSize{\@TWratio\@SetFontSize}
+\gsetlength\@ReWorkingHeight{\@TrimHeight-\@TopMargin-\@BottomMargin-1.3\@FontSize}
+\gsetlength\baselineskip{1.2\@FontSize} % test for least allowable
+\setlength\@tempLength{\@AdjLPP\baselineskip}
+\ifdimcomp{\@ReWorkingHeight-\@tempLength}{<}{0pt}{%
+  % Will not fit vertically, so will need to re-scale \@FontSize.
+  \FPdiv\@THratio{\strip@pt\@ReWorkingHeight}{\strip@pt\@tempLength}
+  \gsetlength\baselineskip{\@THratio\baselineskip}
+  \gsetlength\@FontSize{\@THratio\@FontSize}
+  \gsetlength\textwidth{\@THratio\textwidth}
+  \setlength\@tempLength{\@TrimWidth-\@OuterMargin-\@InnerMargin-\textwidth}
+  \setlength\@tempLength{0.5\@tempLength}
+  \gsetlength\@OuterMargin{\@OuterMargin+\@tempLength}
+  \gsetlength\@InnerMargin{\@InnerMargin+\@tempLength}
+  \FPround{\@tempN}{\strip@pt\@tempLength}{2}
+  \FPmul{\@TWratio}{\@TWratio}{\@THratio}
+  \FPmul{\@THratio}{\@TWratio}{1.2}
+  \FPround{\@TWratio}{\@TWratio}{4}
+  \FPround{\@THratio}{\@THratio}{4}
+  \typeout{^^JClass `novel' Info: Rework could not fit new horizontal margins. ^^J%
+    Outer/Inner margins increased \@tempN pt over rework specs. ^^J%
+    Scale \@TWratio\space applied to text, \@THratio\space applied to baselineskip. ^^J%
+  }%
+}{% Fits vertically. Keep \@FontSize. Calculate \baselineskip to fit vertically:
+  \gsetlength\baselineskip{\@InvAdjLPP\@ReWorkingHeight}
+  \FPdiv{\@tempN}{\strip@pt\baselineskip}{\strip@pt\@InitialBaselineSkip}
+  \FPround{\@tempN}{\@tempN}{4}
+  \FPround{\@TWratio}{\@TWratio}{4}
+  \typeout{^^JClass `novel' Info: Rework was able to fit new margins. ^^J%
+    Scale applied to font size: \@TWratio. ^^J%
+    Scale applied to baselineskip: \@tempN. ^^J%
+  }%
+}% end \ifdimcomp.
 
 
 

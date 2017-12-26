@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/12/25 v1.46.5k LaTeX file (layout settings)]
+[2017/12/25 v1.46.5m LaTeX file (layout settings)]
 %%
 
 
@@ -28,17 +28,6 @@
 \gdef\novel@checkfeatures#1{} % re-defined below
 %
 %%
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -105,7 +94,7 @@
       \typeout{^^J Class `novel' Info: %
        Used \string\ReworkTrimSize{}{} command. ^^J%
        Carefully review your PDF to ensure that line breaks, paragraphs, ^^J%
-       and page breaks are where you expect them to be.}%
+       and page breaks are where you expect them to be. ^^J}%
   \fi
 }% end \ReworkTrimSize
 
@@ -159,58 +148,14 @@
     \gsetlength\@ReworkOuterMargin{#2}
     \gsetlength\@ReworkBottomMargin{#3}
     \gsetlength\@ReworkInnerMargin{#4}
-    \typeout{Class novel Info: %
+    \typeout{^^JClass novel Info: %
      Used \string\ReworkMargins{}{} command. ^^J%
      Carefully review your PDF to ensure that line breaks, paragraphs, ^^J%
-     and page breaks are where you expect them to be.}%
+     and page breaks are where you expect them to be. ^^J}%
   \fi
 }% end \ReworkMargins
 \LetLtxMacro\ReworkMargin{\ReworkMargins}\relax % for those who mis-type
 %%
-
-
-%% New in v. 1.48: \ReworkPriority{aspect or margins} % default aspect.
-% The \Rework commands scale the text (including head/foot) so that
-%   pagragraph line breaks, and pagination, remain the same as before.
-% It does this by scaling the font size, and the baselineskip.
-% The algorithm almost always works, unless images (which are not scaled)
-%   are mingled with the text. In that case, scaling the images in a
-%   graphics program will restore the line breaks and pagination.
-% The default algorithm is used when \ReworkPriority{aspect}.
-%   This preserves the aspect ratio of the text area (incl. head/foot).
-%   Primary advantage is that it is easy to scale images, because they
-%   will all have the same scale value.
-%   However, either the horizontal or vertical margins will be slightly
-%   larger than specified values. This will be the same for every page,
-%   so it looks OK. Whether the excess is H or V depends on the
-%   various values involved. The other direction will meet margin specs.
-% If \ReworkPriority{margins}, then the algorithm will attempt to comply
-%   with both H and V margins, by changing baselineskip so that it is
-%   no longer proportional the changed text size. Thus, the aspect ratio
-%   of the text area will be changed from its original.
-%   The only advantage is if you don't like excess margins.
-%   Disadvantage is that the new baseline might be very tight or loose.
-%   Also, images must be scaled non-uniformly, which can be a nuisance
-%   if you have a lot of them, especially drop cap images.
-% In some cases, there is not enough vertical space to comply with
-%   the new aspect ratio. Then, there will be a warning in the log file.
-%   You must either accept that the reworked aspect wasn't enough,
-%   or attempt a layout change by removing a header/footer or
-%   reducing the size of head/foot jumos. The choice is yours.
-\newif \if@AspectPriority % true if \ReworkPriority{aspect}
-\gdef\ReworkPriority#1{%
-  \@tempTFfalse
-  \ifthenelse{\equal{#1}{aspect}}{\@tempTFtrue\@AspectPrioritytrue}{}
-  \ifthenelse{\equal{#1}{margins}}{\@tempTFtrue\@AspectPriorityfalse}{}
-  \ifthenelse{\equal{#1}{margin}}{\@tempTFtrue\@AspectPriorityfalse}{}
-  \if@tempTF\else
-    \ClassError{novel}{Incorrect choice in \string\ReworkPriority}%
-     {\string\ReworkPriority\space choice aspect or margins. Default aspect.}%
-  \fi
-}%
-\ReworkPriority{aspect} % default
-%%
-
 
 
 % New in version 1.48: Unsafe Zone (opposite of "safe area").
@@ -643,7 +588,7 @@
 \@lowpenalty   51
 \@medpenalty  151
 \@highpenalty 301
-%
+% Floats not allowed, but just in case:
 \setcounter{topnumber}{2}
 \renewcommand\topfraction{.7}
 \setcounter{bottomnumber}{1}
@@ -720,10 +665,10 @@
   \IfFontExistsTF{Latin Modern Math}{}{% will be set AtBeginDocument by unicode-math.
   }{ % This allows you to proceed without a real math font (but then you cannot print math):
     \setmathfont[BoldFont={NovelDeco.otf}]{NovelDeco.otf} % has a fake math feature
-    \PackageWarning{novel}{Ignore this warning if you used \string\setmathfont. ^^J%
+    \PackageWarning{novel}{^^JIgnore this warning if you used \string\setmathfont. ^^J%
      Did not find suitable default math font. Used NovelDeco.otf. ^^J%
      But NovelDeco does not have real math symbols. ^^J%
-     Math notation will print incorrectly. No problem if no math.}%
+     Math notation will print incorrectly. No problem if no math. ^^J}%
   }
 }%
 %
@@ -884,23 +829,23 @@
 %
 \def\backmatter{\@ifstar\@backmatterst\@backmatterns} % asterisk obsolete from v. 1.40.
 \def\@backmatterst{%
-  \ClassWarning{novel}{Command \string\backmatter*\ ignored. Do not use.}%
+  \ClassWarning{novel}{^^JCommand \string\backmatter*\ ignored. Do not use. ^^J}%
 }
 %
 \def\@backmatterns{%
   \cleartorecto% v. 1.40.2
-  \typeout{Class `novel' Alert: \string\backmatter\space merely clears to recto. See docs.}% v. 1.42
+  \typeout{^^JClass `novel' Alert: \string\backmatter\space merely clears to recto. See docs. ^^J}% v. 1.42
 %
 }
 %
 \def\Backmatter{\@ifstar\@Backmatterst\@Backmatterns} % obsolete from v. 1.40.
 %
 \def\@Backmatterst{% continues frontmatter count w/ uppercase Roman numerals
-  \ClassWarning{novel}{Command \string\Backmatter*\ ignored. Do not use.}%
+  \ClassWarning{novel}{^^JCommand \string\Backmatter*\ ignored. Do not use. ^^J}%
 }
 %
 \def\@Backmatterns{%
-  \ClassWarning{novel}{Command \string\Backmatter\ ignored. Do not use.}%
+  \ClassWarning{novel}{^^JCommand \string\Backmatter\ ignored. Do not use. ^^J}%
 }
 %
 %% end frontmatter, mainmatter. No backmatter!
@@ -958,7 +903,7 @@
     So, the polyglossia package was not loaded. But like it or not, ^^J%
     the babel package was loaded, with generic hyphenation. ^^J%
     This behavior, or choice of language, cannot be changed. ^^J%
-    If you want a specific language, you will have to use polyglossia.}%
+    If you want a specific language, you will have to use polyglossia. ^^J}%
 \else
   \RequirePackage{polyglossia} % loading order changed in v. 1.40.3.
   \setdefaultlanguage[variant=american]{english} % may be changed by user

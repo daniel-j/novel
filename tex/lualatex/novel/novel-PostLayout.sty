@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-PostLayout.sty}%
-[2017/12/25 v1.46.5k LaTeX file (post-layout modifications)]
+[2017/12/25 v1.46.5m LaTeX file (post-layout modifications)]
 %%
 
 %%
@@ -164,13 +164,12 @@
 %% end shademargins and unsafe zone
 
 
-% Labels each page with DRAFT at upper left of TrimBox, if in draft mode:
+% Labels each page with DRAFT at upper left, if in draft mode:
 \ifdraftdoc
   \AddToShipoutPictureBG{%
   \@getPageXY%
-    \AtPageLowerLeft{%
-      \hspace{\Trim@Left}%
-      \raisebox{\dimexpr\Trim@Bottom+\@TrimHeight-\@FontSize}{\textbf{~DRAFT}}%
+    \AtPageUpperLeft{%
+      \raisebox{-\@FontSize}{\textbf{~DRAFT}}%
     }%
   }%
 \fi

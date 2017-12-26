@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-CalculateLayout.sty}%
-[2017/12/25 v1.46.5k LaTeX file (layout calculations)]
+[2017/12/25 v1.46.5m LaTeX file (layout calculations)]
 %%
 
 %%
@@ -62,45 +62,56 @@
     } %
   } %
 \fi
-\newlength\@WorkingHeight % area containing header, text, footer,
-\gsetlength\@WorkingHeight{\@SetTrimHeight-\@SetTopMargin-\@SetBottomMargin-1.3\@SetFontSize}
-\gsetlength\textwidth{\@SetTrimWidth-\@SetOuterMargin-\@SetInnerMargin}
-% Provide \@LinesPerPage, if not set:
+\newlength\@InitialWorkingHeight % area containing header, text, footer.
+\newlength\@InitialTextWidth
+\newlength\@InitialBaselineSkip
+% Allow for 1em clearance for capitals with diacriticals above topmost baseline,
+%   0.3em clearance for descenders, below lowermost baseline, = 1.3\@SetFontSize total clearance:
+\gsetlength\@InitialWorkingHeight{\@SetTrimHeight-\@SetTopMargin-\@SetBottomMargin-1.3\@SetFontSize}
+\gsetlength\@InitialTextWidth{\@SetTrimWidth-\@SetOuterMargin-\@SetInnerMargin}
+% Provide default \@LinesPerPage, if not set:
 \if@LinesPerPageSet\else
   % \SetLinesPerPage not used: Estimate \baselineskip as 1.3\@SetFontSize.
   % Calculate resulting \@LinesPerPage, then proceed as if set.
-  \gsetlength\baselineskip{1.3\@SetFontSize} % comfortable skip
-  \FPdiv{\@LinesPerPage}{\strip@pt\@WorkingHeight}{\strip@pt\baselineskip}
+  \gsetlength\@InitialBaselineSkip{1.3\@SetFontSize} % comfortable skip
+  \FPdiv{\@LinesPerPage}{\strip@pt\@InitialWorkingHeight}{\strip@pt\@InitialBaselineSkip} % interim
   \FPsub{\@LinesPerPage}{\@LinesPerPage}{0.3} % clearance for last line descenders
   \if@HasHeader\FPsub{\@LinesPerPage}{\@LinesPerPage}{\@HeadJump}\fi
   \if@HasFooter\FPsub{\@LinesPerPage}{\@LinesPerPage}{\@FootJump}\fi
-  \FPtrunc{\@LinesPerPage}{\@LinesPerPage}{0} % integer floor
+  \FPtrunc{\@LinesPerPage}{\@LinesPerPage}{0} % final, integer floor
 \fi
-% Error if too few lines per page:
+% Error if too few lines per page, whether set or default:
 \FPiflt{\@LinesPerPage}{10}
   \ClassError{novel}{Calculated LinesPerPage less than 10}%
    {Default LinesPerPage is calculated from font size, available text height. ^^J%
-    Too few lines. Either font too big, or text height too small.}%
+    Too few lines. Either font size too big, or text height too small.}%
 \fi
 %% end provide default sizes.
 
 
-% Calculate \baselineskip:
-\def\@AdjLPP{\@LinesPerPage}
+%% CALCULATE BASELINESKIP
+%% ---------------------------------------------------------------------------
+% In `novel' class, the user does not directly set vertical line-to-line
+%   spacing, known to TeX as \baselineskip. Instead, \baselineskip is
+%   calculated from the available height, and the user-set lines per page,
+%   taking into account the possible presence of header/footer,
+%   with allowances for clearance above topmost text and descenders of
+%   text at the lowermost line.
+\gdef\@AdjLPP{\@LinesPerPage}
 \FPsub\@AdjLPP{\@AdjLPP}{1} % remove the final baselineskip
 \if@HasHeader\FPadd\@AdjLPP{\@AdjLPP}{\@HeadJump}\fi
 \if@HasFooter\FPadd\@AdjLPP{\@AdjLPP}{\@FootJump}\fi
-\FPdiv{\@tempN}{1}{\@AdjLPP}
-\gsetlength\baselineskip{\@tempN\@WorkingHeight} % tentative
-\FPtrunc\@BaselineSkipN{\strip@pt\baselineskip}{2} % round downward to 2 decimal places
-\gsetlength\baselineskip{\@BaselineSkipN pt} % final, unless reworked
+\FPdiv{\@InvAdjLPP}{1}{\@AdjLPP}
+\gsetlength\@InitialBaselineSkip{\@InvAdjLPP\@InitialWorkingHeight} % tentative
+\FPtrunc\@InitialBaselineSkipN{\strip@pt\@InitialBaselineSkip}{2} % round downward to 2 decimal places
+\gsetlength\@InitialBaselineSkip{\@InitialBaselineSkipN pt}
 
 %
-% Error if \baselineskip is too tight, in relation to font size:
-\ifdimcomp{\baselineskip}{<}{1.2\@SetFontSize}{%
+% Error if \@InitialBaselineSkip is too tight, in relation to font size:
+\ifdimcomp{\@InitialBaselineSkip}{<}{1.2\@SetFontSize}{%
   \ClassError{novel}{Calculated baselineskip is too small}%
    {Default baselineskip is calculated from font size, available text height, ^^J%
-    and LinesPerPage setting. But resulting skip is too small. ^^J%
+    and lines per page. But resulting skip is too small. ^^J%
     Change something, then try again.}%
 }{}%
 %% end calculate baselineskip.
@@ -108,6 +119,7 @@
 
 %% LOAD REWORK, IF USED
 %% -----------------------------------------------------------------------------
+% Note that \Rework does not change lines per page.
 \if@TrimSizeRework
   \RequirePackage{novel-ReworkLayout}
 \else
@@ -121,6 +133,8 @@
     \gsetlength\@BottomMargin{\@SetBottomMargin}
     \gsetlength\@InnerMargin{\@SetInnerMargin}
     \gsetlength\@FontSize{\@SetFontSize}
+    \gsetlength\baselineskip{\@InitialBaselineSkip}
+    \gsetlength\textwidth{\@InitialTextWidth}
   \fi
 \fi
 %% END LOAD REWORK
@@ -137,7 +151,7 @@
 % \textheight, normal font size, etc:
 \gsetlength\textheight{\@LinesPerPage\baselineskip}
 \renewcommand\normalsize{%
-  \@setfontsize\normalsize{\strip@pt\@FontSize}{\baselineskip}%
+  \@setfontsize\normalsize{\strip@pt\@FontSize}{\strip@pt\baselineskip}%
 }
 \normalsize % from this point, the "real" normal font size is effective
 %

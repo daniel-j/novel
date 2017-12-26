@@ -343,7 +343,7 @@
 \newif \if@HasFooter % true if global page style has footer
 \gdef\SetHeadFootStyle#1{%
   \if@coverart
-    \ClassWarning{novel}{Class option `coverart' does not allow header/footer.}
+    \ClassWarning{novel}{^^JClass option `coverart' does not allow header/footer. ^^J}
   \else
     \@tempTFfalse
     \ifthenelse{\equal{#1}{0}}{
@@ -665,7 +665,7 @@
   \IfFontExistsTF{Latin Modern Math}{}{% will be set AtBeginDocument by unicode-math.
   }{ % This allows you to proceed without a real math font (but then you cannot print math):
     \setmathfont[BoldFont={NovelDeco.otf}]{NovelDeco.otf} % has a fake math feature
-    \PackageWarning{novel}{^^JIgnore this warning if you used \string\setmathfont. ^^J%
+    \ClassWarning{novel}{^^JIgnore this warning if you used \string\setmathfont. ^^J%
      Did not find suitable default math font. Used NovelDeco.otf. ^^J%
      But NovelDeco does not have real math symbols. ^^J%
      Math notation will print incorrectly. No problem if no math. ^^J}%

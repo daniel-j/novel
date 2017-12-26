@@ -19,7 +19,7 @@
 % This file is new in `novel' version 1.48.
 %
 \ProvidesFile{novel-DropCap.sty}
-  [2017/12/25 v1.46.5m (Drop Caps)]
+  [2017/12/25 v1.46.5m2 (Drop Caps)]
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %
 %
@@ -57,7 +57,7 @@
   \if@graytext%
     \@setdropcapcolor[#1]{#2}%
   \else%
-    \ClassWarning{novel}{\string\SetDropCapColor~ignored~unless~`graytext'~class~option.}%
+    \ClassWarning{novel}{ ^^J\string\SetDropCapColor~ignored~unless~`graytext'~class~option. ^^J}%
   \fi%
 }% end \SetDropCapColor
 \DeclareDocumentCommand \@setdropcapcolor { O{} m } {%
@@ -210,8 +210,15 @@
     \@dropthisthing%
   \else%
     % Compensate for effect of using \Rework:
-    \FPdiv{\NDC@widthscale}{\strip@pt\textwidth}{\@PriorTextwidthN}%
-    \FPmul{\NDC@bloat}{\NDC@bloat}{\NDC@widthscale}%
+    \if@TrimSizeRework%
+      \FPdiv{\NDC@widthscale}{\strip@pt\textwidth}{\strip@pt\@InitialTextWidth}%
+      \FPmul{\NDC@bloat}{\NDC@bloat}{\NDC@widthscale}%
+    \else%
+      \if@MarginsRework
+        \FPdiv{\NDC@widthscale}{\strip@pt\textwidth}{\strip@pt\@InitialTextWidth}%
+        \FPmul{\NDC@bloat}{\NDC@bloat}{\NDC@widthscale}%
+      \fi%
+    \fi%
     \sbox{\NDC@normalXbox}{X}% Normal capital X.
     \sbox{\NDC@dropcapbox}{\scalebox{\NDC@bloat}[1]{\NDC@char\@dropthisthing}}%
     \@tempdima=\baselineskip%

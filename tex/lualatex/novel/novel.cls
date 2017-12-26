@@ -74,8 +74,8 @@
   % New with TeXlive 2016. Removes unnecessary File Data:
   \pdfvariable suppressoptionalinfo 511 % writes only ID to PDF Catalog
 \else
-  \ClassError{novel}{Must compile with LuaLaTeX 0.95+}{Sorry, LuaLaTeX only.%
-    No pdfTeX, dvips, or XeTeX.}
+  \ClassError{novel}{Must compile with LuaLaTeX 0.95+}%
+   {Sorry, LuaLaTeX only. No pdfTeX, dvips, or XeTeX.}
 \fi
 %
 \RequirePackage{etoolbox} % general good stuff
@@ -167,11 +167,11 @@
 \StrDel{\@mycol}{test}[\@mycol]
 %
 \ifthenelse{\equal{\@mycol}{}}{}{
-  \ClassWarning{novel}{Unrecognized class option: \@mycol. ^^J%
+  \ClassWarning{novel}{^^JUnrecognized class option: \@mycol. ^^J%
    The unrecognized option was ignored! ^^J%
    If `debug' it is obsolete from v.1.40. ^^J%
    Note that font size, document size, and language ^^J%
-   are not `novel' class options. See documentation.}%
+   are not `novel' class options. See documentation. ^^J}%
 }
 % If used, option `draft' shows overflow rule.
 % Prior to v. 1.46.1, the following was \if@useDraftMode.
@@ -181,7 +181,7 @@
 \DeclareOption{draft}{
   \setlength\overfullrule{6pt}
   \draftdoctrue
-  \ClassWarning{novel}{Compiled using draft mode. Not for final release!}
+  \ClassWarning{novel}{^^JCompiled using draft mode. Not for final release! ^^J}
 }
 \newif \ifmsdoc % manuscript, always false. Compatibility with other packages.
 % If used, option `xml' creates a file `\jobname-XMPasXML.xml` that contains
@@ -476,9 +476,9 @@
   \@ifpackageloaded{pagegrid}{
     \ifdraftdoc
       \if@shademargins
-        \ClassWarning{novel}{Grid from `pagegrid' is concealed. ^^J%
+        \ClassWarning{novel}{^^JGrid from `pagegrid' is concealed. ^^J%
          Document class option `shademargins' over-writes page grid. ^^J%
-         To see the grid, use `draft' but not `shademargins'.}
+         To see the grid, use `draft' but not `shademargins'. ^^J}
       \else\fi
     \else
       \ClassError{novel}{Package `pagegrid' needs `draft' mode}%
@@ -495,7 +495,7 @@
   % Pertains to novel-footnotes.sty:
   \gdef\SetFootnoteMarker#1{%
     \typeout{^^JClass `novel' Alert: %
-    \string\SetFootnoteMarker\space ineffective after Preamble.}%
+    \string\SetFootnoteMarker\space ineffective after Preamble. ^^J}%
   }
   \gsetlength\footnotesep{0.8\nbs}
   % Adjusted position of footnote markers. Must wait for main font size:

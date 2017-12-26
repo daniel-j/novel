@@ -220,14 +220,14 @@
 % and Big Bad Warning if numerical footnotes and endnotes both used:
 \AtEndDocument{%
   \iftoggle{@gotendnotes}{%
-    \typeout{Class `novel' Alert: You placed endnotes (number,page): ^^J%
+    \typeout{^^JClass `novel' Alert: You placed endnotes (number,page): ^^J%
      \@endnotelist ^^J}%
   }{}
   %
   \iftoggle{@placedfootnotenumber}{%
     \iftoggle{@gotendnotes}{%
-      \ClassWarning{novel}{BIG BAD WARNING! You used numbered footnotes ^^J%
-        and numbered endnotes. Better change to symbolic footnotes!}%
+      \ClassWarning{novel}{^^JBIG BAD WARNING! You used numbered footnotes ^^J%
+        and numbered endnotes. Better change to symbolic footnotes! ^^J}%
     }{}
   }{}%
 }% end \AtEndDocument

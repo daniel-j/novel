@@ -40,9 +40,9 @@
 \ifdraftdoc
   \global\@pdfxISofftrue
   \if@pdfxSEToff
-    \ClassWarning{novel}{You requested PDF/X compliance in draft mode. ^^J%
+    \ClassWarning{novel}{^^JYou requested PDF/X compliance in draft mode. ^^J%
      Sorry, but you cannot have both at the same time. ^^J%
-     Your document was processed with \string\SetPDFX\{off\}.}%
+     Your document was processed with \string\SetPDFX\{off\}. ^^J}%
   \fi
 \fi
 %%
@@ -65,7 +65,7 @@
 \ifthenelse{\equal{\@title}{} \OR \equal{\@title}{ }}{\global\@HasTitlefalse}{\global\@HasTitletrue}
 \ifthenelse{\equal{\@title}{IMPORTANT: Provide Book Title}}{%
   \ClassWarning{novel}{^^JYou did not provide a title using \string\SetTitle. ^^J%
-   Default used: `IMPORTANT: Provide Book Title'. Be sure to change it!}%
+   Default used: `IMPORTANT: Provide Book Title'. Be sure to change it! ^^J}%
 }{}%
 %
 % Sanity check: If title is missing at this step, then compliance must be off:
@@ -78,11 +78,11 @@
 \fi
 %
 \if@HasTitle\else
-  \ClassWarning{novel}{Your file has been compiled without standard ^^J%
+  \ClassWarning{novel}{^^JYour file has been compiled without standard ^^J%
     PDF internal metadata, such as the title. This is allowable, and in ^^J%
     some cases desirable. But in most cases it is not what you intended. ^^J%
     If you want title and other metadata to be in PDF internal metadata, ^^J%
-    then you must place them prior to the \string\SetPDFX.}
+    then you must place them prior to the \string\SetPDFX. ^^J}
 \fi
 %
 \expandafter\ifx\csname pdfresetpageorigin\endcsname\relax\else

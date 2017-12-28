@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2017/12/25 v1.46.5m LaTeX file (text macros usable within document body)]
+[2017/12/27 v1.46.5n LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -260,7 +260,7 @@
 \newenvironment{parascale}[1][1]
 {\begingroup%
 \FPmax{\@mytempDetailsN}{#1}{0.5}% must be at least half normal.
-\FPmul{\@mytempDetailsFontN}{\@mytempDetailsN}{\strip@pt\@FontSize}%
+\FPmul{\@mytempDetailsFontN}{\@mytempDetailsN}{\strip@pt\@NormalEmSize}%
 \FPround{\@mytempDetailsFontN}{\@mytempDetailsFontN}{2}%
 \FPmul{\@mytempDetailsSkipN}{\@mytempDetailsN}{\strip@pt\baselineskip}%
 \FPround{\@mytempDetailsSkipN}{\@mytempDetailsSkipN}{2}%

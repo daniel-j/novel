@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-PostLayout.sty}%
-[2017/12/25 v1.46.5m LaTeX file (post-layout modifications)]
+[2017/12/27 v1.46.5n LaTeX file (post-layout modifications)]
 %%
 
 %%
@@ -22,7 +22,7 @@
 
 
 %% Values to be used by footnotes:
-\FPdiv{\@myFontScale}{\strip@pt\@FontSize}{12}
+\FPdiv{\@myFontScale}{\strip@pt\@NormalEmSize}{12}
 % Substitute for \footnotesize, but only works for actual footnotes,
 %   about 10pt with similarly reduced skip:
 \FPmul{\@myfootnotesizeN}{\@myFontScale}{10}
@@ -75,7 +75,7 @@
     \if@HasHeader
       \gsetlength\paperheight{\textheight+\headsep+\headheight+\@FootJump\baselineskip+1pt}
     \else
-      \gsetlength\paperheight{\textheight+\headsep+\headheight+\@FootJump\baselineskip+\@FontSize}
+      \gsetlength\paperheight{\textheight+\headsep+\headheight+\@FootJump\baselineskip+\@NormalEmSize}
     \fi
   \else
     \gsetlength\paperheight{\textheight+\headsep+\headheight+0.1in}
@@ -119,7 +119,7 @@
     }%
   }%
   %
-  \if@UnsafeZoneSet%
+  \if@UnsafeZone%
     \AddToShipoutPictureBG{% top unsafe zone
       \@getPageXY%
       \AtPageLowerLeft{\color[gray]{0.542763}%
@@ -157,7 +157,7 @@
         \fi%
       }%
     }%
-  \fi% end \if@UnsafeZoneSet
+  \fi% end \if@UnsafeZone
   %
 \fi % end \if@shademargins
 %
@@ -169,7 +169,7 @@
   \AddToShipoutPictureBG{%
   \@getPageXY%
     \AtPageUpperLeft{%
-      \raisebox{-\@FontSize}{\textbf{~DRAFT}}%
+      \raisebox{-\@NormalEmSize}{\textbf{~DRAFT}}%
     }%
   }%
 \fi

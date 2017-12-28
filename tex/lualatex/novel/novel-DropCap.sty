@@ -19,7 +19,7 @@
 % This file is new in `novel' version 1.48.
 %
 \ProvidesFile{novel-DropCap.sty}
-  [2017/12/25 v1.46.5m2 (Drop Caps)]
+  [2017/12/27 v1.46.5n (Drop Caps)]
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %
 %
@@ -169,8 +169,8 @@
   \IfSubStr{ÝŶŸ}{#1}{\def\@NDCmodel{Y}}{}%
   \IfSubStr{ŹŻŽ}{#1}{\def\@NDCmodel{Z}}{}%
   \IfSubStr{DŽ}{#1}{\def\@NDCmodel{DZ}}{}% diglyph
-  \setlength\fboxsep{0.16\@FontSize}%
-  \setlength\fboxrule{0.02\@FontSize}%
+  \setlength\fboxsep{0.16\@NormalEmSize}%
+  \setlength\fboxrule{0.02\@NormalEmSize}%
   \ifthenelse{\equal{\@NDCmodel}{}}{%
     \framebox{\phantom{|}#1\phantom{|}}%
   }{%
@@ -210,12 +210,12 @@
     \@dropthisthing%
   \else%
     % Compensate for effect of using \Rework:
-    \if@TrimSizeRework%
-      \FPdiv{\NDC@widthscale}{\strip@pt\textwidth}{\strip@pt\@InitialTextWidth}%
+    \if@ReworkTrimSize%
+      \FPdiv{\NDC@widthscale}{\strip@pt\textwidth}{\strip@pt\@OriginalTextWidth}%
       \FPmul{\NDC@bloat}{\NDC@bloat}{\NDC@widthscale}%
     \else%
-      \if@MarginsRework
-        \FPdiv{\NDC@widthscale}{\strip@pt\textwidth}{\strip@pt\@InitialTextWidth}%
+      \if@ReworkMargins
+        \FPdiv{\NDC@widthscale}{\strip@pt\textwidth}{\strip@pt\@OriginalTextWidth}%
         \FPmul{\NDC@bloat}{\NDC@bloat}{\NDC@widthscale}%
       \fi%
     \fi%

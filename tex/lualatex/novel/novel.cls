@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/12/26 v1.46.5m LaTeX document class]
+\ProvidesClass{novel}[2017/12/27 v1.46.5n LaTeX document class]
 %%
 %% Version 1.46: Possibly final version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
@@ -129,15 +129,7 @@
     \global#1=\skip@% Global assignment to #1; \relax is not necessary because of the following \endgroup.
   \endgroup% \skip@ is restored by end of group.
 }% end \gsetlength
-\newlength\@TrimWidth
-\newlength\@TrimHeight
-\newlength\@TopMargin
-\newlength\@OuterMargin
-\newlength\@BottomMargin
-\newlength\@InnerMargin
-\newlength\@FontSize % = normal font point size
 \newlength\@tempLength % scratch length for local calculations
-%%
 \newif \if@tempTF % scratch boolean for local tests
 %%
 
@@ -396,7 +388,7 @@
 \AtBeginDocument{ %
   % Store some normal values (main font) for global use in document body:
   \newlength\nfs % abbreviation for normal font point size
-    \gsetlength\nfs{\@FontSize}
+    \gsetlength\nfs{\@NormalEmSize}
   \newlength\nbs % abbreviation for normal baselineskip
     \gsetlength\nbs{\baselineskip}
   \gsetlength\parindent{1.5em} % may be locally changed

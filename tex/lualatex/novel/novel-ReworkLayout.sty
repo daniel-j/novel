@@ -46,8 +46,8 @@
 %%
 
 
-% These values come from \Rework commands, if used. But if not used,
-%   the values are acquired from novel-CalculateLayout.sty:
+% Change the values of trim size and margins, as requested.
+% If not changed, same as before:
 \if@ReworkTrimSize
   \gsetlength\@TrimWidth{\@NewTrimWidth}
   \gsetlength\@TrimHeight{\@NewTrimHeight}
@@ -70,37 +70,35 @@
 \FPdiv{\@TWratio}{\strip@pt\textwidth}{\strip@pt\@OriginalTextWidth}
 \gsetlength\@NormalEmSize{\@TWratio\@OriginalEmSize}
 \gsetlength\baselineskip{1.2\@NormalEmSize} % test for least allowable
-\FPadd{\@tempN}{\@HeadJump}{\@LinesPerPage}
-\FPadd{\@tempN}{\@tempN}{\@FootJumpFix}
-\setlength\@tempLength{\@tempN\baselineskip}
+\setlength\@tempLength{\@AdjLPP\baselineskip}
 \ifdimcomp{\@AvailableHeight-\@tempLength}{<}{0pt}{%
   % Will not fit vertically, so will need to re-scale \@NormalEmSize.
   \FPdiv\@THratio{\strip@pt\@AvailableHeight}{\strip@pt\@tempLength}
   \gsetlength\baselineskip{\@THratio\baselineskip}
   \gsetlength\@NormalEmSize{\@THratio\@NormalEmSize}
   \gsetlength\textwidth{\@THratio\textwidth}
-  \setlength\@tempLength{\@TrimWidth-\@OuterMargin-\@InnerMargin-\textwidth}
-  \setlength\@tempLength{0.5\@tempLength}
-  \gsetlength\@OuterMargin{\@OuterMargin+\@tempLength}
-  \gsetlength\@InnerMargin{\@InnerMargin+\@tempLength}
-  \FPround{\@tempN}{\strip@pt\@tempLength}{2}
+  \gsetlength\@OuterMargin{0.5\@OuterMargin+0.5\@TrimWidth-0.5\@InnerMargin-0.5\textwidth}
+  \gsetlength\@InnerMargin{0.5\@InnerMargin+0.5\@TrimWidth-0.5\@OuterMargin-0.5\textwidth}
+  \FPround{\@ActualOuterN}{\strip@pt\@OuterMargin}{2}
+  \FPround{\@ActualInnerN}{\strip@pt\@InnerMargin}{2}
   \FPmul{\@TWratio}{\@TWratio}{\@THratio}
   \FPmul{\@THratio}{\@TWratio}{1.2}
   \FPround{\@TWratio}{\@TWratio}{4}
   \FPround{\@THratio}{\@THratio}{4}
-  \typeout{^^JClass `novel' Info: Rework could not fit new horizontal margins. ^^J%
-    Outer/Inner margins increased \@tempN pt over rework specs. ^^J%
+  \typeout{^^JClass `novel' Info: Reworked side margins wider than specified. ^^J%
+    Actual Outer Margin is now \@ActualOuterN pt. ^^J%
+    Actual Inner Margin is now \@ActualInnerN pt. ^^J%
     Scale \@TWratio\space applied to text, \@THratio\space applied to baselineskip. ^^J%
   }%
 }{% Fits vertically. Keep \@NormalEmSize. Calculate \baselineskip to fit vertically:
-  \FPdiv{\@tempN}{1}{\@tempN}
-  \gsetlength\baselineskip{\@tempN\@AvailableHeight}
-  \FPdiv{\@tempN}{\strip@pt\baselineskip}{\strip@pt\@OriginalBaselineSkip}
-  \FPround{\@tempN}{\@tempN}{4}
+  \gsetlength\@AvailableHeight{\@AvailableHeight-1.3\@NormalEmSize}
+  \gsetlength\baselineskip{\@InvAdjLPP\@AvailableHeight}
+  \FPdiv{\@BLratio}{\strip@pt\baselineskip}{\strip@pt\@OriginalBaselineSkip}
+  \FPround{\@BLratio}{\@BLratio}{4}
   \FPround{\@TWratio}{\@TWratio}{4}
   \typeout{^^JClass `novel' Info: Rework was able to fit new margins. ^^J%
     Scale applied to font size: \@TWratio. ^^J%
-    Scale applied to baselineskip: \@tempN. ^^J%
+    Scale applied to baselineskip: \@BLratio. ^^J%
   }%
 }% end \ifdimcomp.
 

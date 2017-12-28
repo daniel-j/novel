@@ -146,9 +146,9 @@
 %
 \setlength\@tempLength{\@AvailableHeight-1.3\@NormalEmSize} % numerator
 \FPadd{\@tempN}{\@HeadJump}{\@LinesPerPage}
-\FPadd{\@tempN}{\@tempN}{\@FootJumpFix}
-\FPdiv{\@tempN}{1}{\@tempN} % denominator
-\gsetlength\baselineskip{\@tempN\@tempLength} % tentative
+\FPadd{\@AdjLPP}{\@tempN}{\@FootJumpFix} % adjusted lines per page, includes header/footer.
+\FPdiv{\@InvAdjLPP}{1}{\@AdjLPP} % inverse of adjusted lines per page
+\gsetlength\baselineskip{\@InvAdjLPP\@tempLength} % tentative
 \FPtrunc\@baselineskipN{\strip@pt\baselineskip}{2}
 \gsetlength\baselineskip{\@baselineskipN pt} % rounded down to 2 decimal places
 %

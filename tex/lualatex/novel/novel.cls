@@ -303,8 +303,9 @@
 %% This normalsize is temporary, so that packages can load without complaint.
 %% It will be modified later, during layout calculations.
 %% Actual default font size will be 11pt-12pt, with 11.4pt average.
-%% But that is for typical book-weight fonts. The closest LMR eqivalent is 10pt.
-\renewcommand\normalsize{\@setfontsize\normalsize{10}{13}}
+%% The small temporary size is to ensure that overly-large struts and skips
+%%   are not created prior to page layout calculation.
+\renewcommand\normalsize{\@setfontsize\normalsize{8}{10}}
 \normalsize
 %% end temporary normal point size and baselineskip
 
@@ -374,6 +375,8 @@
   %%%%%
 
   \RequirePackage{novel-CalculateLayout} % loads novel-ChangeLayout.sty if needed
+
+
   \RequirePackage{novel-PostLayout} % calculates shademargins, cropmarks, etc.
   \RequirePackage{novel-FontDefaults} % provides default fonts, if not set by user
   \providecommand\textls[2][]{#2} % nullifies this microtype command (problems)

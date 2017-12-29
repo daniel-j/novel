@@ -73,10 +73,15 @@
 \setlength\@tempLength{\@AdjLPP\baselineskip}
 \ifdimcomp{\@AvailableHeight-\@tempLength}{<}{0pt}{%
   % Will not fit vertically, so will need to re-scale \@NormalEmSize.
-  \FPdiv\@THratio{\strip@pt\@AvailableHeight}{\strip@pt\@tempLength}
-  \gsetlength\baselineskip{\@THratio\baselineskip}
-  \gsetlength\@NormalEmSize{\@THratio\@NormalEmSize}
-  \gsetlength\textwidth{\@THratio\textwidth}
+  %%%%% THIS IS THE PART THAT NEEDS REVISION.
+  \gsetlength\@NormalEmSize{\@OriginalEmSize}
+  \FPadd{\@AdjLPP}{\@AdjLPP}{1}
+  \FPdiv{\@InvAdjLPP}{1}{\@AdjLPP}
+  \gsetlength\baselineskip{\@InvAdjLPP\@AvailableHeight}
+  \FPdiv\@THratio{\strip@pt\baselineskip}{\strip@pt\@OriginalBaselineSkip}
+  \gsetlength\@NormalEmSize{0.8333\baselineskip} % 0.8333 = 1/1.2, tightest baselineskip/em ratio.
+  \FPdiv{\@tempN}{\strip@pt\@NormalEmSize}{\strip@pt\@OriginalEmSize}
+  \gsetlength\textwidth{\@tempN\@OriginalTextWidth}
   \gsetlength\@OuterMargin{0.5\@OuterMargin+0.5\@TrimWidth-0.5\@InnerMargin-0.5\textwidth}
   \gsetlength\@InnerMargin{0.5\@InnerMargin+0.5\@TrimWidth-0.5\@OuterMargin-0.5\textwidth}
   \FPround{\@ActualOuterN}{\strip@pt\@OuterMargin}{2}

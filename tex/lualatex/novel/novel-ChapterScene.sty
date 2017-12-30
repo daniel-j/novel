@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-ChapterScene.sty}%
-[2017/12/27 v1.46.5n LaTeX file (chapter and scene macros)]
+[2017/12/27 v1.46.5p LaTeX file (chapter and scene macros)]
 %%
 
 
@@ -28,16 +28,16 @@
 
 
 %% SCENE CHANGES
-%% -----------------------------------------------------------------------------
-%% \scenebreak    \sceneline    \scenestars
+%% ----------------------------------------------------------------------------
+% \scenebreak    \sceneline    \scenestars
 %   Use anywhere in document body.
 %   These commands skip a line.
 %   \scenebreak leaves the gap empty.
 %   \sceneline centers a line, about 1/3 textwidth.
 %   \scenestars centers three widely-spaced asterisks.
 %   Default behavior is \noindent for following paragraph.
-%   Use \SetScenebreakIndent{true or false} in Preamble to change this globally.
-%   Either way, local behavior can be changed using \forceindent or \backindent.
+%   Use \SetScenebreakIndent{true or false} in Preamble to change globally.
+%   Either way, local behavior changed using \forceindent or \backindent.
 \newcommand\scenebreak{\null}
 %
 \newcommand\sceneline{%
@@ -77,34 +77,40 @@
 
 %% ChapterStart environment.
 % The most useful way to start a new chapter. Occupies a fixed amount of
-% vertical space. Also self-adjust when used with dropfolio. Automatically
-% calls \thispagestyle if set for all chapter displays.
-% This environment is not restricted to chapters. It is also used for chapter-like
-% sections in front matter or main matter, as long as they are styled like a chapter.
+%   vertical space. Also self-adjust when used with dropfolio. Automatically
+%   calls \thispagestyle if set for all chapter displays.
+% This environment is not restricted to chapters. It is also used for
+%   chapter-like sections in front matter or main matter,
+%   as long as they are styled like a chapter.
 \newcounter{@linequarter}
 
 %
-% The argument is the number of normal baselineskips high (integer GTE 3, or GTE 4 when dropfolioinside).
+% The argument is the number of normal baselineskips high,
+%   (integer GTE 3, or GTE 4 when dropfolioinside).
 \ExplSyntaxOn
-\DeclareDocumentEnvironment {ChapterStart} { O{\@setchapterstartheight} O{\@setchapterstart} }
-{%
+\DeclareDocumentEnvironment {ChapterStart} %
+{ O{\@setchapterstartheight} O{\@setchapterstart} }{%
   \gdef\@thiscsstyle{#2}%
   \thispagestyle{\@thiscsstyle}%
   \gsetlength\parindent{0pt}% within environment
   \ResetFootnoteSymbol% resets symbolic markers, but not numerical markers
-  \IfStrEq{#1}{*}{\gdef\@thiscsheight{\@setchapterstartheight}}{\gdef\@thiscsheight{#1}}%
+  \IfStrEq{#1}{*}{%
+    \gdef\@thiscsheight{\@setchapterstartheight}%
+  }{%
+    \gdef\@thiscsheight{#1}%
+  }%
   \FPsub{\@fixlines}{\@thiscsheight}{2}%
   \FPsub{\@fixlines}{\@fixlines}{0.001}% fudge to avoid rounding problems
   \FPround{\@thiscsheight}{\@thiscsheight}{0}%
   \FPiflt{\@thiscsheight}{4}%
     \IfStrEq{\@thiscsstyle}{dropfolioinside}{%
-      \ClassError{novel}{ChapterStart~ height~ insufficient~ for~ dropfolioinside}%
-        {With~ dropfolioinside,~ the~ ChapterStart~ height~ must~ be~ at~ least~ 4.}%
+      \ClassError{novel}{ChapterStart~height~insufficient~for~dropfolioinside}%
+        {With~dropfolioinside,~the~ChapterStart~height~must~be~at~least~4.}%
     }{}%
   \else\fi%
   \FPiflt{\@thiscsheight}{3}%
-    \ClassError{novel}{ChapterStart~ height~ must~ be~ at~ least~ 3}%
-      {If~ you~ need~ height~ less~ than~ 3,~ consider~ \string\QuickChapter\space~ instead.}%
+    \ClassError{novel}{ChapterStart~height~must~be~at~least~3}%
+      {If~you~need~height~less~than~3,~consider~\string\QuickChapter.}%
   \else\fi%
   \null% always a line above the first thing to appear within the environment
   \setcounter{@linequarter}{0}%
@@ -211,15 +217,19 @@
   \noindent{\subchfont\charscale[1,0pt,0.3em]{#2}%
     \gsetlength\@tempLength{\heightof{x}}% height of x in subchfont
   }% end subchfont
-  \FPdiv{\@qclineth}{\strip@pt\@tempLength}{\strip@pt\normalxheight}% scale of subchfont
+  \FPdiv{\@qclineth}{\strip@pt\@tempLength}{\strip@pt\normalxheight}% fontscale
   \FPmul{\@howthick}{\@qclineth}{0.049}% typical emdash thickness, em.
   \FPadd{\@howraise}{\@qctweak}{0.23}% typical emdash height em raised.
   \FPmul{\@howraise}{\@howraise}{\@qclineth}%
   \ifthenelse{\equal{#1}{} \OR \equal{#1}{ }}{}{% no line, else:
     \ifthenelse{\equal{#1}{*}}{% line fills:
-      ~\leaders\hbox{\smash{\rule[\@howraise em]{1pt}{\@howthick em}}}\hfill\stake\par%
+      ~\leaders%
+      \hbox{\smash{\rule[\@howraise em]{1pt}{\@howthick em}}}%
+      \hfill\stake\par%
     }{% else line at specific length:
-      ~\makebox[#1][l]{\leaders\hbox{\smash{\rule[\@howraise em]{1pt}{\@howthick em}}}\hfill}%
+      ~\makebox[#1][l]{%
+        \leaders\hbox{\smash{\rule[\@howraise em]{1pt}{\@howthick em}}}\hfill%
+      }%
     }%
   }%
   \NoIndentAfterThis%

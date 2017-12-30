@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/12/27 v1.46.5n LaTeX document class]
+\ProvidesClass{novel}[2017/12/27 v1.46.5p LaTeX document class]
 %%
 %% Version 1.46: Possibly final version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
@@ -38,7 +38,7 @@
 
 
 %% DESCRIPTION:
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% Class `novel' is designed for print fiction: novels or short stories.
 %% It cannot be used for e-books or for journal publication.
 %% It is not suitable for most non-fiction, because routine academic features
@@ -63,12 +63,12 @@
 
 
 %% REQUIRE LUATEX and do some preliminary setup.
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% These are not user settings.
 %
 \RequirePackage{ifluatex} % LuaTeX is required. Not XeTeX, dvips, or pdfTeX.
 \RequirePackage{ifxetex} % For occasional hacks (hiss, boo).
-\RequirePackage{luatex85} % Needed for compatibility when using LuaTeX 0.95 etc.
+\RequirePackage{luatex85} % Needed for compatibility with LuaTeX 0.95 etc.
 \RequirePackage{pdftexcmds} % compatibility
 \ifluatex
   % New with TeXlive 2016. Removes unnecessary File Data:
@@ -91,7 +91,7 @@
 \RequirePackage{silence} % Used here:
 % hyperref draft mode is always on, even when novel is not in draft mode:
 \WarningFilter{hyperref}{Draft mode on} % So, get rid of the hyperref warning.
-% Prevent complaints about no protrusion list for cmr, cmm, etc. in decimal pts:
+% Prevent complaints about no protrusion list for cmr, cmm, etc. in decimal pt:
 \WarningFilter{microtype}{I cannot find a protrusion list} % It's not there!
 %
 \WarningsOff[Fancyhdr,fancyhdr] % complains about headheight when no header
@@ -104,7 +104,7 @@
 \RequirePackage{magaz} % special treatment of first lines
 \RequirePackage{xparse} % for writing cool-looking commands
 %
-% In addition, the following packages are required, but they are not loaded now.
+% In addition, the following packages are required, but not loaded yet.
 % They must wait for something else to happen first. Then they will be loaded
 %   with suitable arguments, when the time comes:
 % fontspec -- in novel-LayoutSettings.sty
@@ -120,22 +120,25 @@
 %%
 
 
+\newlength\@tempLength % scratch length for local calculations
+\newif \if@tempTF % scratch boolean for local tests
+
+
 %% Global lengths are often passed around in `novel'.
 %% But \setlength is not always global in effect.
-%% This code defines a global command. Via Heiko Oberdiek at tex.stackexchange.com:
+%% This code defines a global command.
+%% Via Heiko Oberdiek at tex.stackexchange.com:
 \gdef\gsetlength#1#2{% #1 is the length command, #2 is the length value
   \begingroup%
     \setlength\skip@{#2}% Local assignment to a TeX scratch register.
-    \global#1=\skip@% Global assignment to #1; \relax is not necessary because of the following \endgroup.
+    \global#1=\skip@% Global assignment to #1
   \endgroup% \skip@ is restored by end of group.
 }% end \gsetlength
-\newlength\@tempLength % scratch length for local calculations
-\newif \if@tempTF % scratch boolean for local tests
 %%
 
 
 %% Process document class options.
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 % Allowed option list:
 %   draft xml shademargins graytext greytext cropmarks cropview closecrop
 %   coverart unblock mtoff polyoff test
@@ -173,7 +176,7 @@
 \DeclareOption{draft}{
   \setlength\overfullrule{6pt}
   \draftdoctrue
-  \ClassWarning{novel}{^^JCompiled using draft mode. Not for final release! ^^J}
+  \ClassWarning{novel}{^^JCompiled with draft mode. Not for final release! ^^J}
 }
 \newif \ifmsdoc % manuscript, always false. Compatibility with other packages.
 % If used, option `xml' creates a file `\jobname-XMPasXML.xml` that contains
@@ -220,7 +223,7 @@
 \newif \if@coverart
 \DeclareOption{coverart}{\@coverarttrue}
 % New in version 1.34: unblock option, for developer use only.
-% Normally, a number of packages known to be incompatible with this document class
+% Normally, a number of packages known to be incompatible with `novel'
 % are blocked from loading. If the user tries to get them via \usepackage
 % or \RequirePackage, or if they are called within some other loaded package,
 % then compile halts with an error. The `unblock' option turns off blocking,
@@ -272,7 +275,7 @@
 
 
 %% Activate xcolor, adjustbox, and eso-pic:
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 % The final book must be monochrome (black and white only) for all text,
 %   unless option `graytext' is used. Then, grayscale text is permitted.
 % Interior images must be raster monochrome or grayscale, whether or not
@@ -299,19 +302,23 @@
 
 
 %% Temporary normal font size
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% This normalsize is temporary, so that packages can load without complaint.
 %% It will be modified later, during layout calculations.
 %% Actual default font size will be 11pt-12pt, with 11.4pt average.
 %% The small temporary size is to ensure that overly-large struts and skips
 %%   are not created prior to page layout calculation.
-\renewcommand\normalsize{\@setfontsize\normalsize{8}{10}}
+\gdef\@TentativeEmN{10}
+\gdef\@TentativeBLSkipN{13}
+\renewcommand\normalsize{%
+  \@setfontsize\normalsize{\@TentativeEmN}{\@TentativeBLSkipN}%
+}
 \normalsize
 %% end temporary normal point size and baselineskip
 
 
 %% Define commands used for File Data, including PDF/X Settings.
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% As used here, `File Data' refers to PDF metadata as found in PDF/Info
 %% and in XMP. This class does not write it to the PDF Catalog.
 \RequirePackage{novel-FileData}
@@ -319,15 +326,15 @@
 
 
 %% Physical Layout Commands and Settings.
-%% -----------------------------------------------------------------------------
-%% Define user commands that over-ride the class option pre-configured settings.
+%% ----------------------------------------------------------------------------
+%% Define user commands that over-ride class option pre-configured settings.
 %% Also sets a variety of miscellaneous lengths:s \parsep, \parindent, etc.
 \RequirePackage{novel-LayoutSettings}
 %%
 
 
 %% Additional Macros, Loaded in Preamble.
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 \RequirePackage{lipsum} % generates dummy text for examples
 %% New in version 1.48:
 \RequirePackage{novel-DropCap}
@@ -345,15 +352,17 @@
 
 
 %% Special features of test suite (for developers and error reporting)
-%% -----------------------------------------------------------------------------
-% Files `novel-testsuite.tex' and `novel-testimage.png' are located in the novel
+%% ----------------------------------------------------------------------------
+% Files `novel-testsuite.tex' and `novel-testimage.png' are within the novel
 %   documentation extras folder. To run the test suite, copy these files to
 %   a writeable location (such as your home directory) and compile there.
 \newcommand\testsuiteoops[1]{%
   \ClassError{novel}{#1 missing}{Install the necessary file(s).}%
 }
 \if@testsuite
-  \IfFontExistsTF{libertinusserif-regular.otf}{}{\testsuiteoops{`libertinus' fonts}}
+  \IfFontExistsTF{libertinusserif-regular.otf}{}{%
+    \testsuiteoops{`libertinus' fonts}%
+  }
   \IfFileExists{lmodern.sty}{}{\testsuiteoops{`lmodern' package}}
   \IfFileExists{novel-testimage.png}{}{\testsuiteoops{`novel-testimage.png'}}
   \NewFontFamily\mustbelibertinus{Libertinus Serif}
@@ -363,7 +372,7 @@
 
 
 %% \AtEndPreamble sets defaults, calculates layout, and writes PDF/X
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 % This is prior to \AtBeginDocument, and ensures that the results are available
 %   prior to any \AtBeginDocument routines from user macros or loaded packages. 
 \AtEndPreamble{
@@ -371,14 +380,9 @@
   \pdfimageresolution=\@novimgres % from \SetFlexResolution. Default 300.
   % If user did not choose language, default is here. Sorry, Brits:
   % Macro \xpg@main@language is gdef'd by \setdefaultlanguage in polyglossia.
-
-  %%%%%
-
-  \RequirePackage{novel-CalculateLayout} % loads novel-ChangeLayout.sty if needed
-
-
+  \RequirePackage{novel-CalculateLayout} % may load novel-ChangeLayout.sty
   \RequirePackage{novel-PostLayout} % calculates shademargins, cropmarks, etc.
-  \RequirePackage{novel-FontDefaults} % provides default fonts, if not set by user
+  \RequirePackage{novel-FontDefaults} % provides default fonts
   \providecommand\textls[2][]{#2} % nullifies this microtype command (problems)
   \renewcommand\textls[2][]{#2} % nullifies this microtype command (problems)
   \RequirePackage{novel-pdfx}%
@@ -387,7 +391,7 @@
 
 
 %% \AtBeginDocument finishes the setup
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 \AtBeginDocument{ %
   % Store some normal values (main font) for global use in document body:
   \newlength\nfs % abbreviation for normal font point size
@@ -445,9 +449,9 @@
     \gdef\sorry@no#1{\@ifpackageloaded{#1}{%
       \ClassError{novel}{Sorry, package `#1' cannot be used}%
       {The `novel' class does not allow use of package `#1'. ^^J%
-      You must remove it from the Preamble, and also remove its commands ^^J%
-        from the body of your document. In rare cases, the offending package ^^J%
-        was loaded by some other package.}%
+       You must remove it from the Preamble, and also remove its commands ^^J%
+       from the document body. In rare cases, the offending package ^^J%
+       was loaded by some other package.}%
       }{}%
     }
   \fi

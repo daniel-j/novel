@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/12/27 v1.46.5n LaTeX file (layout settings)]
+[2017/12/27 v1.46.5p LaTeX file (layout settings)]
 %%
 
 
@@ -32,7 +32,7 @@
 
 
 %% SIZE-RELATED COMMANDS AVAILABLE IN PREAMBLE.
-%% --------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% Use if necessary for customization.
 %% If you like a class option that pre-sets these values,
 %% then you do not have to use any of these commands.
@@ -67,25 +67,29 @@
 %%
 
 
-%% \ReworkTrimSize retroactively changes Trim Size after layout. See documentation.
+%% \ReworkTrimSize retroactively changes Trim Size after layout. See docs.
 % If you use \ReworkTrimSize, you must first use \SetTrimSize (not defaults):
 \newif \if@ReworkTrimSize % true if \ReworkTrimSize used.
 \newlength\@NewTrimWidth
 \newlength\@NewTrimHeight
 \newcommand\ReworkTrimSize[2]{% width, height
   \if@SetTrimSize\else
-    \ClassError{novel}{Must use \string\SetTrimSize\space before \string\ReworkTrimSize}%
+    \ClassError{novel}{Must use \string\SetTrimSize\space %
+      before \string\ReworkTrimSize}%
      {\string\ReworkTrimSize\space cannot be applied to default Trim Size. ^^J%
-      You must manually \string\SetTrimSize\space prior to \string\ReworkTrimSize.}%
+      You must manually \string\SetTrimSize\space prior to %
+       \string\ReworkTrimSize.}%
   \fi
   \if@coverart % New in version 1.2
-    \ClassError{novel}{\string\Rework\space commands cannot be used with `coverart' option}%
+    \ClassError{novel}{\string\Rework\space commands cannot be used %
+      with `coverart' option}%
      {Instead of \string\Rework, you must re-do the graphics artwork.}
   \else
     \global\@ReworkTrimSizetrue
     \gsetlength\@NewTrimWidth{#1}
     \gsetlength\@NewTrimHeight{#2}
-      \typeout{^^J Class `novel' Alert: Used \string\ReworkTrimSize\space command. ^^J%
+      \typeout{^^J Class `novel' Alert: %
+       Used \string\ReworkTrimSize\space command. ^^J%
        Carefully review your PDF to ensure that line breaks, paragraphs, ^^J%
        and page breaks are where you expect them to be. ^^J}%
   \fi
@@ -134,7 +138,8 @@
 \newlength\@NewInnerMargin
 \newcommand\ReworkMargins[4]{ % top, outer, bottom, inner
   \if@coverart % New in version 1.2
-    \ClassError{novel}{\string\Rework\space commands cannot be used with coverart option}%
+    \ClassError{novel}{\string\Rework\space commands cannot be used %
+      with coverart option}%
     {Instead of \string\Rework, you must re-do the graphics artwork.}
   \else
     \global\@ReworkMarginstrue
@@ -142,7 +147,7 @@
     \gsetlength\@NewOuterMargin{#2}
     \gsetlength\@NewBottomMargin{#3}
     \gsetlength\@NewInnerMargin{#4}
-    \typeout{^^JClass novel Alert: Used \string\ReworkMargins\space command. ^^J%
+    \typeout{^^JClass novel Alert: Used \string\ReworkMargins. ^^J%
      Carefully review your PDF to ensure that line breaks, paragraphs, ^^J%
      and page breaks are where you expect them to be. ^^J}%
   \fi
@@ -222,23 +227,24 @@
 %   affect Media Size. See their descriptions below.
 %
 % \SetMediaSize[alignment]{width}{height} usage:
-% Optional alignment may be center, corner, bottom. Obsolete edge (alias for corner).
-%   center (default): Trim will be horizontally and vertically centered in media.
+% Optional alignment: center, corner, bottom. Obsolete edge (alias for corner).
+%   center (default): Trim is horizontally and vertically centered in media.
 %     Preferred by most commercial printers, often home and office as well.
-%   corner: Verso Trim at upper left of Media; recto Trim at upper right of Media.
+%   corner: Verso Trim at upper left of Media; recto Trim at upper right.
 %     Might be useful for making a mock-up copy at home.
-%   bottom: Only used by some commercial printers, for some cover artwork with bleed.
+%   bottom: Used by some commercial printers, for some cover artwork w/ bleed.
 \newif \if@MediaSize % true if \SetMediaSize rather than default = Trim Size.
 \gdef\@AlignTrim{center} % default
 \newcommand\SetMediaSize[3][center]{ % [alignment] width, height
-  \ifthenelse{\equal{#1}{center} \OR \equal{#1}{corner} \OR \equal{#1}{edge} \OR \equal{#1}{bottom}}{
+  \ifthenelse{\equal{#1}{center} \OR \equal{#1}{corner} %
+  \OR \equal{#1}{edge} \OR \equal{#1}{bottom}}{
     \global\@MediaSizetrue
     \gdef\@AlignTrim{#1}
     \gsetlength\paperwidth{#2}
     \gsetlength\paperheight{#3}
   }{
     \ClassError{novel}{Bad optional argument for \string\SetMediaSize}%
-    {\string\SetMediaSize\space optional argument must be one of: center, corner, bottom.}%
+    {\string\SetMediaSize\space optional argument: center, corner, bottom.}%
   }
 }% end \SetMediaSize
 %%
@@ -246,7 +252,7 @@
 
 %% Lines Per Page refers to the main textblock, not including header or footer.
 % If you do not set it, a suitable default will be based on other settings.
-% The number of lines is contrained by Trim Height, Margins, and normal em size.
+% The number of lines is contrained by Trim Height, Margins, and normal em.
 %   This is because the minimum \baselineskip must be 1.2x normal em size,
 %   to avoid crowding of the text and variable line heights.
 % The check for constraint is done in file novel-CalculateLayout.sty.
@@ -291,7 +297,7 @@
 
 
 %% SET HEADER/FOOTER STYLE AND RESERVE SPACE FOR HEADER/FOOTER
-%% --------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 % There are several pre-configured header/footer styles, addressing every
 %   situation likely to be seen in popular fiction. The style details are
 %   coded, using `fancyhdr' syntax, in novel-HeadFootStyles.sty.
@@ -310,13 +316,27 @@
   \else
     \gdef\@HeadFootStyle{1} % default
     \@tempTFfalse
-    \ifthenelse{\equal{#1}{0}}{\global\@HasHeaderfalse\global\@HasFooterfalse\@tempTFtrue}{}
-    \ifthenelse{\equal{#1}{1}}{\global\@HasHeadertrue\global\@HasFooterfalse\@tempTFtrue}{}
-    \ifthenelse{\equal{#1}{2}}{\global\@HasHeaderfalse\global\@HasFootertrue\@tempTFtrue}{}
-    \ifthenelse{\equal{#1}{3}}{\global\@HasHeaderfalse\global\@HasFootertrue\@tempTFtrue}{}
-    \ifthenelse{\equal{#1}{4}}{\global\@HasHeadertrue\global\@HasFooterfalse\@tempTFtrue}{}
-    \ifthenelse{\equal{#1}{5}}{\global\@HasHeadertrue\global\@HasFootertrue\@tempTFtrue}{}
-    \ifthenelse{\equal{#1}{6}}{\global\@HasHeadertrue\global\@HasFootertrue\@tempTFtrue}{}
+    \ifthenelse{\equal{#1}{0}}{%
+      \global\@HasHeaderfalse\global\@HasFooterfalse\@tempTFtrue%
+    }{}
+    \ifthenelse{\equal{#1}{1}}{%
+      \global\@HasHeadertrue\global\@HasFooterfalse\@tempTFtrue%
+    }{}
+    \ifthenelse{\equal{#1}{2}}{%
+      \global\@HasHeaderfalse\global\@HasFootertrue\@tempTFtrue%
+    }{}
+    \ifthenelse{\equal{#1}{3}}{%
+      \global\@HasHeaderfalse\global\@HasFootertrue\@tempTFtrue%
+    }{}
+    \ifthenelse{\equal{#1}{4}}{%
+      \global\@HasHeadertrue\global\@HasFooterfalse\@tempTFtrue%
+    }{}
+    \ifthenelse{\equal{#1}{5}}{%
+      \global\@HasHeadertrue\global\@HasFootertrue\@tempTFtrue%
+    }{}
+    \ifthenelse{\equal{#1}{6}}{%
+      \global\@HasHeadertrue\global\@HasFootertrue\@tempTFtrue%
+    }{}
     % Ensure that user choice was on the allowed list:
     \if@tempTF\else
       \ClassError{novel}{Invalid choice for \string\SetHeadFootStyle}%
@@ -391,7 +411,9 @@
 }
 \let\SetEmblem\SetEmblems% for convenience
 % If you want something fancier than \thepage:
-\gdef\SetPageNumberStyle#1{\gdef\pagenumberstyle{{\addfontfeature{Letters=ResetAll}#1}}}
+\gdef\SetPageNumberStyle#1{%
+  \gdef\pagenumberstyle{{\addfontfeature{Letters=ResetAll}#1}}%
+}
 
 % See novel.cls for the accompanying AtBeginDocument routine.
 
@@ -405,15 +427,22 @@
   \@tempTFfalse%
   \ifthenelse{\equal{#1}{fancy}}{\@tempTFtrue}{}%
   \ifthenelse{\equal{#1}{empty}}{\@tempTFtrue}{}%
-  \ifthenelse{\equal{#1}{plain}\OR\equal{#1}{fancyplain}\OR\equal{#1}{footer}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{#1}{plain} %
+  \OR \equal{#1}{fancyplain} \OR \equal{#1}{footer}}{%
+    \@tempTFtrue%
+  }{}%
   \ifthenelse{\equal{#1}{forcenumber}}{\@tempTFtrue}{}%
-  \ifthenelse{\equal{#1}{dropfolioinside} \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{#1}{dropfolioinside} %
+  \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{%
+    \@tempTFtrue%
+  }{}%
   \ifthenelse{\equal{#1}{dropfoliobeneath}}{\@tempTFtrue}{}%
   \if@tempTF%
     \gdef\@setchapterstart{#1}%
   \else%
     \ClassError{novel}{Invalid choice for \string\SetChapterStartStyle}%
-     {Choose: fancy, empty, plain, footer, forcenumber, dropfolioinside, dropfoliobeneath.}%
+     {Choose: fancy, empty, plain, footer, forcenumber, %
+      dropfolioinside, dropfoliobeneath.}%
   \fi%
 }
 \let\SetChapterStart\SetChapterStartStyle\relax % deprecated from v1.40.3.
@@ -421,23 +450,23 @@
 % New in version 1.40.2:
 \gdef\SetChapterStartHeight#1{%
   \FPifint{#1}\else%
-    \ClassError{novel}{\string\SetChapterStartHeight\space must be integer GTE 4}%
-    {Height of ChapterStart must be integer, greater than or equal to 4}%
+    \ClassError{novel}{\string\SetChapterStartHeight\space integer >= 4}%
+    {Height of ChapterStart must be integer, greater than or equal to 4.}%
   \fi%
   \FPiflt{#1}{4}%
-    \ClassError{novel}{\string\SetChapterStartHeight\space must be integer GTE 4}%
-    {Height of ChapterStart must be integer, greater than or equal to 4}%
+    \ClassError{novel}{\string\SetChapterStartHeight\space integer >= 4}%
+    {Height of ChapterStart must be integer, greater than or equal to 4.}%
   \else\fi%
   \gdef\@setchapterstartheight{#1}%
 }
 \SetChapterStartHeight{10} % default
 % See novel.cls for the accompanying AtBeginDocument routine.
 % Scene breaks:
-% \SetScenebreakIndent controls whether line after \scenebreak, \sceneline, or \scenestars
-%   will be indented. Set true or false, default false.
+% \SetScenebreakIndent controls whether line after \scenebreak, \sceneline, 
+%   or \scenestars will be indented. Set true or false, default false.
 %% End reserve space for header/footer and set default ChapterStart
 \newif\if@IndentAfterScenebreak
-\newcommand\SetScenebreakIndent[1]{% true or false, default false. From v. 1.40.3
+\newcommand\SetScenebreakIndent[1]{% true or false, default false.
   \@tempTFfalse
   \ifthenelse{\equal{#1}{true}}{%
     \@tempTFtrue
@@ -453,8 +482,8 @@
   \fi%
 }
 \SetScenebreakIndent{false} % default
-%
-\newcommand\IndentAfterScenebreak{\global\@IndentAfterScenebreaktrue} % deprected from v. 1.40.3
+% Deprected from v. 1.40.3:
+\newcommand\IndentAfterScenebreak{\global\@IndentAfterScenebreaktrue}
 
 
 %% New in version 1.2: cover image.
@@ -521,7 +550,7 @@
     {Optional: real, fake. Required: asterisk, dagger, number.}%
   }{}
 }
-\LetLtxMacro{\SetMarkers}{\SetMarkerStyle} % backwards compatibilty pre-v1.40.3.
+\LetLtxMacro{\SetMarkers}{\SetMarkerStyle} % backward compatibilty pre-v1.40.3.
 %
 \SetMarkerStyle[real]{asterisk} % default
 %%
@@ -552,7 +581,7 @@
 
 
 %% MISCELLANOUS SETTINGS. Mostly remove "glue". Best to leave as-is.
-%% --------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 % Standard TeX \hoffset and \voffset is not relative to the MediaBox, but is
 %   relative to 1in from the top left corner of the MediaBox. Ouch.
 % When necessary, the 1in (72.27pt) is compensated in later calculations.
@@ -643,7 +672,7 @@
 
 
 %% DEFINITION OF PARENT AND OTHER FONTS
-%% --------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% Prior to v. 1.1, parentfont was known as masterfont. Backwards compatible.
 %
 % These are the LaTeX defaults, which should already be built-in by now.
@@ -657,18 +686,21 @@
 \defaultfontfeatures{} % reset
 \defaultfontfeatures{SmallCapsFeatures={Renderer=Basic},Ligatures=TeX,}
 % Main and sans fonts: kerning, ligatures, and OldStyle numbers if available:
-\defaultfontfeatures[\rmfamily,\sffamily]{Kerning=On,Numbers=OldStyle,Ligatures=Common}
+\defaultfontfeatures[\rmfamily,\sffamily]%
+  {Kerning=On,Numbers=OldStyle,Ligatures=Common}
 % Package `unicode-math' uses Latin Modern Math as default math font:
 \RequirePackage{unicode-math}
 % A default math font (which presumably you do not need) is chosen here.
 % You may over-ride using `unicode-math' \setmathfont in Preamble.
 \IfFontExistsTF{Libertinus Math}{
-  \setmathfont[BoldFont={libertinusmath-regular.otf}]{libertinusmath-regular.otf}
+  \setmathfont[BoldFont={libertinusmath-regular.otf}]%
+    {libertinusmath-regular.otf}
 }{
-  \IfFontExistsTF{Latin Modern Math}{}{% will be set AtBeginDocument by unicode-math.
-  }{ % This allows you to proceed without a real math font (but then you cannot print math):
-    \setmathfont[BoldFont={NovelDeco.otf}]{NovelDeco.otf} % has a fake math feature
-    \ClassWarning{novel}{^^JIgnore this warning if you used \string\setmathfont. ^^J%
+  \IfFontExistsTF{Latin Modern Math}{}{% Set AtBeginDocument by unicode-math.
+  }{ % This hack allows you to proceed without a real math font,
+     % (but then you cannot print math):
+    \setmathfont[BoldFont={NovelDeco.otf}]{NovelDeco.otf} % fake math feature
+    \ClassWarning{novel}{^^JIgnore this if you used \string\setmathfont. ^^J%
      Did not find suitable default math font. Used NovelDeco.otf. ^^J%
      But NovelDeco does not have real math symbols. ^^J%
      Math notation will print incorrectly. No problem if no math. ^^J}%
@@ -796,7 +828,7 @@
 
 
 %% FRONTMATTER, MAINMATTER. BUT NO BACKMATTER!
-%% --------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %
 % See novel.cls for the AtBeginShipout routine.
 %
@@ -830,32 +862,33 @@
   \setcounter{page}{1}
 }
 %
-\def\backmatter{\@ifstar\@backmatterst\@backmatterns} % asterisk obsolete from v. 1.40.
+\def\backmatter{\@ifstar\@backmatterst\@backmatterns} % asterisk obsolete
 \def\@backmatterst{%
-  \ClassWarning{novel}{^^JCommand \string\backmatter*\ ignored. Do not use. ^^J}%
+  \ClassWarning{novel}{^^J\string\backmatter*\ ignored. Do not use. ^^J}%
 }
 %
 \def\@backmatterns{%
   \cleartorecto% v. 1.40.2
-  \typeout{^^JClass `novel' Alert: \string\backmatter\space merely clears to recto. See docs. ^^J}% v. 1.42
+  \typeout{^^JClass `novel' Alert: \string\backmatter\space merely %
+    clears to recto. See docs. ^^J}% v. 1.42
 %
 }
 %
-\def\Backmatter{\@ifstar\@Backmatterst\@Backmatterns} % obsolete from v. 1.40.
+\def\Backmatter{\@ifstar\@Backmatterst\@Backmatterns} % obsolete
 %
 \def\@Backmatterst{% continues frontmatter count w/ uppercase Roman numerals
-  \ClassWarning{novel}{^^JCommand \string\Backmatter*\ ignored. Do not use. ^^J}%
+  \ClassWarning{novel}{^^J\string\Backmatter*\ ignored. Do not use. ^^J}%
 }
 %
 \def\@Backmatterns{%
-  \ClassWarning{novel}{^^JCommand \string\Backmatter\ ignored. Do not use. ^^J}%
+  \ClassWarning{novel}{^^J\string\Backmatter\ ignored. Do not use. ^^J}%
 }
 %
 %% end frontmatter, mainmatter. No backmatter!
 
 
 %% DISABLE OR NEUTRALIZE SOME STANDARD LATEX COMMANDS
-%% --------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 % The `novel' class disallows these commands, or neutralizes them by simply
 % repeating their arguments. In some cases, they request functionality that's
 % not implemented in `novel'. In other cases, functionality is part of core,
@@ -917,4 +950,5 @@
 
 %%
 %% End of file `novel-LayoutSettings.sty'.
+
 

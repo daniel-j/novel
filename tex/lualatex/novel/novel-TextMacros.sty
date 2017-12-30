@@ -13,47 +13,49 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2017/12/27 v1.46.5n LaTeX file (text macros usable within document body)]
+[2017/12/27 v1.46.5p LaTeX file (text macros usable within document body)]
 %%
 
 
-%% This file contains various commands that are usable within the document body,
-%% for styling and otherwise manipulating text.
+%% This file contains various commands usable within the document body,
+%%   for styling and otherwise manipulating text.
 %% These are not commands used in Preamble for setup, although a few of them
-%% can be used in Preamble for setup, then again in body for change.
+%%   can be used in Preamble for setup, then again in body for change.
 
 
 %% The following commands are BANNED.
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 % The `novel' class disallows these commands, or neutralizes them by simply
-% repeating their arguments. In some cases, they request functionality that is
-% not implemented in `novel'. In other cases, the functionality is part of core,
-% but would interfere with the `novel' emphasis on constant line skip.
-% You may re-define the commands using your own code in Preamble (discouraged).
+%   repeating their arguments. In some cases, they request functionality
+%   not implemented in `novel'. In other cases, the function is part of core,
+%   but would interfere with the `novel' emphasis on constant line skip.
+%   You may re-define the commands via your own code in Preamble (discouraged).
 %
 %% Standard LaTeX font sizes are ineffective. Use novel's own methods.
 % If you write one of these size commands, it will silently be ignored:
-% \small, \footnotesize, \scriptsize, \tiny,
-% \large, \Large, \LARGE, \huge, \Huge, \HUGE.
+%   \small, \footnotesize, \scriptsize, \tiny,
+% \  large, \Large, \LARGE, \huge, \Huge, \HUGE.
 %
 %% Internal subdivisions are ineffective.
 % The command will merely echo its argument, without any functionality:
-% \part{}, \chapter{}, \section{}, \subsection{}, \subsubsection{}, \paragraph{}, \subparagraph{}
+%   \part, \chapter, \section, \subsection, \subsubsection,
+%   \paragraph, \subparagraph, \textls,
 %
-%% Certain commands will generate an error, so that you know they cannot be used:
-% \maketitle, \makeindex, \tableofcontents, \listoftables, \listoffigures, \textls
+%% Some commands will generate an error, so that you know they cannot be used:
+%   \maketitle, \makeindex, \tableofcontents, \listoftables, \listoffigures,
 %
 %% You cannot use \includepdf (package: pdfpages).
 %
 %% You cannot use \includegraphics. Instead use novel's own image commands.
 %
-%% Commands normally provided in other classes, pertaining to floats, figures, and tables,
-%% are not defined in `novel' class. If you attempt to use them, an error will result.
+%% Commands normally provided in other classes, pertaining to floats, figures,
+%    and tables, are not defined in `novel' class.
+%    If you attempt to use them, an error will result.
 
 
 
 %% AND NOW TO THE GOOD STUFF
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %
 %% \memo{} does not print or save its argument.
 % Useful when you wish to put a note to yourself in the *.tex document.
@@ -63,7 +65,7 @@
 \gdef\stake{\rule{0pt}{1pt}} % placeholder
 %
 % \forceindent and \backindent perform or remove indent, using \hspace{}.
-% Rationale: Sometimes \indent and \noindent are neutralized by another command.
+% Rationale: Sometimes \indent and \noindent neutralized by another command.
 
 % See novel.cls for accompanying AtBeginDocument routine.
 
@@ -116,15 +118,21 @@
   \definecolor[named]{gray8}{gray}{0.75}
   \definecolor[named]{gray9}{gray}{0.87}
 \else
-  \let\@mycolor\color\relax
-  \let\color\relax
-  \DeclareDocumentCommand \color { o m }
-   {%
-   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.542763}}{\@undeclaredcolor[gray]{0.542763}}{}% shademargins (unsafe zone)
-   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.883215}}{\@undeclaredcolor[gray]{0.883215}}{}% shademargins (margins)
-   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.949123}}{\@undeclaredcolor[gray]{0.949123}}{}% shademargins (head/foot)
-   \ifthenelse{\equal{#2}{hingledingle}}{\@declaredcolor{white}}{}% hingledingle is internal alias for white
-   }
+  \LetLtxMacro\@mycolor\color\relax
+  \LetLtxMacro\color\relax
+  \DeclareDocumentCommand \color { o m } {%
+    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.542763}}{%
+      \@undeclaredcolor[gray]{0.542763}%
+    }{}% shademargins (unsafe zone)
+    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.883215}}{%
+      \@undeclaredcolor[gray]{0.883215}%
+    }{}% shademargins (margins)
+    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.949123}}{%
+      \@undeclaredcolor[gray]{0.949123}%
+    }{}% shademargins (head/foot)
+    % hingledingle is an alias for white, when "white" cannot be used:
+    \ifthenelse{\equal{#2}{hingledingle}}{\@declaredcolor{white}}{}%
+  }%
 \fi
 %%
 
@@ -141,10 +149,10 @@
   \@ifstar{\nov@ettl@AfterGroup\@firstofone}{\nov@ettl@AfterGroup\unexpanded}%
 }
 \newrobustcmd\nov@ettl@AfterGroup[2]{%
- \csxdef{nov@ettl@fterGroup\number\numexpr\the\nov@ettl@fter+1}%
- {\global\csundef{nov@ettl@fterGroup\number\numexpr\the\nov@ettl@fter+1}#1{#2}}%
- \global\advance\nov@ettl@fter\@ne%
- \expandafter\aftergroup\csname nov@ettl@fterGroup\the\nov@ettl@fter\endcsname%
+\csxdef{nov@ettl@fterGroup\number\numexpr\the\nov@ettl@fter+1}%
+{\global\csundef{nov@ettl@fterGroup\number\numexpr\the\nov@ettl@fter+1}#1{#2}}%
+\global\advance\nov@ettl@fter\@ne%
+\expandafter\aftergroup\csname nov@ettl@fterGroup\the\nov@ettl@fter\endcsname%
 }
 % End code from `etextools`.
 
@@ -172,8 +180,8 @@
 % Takes a single optional argument: Comma-separated raise, line thickness.
 %   If no argument or empty, defaults to [1,1].
 %   Without comma, argument defaults to [argument,1].
-%   First number: Scales the raise up or down. 1 = raise of emdash in typical fonts.
-%   Second number: Scales the line thickness. 1 = thickness of emdash in typical fonts.
+%   First number: Scales raise/down. 1 = raise of emdash in typical fonts.
+%   Second number: Scales line thickness. 1 = emdash in typical fonts.
 % NOTE: Built-in TeX PDF viewer might show the line at slightly incorrect
 %   width and height. Best seen in a "real" PDF viewer.
 \DeclareDocumentCommand \bigemdash { O{1,1} }
@@ -181,8 +189,12 @@
   \ifthenelse{\equal{#1}{}\OR\equal{#1}{\space}}{\def\@myargsi{1,1}}{\def\@myargsi{#1}}%
   \StrDel{\@myargsi}{\space}[\@myargs]%
   \StrCut{\@myargs}{,}{\@myraisei}{\@mythicki}%
-  \ifthenelse{\equal{\@myraisei}{}\OR\equal{\@myraisei}{\space}}{\def\@myraise{1}}{\def\@myraise{\@myraisei}}%
-  \ifthenelse{\equal{\@mythicki}{}\OR\equal{\@mythicki}{\space}}{\def\@mythick{1}}{\def\@mythick{\@mythicki}}%
+  \ifthenelse{\equal{\@myraisei}{}\OR\equal{\@myraisei}{\space}}{%
+    \def\@myraise{1}}{\def\@myraise{\@myraisei}%
+  }%
+  \ifthenelse{\equal{\@mythicki}{}\OR\equal{\@mythicki}{\space}}{%
+    \def\@mythick{1}}{\def\@mythick{\@mythicki}%
+  }%
   \FPmul{\@myraise}{\@myraise}{0.56}% ex, typical font emdash raise
   \FPmul{\@mythick}{\@mythick}{0.049}% em, typical font emdash thickness
   {\leaders\hbox{\rule[\@myraise ex]{1pt}{\@mythick em}}\hfill\stake}%
@@ -209,27 +221,39 @@
 % The starred command occupies zero width, thus no hole. Consecutive starred
 %   commands, without intervening space, displace from same origin.
 % The text must be on a single line, without break or wrap.
-% Do not use \\ or \par inside \charscale, but you sometimes need \par after it.
+% Do not use \\ or \par inside \charscale. Sometimes you need \par after it.
 % If the text is in a font other than usual, place the font command
 %   outside \charscale, not inside.
 \ExplSyntaxOn
 \DeclareDocumentCommand \charscale { s O{1} m }
  {
   % Allows empty or blank to be used, and still provide default values:
-  \ifthenelse{\equal{#2}{}\OR\equal{#2}{\space}}{\def\@myargs{1}}{\def\@myargs{#2}}
+  \ifthenelse{\equal{#2}{}\OR\equal{#2}{\space}}{%
+    \def\@myargs{1}}{\def\@myargs{#2}%
+  }
   \StrDel{\@myargs}{\space}[\@myargsns] % needs {\space} not { }
   \StrCut{\@myargsns}{,}{\@myscalet}{\@mycoord}
-  \ifthenelse{\equal{\@myscalet}{}}{\def\@myscale{1}}{\def\@myscale{\@myscalet}}
+  \ifthenelse{\equal{\@myscalet}{}}{%
+    \def\@myscale{1}}{\def\@myscale{\@myscalet}%
+  }
   \FPmax{\@myscale}{\@myscale}{0.5}% not permitted below this scale
   \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}
-  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{\def\@myx{0pt}}{\def\@myx{\@myxt}}
-  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{\def\@myy{0pt}}{\def\@myy{\@myyt}}
+  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{%
+    \def\@myx{0pt}}{\def\@myx{\@myxt}%
+  }
+  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{%
+    \def\@myy{0pt}}{\def\@myy{\@myyt}%
+  }
   \IfBooleanTF{#1}
   {% starred
     \ifvmode\else\unskip\fi%
-    \stake\makebox[0pt][l]{\smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}}%
+    \stake\makebox[0pt][l]{%
+      \smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}%
+    }%
   }{% unstarred
-    \stake\makebox[0pt][l]{\smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}}%
+    \stake\makebox[0pt][l]{%
+      \smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}%
+    }%
     \smash{\phantom{\scalebox{\@myscale}{#3}}}%
   }
  }
@@ -239,7 +263,7 @@
 
 
 %%
-% If you really must change the font size and baselineskip on a paragraph basis,
+% If you really must change font size and baselineskip on a paragraph basis,
 %   then use an environment. For example, the text on your Copyright page might
 %   be smaller (and less baselineskip) than normal.
 % The following environment takes an optional argument, which is the scale
@@ -328,7 +352,7 @@
 }
 %%
 % \showlength[decimal places]{length}{units}
-% Returns the length as a string with the units, but does not change the length.
+% Returns length as a string with the units, but does not change the length.
 % length is any existing length
 % units may be pt, bp, mm, cm, in
 % decimal places for rounding (0=integer, 1=one decimal point, etc.)
@@ -391,14 +415,16 @@
  {%
   \iftoggle{@realmarker}{%
     \fontspec_if_feature:nTF {sups}{%
-      \ifvmode\else\unskip\fi{\addfontfeature{VerticalPosition=Superior}\smash{#1}}%
+      \ifvmode\else\unskip\fi%
+      {\addfontfeature{VerticalPosition=Superior}\smash{#1}}%
     }{%
       \setlength\@hoAhl{\heightof{Ahl}}% local
       \ifvmode\else\unskip\fi\charscale[0.7,0pt,0.5\@hoAhl]{#1}%
     }%
   }{%
     \setlength\@hoAhl{\heightof{Ahl}}% local
-    \ifvmode\else\unskip\fi{\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,0.5\@hoAhl]{#1}}%
+    \ifvmode\else\unskip\fi%
+    {\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,0.5\@hoAhl]{#1}}%
   }%
  }% end \sups
 %
@@ -406,10 +432,12 @@
  {%
   \iftoggle{@realmarker}{%
     \fontspec_if_feature:nTF {sinf}{%
-      \ifvmode\else\unskip\fi{\addfontfeature{VerticalPosition=ScientificInferior}\smash{#1}}%
+      \ifvmode\else\unskip\fi%
+      {\addfontfeature{VerticalPosition=ScientificInferior}\smash{#1}}%
     }{%
       \fontspec_if_feature:nTF {subs}{%
-        \ifvmode\else\unskip\fi{\addfontfeature{VerticalPosition=Inferior}\smash{#1}}%
+        \ifvmode\else\unskip\fi%
+        {\addfontfeature{VerticalPosition=Inferior}\smash{#1}}%
       }{%
         \setlength\@hoAhl{\heightof{Ahl}}% local
         \ifvmode\else\unskip\fi\charscale[0.7,0pt,-0.2\@hoAhl]{#1}%
@@ -417,7 +445,8 @@
     }%
   }{%
     \setlength\@hoAhl{\heightof{Ahl}}% local
-    \ifvmode\else\unskip\fi{\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,-0.2\@hoAhl]{#1}}%
+    \ifvmode\else\unskip\fi%
+    {\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,-0.2\@hoAhl]{#1}}%
   }%
  }% end \subs
 %
@@ -429,9 +458,9 @@
 %%
 
 
-%% New in v. 1.46: Allows text to be placed (potentially) off-grid, with grid resuming after.
+%% Allows text to be placed (potentially) off-grid, with grid resuming after.
 \newif \if@WithinLinegap % true within linegap environment
-\newcounter{currentlinegap} % 0 when not within a linegap environment, >0 otherwise.
+\newcounter{currentlinegap} % 0 when not within linegap, >0 otherwise.
 \ExplSyntaxOn
 \DeclareDocumentEnvironment {linegap} { m } {%
   \FPifint{#1}\else%

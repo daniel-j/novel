@@ -13,18 +13,18 @@
 %%  and version 1.3c or later is part of all distributions of LaTeX
 %%  version 2005/12/01 or later.
 %% 
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %%
 %% File `novel-pdfx.sty' uses code, directly copied or modified,
 %%   from file `pdfx.sty', part of LaTeX package `pdfx': Copyright (c) 2015,
 %%   CV Radhakrishnan, Han The Thanh, Ross Moore, Peter Selinger.
 %%   Licensed LPPL 1.2+.
 %% 
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesFile{novel-pdfx.sty}%
-[2017/12/27 v1.46.5n LaTeX file (PDF/X support for novel class)]
+[2017/12/27 v1.46.5p LaTeX file (PDF/X support for novel class)]
 % This package supports, and is part of, class `novel'.
 % No support for anything but LuaLaTeX.
 
@@ -62,9 +62,11 @@
 \fi
 \Hy@bookmarksfalse
 %
-\ifthenelse{\equal{\@title}{} \OR \equal{\@title}{ }}{\global\@HasTitlefalse}{\global\@HasTitletrue}
+\ifthenelse{\equal{\@title}{} \OR \equal{\@title}{ }}{%
+  \global\@HasTitlefalse}{\global\@HasTitletrue%
+}
 \ifthenelse{\equal{\@title}{IMPORTANT: Provide Book Title}}{%
-  \ClassWarning{novel}{^^JYou did not provide a title using \string\SetTitle. ^^J%
+  \ClassWarning{novel}{^^JDid not provide title using \string\SetTitle. ^^J%
    Default used: `IMPORTANT: Provide Book Title'. Be sure to change it! ^^J}%
 }{}%
 %
@@ -95,7 +97,7 @@
 
 
 %% CALCULATE AND SPECIFY CROPBOX AND TRIMBOX
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %%
 % The MediaBox is automatically provided, so there is no need to write
 %   MediaBox in /pdfInfo (because it would be a duplicate).
@@ -137,9 +139,9 @@
 %
 \newcommand\novel@CropBox{%
  \if@cropview%
-   /CropBox[\@myTWorigin\space\@myTHorigin\space\@myTWcorner\space\@myTHcorner]%
+  /CropBox[\@myTWorigin\space\@myTHorigin\space\@myTWcorner\space\@myTHcorner]%
  \else%
-   /CropBox[0\space0\space\@myMWN\space\@myMHN]%
+  /CropBox[0\space0\space\@myMWN\space\@myMHN]%
  \fi%
 }
 %
@@ -162,7 +164,7 @@
 
 
 %% GENERAL PDF INTERNAL METADATA PREPARATION
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %
 % Create hashes that will be used for uuid data. Does not need to be fancy:
 \edef\xmp@docid{\pdfx@mdfivesum{jobname.pdf}}
@@ -173,7 +175,7 @@
 
 
 %% PREPARATION OF XMP METADATA
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% Data prepared here, will later be inserted into the XMP packet template,
 %%   then the processed template will be incuded in the PDF.
 %% XMP metadata is in utf-8 encoding.
@@ -229,7 +231,8 @@
   \gdef\@verconfString{
     \pad@vi<pdfx:GTS_PDFXVersion>\@PDFXversion</pdfx:GTS_PDFXVersion>^^J
     \if@HasConformance
-      \pad@vi<pdfx:GTS_PDFXConformance>\@PDFXconformance</pdfx:GTS_PDFXConformance>^^J
+      \pad@vi<pdfx:GTS_PDFXConformance>%
+        \@PDFXconformance</pdfx:GTS_PDFXConformance>^^J
     \fi
   }
 \fi
@@ -245,13 +248,15 @@
 \ifthenelse{\equal{\@novelApplication}{} \OR \equal{\@novelApplication}{ }}{
   \gdef\@applicationString{}%
 }{
-  \gdef\@applicationString{\pad@vi<xmp:CreatorTool>\@novelApplication</xmp:CreatorTool>^^J}%
+  \gdef\@applicationString{\pad@vi<xmp:CreatorTool>%
+    \@novelApplication</xmp:CreatorTool>^^J}%
 }
 %
 \ifthenelse{\equal{\@novelProducer}{} \OR \equal{\@novelProducer}{ }}{
   \gdef\@producerString{}%
 }{
-  \gdef\@producerString{\pad@vi<pdf:Producer>\@novelProducer</pdf:Producer>^^J}%
+  \gdef\@producerString{\pad@vi<pdf:Producer>%
+    \@novelProducer</pdf:Producer>^^J}%
 }
 %
 % Calculation of Dates and Times, which must be in a specific format.
@@ -305,37 +310,44 @@
 
 
 %% WRITE THE XMP METADATA, UNLESS PDF/X IS OFF OR NO TITLE
-%%------------------------------------------------------------------------------
+%%-----------------------------------------------------------------------------
 %% Inserts the prepared XMP metadata into XMP packet template, then writes
 %% the result at the start of the PDF, right now, before the document.
 %
 \if@pdfxISoff\else
-  \if@HasTitle
-    \begingroup
-      \makeatletter
-      \input{novel-xmppacket.sty}
-      \global\let\@xmpData\@xmpPacket % from the above file
-      \begingroup
-       \pdfcompresslevel=0
-       \immediate\pdfobj stream attr {/Type /Metadata /Subtype /XML} {\@xmpData}
-       \pdfcatalog{/Metadata \the\pdflastobj\space 0 R}
-      \endgroup
-    \endgroup
-    % Creates external xml file, if requested:
-    \if@wantXMPasXML
-      \newwrite\file
-      \immediate\openout\file=\jobname-XMPasXML.xml
-      \immediate\write\file{<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>^^J}
-      \immediate\write\file{<!-- Ignore any message about not having style information. That is normal. -->^^J}
-      \immediate\write\file{<!-- Your viewer's font must be able to display any characters used in the XMP. -->^^J}
-      \immediate\write\file{<!-- For example, if your XMP has Cyrillic, then you need a Cyrillic-capable font. -->^^J}
-      \immediate\write\file{<!-- Any decorations (such as dashes in front of lines) are added by the viewer. Not in XMP. -->^^J}
-      \immediate\write\file{<!-- Note: xpacket begin="" contains the invisible 3-byte utf-8 BOM within its quotes. -->^^J}
-      \immediate\write\file{<!-- The above xml declaration, and these comments, are not part of the XMP packet. -->^^J}
-      \immediate\write\file{\@xmpData^^J}
-      \closeout\file
-    \fi
-  \fi
+ \if@HasTitle
+   \begingroup
+     \makeatletter
+     \input{novel-xmppacket.sty}
+     \global\let\@xmpData\@xmpPacket % from the above file
+     \begingroup
+      \pdfcompresslevel=0
+      \immediate\pdfobj stream attr {/Type /Metadata /Subtype /XML} {\@xmpData}
+      \pdfcatalog{/Metadata \the\pdflastobj\space 0 R}
+     \endgroup
+   \endgroup
+   % Creates external xml file, if requested:
+   \if@wantXMPasXML
+     \newwrite\file
+     \immediate\openout\file=\jobname-XMPasXML.xml
+     \immediate\write\file{<?xml version="1.0" encoding="UTF-8" %
+       standalone="yes" ?>^^J}
+     \immediate\write\file{<!-- Ignore any message about not having style %
+       information. That is normal. -->^^J}
+     \immediate\write\file{<!-- Your viewer's font must be able to display %
+       any characters used in the XMP. -->^^J}
+     \immediate\write\file{<!-- For example, if your XMP has Cyrillic, %
+       then you need a Cyrillic-capable font. -->^^J}
+     \immediate\write\file{<!-- Any decorations (such as dashes in front of %
+       lines) are added by the viewer. Not in XMP. -->^^J}
+     \immediate\write\file{<!-- Note: xpacket begin="" contains the invisible %
+       3-byte utf-8 BOM within its quotes. -->^^J}
+     \immediate\write\file{<!-- The above xml declaration, and these %
+       comments, are not part of the XMP packet. -->^^J}
+     \immediate\write\file{\@xmpData^^J}
+     \closeout\file
+   \fi
+ \fi
 \fi
 %
 %
@@ -344,7 +356,7 @@
 
 
 %% PREPARE PDF /INFO METADATA
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% PDF /Info is another form of metadata, older than XMP but still used.
 %% It is NOT in utf-8 encoding. Depending on content, one of two encodings
 %%   will be automatically used: PDFDoc encoding if metadata uses only
@@ -380,7 +392,7 @@
 
 
 %% WRITE THE OUTPUT INTENT, UNLESS PDFX IS OFF.
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 % Data for CGATS TR 001, FOGRA39, and JC200103 are in file novel-FileData.sty.
 \if@pdfxISoff\else
   \begingroup
@@ -397,9 +409,9 @@
         \edef\OBJ@OI{\the\pdflastobj\space 0 R}%
       }{%
         \ClassError{novel}{Requested icc color profile not found}%
-          {You used the starred \string\SetPDFX*\space which embeds the ^^J%
-            associated icc color profile. But the file could not be located. ^^J%
-            If necessary, place it in the same folder as your *.tex document.}%
+         {You used the starred \string\SetPDFX*\space which embeds the ^^J%
+          associated icc color profile. But the file could not be located. ^^J%
+          If necessary, place it in the same folder as your *.tex document.}%
       }
     \fi
     \ifthenelse{\equal{\@OIcondition}{}}{
@@ -441,7 +453,7 @@
 
 
 %% DISABLE HYPERREF OPTIONS
-%%------------------------------------------------------------------------------
+%%-----------------------------------------------------------------------------
 %% Prevents changes that will cause an incompatibility.
 %
 \Hy@DisableOption{pdfauthor}%
@@ -458,7 +470,7 @@
 
 
 %% PREPARE PDF/Info
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% The \novel@PDFinfo command is used AtBeginDocument in novel.cls.
 %
 \gdef\@novelPDFinfo{ % rather than \PDF@FinishDoc
@@ -493,4 +505,5 @@
 
 %%
 %% End of file `novel-pdfx.sty'.
+
 

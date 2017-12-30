@@ -19,7 +19,7 @@
 % This file is new in `novel' version 1.48.
 %
 \ProvidesFile{novel-DropCap.sty}
-  [2017/12/27 v1.46.5n (Drop Caps)]
+  [2017/12/27 v1.46.5p (Drop Caps)]
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %
 %
@@ -57,7 +57,8 @@
   \if@graytext%
     \@setdropcapcolor[#1]{#2}%
   \else%
-    \ClassWarning{novel}{ ^^J\string\SetDropCapColor~ignored~unless~`graytext'~class~option. ^^J}%
+    \ClassWarning{novel}{^^J\string\SetDropCapColor~ignored~unless~^^J%
+      `graytext'~class~option. ^^J}%
   \fi%
 }% end \SetDropCapColor
 \DeclareDocumentCommand \@setdropcapcolor { O{} m } {%
@@ -104,30 +105,32 @@
 \newcommand*{\NDC@bloat}{}
 \newcommand*{\NDC@scale}{}
 \def\@getNDCheight{% offsets do not affect height:
-   \@tempdima=\baselineskip
-   \setlength{\NDC@height}{\value{NDC@lines}\@tempdima}% local
-   \addtolength{\NDC@height}{-\@tempdima}%
-   \sbox{\NDC@normalXbox}{X}% Normal capital X, rather than something else.
-   \addtolength{\NDC@height}{\ht\NDC@normalXbox}%
-   \setlength{\NDC@height}{\NDC@scale\NDC@height}% local
-}
+  \@tempdima=\baselineskip
+  \setlength{\NDC@height}{\value{NDC@lines}\@tempdima}% local
+  \addtolength{\NDC@height}{-\@tempdima}%
+  \sbox{\NDC@normalXbox}{X}% Normal capital X, rather than something else.
+  \addtolength{\NDC@height}{\ht\NDC@normalXbox}%
+  \setlength{\NDC@height}{\NDC@scale\NDC@height}% local
+} %
 \newcommand*{\NDC@char}{%
-   \@getNDCheight%
-   % Measures drop cap capital X, rather than something else:
-   \sbox{\@tempboxa}{\NDC@charstyle\fontsize{\NDC@height}{\NDC@height}\selectfont X}%
-   \@tempcntb=\ht\@tempboxa%
-   \@tempcnta=\NDC@height%
-   \multiply\@tempcnta by 100%
-   \divide\@tempcntb by 100%
-   \divide\@tempcnta by \@tempcntb%
-   \advance\@tempcnta by -9999%
-   \ifnum\@tempcnta>0%
-     \def\@tempa{1.\the\@tempcnta}%
-   \else%
-     \def\@tempa{1}%
-   \fi%
-   \NDC@charstyle\fontsize{\@tempa\NDC@height}{\@tempa\NDC@height}\selectfont
-}
+  \@getNDCheight%
+  % Measures drop cap capital X, rather than something else:
+  \sbox{\@tempboxa}{%
+     \NDC@charstyle\fontsize{\NDC@height}{\NDC@height}\selectfont X%
+  }%
+  \@tempcntb=\ht\@tempboxa%
+  \@tempcnta=\NDC@height%
+  \multiply\@tempcnta by 100%
+  \divide\@tempcntb by 100%
+  \divide\@tempcnta by \@tempcntb%
+  \advance\@tempcnta by -9999%
+  \ifnum\@tempcnta>0%
+    \def\@tempa{1.\the\@tempcnta}%
+  \else%
+    \def\@tempa{1}%
+  \fi%
+  \NDC@charstyle\fontsize{\@tempa\NDC@height}{\@tempa\NDC@height}\selectfont
+} %
 \define@key{NDC}{lines}{\setcounter{NDC@lines}{#1}}
 \define@key{NDC}{depth}{\setcounter{NDC@depth}{#1}}
 \define@key{NDC}{hoffset}{\setlength{\NDC@hoffset}{#1}}
@@ -211,12 +214,12 @@
   \else%
     % Compensate for effect of using \Rework:
     \if@ReworkTrimSize%
-      \FPdiv{\NDC@widthscale}{\strip@pt\textwidth}{\strip@pt\@OriginalTextWidth}%
-      \FPmul{\NDC@bloat}{\NDC@bloat}{\NDC@widthscale}%
+      \FPdiv{\@tempN}{\strip@pt\textwidth}{\strip@pt\@OriginalTextWidth}%
+      \FPmul{\NDC@bloat}{\NDC@bloat}{\@tempN}%
     \else%
       \if@ReworkMargins
-        \FPdiv{\NDC@widthscale}{\strip@pt\textwidth}{\strip@pt\@OriginalTextWidth}%
-        \FPmul{\NDC@bloat}{\NDC@bloat}{\NDC@widthscale}%
+        \FPdiv{\@tempN}{\strip@pt\textwidth}{\strip@pt\@OriginalTextWidth}%
+        \FPmul{\NDC@bloat}{\NDC@bloat}{\@tempN}%
       \fi%
     \fi%
     \sbox{\NDC@normalXbox}{X}% Normal capital X.

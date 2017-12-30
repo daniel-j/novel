@@ -13,18 +13,18 @@
 %% 
 %%
 \ProvidesFile{novel-FileData.sty}%
-[2017/12/27 v1.46.5n LaTeX file (File Data settings)]
+[2017/12/27 v1.46.5p LaTeX file (File Data settings)]
 %% 
 
 
-% \@pdfxSEToff refers to the setting, rather than whether or not it really is off.
-% \@pdfxISoff refers to whether it really is off (perhaps something over-rode the setting).
+% \@pdfxSEToff refers to the setting, rather than whether it really is off.
+% \@pdfxISoff refers to whether it really is off.
 \newif \if@pdfxSEToff % Prior to v. 1.46.1, was \ifpdfx@isOFF.
 \newif \if@pdfxISoff % New in v. 1.46.1.
 
 
 %% FILE DATA (PDF Metadata)
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %%
 % \title{} or \SetTitle{}
 % Copied to File Data at end of Preamble, unless not set.
@@ -35,7 +35,7 @@
 \gdef\title#1{\gdef\@title{#1}}
 \gdef\thetitle{\@title} % for convenience
 \gdef\theTitle{\@title}
-\SetTitle{IMPORTANT: Provide Book Title} % Default as of v. 1.46.1. Formerly empty.
+\SetTitle{IMPORTANT: Provide Book Title} % Default v. 1.46.1. Formerly empty.
 %
 % \author{} or \SetAuthor{}
 % Copied to File Data at end of preamble, unless not set.
@@ -72,7 +72,7 @@
 %
 % Although some other data fields could have been added,
 %   they do not pertain to fiction, especially if your book is print-on-demand.
-% For example, subject, keywords and description are not read from PDF metadata,
+% For example, subject, keywords and description not read from PDF metadata,
 %   you enter them in a form, when you obtain the ISBN.
 % No need to set copyright in metadata, since your book is only for use by
 %   the print service, and is not being distributed as a PDF e-book.
@@ -83,9 +83,9 @@
 
 
 %% SET PDF/X ARGUMENTS
-%% -----------------------------------------------------------------------------
-%% \SetPDFX[Output Intent]{compliance standard} % Does not embed *.icc. Default.
-%% \SetPDFX*[Output Intent]{compliance standard} % Embeds *.icc.
+%% ----------------------------------------------------------------------------
+%% \SetPDFX[Output Intent]{compliance standard} % No embed *.icc. Default.
+%% \SetPDFX*[Output Intent]{compliance standard} % Embed *.icc.
 %% Default up to and including v. 1.46: \SetPDFX{off}
 %% Default as of v. 1.46.1: \SetPDFX[CGATSTR001]{X-1a:2001}
 %
@@ -165,7 +165,8 @@
       \global\@tempTFtrue
       % Data for Output Intent CGATS TR 001:
       \gdef\@OIidentifier{CGATS TR 001} % also called "reference name"
-      \gdef\@OIcondition{SWOP (Publication) printing in USA (Printing process definition: ANSI CGATS.6).}
+      \gdef\@OIcondition{SWOP (Publication) printing in USA %
+        (Printing process definition: ANSI CGATS.6).}
       \gdef\@OIinfo{U.S. Web Coated (SWOP) v2}
       \gdef\@OIregistry{http://www.color.org}
       \gdef\@OIprofile{USWebCoatedSWOP.icc}
@@ -175,7 +176,9 @@
       \global\@tempTFtrue
       % Data for Output Intent FOGRA39:
       \gdef\@OIidentifier{FOGRA39} % also called "reference name"
-      \gdef\@OIcondition{Offset commercial and specialty printing according to ISO 12647-2:2004 / Amd 1, paper type 1 or 2 (gloss or matte coated offset, 115 g/m2), screen frequency 60/cm.}
+      \gdef\@OIcondition{Offset commercial and specialty printing according %
+        to ISO 12647-2:2004 / Amd 1, paper type 1 or 2 (gloss or matte coated %
+        offset, 115 g/m2), screen frequency 60/cm.}
       \gdef\@OIinfo{Coated FOGRA39 (ISO 12647-2:2004)}
       \gdef\@OIregistry{http://www.color.org}
       \gdef\@OIprofile{CoatedFOGRA39.icc}
@@ -185,7 +188,9 @@
       \global\@tempTFtrue
       % Data for Output Intent JC200103:
       \gdef\@OIidentifier{JC200103} % also called "reference name"
-      \gdef\@OIcondition{Japan Color 2001 Coated: Printing process definition: ISO 12647-2:2004, sheet-fed offset printing, positive plates, paper type 3 (coated, 105 gsm), screen frequency 69/cm.}
+      \gdef\@OIcondition{Japan Color 2001 Coated: Printing process %
+        definition: ISO 12647-2:2004, sheet-fed offset printing, positive %
+        plates, paper type 3 (coated, 105 gsm), screen frequency 69/cm.}
       \gdef\@OIinfo{Japan Color 2001 Coated}
       \gdef\@OIregistry{http://www.color.org}
       \gdef\@OIprofile{JapanColor2001Coated.icc}
@@ -196,9 +201,9 @@
       % File name format: novel-YourIntent.clo
       % Setting: \SetPDFX[YourIntent]{compliance}
       % Contents of file: See the above included Output Intent data.
-      \makeatletter % Apparently needed when non-*.sty is input within a command!
+      \makeatletter % Needed when non-*.sty is input within a command!
       \IfFileExists{novel-\@NPDFXOINS.clo}{\input{novel-\@NPDFXOINS.clo}}{%
-        \PackageError{novel-PDFX}{Bad Output Intent argument for \string\SetPDFX}%
+        \PackageError{novel-PDFX}{Bad Output Intent for \string\SetPDFX}%
          {Use filename (without extension) of a file with *.clo extension. ^^J%
           Filename must begin with novel- ^^J%
           Example: File novel-FOGRA39.clo is called as [FOGRA39]. ^^J%

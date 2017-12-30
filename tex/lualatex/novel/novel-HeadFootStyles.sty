@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-HeadFootStyles.sty}%
-[2017/12/27 v1.46.5n LaTeX file (header and footer layouts and styles)]
+[2017/12/27 v1.46.5p LaTeX file (header and footer layouts and styles)]
 %% 
 
 
@@ -26,14 +26,16 @@
 
 %% Note that `style' sometimes means `layout`.
 
-
+% Create flags to know if \fancyhead and \fancyfoot have been defined by user,
+%   somewhere in the Preamble. If not, then pre-defined layout based on
+%   trimsize will be applied \AtEndPreamble.
 \newif \if@StyledHeader % true if user-customized header using \fancyhead
 \newif \if@StyledFooter % true if user-customized footer using \fancyfoot
 \newif \if@DeleteCSline % true when using dropfolioinside
 
 
 %% INITIALIZE FANCYHDR
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% Before now now, space was reserved for header/footer.
 % Start by loading package `fancyhdr' and blanking everything:
 %
@@ -48,7 +50,7 @@
 \LetLtxMacro{\@myfancyfoot}{\fancyfoot}
 \renewcommand\fancyhead[2][]{%
   \global\@StyledHeadertrue%
-  \@myfancyhead[#1]{\toggletrue{@inheadfoot}{\normalsize#2}}% not global
+  \@myfancyhead[#1]{\toggletrue{@inheadfoot}{\normalsize #2}}% not global
 }
 \LetLtxMacro{\@myfancyfoot}{\fancyfoot}
 \renewcommand\fancyfoot[2][]{%
@@ -57,7 +59,7 @@
   \FPmul{\@footraise}{-\@footraise}{\strip@pt\baselineskip}%
   \@myfancyfoot[#1]{%
     \toggletrue{@inheadfoot}% not global
-    \stake\smash{\raisebox{\@footraise pt}{{\normalsize{#2}}}}%
+    \stake\smash{\raisebox{\@footraise pt}{\normalsize #2}}%
   }%
 }
 %
@@ -65,18 +67,13 @@
 % \SetLooseHead looseness factor (fontspec LetterSpace) 0=tight, 50=default
 \gdef\SetLooseHead#1{
   \gdef\@@loosehead{#1}
-  \FPdiv{\@loosehead}{\@@loosehead}{10} % change in method of using fontspec with microtype
-  \FPmin{\@looseheadN}{\@loosehead}{50} % Don't want numbers too loose.
-  \FPdiv{\@looseheadword}{\@loosehead}{30} % new in v. 1.40.3.
+  \FPdiv{\@loosehead}{\@@loosehead}{10} % change method fontspec w/ microtype
+  \FPmin{\@looseheadN}{\@loosehead}{50} % don't want numbers too loose
+  \FPdiv{\@looseheadword}{\@loosehead}{30} % inter-word, new in v. 1.40.3
   \FPadd{\@looseheadword}{\@looseheadword}{1}
 }
 \SetLooseHead{50}
-% Create flags to know if \fancyhead and \fancyfoot have been defined by user,
-%   somewhere in the Preamble. If not, then pre-defined layout based on trimsize
-%   will be applied \AtEndPreamble.
-
-
-
+%%
 
 
 \LetLtxMacro{\@myTempTPS}{\thispagestyle}
@@ -98,21 +95,22 @@
     \@tempTFtrue%
     \@myTempTPS{empty}%
   }{}%
-  \ifthenelse{\equal{#1}{plain}\OR\equal{#1}{fancyplain}\OR\equal{#1}{footer}}{%
+  \ifthenelse{\equal{#1}{plain}%
+  \OR \equal{#1}{fancyplain} \OR \equal{#1}{footer}}{%
     \@tempTFtrue%
-    \if@HasFooter \@myTempTPS{fancyplain}%
-    \else \@myTempTPS{empty}%
+    \if@HasFooter\@myTempTPS{fancyplain}%
+    \else\@myTempTPS{empty}%
     \fi%
   }{}%
   \ifthenelse{\equal{#1}{forcenumber}}{%
     \@tempTFtrue%
-    \if@HasFooter \@myTempTPS{fancyplain}%
-    \else \@myTempTPS{fancynumber}%
+    \if@HasFooter\@myTempTPS{fancyplain}%
+    \else\@myTempTPS{fancynumber}%
     \fi%
   }{}%
   %
   \ifthenelse{\equal{#1}{dropfolioinside}% after \clearpage
-    \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{% compatibility w/ old code
+  \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{% compatibility
     \@tempTFtrue%
     \if@HasFooter%
       \@myTempTPS{fancyplain}%
@@ -139,17 +137,21 @@
   }{}%
   %%
   \if@tempTF\else%
-    \ClassWarning{novel}{^^JPage \pagenumberstyle\space has %
-    \string\thispagestyle{} ^^J%
-    but its argument is not defined. Default substituted. Better fix that. ^^J}%
+    \ClassWarning{novel}{^^JPage \thepage\space has %
+     \string\thispagestyle{} ^^J%
+     but its argument is not defined. Default substituted. Fix that! ^^J}%
   \fi%
 } %
 %
 %% End initialize fancyhdr.
 
+%%
+\gdef\@lsheadtext{\headfont\addfontfeature{LetterSpace=\@loosehead}}
+\gdef\@lspagenum{\headfont\addfontfeature{LetterSpace=\@looseheadN}}
+%%
 
 %% See AtBeginDocument routine in novel.cls:
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 \gdef\@activateHeadFootStyles{ % called AtBeginDocument by novel.cls
   % Pre-configured header/footer styles, unless user over-rode them:
   % \versoheadtext is initialized to \theauthor
@@ -161,86 +163,93 @@
     \NewRectoHeadText{\thetitle} % revised in v. 1.40.3
   }{}
   %
-  % ----------------------------------------------------------------------------
+  % ---------------------------------------------------------------------------
   % IF YOU ARE WRITING YOUR OWN HEADER/FOOTER LAYOUT:
   % Look here for the pre-defined layouts, for use as models.
   % Note that if you write \fancyhead or \fancyfoot in the Preamble,
   % that sets the \@StyledHeader flag, so these codes do not over-ride yours.
   \ifthenelse{\equal{\@HeadFootStyle}{1}}{ % default
     \if@StyledHeader\else
-      \fancyhead[LE]{\makebox[2.5em][l]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}}\@myVersoEmblem%
+      \fancyhead[LE]{%
+        \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
+        \@myVersoEmblem%
       }
-      \fancyhead[RO]{\@myRectoEmblem\makebox[2.5em][r]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}}%
+      \fancyhead[RO]{%
+        \@myRectoEmblem%
+        \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
       }
-      \fancyhead[CE]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}}
-      \fancyhead[CO]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\rectoheadtext}}}
+      \fancyhead[CE]{\@lsheadtext\versoheadtext}
+      \fancyhead[CO]{\@lsheadtext\rectoheadtext}
     \fi
   }{}
   %
   \ifthenelse{\equal{\@HeadFootStyle}{2}}{
     \global\@StyledHeaderfalse
     \if@StyledFooter\else
-      \fancyfoot[LE]{\makebox[2.5em][l]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}}\@myVersoEmblem%
+      \fancyfoot[LE]{%
+        \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
+        \@myVersoEmblem%
       }
-      \fancyfoot[RO]{\@myRectoEmblem\makebox[2.5em][r]{%
-        {\headfont{\addfontfeature{LetterSpace=\@loosehead}\pagenumberstyle}}}%
+      \fancyfoot[RO]{%
+        \@myRectoEmblem%
+        \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
       }
     \fi
   }{}
   %
   \ifthenelse{\equal{\@HeadFootStyle}{3}}{
     \if@StyledFooter\else
-      \fancyfoot[CO,CE]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}%
-      }
+      \fancyfoot[CO,CE]{\@lspagenum\pagenumberstyle}
     \fi
   }{}
   %
   \ifthenelse{\equal{\@HeadFootStyle}{4}}{
     \if@StyledHeader\else
-      \fancyhead[LE]{\makebox[2.5em][l]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}}%
-        \@myVersoEmblem\hspace{1em}%
-        {\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}%
+      \fancyhead[LE]{%
+        \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
+        \@myVersoEmblem%
+        \hspace{1em}%
+        {\@lsheadtext\versoheadtext}%
       }
-      \fancyhead[RO]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\rectoheadtext}}%
-        \hspace{1em}\@myRectoEmblem\makebox[2.5em][r]{{%
-          \headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}}%
+      \fancyhead[RO]{%
+        {\@lsheadtext\rectoheadtext}%
+        \hspace{1em}%
+        \@myRectoEmblem%
+        \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
       }
     \fi
   }{}
   %
   \ifthenelse{\equal{\@HeadFootStyle}{5}}{
     \if@StyledHeader\else
-        \fancyhead[CE]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}}
-        \fancyhead[CO]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\rectoheadtext}}}
+        \fancyhead[CE]{\@lsheadtext\versoheadtext}
+        \fancyhead[CO]{\@lsheadtext\rectoheadtext}
     \fi
     \if@StyledFooter\else
       \fancyfoot[CO,CE]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}%
+        {\@lspagenum\pagenumberstyle}%
       }
     \fi
   }{}
   %
   \ifthenelse{\equal{\@HeadFootStyle}{6}}{
     \if@StyledHeader\else
-      \fancyhead[LE]{\makebox[2.5em][l]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}}\@myVersoEmblem%
+      \fancyhead[LE]{%
+        \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
+        \@myVersoEmblem%
       }
-      \fancyhead[RO]{\@myRectoEmblem\makebox[2.5em][r]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}}%
+      \fancyhead[RO]{%
+        \@myRectoEmblem%
+        \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
       }
-      \fancyhead[RE]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}}
-      \fancyhead[LO]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\rectoheadtext}}}
+      \fancyhead[RE]{\@lsheadtext\versoheadtext}
+      \fancyhead[LO]{\@lsheadtext\rectoheadtext}
     \fi
   }{}
   %
   %
   % END PRE-DEFINED LAYOUTS AND STYLES.
-  % ----------------------------------------------------------------------------
+  % ---------------------------------------------------------------------------
   %
   % Substitute for \thispagestyle{plain}
   \fancypagestyle{fancyplain}{ % if has footer
@@ -248,18 +257,20 @@
     \renewcommand\footrulewidth{0pt}
     \fancyhead[LO,RE,LE,RO,CE,CO]{}
     \fancyfoot[LO,RE,LE,RO,CE,CO]{}
-    \fancyfoot[CO,CE]{{\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}}
+    \fancyfoot[CO,CE]{\@lspagenum\pagenumberstyle}
   }
   % Not a user command, use plain or fancyplain:
   \fancypagestyle{fancynumber}{ % if has header but not footer
     \renewcommand\headrulewidth{0pt}
     \renewcommand\footrulewidth{0pt}
     \fancyhead[LO,RE,LE,RO,CE,CO]{}
-    \fancyhead[LE]{\makebox[2.5em][l]{%
-      {\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}}\@myVersoEmblem%
+    \fancyhead[LE]{%
+      \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
+      \@myVersoEmblem%
     }
-    \fancyhead[RO]{\@myRectoEmblem\makebox[2.5em][r]{%
-      {\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}}%
+    \fancyhead[RO]{%
+      \@myRectoEmblem%
+      \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
     }
     \fancyfoot[LO,RE,LE,RO,CE,CO]{}
   }
@@ -272,24 +283,26 @@
 
 
 %% DROPFOLIO
-%% -----------------------------------------------------------------------------
-% \@dropfolioinside reduces the textblock height by one lineskip. At the bottom,
+%% ----------------------------------------------------------------------------
+% \@dropfolioinside reduces the textblock height by one lineskip. At bottom,
 %   where the last line would have been, the styled page number is centered.
 \newlength\@dfpgnumwidth % adjusts horizontal position of drop folio
 \newcommand\@dropfolioinside{%
   \enlargethispage{-\nbs}%
-  \setlength\@dfpgnumwidth{\widthof{{\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}}}% local
+  \setlength\@dfpgnumwidth{\widthof{\@lspagenum\pagenumberstyle}}% local
   \ifthenelse{\equal{\@AlignTrim}{corner}}{%
-    \gsetlength\@tempLength{\dimexpr\@BottomMargin+\paperheight-\@TrimHeight}% local
+    \gsetlength\@tempLength{\dimexpr\@BottomMargin+\paperheight-\@TrimHeight}
   }{%
-    \gsetlength\@tempLength{\dimexpr\@BottomMargin+0.5\paperheight-0.5\@TrimHeight}% local
+    \gsetlength\@tempLength{% local
+      \dimexpr\@BottomMargin+0.5\paperheight-0.5\@TrimHeight%
+    }
   }%
   \ifodd\c@page%
     \AddToShipoutPicture*{%
       \AtPageLowerLeft{%
         \hspace{\dimexpr\oddsidemargin+72.27pt-0.5\@dfpgnumwidth}%
         \charscale[1,0.5\textwidth,\@tempLength]{%
-          {{\headfont\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}%
+          {\@lspagenum\pagenumberstyle}%
         }%
       }%
     }%
@@ -298,7 +311,7 @@
       \AtPageLowerLeft{%
         \hspace{\dimexpr\evensidemargin+72.27pt-0.5\@dfpgnumwidth}%
         \raisebox{\@tempLength}{%
-          {{\headfont\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}%
+          {\@lspagenum\pagenumberstyle}%
         }%
       }%
     }%
@@ -311,18 +324,16 @@
 % \@dropfoliobeneath does not change the textblock height. The styled page
 %   number is centered where an extra line would be, within the bottom margin.
 \newcommand\@dropfoliobeneath{%
-  \gsetlength\@dfpgnumwidth{\widthof{{\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}}}%
+  \gsetlength\@dfpgnumwidth{\widthof{\@lspagenum\pagenumberstyle}}%
   \AddToShipoutPicture*{%
     \AtPageLowerLeft{%
       \gsetlength\@tempLength{\Trim@Bottom+\@BottomMargin-\nbs}%
       \ifodd\c@page%
-        \hspace{\dimexpr\oddsidemargin+72.27pt+0.5\textwidth-0.5\@dfpgnumwidth}%
+        \hspace{\dimexpr\oddsidemargin+72.27pt+.5\textwidth-.5\@dfpgnumwidth}%
       \else%
-        \hspace{\dimexpr\evensidemargin+72.27pt+0.5\textwidth-0.5\@dfpgnumwidth}%
+        \hspace{\dimexpr\evensidemargin+72.27pt+.5\textwidth-.5\@dfpgnumwidth}%
       \fi%
-      \charscale[1,0pt,\@tempLength]%
-        {{\headfont{\addfontfeature{LetterSpace=\@looseheadN}\pagenumberstyle}}%
-      }%
+      \charscale[1,0pt,\@tempLength]{\@lspagenum\pagenumberstyle}%
     }%
   }%
 } % end \@dropfoliobeneath
@@ -351,8 +362,8 @@
   \gsetlength\@hfloose{\@tempN em}
   \gdef\rectoheadtext{#1}
 }
-\let\SetRectoHeadText\NewRectoHeadText\relax % for convenience
-\let\RenewRectoHeadText\NewRectoHeadText\relax % for convenience
+\LetLtxMacro\SetRectoHeadText\NewRectoHeadText\relax % for convenience
+\LetLtxMacro\RenewRectoHeadText\NewRectoHeadText\relax % for convenience
 %
 %%
 

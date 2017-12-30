@@ -13,13 +13,13 @@
 %% 
 %%
 \ProvidesFile{novel-Footnotes.sty}%
-[2017/12/27 v1.46.5n LaTeX file (commands for footnotes and endnotes)]
+[2017/12/27 v1.46.5p LaTeX file (commands for footnotes and endnotes)]
 %%
 
 
 
 %% FOOTNOTES
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 % In `novel' class, you may place footnotes at the botom of the textblock.
 % The markers may be symbolic (default begins with asterisk), or
 % set so that the asterisk is not used, or the markers may be numbers,
@@ -86,7 +86,7 @@
   }%
   \gdef\footnoterule{\@fourem}%
   \begingroup%
-  \def\footnotesize{% Not gdef. Only here in footnote. Calculated during layout.
+  \def\footnotesize{% Not gdef. Local to footnote. Calculated during layout.
     \@setfontsize\footnotesize{\@myfootnotesizeN pt}{\@myfootnoteskipN pt}%
   }%
   \unskip\@myoldfootnote{#2}%
@@ -110,22 +110,50 @@
   {%
     \global\togglefalse{@placedfootnotenumber}%
     \ifthenelse{\equal{\@myfnsymbols}{*}}{%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{1}}{\charscale[1,0pt,-\@twast]{*}}{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{2}}{\charscale[0.8,0pt,-\@twdag]{†}}{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{3}}{\charscale[0.8,0pt,-\@twdbldag]{‡}}{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{4}}{\charscale[0.8,0pt,-\@twsect]{§}}{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{5}}{\charscale[1,0pt,-\@twast]{**}}{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{6}}{\charscale[0.8,0pt,-\@twdag]{††}}{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{7}}{\charscale[0.8,0pt,-\@twdbldag]{‡‡}}{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{8}}{\charscale[0.8,0pt,-\@twsect]{§§}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{1}}{%
+        \charscale[1,0pt,-\@twast]{*}%
+      }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{2}}{%
+        \charscale[0.8,0pt,-\@twdag]{†}%
+      }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{3}}{%
+        \charscale[0.8,0pt,-\@twdbldag]{‡}%
+      }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{4}}{%
+        \charscale[0.8,0pt,-\@twsect]{§}%
+       }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{5}}{%
+        \charscale[1,0pt,-\@twast]{**}%
+      }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{6}}{%
+        \charscale[0.8,0pt,-\@twdag]{††}%
+       }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{7}}{%
+        \charscale[0.8,0pt,-\@twdbldag]{‡‡}%
+      }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{8}}{%
+        \charscale[0.8,0pt,-\@twsect]{§§}%
+      }{}%
     }{}%
     \ifthenelse{\equal{\@myfnsymbols}{†}}{%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{1}}{\charscale[0.8,0pt,-\@twdag]{†}}{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{2}}{\charscale[0.8,0pt,-\@twdbldag]{‡}}{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{3}}{\charscale[0.8,0pt,-\@twsect]{§}}{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{4}}{\charscale[0.8,0pt,-\@twdag]{††}}{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{5}}{\charscale[0.8,0pt,-\@twdbldag]{‡‡}}{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{6}}{\charscale[0.8,0pt,-\@twsect]{§§}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{1}}{%
+        \charscale[0.8,0pt,-\@twdag]{†}%
+      }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{2}}{%
+        \charscale[0.8,0pt,-\@twdbldag]{‡}%
+       }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{3}}{%
+        \charscale[0.8,0pt,-\@twsect]{§}%
+      }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{4}}{%
+        \charscale[0.8,0pt,-\@twdag]{††}%
+      }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{5}}{%
+        \charscale[0.8,0pt,-\@twdbldag]{‡‡}%
+      }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{6}}{%
+        \charscale[0.8,0pt,-\@twsect]{§§}%
+      }{}%
     }{}%
   }{%
     \global\toggletrue{@placedfootnotenumber}%
@@ -172,7 +200,7 @@
 
 
 %% ENDNOTES
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 % \endnote only places a marker. It does not store a note for later use.
 % Since \endnote gobbles following space, in most cases use \endnote{}.
 % The \memo{} command is helpful, to make a non-printing note to yourself.
@@ -188,7 +216,9 @@
 {%
 \global\toggletrue{@gotendnotes}%
 \stepcounter{@endnotecount}\sups{\arabic{@endnotecount}}%
-\long\edef\@endnotelist{\@endnotelist\space (\arabic{@endnotecount},p.\thepage)}%
+\long\edef\@endnotelist{%
+  \@endnotelist\space (\arabic{@endnotecount},p.\thepage)%
+}%
 }
 %%
 % \endnotetext{ID}{text} where ID is (usually) the endnote number.
@@ -197,12 +227,11 @@
 % If ID is space or empty, then the entire text is block-indented. This is
 %   the method for continuing a prior endnote to a new paragraph. The text
 %   may begin with \forceindent, according to your needs.
-\DeclareDocumentCommand \endnotetext { m +m }% xparse allows \end... commands!
-{
+\DeclareDocumentCommand \endnotetext { m +m }{% xparse allows \end... commands!
   \ifthenelse{\equal{#1}{\space}\OR\equal{#1}{}}%
     {\noindent\hangindent=\parindent\flexbox{\space}#2\par}%
     {\noindent\hangindent=\parindent\flexbox{#1.}#2\par}%
-}
+} %
 %% end endnotes
 
 
@@ -215,7 +244,7 @@
 
 
 %% ATENDDOCUMENT
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% Write a list of endnote (number,page) into log file,
 % and Big Bad Warning if numerical footnotes and endnotes both used:
 \AtEndDocument{%

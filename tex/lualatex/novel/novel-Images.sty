@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Images.sty}%
-[2017/12/27 v1.46.5n LaTeX file (image placement)]
+[2017/12/27 v1.46.5p LaTeX file (image placement)]
 %%
 
 
@@ -69,7 +69,7 @@
 %
 % \imagewidth and \imageheight may be used for offsets, or for any other
 %   purpose once the image is placed. These lengths retain their values
-%   until a subsequent image is placed, not including anything in header/footer.
+%   until a subsequent image is placed, not including in header/footer.
 %
 \def\Aring{Å} % has typical maximum accented character height in Latin-1.
 %
@@ -135,7 +135,8 @@
   \iftoggle{@inheadfoot}{}{%
     \setlength\imageheight{\@imageheight}%
     \global\imageheight=\imageheight%
-    \typeout{^^JClass~`novel'~Info:~An~image~was~placed~on~page~\thepage.\space ^^J%
+    \typeout{^^JClass~`novel'~Info:~%
+      An~image~was~placed~on~page~\thepage.\space ^^J%
       Review~layout~to~ensure~that~it~does~not~overflow~into~margins. ^^J}%
   }%
   %
@@ -233,8 +234,10 @@
   \global\@imageheight=\@imageheight%
   \setlength\@imagehoffset{\@myx}%
   \IfBeginWith{\@myy}{b}{%
-    \ClassError{novel}{Cannot~use~voffset~`b'~in~\stringBlockImage,~page~\thepage}%
-    {The~`b'~voffset~only~works~with~\string\InlineImage\space,~not~\string\BlockImage.}
+    \ClassError{novel}{Cannot~use~voffset~`b'~on~%
+      \stringBlockImage,~page~\thepage}%
+     {The~`b'~voffset~only~works~with~\string\InlineImage\space,~%
+      not~\string\BlockImage.}
   }{%
     \setlength\@imagevoffset{-\@imageheight}%
     \addtolength\@imagevoffset{\@myy}%

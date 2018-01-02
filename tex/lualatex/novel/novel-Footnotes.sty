@@ -13,7 +13,47 @@
 %% 
 %%
 \ProvidesFile{novel-Footnotes.sty}%
-[2017/12/27 v1.46.5p LaTeX file (commands for footnotes and endnotes)]
+[2018/01/02 v1.46.5q LaTeX file (commands for footnotes and endnotes)]
+%%
+
+
+
+
+
+%% Markers (superscript, subscripts):
+\newtoggle{@usesymbolmark} % true when footnote markers are symbolic
+\newtoggle{@realmarker} % true when OT features sups, sinf, subs requested
+%
+% \SetMarkerStyle does two things.
+% Option real: OT features sups, sinf, subs requested. Fake if not available.
+% Option fake: Always fake OT features sups, sinf, subs.
+% Mandatory: asterisk, dagger, number. Pertains to footnote markers only.
+% No matter real or fake, the asterisk symbol is always real, and the
+%   dagger, dbldagger, and section (when used as footnote markers)
+%   are always partially faked.
+\newcommand\SetMarkerStyle[2][real]{
+  \def\@goodfnm{no}
+  \ifthenelse{\equal{#2}{asterisk}}{%
+    \def\@goodfnm{yes}\global\toggletrue{@usesymbolmark}%
+    \gdef\@myfnsymbols{*}}{}
+  \ifthenelse{\equal{#2}{dagger}}{%
+    \def\@goodfnm{yes}\global\toggletrue{@usesymbolmark}%
+    \gdef\@myfnsymbols{†}}{}
+  \ifthenelse{\equal{#2}{number}}{%
+    \def\@goodfnm{yes}\global\togglefalse{@usesymbolmark}}{}
+  \def\@goodfnk{no}
+  \ifthenelse{\equal{#1}{real}\OR\equal{#1}{}}{%
+    \def\@goodfnk{yes}\global\toggletrue{@realmarker}}{}
+  \ifthenelse{\equal{#1}{fake}}{%
+    \def\@goodfnk{yes}\global\togglefalse{@realmarker}}{}
+  \ifthenelse{\equal{\@goodfnm}{no}\OR\equal{\@goodfnk}{no}}{%
+    \ClassError{novel}{Bad choice for \string\SetMarkers}%
+    {Optional: real, fake. Required: asterisk, dagger, number.}%
+  }{}
+}
+\LetLtxMacro{\SetMarkers}{\SetMarkerStyle} % backward compatibilty pre-v1.40.3.
+%
+\SetMarkerStyle[real]{asterisk} % default
 %%
 
 
@@ -241,6 +281,30 @@
 %% Pertains to some standard LaTeX footnote code:
 \AtBeginShipout{\gdef\@fnafter{}}
 %%
+
+
+\gdef\@ActivateFootnoteMarkers{% called by `novel.cls' \AtBeginDocument
+  % Pertains to novel-footnotes.sty:
+  \LetLtxMacro\SetMarkerStyle\relax
+  \gsetlength\footnotesep{0.8\nbs}
+  % Adjusted position of footnote markers. Must wait for main font size:
+  \gsetlength\@twast{\heightof{*}-\normalAringheight}
+  \gsetlength\@twdag{\heightof{†}}
+  \gsetlength\@twdag{0.8\@twdag-\normalAringheight}
+  \gsetlength\@twdbldag{\heightof{‡}}
+  \gsetlength\@twdbldag{0.8\@twdbldag-\normalAringheight}
+  \gsetlength\@twsect{\heightof{§}}
+  \gsetlength\@twsect{0.8\@twsect-\normalAringheight}
+  \gsetlength\@tweight{\heightof{8}}%
+  \gsetlength\@tweight{0.8\@tweight-\normalAringheight}%
+  % Must wait to see how \SetFootnoteMarker was used:
+  \ifthenelse{\equal{\@myfnsymbols}{*}}{\setcounter{@maxfnsymbol}{8}}{}
+  \ifthenelse{\equal{\@myfnsymbols}{†}}{\setcounter{@maxfnsymbol}{6}}{}
+}% end \@ActivateFootnoeMarkers
+
+
+
+
 
 
 %% ATENDDOCUMENT

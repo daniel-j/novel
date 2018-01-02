@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-ChapterScene.sty}%
-[2017/12/27 v1.46.5p LaTeX file (chapter and scene macros)]
+[2018/01/02 v1.46.5q LaTeX file (chapter and scene macros)]
 %%
 
 
@@ -25,6 +25,82 @@
     You must make your own title pages! See documentation.}%
 }
 %
+
+
+
+
+
+
+
+
+
+
+
+
+% Each new chapter generally has its own header/footer style. This allows a
+% default setting when chapters begin with ChapterStart environment:
+\gdef\SetChapterStartStyle#1{% from v. 1.40.3
+  \@tempTFfalse%
+  \ifthenelse{\equal{#1}{fancy}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{#1}{empty}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{#1}{plain} %
+  \OR \equal{#1}{fancyplain} \OR \equal{#1}{footer}}{%
+    \@tempTFtrue%
+  }{}%
+  \ifthenelse{\equal{#1}{forcenumber}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{#1}{dropfolioinside} %
+  \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{%
+    \@tempTFtrue%
+  }{}%
+  \ifthenelse{\equal{#1}{dropfoliobeneath}}{\@tempTFtrue}{}%
+  \if@tempTF%
+    \gdef\@setchapterstart{#1}%
+  \else%
+    \ClassError{novel}{Invalid choice for \string\SetChapterStartStyle}%
+     {Choose: fancy, empty, plain, footer, forcenumber, %
+      dropfolioinside, dropfoliobeneath.}%
+  \fi%
+}
+\let\SetChapterStart\SetChapterStartStyle\relax % deprecated from v1.40.3.
+\SetChapterStartStyle{footer} % default
+% New in version 1.40.2:
+\gdef\SetChapterStartHeight#1{%
+  \FPifint{#1}\else%
+    \ClassError{novel}{\string\SetChapterStartHeight\space integer >= 4}%
+    {Height of ChapterStart must be integer, greater than or equal to 4.}%
+  \fi%
+  \FPiflt{#1}{4}%
+    \ClassError{novel}{\string\SetChapterStartHeight\space integer >= 4}%
+    {Height of ChapterStart must be integer, greater than or equal to 4.}%
+  \else\fi%
+  \gdef\@setchapterstartheight{#1}%
+}
+\SetChapterStartHeight{10} % default
+% See novel.cls for the accompanying AtBeginDocument routine.
+% Scene breaks:
+% \SetScenebreakIndent controls whether line after \scenebreak, \sceneline, 
+%   or \scenestars will be indented. Set true or false, default false.
+%% End reserve space for header/footer and set default ChapterStart
+\newif\if@IndentAfterScenebreak
+\newcommand\SetScenebreakIndent[1]{% true or false, default false.
+  \@tempTFfalse
+  \ifthenelse{\equal{#1}{true}}{%
+    \@tempTFtrue
+    \global\@IndentAfterScenebreaktrue
+  }{}%
+  \ifthenelse{\equal{#1}{false}}{%
+    \@tempTFtrue
+    \global\@IndentAfterScenebreakfalse
+  }{}%
+  \if@tempTF\else%
+    \ClassError{novel}{Bad argument for \string\SetScenebreakIndent\space}%
+    {\string\SetScenebreakIndent\space argument must be true or false.}%
+  \fi%
+}
+\SetScenebreakIndent{false} % default
+% Deprected from v. 1.40.3:
+\newcommand\IndentAfterScenebreak{\global\@IndentAfterScenebreaktrue}
+
 
 
 %% SCENE CHANGES
@@ -265,6 +341,28 @@
   \clearpage
 }
 %
+
+
+%%
+\gdef\@ActivateChapterScene{% called by `novel.cls' \AtBeginDocument
+  % Activate user choice of whether or not to indent after scenebreak commands:
+  \if@IndentAfterScenebreak\else
+    \NoIndentAfterCmd{\scenebreak}
+    \NoIndentAfterCmd{\sceneline}
+    \NoIndentAfterCmd{\scenestars}
+  \fi
+}% end \@ActivateChapterScene
+%%
+
+
+%% Neutralize settings commands:
+\gdef\@DisableChapterSceneSettings{% called by `novel.cls' \AtBeginDocument
+  \LetLtxMacro\SetHeadFootStyle\relax
+  \LetLtxMacro\IndentAfterScenebreak\relax
+  \LetLtxMacro\SetScenebreakIndent\relax
+}% end \@DisableChapterSceneSettings
+%%
+
 
 
 

@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-FileData.sty}%
-[2017/12/27 v1.46.5p LaTeX file (File Data settings)]
+[2018/01/02 v1.46.5q LaTeX file (File Data settings)]
 %% 
 
 
@@ -217,6 +217,18 @@
 } % end \@setpdfx
 %
 \SetPDFX[CGATSTR001]{X-1a:2001} % Default, from v. 1.46.1. Formerly off.
+%%
+
+
+%% Neutralize file data settings:
+\gdef\@DisableFileDataSettings{% called by `novel.cls' \AtBeginDocument
+  \let\title\relax
+  \let\author\relax
+  \let\subtitle\relax
+  \LetLtxMacro\SetAuthor\relax
+  \LetLtxMacro\SetTitle\relax
+  \LetLtxMacro\SetSubtitle\relax
+}% end \@DisableFileDataSettings
 %%
 
 

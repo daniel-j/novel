@@ -13,21 +13,12 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/12/27 v1.46.5p LaTeX file (layout settings)]
+[2018/01/02 v1.46.5q LaTeX file (layout settings)]
 %%
 
 
 %% Note that nearly all layout settings are pre-configured based on Trim Size.
 %% In general, these user commands may be used to over-ride the presets.
-
-
-%%
-\gdef\@HeadFootStyle{1} % default: header but not footer
-\gdef\@myVersoEmblem{} % no default emblem
-\gdef\@myRectoEmblem{} % no default emblem
-\gdef\novel@checkfeatures#1{} % re-defined below
-%
-%%
 
 
 
@@ -155,6 +146,21 @@
 \LetLtxMacro\ReworkMargin{\ReworkMargins}\relax % for those who mis-type
 %%
 
+%% When \Rework, should result honor new margins (if possible), or should
+%    result maintain original aspect ratio?
+\newif \if@AspectPriority
+\newcommand\ReworkPriority[1]{%
+  \@tempTFfalse
+  \ifthenelse{\equal{#1}{aspect}}{\@AspectPrioritytrue\@tempTFtrue}{}
+  \ifthenelse{\equal{#1}{margins}}{\@AspectPriorityfalse\@tempTFtrue}{}
+  \ifthenelse{\equal{#1}{margin}}{\@AspectPriorityfalse\@tempTFtrue}{}
+  \if@tempTF\else
+    \ClassError{novel}{Bad choice for \string\ReworkPriority}%
+      {Rework priority choices: aspect, margins (default margins).}%
+  \fi
+}
+\ReworkPriority{margins} % default
+%%
 
 %% New in version 1.48: Unsafe Zone (opposite of "safe area").
 % This feature only applies with class options `draft,shademargins'
@@ -296,264 +302,17 @@
 
 
 
-%% SET HEADER/FOOTER STYLE AND RESERVE SPACE FOR HEADER/FOOTER
-%% ----------------------------------------------------------------------------
-% There are several pre-configured header/footer styles, addressing every
-%   situation likely to be seen in popular fiction. The style details are
-%   coded, using `fancyhdr' syntax, in novel-HeadFootStyles.sty.
-% Each pre-configured style will set these booleans true or false:
-\newif \if@HasHeader % true if global page style has header
-\newif \if@HasFooter % true if global page style has footer
-% If you wish to create a custom head/foot style, you must first choose
-%   one of the pre-configured styles, then customize it. That way,
-%   the layout engine knows whether header or footer are present.
-\gdef\SetHeadFootStyle#1{%
-  \if@coverart
-    \gdef\@HeadFootStyle{0} % required
-    \ifthenelse{\equal{#1}{0}}{}{%
-      \ClassWarning{novel}{^^JClass option `coverart' does not allow header/footer. Ignored. ^^J}
-    }%
-  \else
-    \gdef\@HeadFootStyle{1} % default
-    \@tempTFfalse
-    \ifthenelse{\equal{#1}{0}}{%
-      \global\@HasHeaderfalse\global\@HasFooterfalse\@tempTFtrue%
-    }{}
-    \ifthenelse{\equal{#1}{1}}{%
-      \global\@HasHeadertrue\global\@HasFooterfalse\@tempTFtrue%
-    }{}
-    \ifthenelse{\equal{#1}{2}}{%
-      \global\@HasHeaderfalse\global\@HasFootertrue\@tempTFtrue%
-    }{}
-    \ifthenelse{\equal{#1}{3}}{%
-      \global\@HasHeaderfalse\global\@HasFootertrue\@tempTFtrue%
-    }{}
-    \ifthenelse{\equal{#1}{4}}{%
-      \global\@HasHeadertrue\global\@HasFooterfalse\@tempTFtrue%
-    }{}
-    \ifthenelse{\equal{#1}{5}}{%
-      \global\@HasHeadertrue\global\@HasFootertrue\@tempTFtrue%
-    }{}
-    \ifthenelse{\equal{#1}{6}}{%
-      \global\@HasHeadertrue\global\@HasFootertrue\@tempTFtrue%
-    }{}
-    % Ensure that user choice was on the allowed list:
-    \if@tempTF\else
-      \ClassError{novel}{Invalid choice for \string\SetHeadFootStyle}%
-        {\string\SetHeadFootStyle\space needs choice of 0,1,2,3,4,5,6, ^^J%
-        even if you wish to customize using fancyhdr syntax.}%
-    \fi
-    \gdef\@HeadFootStyle{#1}
-  \fi
-}%
-\let\SetHeadStyle\SetHeadFootStyle\relax % deprecated
-%
-% \HeadJump is a number from 1 to 3 (may be decimal). It measures the
-%   distance from baseline of header text, to first baseline of main text,
-%   then divides by the normal baseline.
-% So, a \HeadJump of 1 means that the header text is positioned exactly
-%   one line above main text (unlikely). A value of 2 skips a whole line.
-% The default value is 1.5, which is often used in popular fiction.
-% No matter what value is set, it will be re-set to 0 later, if the
-%   choice of head/foot style does not have a header.
-% Likewise for \FootJump, measuring from baseline of lowermost main text,
-%   to baseline of footer text.
-\gdef\SetHeadJump#1{%
-  \IfDecimal{#1}{%
-    \FPiflt{#1}{1}
-      \ClassError{novel}{\string\SetHeadJump\space must be at least 1}%
-      {\string\SetHeadJump\string from 1 to 3, may be decimal.}%
-    \fi
-    \FPifgt{#1}{3}
-      \ClassError{novel}{\string\SetHeadJump\space must not exceed 3}%
-      {\string\SetHeadJump\string from 1 to 3, may be decimal.}%
-    \fi
-    \gdef\@HeadJump{#1}
-  }{%
-    \ClassError{novel}{Unable to parse \string\SetHeadJump\space argument}%
-    {Needs integer or decimal, but not ending in decimal point or comma. ^^J%
-     Must be a number from 1 to 3, but may not be a macro.}%
-  }%
-}
-\SetHeadJump{1.5} % default
-%
-\gdef\SetFootJump#1{%
-  \IfDecimal{#1}{%
-    \FPiflt{#1}{1}
-      \ClassError{novel}{\string\SetFootJump\space must be at least 1}%
-      {\string\SetFootJump\string from 1 to 3, may be decimal.}%
-    \fi
-    \FPifgt{#1}{3}
-      \ClassError{novel}{\string\SetFootJump\space must not exceed 3}%
-      {\string\SetFootJump\string from 1 to 3, may be decimal.}%
-    \fi
-    \gdef\@FootJump{#1}
-  }{%
-    \ClassError{novel}{Unable to parse \string\SetFootJump\space argument}%
-    {Needs integer or decimal, but not ending in decimal point or comma. ^^J%
-     Must be a number from 1 to 3, but may not be a macro.}%
-  }%
-}
-\SetFootJump{1.5} % default
-%
-%% end set style and reserve space for header/footer.
 
 
 
 
 
 
-%
-% See docs for what these emblems do, if used:
-\newcommand\SetEmblems[2]{ % verso, recto
-  \gdef\@myVersoEmblem{{\headfont #1}}
-  \gdef\@myRectoEmblem{{\headfont #2}}
-}
-\let\SetEmblem\SetEmblems% for convenience
-% If you want something fancier than \thepage:
-\gdef\SetPageNumberStyle#1{%
-  \gdef\pagenumberstyle{{\addfontfeature{Letters=ResetAll}#1}}%
-}
-
-% See novel.cls for the accompanying AtBeginDocument routine.
 
 
 
 
 
-% Each new chapter generally has its own header/footer style. This allows a
-% default setting when chapters begin with ChapterStart environment:
-\gdef\SetChapterStartStyle#1{% from v. 1.40.3
-  \@tempTFfalse%
-  \ifthenelse{\equal{#1}{fancy}}{\@tempTFtrue}{}%
-  \ifthenelse{\equal{#1}{empty}}{\@tempTFtrue}{}%
-  \ifthenelse{\equal{#1}{plain} %
-  \OR \equal{#1}{fancyplain} \OR \equal{#1}{footer}}{%
-    \@tempTFtrue%
-  }{}%
-  \ifthenelse{\equal{#1}{forcenumber}}{\@tempTFtrue}{}%
-  \ifthenelse{\equal{#1}{dropfolioinside} %
-  \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{%
-    \@tempTFtrue%
-  }{}%
-  \ifthenelse{\equal{#1}{dropfoliobeneath}}{\@tempTFtrue}{}%
-  \if@tempTF%
-    \gdef\@setchapterstart{#1}%
-  \else%
-    \ClassError{novel}{Invalid choice for \string\SetChapterStartStyle}%
-     {Choose: fancy, empty, plain, footer, forcenumber, %
-      dropfolioinside, dropfoliobeneath.}%
-  \fi%
-}
-\let\SetChapterStart\SetChapterStartStyle\relax % deprecated from v1.40.3.
-\SetChapterStartStyle{footer} % default
-% New in version 1.40.2:
-\gdef\SetChapterStartHeight#1{%
-  \FPifint{#1}\else%
-    \ClassError{novel}{\string\SetChapterStartHeight\space integer >= 4}%
-    {Height of ChapterStart must be integer, greater than or equal to 4.}%
-  \fi%
-  \FPiflt{#1}{4}%
-    \ClassError{novel}{\string\SetChapterStartHeight\space integer >= 4}%
-    {Height of ChapterStart must be integer, greater than or equal to 4.}%
-  \else\fi%
-  \gdef\@setchapterstartheight{#1}%
-}
-\SetChapterStartHeight{10} % default
-% See novel.cls for the accompanying AtBeginDocument routine.
-% Scene breaks:
-% \SetScenebreakIndent controls whether line after \scenebreak, \sceneline, 
-%   or \scenestars will be indented. Set true or false, default false.
-%% End reserve space for header/footer and set default ChapterStart
-\newif\if@IndentAfterScenebreak
-\newcommand\SetScenebreakIndent[1]{% true or false, default false.
-  \@tempTFfalse
-  \ifthenelse{\equal{#1}{true}}{%
-    \@tempTFtrue
-    \global\@IndentAfterScenebreaktrue
-  }{}%
-  \ifthenelse{\equal{#1}{false}}{%
-    \@tempTFtrue
-    \global\@IndentAfterScenebreakfalse
-  }{}%
-  \if@tempTF\else%
-    \ClassError{novel}{Bad argument for \string\SetScenebreakIndent\space}%
-    {\string\SetScenebreakIndent\space argument must be true or false.}%
-  \fi%
-}
-\SetScenebreakIndent{false} % default
-% Deprected from v. 1.40.3:
-\newcommand\IndentAfterScenebreak{\global\@IndentAfterScenebreaktrue}
-
-
-%% New in version 1.2: cover image.
-\newcommand\SetCoverImage[1]{
-  \@tempTFfalse
-  \IfSubStr{#1}{jpg}{\@tempTFtrue}{}
-  \IfSubStr{#1}{jpeg}{\@tempTFtrue}{}
-  \IfSubStr{#1}{JPG}{\@tempTFtrue}{}
-  \IfSubStr{#1}{JPEG}{\@tempTFtrue}{}
-  \if@tempTF%
-    \gdef\novelcoverimage{#1}
-  \else%
-    \ClassError{novel}{Cover image has wrong file extension}%
-    {Cover image must be jpg, JPG, jpeg, or JPEG.}
-  \fi%
-}
-%%
-
-
-%% New in version 1.44: flexible images (without built-in resolution dpi)
-\gdef\@novimgres{300} % default (can only be set once)
-\gdef\@novereserror{%
-  \ClassError{novel}{\string\SetFlexResolution\space bad value}%
-  {Resolution must be integer from 200 to 9600. Default 300.}%
-}
-\newcommand\SetFlexResolution[1]{
-  \IfInteger{#1}{ %
-    \FPiflt{#1}{200}\@novereserror\else\fi %
-    \FPifgt{#1}{9600}\@novereserror\else\fi %
-    \gdef\@novimgres{#1} %
-  }{\@novreserror}
-}
-%
-
-
-%% Markers (superscript, subscripts):
-\newtoggle{@usesymbolmark} % true when footnote markers are symbolic
-\newtoggle{@realmarker} % true when OT features sups, sinf, subs requested
-%
-% \SetMarkerStyle does two things.
-% Option real: OT features sups, sinf, subs requested. Fake if not available.
-% Option fake: Always fake OT features sups, sinf, subs.
-% Mandatory: asterisk, dagger, number. Pertains to footnote markers only.
-% No matter real or fake, the asterisk symbol is always real, and the
-%   dagger, dbldagger, and section (when used as footnote markers)
-%   are always partially faked.
-\newcommand\SetMarkerStyle[2][real]{
-  \def\@goodfnm{no}
-  \ifthenelse{\equal{#2}{asterisk}}{%
-    \def\@goodfnm{yes}\global\toggletrue{@usesymbolmark}%
-    \gdef\@myfnsymbols{*}}{}
-  \ifthenelse{\equal{#2}{dagger}}{%
-    \def\@goodfnm{yes}\global\toggletrue{@usesymbolmark}%
-    \gdef\@myfnsymbols{†}}{}
-  \ifthenelse{\equal{#2}{number}}{%
-    \def\@goodfnm{yes}\global\togglefalse{@usesymbolmark}}{}
-  \def\@goodfnk{no}
-  \ifthenelse{\equal{#1}{real}\OR\equal{#1}{}}{%
-    \def\@goodfnk{yes}\global\toggletrue{@realmarker}}{}
-  \ifthenelse{\equal{#1}{fake}}{%
-    \def\@goodfnk{yes}\global\togglefalse{@realmarker}}{}
-  \ifthenelse{\equal{\@goodfnm}{no}\OR\equal{\@goodfnk}{no}}{%
-    \ClassError{novel}{Bad choice for \string\SetMarkers}%
-    {Optional: real, fake. Required: asterisk, dagger, number.}%
-  }{}
-}
-\LetLtxMacro{\SetMarkers}{\SetMarkerStyle} % backward compatibilty pre-v1.40.3.
-%
-\SetMarkerStyle[real]{asterisk} % default
-%%
 
 
 %% Sets the gap between cropmarks and trim area:
@@ -568,15 +327,6 @@
 \SetCropmarkGap{0.125in} % default
 %%
 
-
-
-%% Fake \microtypesetup until package is loaded later:
-\newif \if@MicrotypeSet
-\gdef\microtypesetup#1{
-  \gdef\@mymicrotypesetup{#1} % used in novel-FontDefaults.sty
-  \global\@MicrotypeSettrue
-}
-%%
 
 
 
@@ -649,182 +399,9 @@
 %% End miscellaneous settings.
 
 
-% The following might become unnecessary if fontspec adds the capability to
-% disable keys. For now: Color and Opacity cannot be used as font features,
-%   for a black/white printed book. Alas, fontspec over-rules xcolor.
-% So, this code over-rules fontspec:
-\gdef\novel@checkfeatures#1{%
-  \def\@featuresareok{yes}
-  \IfSubStr{#1}{Color}{\def\@featuresareok{no}}{}%
-  \IfSubStr{#1}{Colour}{\def\@featuresareok{no}}{}%
-  \IfSubStr{#1}{color}{\def\@featuresareok{no}}{}%
-  \IfSubStr{#1}{colour}{\def\@featuresareok{no}}{}%
-  \IfSubStr{#1}{Opacity}{\def\@featuresareok{no}}{}%
-  \IfSubStr{#1}{opacity}{\def\@featuresareok{no}}{}%
-  \ifthenelse{\equal{\@featuresareok}{yes}}{}{%
-    \ClassError{novel}{Color and Opacity forbidden as font features}%
-    {You defined a font, or added a font feature, with Color or Opacity. ^^J%
-     That is disallowed in `novel' class.}%
-  }
-}
-%%
 
 
 
-%% DEFINITION OF PARENT AND OTHER FONTS
-%% ----------------------------------------------------------------------------
-%% Prior to v. 1.1, parentfont was known as masterfont. Backwards compatible.
-%
-% These are the LaTeX defaults, which should already be built-in by now.
-% But just in case they are undefined, here they are set to LaTeX defaults:
-\providecommand\rmdefault{lmr}
-\providecommand\sfdefault{lmss}
-\providecommand\ttdefault{lmtt}
-% The `no-math' option prevents fontspec from tracking certain font changes.
-% This is probably necessary, since novel does some of its own font tracking:
-\RequirePackage[no-math]{fontspec} % For LuaLaTeX. NOT package `fontenc'.
-\defaultfontfeatures{} % reset
-\defaultfontfeatures{SmallCapsFeatures={Renderer=Basic},Ligatures=TeX,}
-% Main and sans fonts: kerning, ligatures, and OldStyle numbers if available:
-\defaultfontfeatures[\rmfamily,\sffamily]%
-  {Kerning=On,Numbers=OldStyle,Ligatures=Common}
-% Package `unicode-math' uses Latin Modern Math as default math font:
-\RequirePackage{unicode-math}
-% A default math font (which presumably you do not need) is chosen here.
-% You may over-ride using `unicode-math' \setmathfont in Preamble.
-\IfFontExistsTF{Libertinus Math}{
-  \setmathfont[BoldFont={libertinusmath-regular.otf}]%
-    {libertinusmath-regular.otf}
-}{
-  \IfFontExistsTF{Latin Modern Math}{}{% Set AtBeginDocument by unicode-math.
-  }{ % This hack allows you to proceed without a real math font,
-     % (but then you cannot print math):
-    \setmathfont[BoldFont={NovelDeco.otf}]{NovelDeco.otf} % fake math feature
-    \ClassWarning{novel}{^^JIgnore this if you used \string\setmathfont. ^^J%
-     Did not find suitable default math font. Used NovelDeco.otf. ^^J%
-     But NovelDeco does not have real math symbols. ^^J%
-     Math notation will print incorrectly. No problem if no math. ^^J}%
-  }
-}%
-%
-%% This could have been easier, but fontspec allows mandatory and optional
-%   arguments to appear in either order. We wish to store the fontnames
-%   and arguments, but need Expl syntax to tell which is which.
-%% Store settings for the parent font:
-% \AtEndPreamble, the parent font becomes becomes
-%   the default ancestor of all novel-defined fonts, except the deco font.
-\newif \if@ParentFontSet
-\gdef\parentfontfeatures{}
-\gdef\parentfontname{}
-\DeclareDocumentCommand \SetParentFont { O{} m O{} } {% from version 1.1.
-  \novel@checkfeatures{#1,#3}
-  \gdef\parentfontfeatures{#1,#3}
-  \gdef\parentfontname{#2}
-  \global\@ParentFontSettrue
-}%
-\DeclareDocumentCommand \SetMasterFont { O{} m O{} } {% DEPRECATED
-  \novel@checkfeatures{#1,#3}
-  \gdef\parentfontfeatures{#1,#3}
-  \gdef\parentfontname{#2}
-  \global\@ParentFontSettrue
-}%
-
-%% Store settings for the chapterfont:
-% The chapter font is used by the \ChapterTitle{} command.
-\newif \if@ChapterFontSet
-\gdef\@chapterfontfeatures{}
-\gdef\@chapterfontname{}
-\DeclareDocumentCommand \SetChapterFont { O{} m O{} } {%
-  \novel@checkfeatures{#1,#3}
-  \gdef\@chapterfontfeatures{Numbers=Lining,#1,#3}
-  \gdef\@chapterfontname{#2}
-  \global\@ChapterFontSettrue
-}%
-%% Store settings for the subchfont:
-% The subch font is used by the \ChapterSubtitle{} command.
-\newif \if@SubchFontSet
-\gdef\@subchfontfeatures{}
-\gdef\@subchfontname{}
-\DeclareDocumentCommand \SetSubchFont { O{} m O{} } {%
-  \novel@checkfeatures{#1,#3}
-  \gdef\@subchfontfeatures{Numbers=Lining,#1,#3}
-  \gdef\@subchfontname{#2}
-  \global\@SubchFontSettrue
-}%
-%% Store settings for the headfont:
-% The headfont is used in headers and footers.
-\newif \if@HeadFontSet
-\gdef\@headfontfeatures{}
-\gdef\@headfontname{}
-\DeclareDocumentCommand \SetHeadFont { O{} m O{} } {% revised v 1.40.3
-  \novel@checkfeatures{#1,#3}
-  \gdef\@headfontfeatures{Numbers=Lining,%
-    WordSpace=\@looseheadword,LetterSpace=\@loosehead,#1,#3}
-  \gdef\@headfontname{#2}
-  \global\@HeadFontSettrue
-}%
-%% Store settings for the deco font:
-% The deco font is used for decorations and acronyms.
-% It must be NovelDeco.otf or a font based on NovelDeco.otf. No other!
-\newif \if@DecoFontSet
-\newif \if@HasDecoFont
-\gdef\@decofontfeatures{}
-\gdef\@decofontname{}
-\DeclareDocumentCommand \SetDecoFont { O{} m O{} } {%
-  \novel@checkfeatures{#1,#3}
-  \gdef\@decofontname{#2}
-  \global\@DecoFontSettrue
-  \global\@HasDecoFonttrue
-  \newfontface\decofont[#1,#3]{#2}
-}%
-%% For syntax consistency:
-\ExplSyntaxOn
-\cs_new_eq:NN \NewFontFamily \newfontfamily
-\cs_new_eq:NN \NewFontFace \newfontface
-\cs_new_eq:NN \SetSansFont \setsansfont
-\cs_new_eq:NN \SetMonoFont \setmonofont
-\cs_new_eq:NN \SetMathFont \setmathfont
-\cs_new_eq:NN \AddFontFeatures \addfontfeatures
-\cs_new_eq:NN \AddFontFeature \addfontfeatures
-\ExplSyntaxOff
-%% \CreateFontFeature{substitutions}{feature code}
-% Problem: Font has one or more alternate glyphs that you would like to use,
-%   but they are not listed in a feature set for the font.
-% Solution: Create your own feature set, with \CreateFontFeature. The created
-%   feature may then be used like a real feature, in any font definition.
-% The substitutions are a comma-separated list, char=char.alt and so forth.
-% For example, the following substitutions are syntactically OK:
-%   emdash=emdah.alt, one=one.rev, ntilde=ntilde.03
-% If a substitution is not available in a particular font, it is ignored.
-% You have to look at the font in a font editor, to know what is available.
-% It is possible to make silly substitutions, such as a=b, five=three without
-%   throwing an error, unless your code causes a cycle.
-% The most useful application of this command is to reach alternate emdash,
-%   and alternate oldstyle one. Not every font has these.
-% The feature code is a 4-character pseudo- Open Type code, otherwise unused.
-% For example, the feature code might be myfs (my fake substitution)
-%   but it cannot be a pre-defined code such as lnum or smcp. It may be
-%   a style set such as ss03 if you are sure that the font in question
-%   do not already have ss03 (but this is taking a chance).
-% Once defined, you may use it like this (for example):
-%   \SetParentFont[RawFeature=+myfs]{fontname}
-%   \NewFontFamily\myfake[RawFeature=+myfs]{fontname}
-%   In the document body: {\addfontfeature{myfs} text}
-\DeclareDocumentCommand \CreateFontFeature { m m } {%
-  \IfEndWith{#1}{,}{\StrGobbleRight{#1}{1}[\@fakezero]}{\def\@fakezero{#1}}
-  \def\@fakeone{"\@fakezero"}
-  \StrSubstitute{\@fakeone}{=}{"]="}[\@fakeone]
-  \StrSubstitute{\@fakeone}{,}{",\space["}[\@fakeone]
-  \directlua{
-    fonts.handlers.otf.addfeature {
-      name = "#2",
-      type = "substitution",
-      data = {\@fakeone},
-    }
-  }
-} %% end \CreateFontFeature. Above thanks to fontspec 2016.
-%%
-%% end definition of parent and other fonts.
 
 
 %% FRONTMATTER, MAINMATTER. BUT NO BACKMATTER!
@@ -932,20 +509,19 @@
 %% end disable or neutralize.
 
 
-%% polyglossia
-% Language-specific settings:
-\if@polyoff % polyoff is new in v 1.44.
-  \ClassWarning{novel}{^^JYou chose the `polyoff' class option. ^^J%
-    So, the polyglossia package was not loaded. But like it or not, ^^J%
-    the babel package was loaded, with generic hyphenation. ^^J%
-    This behavior, or choice of language, cannot be changed. ^^J%
-    If you want a specific language, you will have to use polyglossia. ^^J}%
-\else
-  \RequirePackage{polyglossia} % loading order changed in v. 1.40.3.
-  \setdefaultlanguage[variant=american]{english} % may be changed by user
-\fi
-%% end polyglossia
 
+%% Neutralize settings commands:
+\gdef\@DisableLayoutSettings{% called by `novel.cls' \AtBeginDocument
+  \LetLtxMacro\SetMediaSize\relax
+  \LetLtxMacro\SetTrimSize\relax
+  \LetLtxMacro\ReworkTrimSize\relax
+  \LetLtxMacro\SetMargins\relax
+  \LetLtxMacro\ReworkMargins\relax
+  \LetLtxMacro\SetLinesPerPage\relax
+  \LetLtxMacro\SetFontSize\relax % obsolete
+  \LetLtxMacro\SetNormalEm\relax
+}% end \@DisableLayoutSettings
+%%
 
 
 %%

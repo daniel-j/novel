@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-CalculateLayout.sty}%
-[2017/12/27 v1.46.5p LaTeX file (layout calculations)]
+[2018/01/02 v1.46.5q LaTeX file (layout calculations)]
 %%
 
 %%
@@ -177,6 +177,18 @@
 
 %% FINALIZE LAYOUT
 %% ----------------------------------------------------------------------------
+% Caution if font size (set or reworked) is small:
+\FPiflt{\strip@pt\@NormalEmSize}{10}
+  \typeout{^^JClass `novel' Alert: Normal font at less than 10pt. ^^J%
+    Whether or not this is too small, depends on circumstances. ^^J%
+    Beware if you use footnotes, which are smaller. ^^J%
+  }
+\fi
+\FPiflt{\strip@pt\@NormalEmSize}{8.03} % 8 PostScript points
+  \ClassWarning{novel}{^^JNormal font at less than 8 points. ^^J%
+    This is usually undesirable. May be rejected by some print services. ^^J%
+  }
+\fi
 % Default Media Size is same as Trim Size, unless \SetMediaSize used:
 \if@MediaSize\else
     \gdef\@AlignTrim{center}

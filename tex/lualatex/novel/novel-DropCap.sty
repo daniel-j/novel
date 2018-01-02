@@ -19,65 +19,11 @@
 % This file is new in `novel' version 1.48.
 %
 \ProvidesFile{novel-DropCap.sty}
-  [2017/12/27 v1.46.5p (Drop Caps)]
+  [2018/01/02 v1.46.5q (Drop Caps)]
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %
 %
-\gdef\@DropCapFont{} % until actually set, will be default main font
 
-\gdef\@DropCapColorModel{} % until actually set, using `xcolor' syntax
-\gdef\@DropCapColorValue{black} % until actually set, using `xcolor' syntax
-%
-\newcommand*\NDC@charstyle{}
-%
-\ExplSyntaxOn
-% The argument to \SetDropCapFont is a user-defined `fontspec' font command.
-% Example syntax, using `fontspec' in LuaLaTeX:
-%   Create font command, such as: \newfontface\mynicefont[options]{fontname}
-%   Then: \SetDropCapFont{\mynicefont}
-\newif \if@HasDropCapFont
-\DeclareDocumentCommand \SetDropCapFont { m } {%
-  \@HasDropCapFonttrue%
-  \gdef\@DropCapFont{#1}%
-  \renewcommand\NDC@charstyle{%
-    #1%
-    \if@HasDropCapColor%
-      \ifthenelse{\equal{\@DropCapColorModel}{}}{%
-        \color{\@DropCapColorValue}%
-      }{%
-        \color[\@DropCapColorModel]{\@DropCapColorValue}%
-      }%
-    \fi%
-  }%
-}%
-% The argument(s) to \SetDropCapColor use `xcolor' syntax:
-%   [colormodel]{value} OR {colorname}
-\newif \if@HasDropCapColor
-\DeclareDocumentCommand \SetDropCapColor { O{} m } {%
-  \if@graytext%
-    \@setdropcapcolor[#1]{#2}%
-  \else%
-    \ClassWarning{novel}{^^J\string\SetDropCapColor~ignored~unless~^^J%
-      `graytext'~class~option. ^^J}%
-  \fi%
-}% end \SetDropCapColor
-\DeclareDocumentCommand \@setdropcapcolor { O{} m } {%
-  \global\@HasDropCapColortrue%
-  \gdef\@DropCapColorModel{#1}%
-  \gdef\@DropCapColorValue{#2}%
-  \renewcommand\NDC@charstyle{%
-    \@DropCapFont%
-    \ifthenelse{\equal{\@DropCapColorModel}{}}{%
-      \color{\@DropCapColorValue}%
-    }{%
-      \color[\@DropCapColorModel]{\@DropCapColorValue}%
-    }%
-  }%
-}% end \@setdropcapcolor
-% for convenience:
-\cs_new_eq:NN \SetDropcapFont \SetDropCapFont
-\cs_new_eq:NN \SetDropcapColor \SetDropCapColor
-\ExplSyntaxOff
 %
 \newcounter{NDCDefaultLines}
 \setcounter{NDCDefaultLines}{3}
@@ -269,7 +215,19 @@
   \fi%
 }% end @NDCdropcap
 \ExplSyntaxOff
-%
 %%
+
+
+%% In case the user prefers `lettrine':
+\gdef\@ActivateDropCaps{% called by `novel.cls' \AtBeginDocument
+  \@ifpackageloaded{lettrine}{%
+    \global\LettrineOnGridtrue % Necessary.
+    \gsetlength\DiscardVskip{10\nbs} % effectively infinite
+  }{}%
+}% end \@ActivateDropCaps
+
+
+
+%
 %% End of file `novel-DropCap.sty'.
 

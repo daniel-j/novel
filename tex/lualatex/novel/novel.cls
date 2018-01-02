@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2017/12/27 v1.46.5p LaTeX document class]
+\ProvidesClass{novel}[2018/01/02 v1.46.5q LaTeX document class]
 %%
 %% Version 1.46: Possibly final version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
@@ -110,7 +110,7 @@
 % fontspec -- in novel-LayoutSettings.sty
 % unicode-math -- in novel-LayoutSettings.sty
 % polyglossia -- in novel-LayoutSettings.sty
-% microtype -- in novel-FontDefaults.sty
+% microtype -- in novel-Fonts.sty
 % hyperref -- in novel-pdfx.sty
 % fancyhdr -- in novel.HeadFootStyles.sty
 % xcolor -- lower in this page
@@ -301,7 +301,7 @@
 %% end activate xcolor and adjustbox
 
 
-%% Temporary normal font size
+%% Temporary normal font size, baselineskip, and fontspec
 %% ----------------------------------------------------------------------------
 %% This normalsize is temporary, so that packages can load without complaint.
 %% It will be modified later, during layout calculations.
@@ -314,7 +314,11 @@
   \@setfontsize\normalsize{\@TentativeEmN}{\@TentativeBLSkipN}%
 }
 \normalsize
-%% end temporary normal point size and baselineskip
+\RequirePackage[no-math]{fontspec} % For LuaLaTeX. NOT package `fontenc'.
+% The `novel' class is not intended for math. But TeX assumes you do math,
+%   so it needs a math font, whether you like it or not.
+\RequirePackage{unicode-math}
+%% end temporary normal point size, baselineskip, and fontspec.
 
 
 %% Define commands used for File Data, including PDF/X Settings.
@@ -330,11 +334,29 @@
 %% Define user commands that over-ride class option pre-configured settings.
 %% Also sets a variety of miscellaneous lengths:s \parsep, \parindent, etc.
 \RequirePackage{novel-LayoutSettings}
+
+
+%% polyglossia
+% Language-specific settings:
+\if@polyoff % polyoff is new in v 1.44.
+  \ClassWarning{novel}{^^JYou chose the `polyoff' class option. ^^J%
+    So, the polyglossia package was not loaded. But like it or not, ^^J%
+    the babel package was loaded, with generic hyphenation. ^^J%
+    This behavior, or choice of language, cannot be changed. ^^J%
+    If you want a specific language, you will have to use polyglossia. ^^J}%
+\else
+  \RequirePackage{polyglossia} % loading order changed in v. 1.40.3.
+  \setdefaultlanguage[variant=american]{english} % may be changed by user
+\fi
+%% end polyglossia
+
+
 %%
 
 
 %% Additional Macros, Loaded in Preamble.
 %% ----------------------------------------------------------------------------
+\RequirePackage{novel-Fonts} % font settings and defaults
 \RequirePackage{lipsum} % generates dummy text for examples
 %% New in version 1.48:
 \RequirePackage{novel-DropCap}
@@ -376,72 +398,31 @@
 % This is prior to \AtBeginDocument, and ensures that the results are available
 %   prior to any \AtBeginDocument routines from user macros or loaded packages. 
 \AtEndPreamble{
-  % New in v. 1.44. Sets default resolution for images without internal dpi:
-  \pdfimageresolution=\@novimgres % from \SetFlexResolution. Default 300.
-  % If user did not choose language, default is here. Sorry, Brits:
-  % Macro \xpg@main@language is gdef'd by \setdefaultlanguage in polyglossia.
+  \@ActivateFlexResolution % in `novel-Images.sty'
+  \@ActivateFonts % in `novel-Fonts.sty'
   \RequirePackage{novel-CalculateLayout} % may load novel-ChangeLayout.sty
   \RequirePackage{novel-PostLayout} % calculates shademargins, cropmarks, etc.
-  \RequirePackage{novel-FontDefaults} % provides default fonts
-  \providecommand\textls[2][]{#2} % nullifies this microtype command (problems)
-  \renewcommand\textls[2][]{#2} % nullifies this microtype command (problems)
-  \RequirePackage{novel-pdfx}%
-}
+  \RequirePackage{novel-pdfx}% also provides an \AtBeginDocument macro
+}%
 %% end AtEndPreamble
 
 
 %% \AtBeginDocument finishes the setup
 %% ----------------------------------------------------------------------------
 \AtBeginDocument{ %
-  % Store some normal values (main font) for global use in document body:
-  \newlength\nfs % abbreviation for normal font point size
-    \gsetlength\nfs{\@NormalEmSize}
-  \newlength\nbs % abbreviation for normal baselineskip
-    \gsetlength\nbs{\baselineskip}
-  \gsetlength\parindent{1.5em} % may be locally changed
-  \newlength\normalparindent
-    \gsetlength\normalparindent{\parindent}
-  \newlength\normalxheight % height of lowercase x
-    \gsetlength\normalxheight{\heightof{x}}
-  \newlength\normalXheight % height of uppercase X
-    \gsetlength\normalXheight{\heightof{X}}
-  \newlength\normalscxheight % height of small cap x
-    \gsetlength\normalscxheight{\heightof{\textsc{x}}}
-  \newlength\normalAringheight % height of Å (usually tallest in Latin-1)
-    \gsetlength\normalAringheight{\heightof{Å}}
-  \newlength\normaldescender % depth of lowercase gjpqy
-    \gsetlength\normaldescender{\depthof{gjpqy}}
-  % Configure lettrine, if loaded by user:
-  \@ifpackageloaded{lettrine}{%
-    \global\LettrineOnGridtrue % Necessary.
-    \gsetlength\DiscardVskip{10\nbs} % effectively infinite
-  }{}%
-  % Activate user choice of whether or not to indent after scenebreak commands:
-  \if@IndentAfterScenebreak\else
-    \NoIndentAfterCmd{\scenebreak}
-    \NoIndentAfterCmd{\sceneline}
-    \NoIndentAfterCmd{\scenestars}
-  \fi
-  % end indent after scenebreak
-  \@activateHeadFootStyles % in file `novel-HeadFootStyles.sty'
-  \@novelPDFinfo % in file `novel-pdfx.sty'.
+  % Mostly involve settings defaults:
+  \@ActivateTextLengths % in `novel-TextMacros.sty'
+  \@ActivateDropCaps % in `novel-DropCaps.sty'
+  \@ActivateChapterScene % in `novel-ChapterScene.sty'
+  \@ActivateHeadFootStyles % in file `novel-HeadFootStyles.sty'
+  \@ActivatePDFInfo % in file `novel-pdfx.sty'
+  \@ActivateTextMacros % in `novel-TextMacros.sty'
+  \@ActivateFootnoteMarkers % in `novel-Footnotes.sty'
   % Commands that cannot be used after Preamble:
-  \let\title\relax
-  \let\author\relax
-  \let\subtitle\relax
-  \LetLtxMacro\SetAuthor\relax
-  \LetLtxMacro\SetTitle\relax
-  \LetLtxMacro\SetSubtitle\relax
-  \LetLtxMacro\SetMediaSize\relax
-  \LetLtxMacro\SetTrimSize\relax
-  \LetLtxMacro\ReworkTrimSize\relax
-  \LetLtxMacro\SetMargins\relax
-  \LetLtxMacro\ReworkMargins\relax
-  \LetLtxMacro\SetLinesPerPage\relax
-  \LetLtxMacro\SetFontSize\relax
-  \LetLtxMacro\SetHeadFootStyle\relax
-  \LetLtxMacro\IndentAfterScenebreak\relax
-  \LetLtxMacro\SetScenebreakIndent\relax
+  \@DisableLayoutSettings % in file \novel-LayoutSettings.sty'
+  \@DisableFileDataSettings % in file `novel-FileData.sty'
+  \@DisableChapterSceneSettings % in file `novel-ChapterScene.sty'
+  \@DisableHeadFootSettings % in file `novel-HeadFootStyles.sty'
   % Dealing with known incompatible packages:
   \if@novelunblock
     \gdef\sorry@no#1{} % let them be used
@@ -456,6 +437,7 @@
     }
   \fi
   % List of blocked packages (not exhaustive, since TeX has so many):
+  \sorry@no{geometry} % internal layout methods, not geometry
   \sorry@no{pdfx} \sorry@no{xmpincl} \sorry@no{hyperxmp} \sorry@no{pdfxmult}
   \sorry@no{inputenc} \sorry@no{fontenc}
   \sorry@no{wrapfigure} \sorry@no{wrapfig}
@@ -484,48 +466,21 @@
        {Package `pagegrid' only with document class option `draft'.}%
     \fi
   }{} % end pagegrid
-  % Pertains to novel-LayoutSettings.sty:
-  \ifcsname pagenumberstyle\endcsname\else
-    \SetPageNumberStyle{\thepage}% no small caps
-  \fi
-  % Pertains to novel-TextMacros.sty:
-  \gdef\forceindent{\ifvmode\else\unskip\fi\stake\hspace{\normalparindent}}
-  \gdef\backindent{\ifvmode\else\unskip\fi\hspace{-\normalparindent}}
-  % Pertains to novel-footnotes.sty:
-  \gdef\SetFootnoteMarker#1{%
-    \typeout{^^JClass `novel' Alert: %
-    \string\SetFootnoteMarker\space ineffective after Preamble. ^^J}%
-  }
-  \gsetlength\footnotesep{0.8\nbs}
-  % Adjusted position of footnote markers. Must wait for main font size:
-  \gsetlength\@twast{\heightof{*}-\normalAringheight}
-  \gsetlength\@twdag{\heightof{†}}
-  \gsetlength\@twdag{0.8\@twdag-\normalAringheight}
-  \gsetlength\@twdbldag{\heightof{‡}}
-  \gsetlength\@twdbldag{0.8\@twdbldag-\normalAringheight}
-  \gsetlength\@twsect{\heightof{§}}
-  \gsetlength\@twsect{0.8\@twsect-\normalAringheight}
-  \gsetlength\@tweight{\heightof{8}}%
-  \gsetlength\@tweight{0.8\@tweight-\normalAringheight}%
-  % Must wait to see how \SetFootnoteMarker was used:
-  \ifthenelse{\equal{\@myfnsymbols}{*}}{\setcounter{@maxfnsymbol}{8}}{}
-  \ifthenelse{\equal{\@myfnsymbols}{†}}{\setcounter{@maxfnsymbol}{6}}{}
-  %
 }% end AtBeginDocument
 %%
 
 
 %% New in version 1.2, coverart option. See documentation.
-\AfterEndPreamble{
-  \if@coverart
+\AfterEndPreamble{% occurs after \AtBeginDocument
+  \if@coverart%
     \AddToShipoutPictureBG{%
       \AtPageUpperLeft{%
         \InlineImage{\novelcoverimage}%
       }%
-    }
+    }%
     \null% without this, page has no "content"
-  \fi
-}
+  \fi%
+}%
 %%
 
 

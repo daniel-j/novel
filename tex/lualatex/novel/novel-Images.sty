@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Images.sty}%
-[2017/12/27 v1.46.5p LaTeX file (image placement)]
+[2018/01/02 v1.46.5q LaTeX file (image placement)]
 %%
 
 
@@ -36,6 +36,47 @@
 \newlength\@imagehoffset
 \newlength\@imagevoffset
 \newlength\@mytotalht
+
+
+
+
+
+%% New in version 1.2: cover image.
+\newcommand\SetCoverImage[1]{
+  \@tempTFfalse
+  \IfSubStr{#1}{jpg}{\@tempTFtrue}{}
+  \IfSubStr{#1}{jpeg}{\@tempTFtrue}{}
+  \IfSubStr{#1}{JPG}{\@tempTFtrue}{}
+  \IfSubStr{#1}{JPEG}{\@tempTFtrue}{}
+  \if@tempTF%
+    \gdef\novelcoverimage{#1}
+  \else%
+    \ClassError{novel}{Cover image has wrong file extension}%
+    {Cover image must be jpg, JPG, jpeg, or JPEG.}
+  \fi%
+}
+%%
+
+
+%% New in version 1.44: flexible images (without built-in resolution dpi)
+\gdef\@novimgres{300} % default (can only be set once)
+\gdef\@novereserror{%
+  \ClassError{novel}{\string\SetFlexResolution\space bad value}%
+  {Resolution must be integer from 200 to 9600. Default 300.}%
+}
+\newcommand\SetFlexResolution[1]{
+  \IfInteger{#1}{ %
+    \FPiflt{#1}{200}\@novereserror\else\fi %
+    \FPifgt{#1}{9600}\@novereserror\else\fi %
+    \gdef\@novimgres{#1} %
+  }{\@novreserror}
+}
+%
+\gdef\@ActivateFlexResolution{% called by `novel.cls' \AtEndPreamble
+  \pdfimageresolution=\@novimgres % from \SetFlexResolution. Default 300.
+  \LetLtxMacro\SetFlexResolution\relax % cannot use past Preamble
+}
+%%
 
 
 

@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2017/12/27 v1.46.5p LaTeX file (text macros usable within document body)]
+[2018/01/02 v1.46.5q LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -21,6 +21,13 @@
 %%   for styling and otherwise manipulating text.
 %% These are not commands used in Preamble for setup, although a few of them
 %%   can be used in Preamble for setup, then again in body for change.
+
+
+%%
+% New in version 1.38, \straightquote and \straightdblquote:
+\gdef\straightquote{{\addfontfeature{Ligatures=ResetAll}'}}
+\gdef\straightdblquote{{\addfontfeature{Ligatures=ResetAll}"}}
+%%
 
 
 %% The following commands are BANNED.
@@ -56,8 +63,41 @@
 
 %% AND NOW TO THE GOOD STUFF
 %% ----------------------------------------------------------------------------
-%
-%% \memo{} does not print or save its argument.
+
+% Acronyms often look too big in regular capitals, but too small in
+% small caps. Command \acronym{} provides an intermediate size:
+\gdef\acronym#1{% do not confuse with `acronym' package
+  \if@HasDecoFont%
+    {\decofont{#1}}%
+  \else%
+    #1% simply echo the argument, if no decofont
+  \fi%
+}%
+\gdef\decoglyph#1{%
+  \if@HasDecoFont%
+    \IfBeginWith{#1}{n}{% normal weight symbol (same as regular)
+      \StrBehind{#1}{n}[\@tempdecoglyph]{\@decoglyph\symbol{\@tempdecoglyph}}%
+    }{}%
+    \IfBeginWith{#1}{r}{% regular weight symbol
+      \StrBehind{#1}{r}[\@tempdecoglyph]{\@decoglyph\symbol{\@tempdecoglyph}}%
+    }{}%
+    \IfBeginWith{#1}{l}{% light weight symbol
+      \StrBehind{#1}{l}[\@tempdecoglyph]{\@decoglypha\symbol{\@tempdecoglyph}}%
+    }{}%
+    \IfBeginWith{#1}{e}{% extra light weight symbol
+      \StrBehind{#1}{e}[\@tempdecoglyph]{\@decoglyphb\symbol{\@tempdecoglyph}}%
+    }{}%
+    \IfBeginWith{#1}{t}{% thin weight symbol
+      \StrBehind{#1}{t}[\@tempdecoglyph]{\@decoglyphc\symbol{\@tempdecoglyph}}%
+    }{}%
+  \else%
+    ~% non-breaking space, if no decofont
+  \fi%
+}%
+
+
+
+% \memo{} does not print or save its argument.
 % Useful when you wish to put a note to yourself in the *.tex document.
 % Not the same as % comment, because anything after the braces will print.
 \long\gdef\memo#1{}
@@ -508,6 +548,38 @@
   \end{textblock*}%
   \global\@WithinColumnfalse%
 }%
+%%
+
+
+\gdef\@ActivateTextLengths{% called by `novel.cls' \AtEndPreamble
+  % Store some normal values (main font) for global use in document body:
+  \newlength\nfs % abbreviation for normal font point size
+    \gsetlength\nfs{\@NormalEmSize}
+  \newlength\nbs % abbreviation for normal baselineskip
+    \gsetlength\nbs{\baselineskip}
+  \gsetlength\parindent{1.5em} % may be locally changed
+  \newlength\normalparindent
+    \gsetlength\normalparindent{\parindent}
+  \newlength\normalxheight % height of lowercase x
+    \gsetlength\normalxheight{\heightof{x}}
+  \newlength\normalXheight % height of uppercase X
+    \gsetlength\normalXheight{\heightof{X}}
+  \newlength\normalscxheight % height of small cap x
+    \gsetlength\normalscxheight{\heightof{\textsc{x}}}
+  \newlength\normalAringheight % height of Å (usually tallest in Latin-1)
+    \gsetlength\normalAringheight{\heightof{Å}}
+  \newlength\normaldescender % depth of lowercase gjpqy
+    \gsetlength\normaldescender{\depthof{gjpqy}}
+}% end \@ActivateTextLengths
+
+
+
+
+%%
+\gdef\@ActivateTextMacros{% called by `novel.cls' \AtBeginDocument
+  \gdef\forceindent{\ifvmode\else\unskip\fi\stake\hspace{\normalparindent}}
+  \gdef\backindent{\ifvmode\else\unskip\fi\hspace{-\normalparindent}}
+}% end \@ActivateTextMacros
 %%
 
 

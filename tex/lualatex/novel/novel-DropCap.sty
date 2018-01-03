@@ -223,7 +223,9 @@
   \@ifpackageloaded{lettrine}{%
     \global\LettrineOnGridtrue % Necessary.
     \gsetlength\DiscardVskip{10\nbs} % effectively infinite
-  }{}%
+  }{ % For test purposes only:
+   \providecommand\lettrine[3][]{##2##3} % echoes its mandatory arguments
+  }%
 }% end \@ActivateDropCaps
 
 

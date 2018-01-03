@@ -17,7 +17,6 @@
 %%
 
 
-
 % Class `novel' does not use \maketitle.
 \gdef\maketitle{%
   \ClassError{novel}{\string\maketitle does not exist in this class}%
@@ -25,16 +24,6 @@
     You must make your own title pages! See documentation.}%
 }
 %
-
-
-
-
-
-
-
-
-
-
 
 
 % Each new chapter generally has its own header/footer style. This allows a
@@ -207,7 +196,6 @@
   \end{textblock*}%
   \vspace{\@fixlines\nbs}%
   \if@DeleteCSline\else\null\fi%
-  \vfill% make bad vbox warning go away
   \gsetlength\parindent{\normalparindent}% restored
   \nov@AfterGroup\NoIndentAfterThis% etextools and noindentafter
 }

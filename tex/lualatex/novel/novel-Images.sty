@@ -156,7 +156,7 @@
   \IfEndWith{#3}{JPG}{\@tempTFtrue}{}%
   \IfEndWith{#3}{jpeg}{\@tempTFtrue}{}%
   \IfEndWith{#3}{JPEG}{\@tempTFtrue}{}%
-  \if@testtOK\else%
+  \if@tempTF\else%
     \ClassError{novel}{^^JImage~`#3'~format~not~allowed}%
     {Image~`#3'~has~file~type~not~allowed~in~`novel'~class.~ ^^J%
      Must~have~file~extension~png,~jpg,~jpeg~(or~capitalized).~ ^^J%

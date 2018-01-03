@@ -42,13 +42,12 @@
 %   the layout engine knows whether header or footer are present.
 \gdef\SetHeadFootStyle#1{%
   \if@coverart
-    \gdef\@HeadFootStyle{0} % required
+    \gdef\@HeadFootStyle{0} % required: no header/footer for coverart
     \ifthenelse{\equal{#1}{0}}{}{%
       \ClassWarning{novel}{^^JClass option `coverart' does not %
         allow header/footer. Ignored. ^^J}
     }%
   \else
-    \gdef\@HeadFootStyle{1} % default
     \@tempTFfalse
     \ifthenelse{\equal{#1}{0}}{%
       \global\@HasHeaderfalse\global\@HasFooterfalse\@tempTFtrue%
@@ -80,6 +79,7 @@
     \gdef\@HeadFootStyle{#1}
   \fi
 }%
+\SetHeadFootStyle{1} % default, header only
 \let\SetHeadStyle\SetHeadFootStyle\relax % deprecated
 %
 % \HeadJump is a number from 1 to 3 (may be decimal). It measures the
@@ -171,28 +171,29 @@
 % See novel.cls for the accompanying AtBeginDocument routine.
 
 
-
-
-
 %% INITIALIZE FANCYHDR
 %% ----------------------------------------------------------------------------
-%% Before now now, space was reserved for header/footer.
+% Earlier, space was reserved for header/footer, but the content of
+%   headers and footers was not specified. Now, package `fancyhdr'
+%   will be used to create the content.
 % Start by loading package `fancyhdr' and blanking everything:
-%
-\newtoggle{@inheadfoot} % true in header or footer
-%
 \RequirePackage{fancyhdr}
   \renewcommand\headrulewidth{0pt}
   \renewcommand\footrulewidth{0pt}
   \fancyhead[LO,RE,LE,RO,CE,CO]{}
   \fancyfoot[LO,RE,LE,RO,CE,CO]{}
+% It might be useful to know whether something is being placed in main text,
+%   or within a header/footer. A new boolean is created, which is only true
+%   when within  a header or footer. You can define macros so that they test
+%   this boolean.
+% To make this work, \fancyhead and \fancyfoot are re-defined:
+\newtoggle{@inheadfoot} % true within header or footer
 \LetLtxMacro{\@myfancyhead}{\fancyhead}
 \LetLtxMacro{\@myfancyfoot}{\fancyfoot}
 \renewcommand\fancyhead[2][]{%
   \global\@StyledHeadertrue%
   \@myfancyhead[#1]{\toggletrue{@inheadfoot}{\normalsize #2}}% not global
 }
-\LetLtxMacro{\@myfancyfoot}{\fancyfoot}
 \renewcommand\fancyfoot[2][]{%
   \global\@StyledFootertrue%
   \FPsub{\@footraise}{\@FootJump}{1}%
@@ -202,16 +203,17 @@
     \stake\smash{\raisebox{\@footraise pt}{\normalsize #2}}%
   }%
 }
-%
+%% end initialize fancyhdr.
 
-\LetLtxMacro{\@myTempTPS}{\thispagestyle}
+
+%% THISPAGESTYLE COMMANDS
+%% ----------------------------------------------------------------------------
 % Re-define \thispagestyle based on layout. When it requests only the page
 % number, decide what to do based on this command and whether footer is used:
-%
-%% See AtBeginShipout routine in novel.cls.
-%
 \newif \if@ThisPageStyle % true if \thispagestyle declared for current page
-\AtBeginShipout{\global\@ThisPageStylefalse} % re-sets
+\AtBeginShipout{\global\@ThisPageStylefalse} % re-sets when page done
+\LetLtxMacro{\@myTempTPS}{\thispagestyle}
+%
 \gdef\thispagestyle#1{%
   \global\@ThisPageStyletrue%
   \@tempTFfalse%
@@ -223,21 +225,27 @@
     \@tempTFtrue%
     \@myTempTPS{empty}%
   }{}%
-  \ifthenelse{\equal{#1}{plain}%
-  \OR \equal{#1}{fancyplain} \OR \equal{#1}{footer}}{%
+  \ifthenelse{\equal{#1}{plain} \OR \equal{#1}{fancyplain}}{%
     \@tempTFtrue%
     \if@HasFooter\@myTempTPS{fancyplain}%
     \else\@myTempTPS{empty}%
     \fi%
   }{}%
+  \ifthenelse{\equal{#1}{footer}}{%
+    \@tempTFtrue%
+    \if@HasFooter\@myTempTPS{footer}%
+    \else\@myTempTPS{empty}%
+    \fi%
+  }{}%
   \ifthenelse{\equal{#1}{forcenumber}}{%
     \@tempTFtrue%
-    \if@HasFooter\@myTempTPS{fancyplain}%
+    \if@HasFooter\@myTempTPS{footer}%
     \else\@myTempTPS{fancynumber}%
     \fi%
   }{}%
   \ifthenelse{\equal{#1}{dropfoliobeneath}}{% after \clearpage
-    \@tempTFtrue\if@HasFooter\@myTempTPS{footer}%
+    \@tempTFtrue%
+    \if@HasFooter\@myTempTPS{footer}%
     \else\@myTempTPS{dropfoliobeneath}%
     \fi%
   }{}%
@@ -249,23 +257,62 @@
       \@myTempTPS{dropfolioinside}%
     \fi%
   }{}%
-  \ifthenelse{\equal{#1}{XXXdropfolioinside}% after \clearpage
-  \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{% compatibility
-    \@tempTFtrue%
-    \if@HasFooter\@myTempTPS{fancyplain}%
-    \else%
-      \global\@DeleteCSlinetrue%
-      \@myTempTPS{empty}%
-      \@dropfolioinside
-    \fi%
-  }{}%
   \if@tempTF\else%
     \ClassError{novel}{^^JPage \thepage\space has \string\thispagestyle ^^J%
      but its argument is not on the list of choices. See docs. ^^J}%
   \fi%
 } %
-%
-%% End initialize fancyhdr.
+% Here are the available page styles:
+\fancypagestyle{fancyplain}{ % substitute for plain
+  % No header. Page number centered at bottom.
+  \renewcommand\headrulewidth{0pt}
+  \renewcommand\footrulewidth{0pt}
+  \fancyhead[LO,RE,LE,RO,CE,CO]{}
+  \fancyfoot[LO,RE,LE,RO,CE,CO]{}
+  \fancyfoot[CO,CE]{\@lspagenum\pagenumberstyle}
+}
+\fancypagestyle{footer}{ % blanks header, but leaves footer as-is
+  \renewcommand\headrulewidth{0pt}
+  \renewcommand\footrulewidth{0pt}
+  \fancyhead[LO,RE,LE,RO,CE,CO]{}
+  %\fancyfoot[LO,RE,LE,RO,CE,CO]{}
+  %\fancyfoot[CO,CE]{\@lspagenum\pagenumberstyle}
+}
+\fancypagestyle{dropfolioinside}{
+  \renewcommand\headrulewidth{0pt}
+  \renewcommand\footrulewidth{0pt}
+  \fancyhead[LO,RE,LE,RO,CE,CO]{}
+  \fancyfoot[LO,RE,LE,RO]{}
+  \fancyfoot[CO,CE]{%
+    \raisebox{\dimexpr\@FootJump\nbs}{\@lspagenum\pagenumberstyle}%
+  }
+}
+\fancypagestyle{dropfoliobeneath}{
+  \renewcommand\headrulewidth{0pt}
+  \renewcommand\footrulewidth{0pt}
+  \fancyhead[LO,RE,LE,RO,CE,CO]{}
+  \fancyfoot[LO,RE,LE,RO]{}
+  \fancyfoot[CO,CE]{%
+    \raisebox{\dimexpr\@FootJump\nbs-\nbs}{\@lspagenum\pagenumberstyle}%
+  }
+}
+% Not a user command, use plain or fancyplain:
+\fancypagestyle{fancynumber}{ % if has header but not footer
+  \renewcommand\headrulewidth{0pt}
+  \renewcommand\footrulewidth{0pt}
+  \fancyhead[LO,RE,LE,RO,CE,CO]{}
+  \fancyhead[LE]{%
+    \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
+    \@VersoEmblem%
+  }
+  \fancyhead[RO]{%
+    \@RectoEmblem%
+    \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
+  }
+  \fancyfoot[LO,RE,LE,RO,CE,CO]{}
+}
+%% end \thispagestyle commands.
+
 
 %%
 \gdef\@lshftext{\headfont\addfontfeature{LetterSpace=\@loosehead}}
@@ -288,6 +335,12 @@
 \LetLtxMacro\RenewRectoHeadText\NewRectoHeadText\relax % for convenience
 %
 %%
+
+
+
+
+
+
 
 
 %% See AtBeginDocument routine in novel.cls:
@@ -394,49 +447,7 @@
   % END PRE-DEFINED LAYOUTS AND STYLES.
   % ---------------------------------------------------------------------------
   %
-  % Substitute for \thispagestyle{plain}:
-  \fancypagestyle{fancyplain}{ % if has footer
-    \renewcommand\headrulewidth{0pt}
-    \renewcommand\footrulewidth{0pt}
-    \fancyhead[LO,RE,LE,RO,CE,CO]{}
-    \fancyfoot[LO,RE,LE,RO,CE,CO]{}
-    \fancyfoot[CO,CE]{\@lspagenum\pagenumberstyle}
-  }
-  %
-  \fancypagestyle{dropfolioinside}{
-    \renewcommand\headrulewidth{0pt}
-    \renewcommand\footrulewidth{0pt}
-    \fancyhead[LO,RE,LE,RO,CE,CO]{}
-    \fancyfoot[LO,RE,LE,RO]{}
-    \fancyfoot[CO,CE]{%
-      \raisebox{\dimexpr\@FootJump\nbs}{\@lspagenum\pagenumberstyle}
-    }
-  }
-  %
-  \fancypagestyle{dropfoliobeneath}{
-    \renewcommand\headrulewidth{0pt}
-    \renewcommand\footrulewidth{0pt}
-    \fancyhead[LO,RE,LE,RO,CE,CO]{}
-    \fancyfoot[LO,RE,LE,RO]{}
-    \fancyfoot[CO,CE]{%
-      \raisebox{\dimexpr\@FootJump\nbs-\nbs}{\@lspagenum\pagenumberstyle}
-    }
-  }
-  % Not a user command, use plain or fancyplain:
-  \fancypagestyle{fancynumber}{ % if has header but not footer
-    \renewcommand\headrulewidth{0pt}
-    \renewcommand\footrulewidth{0pt}
-    \fancyhead[LO,RE,LE,RO,CE,CO]{}
-    \fancyhead[LE]{%
-      \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
-      \@VersoEmblem%
-    }
-    \fancyhead[RO]{%
-      \@RectoEmblem%
-      \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
-    }
-    \fancyfoot[LO,RE,LE,RO,CE,CO]{}
-  }
+%%%%%
   % Now put `fancyhdr' to work:
   \pagestyle{fancy} % default unless over-ridden by \thispagestyle{}
   %

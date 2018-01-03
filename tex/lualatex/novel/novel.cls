@@ -417,7 +417,7 @@
   \@ActivateHeadFootStyles % in file `novel-HeadFootStyles.sty'
   \@ActivatePDFInfo % in file `novel-pdfx.sty'
   \@ActivateTextMacros % in `novel-TextMacros.sty'
-  \@ActivateFootnoteMarkers % in `novel-Footnotes.sty'
+  \@ActivateFootnotes % in `novel-Footnotes.sty'
   % Commands that cannot be used after Preamble:
   \@DisableLayoutSettings % in file \novel-LayoutSettings.sty'
   \@DisableFileDataSettings % in file `novel-FileData.sty'

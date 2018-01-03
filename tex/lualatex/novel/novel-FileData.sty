@@ -17,10 +17,23 @@
 %% 
 
 
-% \@pdfxSEToff refers to the setting, rather than whether it really is off.
-% \@pdfxISoff refers to whether it really is off.
-\newif \if@pdfxSEToff % Prior to v. 1.46.1, was \ifpdfx@isOFF.
-\newif \if@pdfxISoff % New in v. 1.46.1.
+%% File Data, also known as PDF Metadata, is non-printing identifying
+%%   information in the PDF file. Some or all of it can be read by various
+%%   PDF reader software.
+%% PDF/X is also considered File Data, as it concerns the structure of the
+%%   file and its relationaship to printers, rather than its visible content.
+%% In principle, you could set the title as empty. But in that case, no other
+%%   File Data will be included, and you cannot have PDF/X compliance.
+%% There are many more kinds of File Data that a PDF can include, such as
+%%   subject and keywords. But `novel' is specifically for printing to paper,
+%%   not for electronic documents that would be found by database search.
+%%   Thus, there is no provision for such additional File Data.
+%% When you sign up with a print service, you will provide subject, keywords,
+%%   and description directly to their database, rather than in the PDF.
+%% No need to set copyright in metadata, since your file is only for use by
+%%   the print service, and is not being distributed as a PDF e-book.
+%%   Your copyright notice is on the printed page, where it should be.
+%% Particularly note that your print service is NOT the publisher: YOU are!
 
 
 %% FILE DATA (PDF Metadata)
@@ -58,26 +71,17 @@
 % \SetApplication{}  (rarely used)
 % Also known as CreatorTool.
 % Name of the software that created the source document.
-% Changing this does not change the software, it just changes the name.
+% Changing this does not change the software, it just changes the information.
 % Normally leave as default, but can change if urgent.
 \gdef\SetApplication#1{\gdef\@novelApplication{#1}}
 \SetApplication{LuaLaTeX with novel and microtype} % default
 %
 % \SetProducer{}  (rarely used)
-% Name of the software that compiles to source to make PDF.
-% Changing this does not change the software, it just changes the name.
+% Name of the software that compiles the source to make PDF.
+% Changing this does not change the software, it just changes the information.
 % Normally leave as default, but can change if urgent.
 \gdef\SetProducer#1{\gdef\@novelProducer{#1}}
 \SetProducer{LuaLaTeX with novel-pdfx and hyperref} % default
-%
-% Although some other data fields could have been added,
-%   they do not pertain to fiction, especially if your book is print-on-demand.
-% For example, subject, keywords and description not read from PDF metadata,
-%   you enter them in a form, when you obtain the ISBN.
-% No need to set copyright in metadata, since your book is only for use by
-%   the print service, and is not being distributed as a PDF e-book.
-%   Your copyright notice is on the printed page, where it should be.
-% Particularly note that your print service is NOT the publisher: YOU are!
 %
 %% End file data.
 
@@ -89,6 +93,10 @@
 %% Default up to and including v. 1.46: \SetPDFX{off}
 %% Default as of v. 1.46.1: \SetPDFX[CGATSTR001]{X-1a:2001}
 %
+% \@pdfxSEToff refers to the setting, rather than whether it really is off.
+% \@pdfxISoff refers to whether it really is off.
+\newif \if@pdfxSEToff % Prior to v. 1.46.1, was \ifpdfx@isOFF.
+\newif \if@pdfxISoff % New in v. 1.46.1.
 % These will get meaningful info when an output intent file is loaded:
 \gdef\@OIidentifier{}
 \gdef\@OIcondition{}
@@ -156,7 +164,8 @@
     \ClassError{novel}{Bad compliance argument for \string\SetPDFX}%
      {Choose: X-1a:2001, X-1a:2003, X-3:2002, X-3:2003, off.}%
   \fi
-  % Prior to version 1.46.2, this info was in separate files:
+  % BUILT-IN OUTPUT INTENTS:
+  % Prior to version 1.48, this info was in separate files.
   \if@pdfxSEToff\else % Output Intent ignored if compliance set `off'.
     \@tempTFfalse
     % Ignore spaces, so that CGATS TR 001 = CGATSTR001:
@@ -209,7 +218,7 @@
           Example: File novel-FOGRA39.clo is called as [FOGRA39]. ^^J%
           The file must be where TeX can find it. ^^J%
           For contents of the file, see package documentation, ^^J%
-          or look inside `novel-PDFX.sty' for MODEL CODE FOR OUTPUT INTENTS.}%
+          or look inside `novel-PDFX.sty' for BUILT-IN OUTPUT INTENTS.}%
       }{}%
       \makeatother % back to usual
     \fi
@@ -228,6 +237,9 @@
   \LetLtxMacro\SetAuthor\relax
   \LetLtxMacro\SetTitle\relax
   \LetLtxMacro\SetSubtitle\relax
+  \LetLtxMacro\SetApplication\relax
+  \LetLtxMacro\SetProducer\relax
+  \LetLtxMacro\SetPDFX\relax
 }% end \@DisableFileDataSettings
 %%
 

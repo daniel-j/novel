@@ -26,10 +26,10 @@
 %% ----------------------------------------------------------------------------
 %% Use if necessary for customization.
 %% If you like a class option that pre-sets these values,
-%% then you do not have to use any of these commands.
+%%   then you do not have to use any of these commands.
 %
 % Note: This class does not ask you to set the width/height of the textblock.
-% Instead, these values are automatically calculated from other dimensions.
+%   Instead, these values are automatically calculated from other dimensions.
 
 
 %% Trim Size is the finished width and height of the book (not thickness).
@@ -298,23 +298,6 @@
 %%
 
 
-%% End size-related commands available in Preamble.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 %% Sets the gap between cropmarks and trim area:
 \newlength\@CropmarkGap
 \def\SetCropmarkGap#1{
@@ -517,9 +500,12 @@
   \LetLtxMacro\ReworkTrimSize\relax
   \LetLtxMacro\SetMargins\relax
   \LetLtxMacro\ReworkMargins\relax
+  \LetLtxMacro\ReworkPriority\relax
   \LetLtxMacro\SetLinesPerPage\relax
   \LetLtxMacro\SetFontSize\relax % obsolete
   \LetLtxMacro\SetNormalEm\relax
+  \LetLtxMacro\SetCropmarkGap\relax
+  \LetLtxMacro\SetUnsafeZone\relax
 }% end \@DisableLayoutSettings
 %%
 

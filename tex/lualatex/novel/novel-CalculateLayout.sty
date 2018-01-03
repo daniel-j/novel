@@ -62,7 +62,7 @@
     } %
   } %
 \fi
-%% end set default trim, margins, noraml em size.
+%% end set default trim, margins, normal em size.
 
 
 %% THEORY OF PAGE LAYOUT
@@ -94,8 +94,8 @@
 \if@HasHeader\else\gdef\@HeadJump{0}\fi
 %%
 % TeX assumes that your layout has a footer, even if you do not want one.
-%   This is handled by setting the baseline of the mandatory footer
-%   at \baselineskip below the last line of main text. Then, one line is
+%   Novel handles this by setting the baseline of the mandatory footer at
+%   normal baselineskip below the last line of main text. Then, one line is
 %   subtracted from the occupied line count. That places the empty, unused
 %   virtual footer in the lower margin, where it does not matter. When you
 %   do have a footer, the necessary line space is added, and the content
@@ -110,7 +110,7 @@
 % Putting it all together, the "occupied height" is:
 %   1.3\@NormalEmSize + (\@HeadJump+\@LinesPerPage+\@FootJumpFix)\baselineskip
 %
-%% end theory of page layout
+%% end theory of page layout.
 
 
 %% SET DEFAULT LINES PER PAGE, IF NOT SET BY USER
@@ -132,7 +132,7 @@
   \ClassError{novel}{Calculated LinesPerPage less than 10}%
    {Too few lines. Either font size too big, or text height too small.}%
 \fi
-%% end set default lines per page
+%% end set default lines per page.
 
 
 %% CALCULATE BASELINESKIP
@@ -172,10 +172,10 @@
     \RequirePackage{novel-ReworkLayout}
   \fi
 \fi
-%% END LOAD REWORK
+%% end load rework.
 
 
-%% FINALIZE LAYOUT
+%% FINISH LAYOUT (but post-layout deals with special class options)
 %% ----------------------------------------------------------------------------
 % Caution if font size (set or reworked) is small:
 \FPiflt{\strip@pt\@NormalEmSize}{10}
@@ -202,8 +202,6 @@
 }
 \normalsize % from this point, the "real" normal font size is effective
 %
-
-
 \if@HasHeader
   % \headheight is mis-named. Text "height" is supposed to be measured upward
   %   from the baseline. But \headheight is measured from 0.3em below
@@ -218,9 +216,6 @@
   \gsetlength\headheight{0pt}
   \gsetlength\headsep{0pt}
 \fi
-%
-
-
 % \oddsidemargin is at the left (inner, spine edge) of recto pages.
 % Measured 1in (72.27pt) inside MediaBox, to the textblock. May be negative.
 \ifthenelse{\equal{\@AlignTrim}{corner}}{%
@@ -276,8 +271,6 @@
   \gsetlength\headsep{\headsep+0.7\@tempLength-0.7\@NormalEmSize}
 \fi
 %%
-
-
 % It seems that, unless specified by user, TeX may place the top text baseline
 %   in a vertical position that depends on the height of text in that line.
 % That height may vary, depending on ascenders or diacriticals there.
@@ -285,13 +278,9 @@
 % The best value is normal baselineskip, partly because it looks right,
 %   and also to avoid underfull vboxes on nearly every page.
 \gsetlength\topskip{\baselineskip}
-
-
 % In `novel' class, footers are done in an unusual manner, as explained above.
 % To fix the position of the virtual footer baseline:
 \gsetlength\footskip{\baselineskip}
-
-
 %% Sanity check: Trim Size must be contained within Media Size.
 \ifthenelse{%
   \dimtest{\@TrimWidth}{>}{\paperwidth} %
@@ -301,7 +290,8 @@
   {You wrote \string\SetMediaSize\space with length(s) too small ^^J%
    for the default Trim Size or your values in \string\SetTrimSize.}%
 }{}
-%% end sanity check
+% end sanity check
+%% end finish layout.
 
 
 

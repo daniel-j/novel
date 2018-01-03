@@ -18,12 +18,77 @@
 
 
 
-
-
 %% Markers (superscript, subscripts):
 \newtoggle{@usesymbolmark} % true when footnote markers are symbolic
 \newtoggle{@realmarker} % true when OT features sups, sinf, subs requested
 %
+
+
+%% superscripts and subscripts
+\let\subs\relax
+\let\sups\relax
+\let\textsuperscript\relax
+\let\textsubscript\relax
+% Perhaps superscripts and subscripts (scientific) are in the font, or not.
+% Problem: The best fonts have these characters at size/weight designed
+%   to mingle with normal size. But many fonts merely scaled characters,
+%   which will be too light at the small size.
+% The unstarred version of these commands use the Open Type features when
+%   they are present, then faking (auto scale/raise) if features not present. 
+% The starred version just fakes, without regard for features.
+% 
+
+% Note that the effect of these commands continues, not just one-shot:
+\gdef\realmarker{\global\toggletrue{@realmarker}} % anywhere in text
+\gdef\fakemarker{\global\togglefalse{@realmarker}} % anywhere in text
+\newlength\@hoAhl % height of Ahl, locally measured and set when needed
+%%
+\ExplSyntaxOn
+%
+\DeclareDocumentCommand \sups { m } {%
+  \iftoggle{@realmarker}{%
+    \fontspec_if_feature:nTF {sups}{%
+      \ifvmode\else\unskip\fi%
+      {\addfontfeature{VerticalPosition=Superior}\smash{#1}}%
+    }{%
+      \setlength\@hoAhl{\heightof{Ahl}}% local
+      \ifvmode\else\unskip\fi\charscale[0.7,0pt,0.5\@hoAhl]{#1}%
+    }%
+  }{%
+    \setlength\@hoAhl{\heightof{Ahl}}% local
+    \ifvmode\else\unskip\fi%
+    {\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,0.5\@hoAhl]{#1}}%
+  }%
+}% end \sups
+%
+\DeclareDocumentCommand \subs { m } {%
+  \iftoggle{@realmarker}{%
+    \fontspec_if_feature:nTF {sinf}{%
+      \ifvmode\else\unskip\fi%
+      {\addfontfeature{VerticalPosition=ScientificInferior}\smash{#1}}%
+    }{%
+      \fontspec_if_feature:nTF {subs}{%
+        \ifvmode\else\unskip\fi%
+        {\addfontfeature{VerticalPosition=Inferior}\smash{#1}}%
+      }{%
+        \setlength\@hoAhl{\heightof{Ahl}}% local
+        \ifvmode\else\unskip\fi\charscale[0.7,0pt,-0.2\@hoAhl]{#1}%
+      }%
+    }%
+  }{%
+    \setlength\@hoAhl{\heightof{Ahl}}% local
+    \ifvmode\else\unskip\fi%
+    {\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,-0.2\@hoAhl]{#1}}%
+  }%
+}% end \subs
+%
+\cs_new_eq:NN \textsuperscript \sups
+\cs_new_eq:NN \textsubscript \subs
+\ExplSyntaxOff
+%%
+
+
+
 % \SetMarkerStyle does two things.
 % Option real: OT features sups, sinf, subs requested. Fake if not available.
 % Option fake: Always fake OT features sups, sinf, subs.
@@ -283,7 +348,7 @@
 %%
 
 
-\gdef\@ActivateFootnoteMarkers{% called by `novel.cls' \AtBeginDocument
+\gdef\@ActivateFootnotes{% called by `novel.cls' \AtBeginDocument
   % Pertains to novel-footnotes.sty:
   \LetLtxMacro\SetMarkerStyle\relax
   \gsetlength\footnotesep{0.8\nbs}
@@ -300,7 +365,16 @@
   % Must wait to see how \SetFootnoteMarker was used:
   \ifthenelse{\equal{\@myfnsymbols}{*}}{\setcounter{@maxfnsymbol}{8}}{}
   \ifthenelse{\equal{\@myfnsymbols}{†}}{\setcounter{@maxfnsymbol}{6}}{}
-}% end \@ActivateFootnoeMarkers
+  % Values to be used by footnotes:
+  \FPdiv{\@myFontScale}{\strip@pt\@NormalEmSize}{12}
+  % Substitute for \footnotesize, but only works for actual footnotes,
+  %   about 10pt with similarly reduced skip:
+  \FPmul{\@myfootnotesizeN}{\@myFontScale}{10}
+  \FPround{\@myfootnotesizeN}{\@myfootnotesizeN}{2}
+  \FPmul{\@myfootnoteskipN}{\@myFontScale}{\strip@pt\nbs}
+  \FPmul{\@myfootnoteskipN}{\@myfootnoteskipN}{0.84}
+  \FPround{\@myfootnoteskipN}{\@myfootnoteskipN}{2}
+}% end \@ActivateFootnotes
 
 
 

@@ -17,13 +17,16 @@
 %%
 
 
-%%
+%% In `novel', images are handled with a view to preserving uniform line grid.
+%% Normally, a work of fiction has no (or very few) images within the main
+%%   body of text. Images are more likely on display pages (such as title page)
+%%   or in chapter starts, or maps.
+
 %% Be sure to read the separate documentation about how to prepare images.
 %% In general: (1) png or jpg only. (2) Flattened, no transparency.
 %% (3) 300dpi (grayscale) or 600dpi (black/white) are industry norms.
 %% (4) Image file must contain its resolution. (5) Exact size, without scaling.
 %% (6) No private metadata. (7) Be sure grayscale is 1-channel, not rgb gray.
-%%
 
 
 % Pertains to images:
@@ -36,9 +39,6 @@
 \newlength\@imagehoffset
 \newlength\@imagevoffset
 \newlength\@mytotalht
-
-
-
 
 
 %% New in version 1.2: cover image.
@@ -58,19 +58,23 @@
 %%
 
 
-%% New in version 1.44: flexible images (without built-in resolution dpi)
-\gdef\@novimgres{300} % default (can only be set once)
+% New in version 1.44: flexible images (without built-in resolution dpi).
+% If an image fails to have its resolution declared inside the file,
+%   this value will be the assumed resolution.
 \gdef\@novereserror{%
   \ClassError{novel}{\string\SetFlexResolution\space bad value}%
-  {Resolution must be integer from 200 to 9600. Default 300.}%
+  {Resolution dpi must be integer from 200 to 9600. Default 300.}%
 }
 \newcommand\SetFlexResolution[1]{
   \IfInteger{#1}{ %
-    \FPiflt{#1}{200}\@novereserror\else\fi %
-    \FPifgt{#1}{9600}\@novereserror\else\fi %
+    \FPiflt{#1}{200}\@novereserror\else\fi % not enough
+    \FPifgt{#1}{9600}\@novereserror\else\fi % too much
     \gdef\@novimgres{#1} %
-  }{\@novreserror}
-}
+  }{ %
+    \@novreserror %
+  } %
+}%
+\SetFlexResolution{300} % default dpi
 %
 \gdef\@ActivateFlexResolution{% called by `novel.cls' \AtEndPreamble
   \pdfimageresolution=\@novimgres % from \SetFlexResolution. Default 300.

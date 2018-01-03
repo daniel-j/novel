@@ -22,8 +22,5 @@ The *archive* folder contains one or more zip files of prior stable code. This m
 The *other* folder may contain material that is not part of the TeX package, but might be useful. In particular, it contains a complete novel, with cover artwork, as source and PDF.
 
 
-#### Help Wanted
-
-TeX may be long in the tooth, but so am I. Sooner or later I will move on to other things. If you are interested in taking over package maintenance, contact me (and CTAN). You'll need a basic understanding of how things work in commercial printing (especially P.O.D.), familiarity with LuaTeX and especially fontspec, familiarity with Open Type fonts, understanding of PDF/X, and familiarity with the needs of fiction writers. You don't need to know Lua code. You don't need to know any stinking math or physics.
 
 

@@ -226,7 +226,9 @@
 %   width and height. Best seen in a "real" PDF viewer.
 \DeclareDocumentCommand \bigemdash { O{1,1} }
  {%
-  \ifthenelse{\equal{#1}{}\OR\equal{#1}{\space}}{\def\@myargsi{1,1}}{\def\@myargsi{#1}}%
+  \ifthenelse{\equal{#1}{}\OR\equal{#1}{\space}}{%
+    \def\@myargsi{1,1}}{\def\@myargsi{#1}%
+  }%
   \StrDel{\@myargsi}{\space}[\@myargs]%
   \StrCut{\@myargs}{,}{\@myraisei}{\@mythicki}%
   \ifthenelse{\equal{\@myraisei}{}\OR\equal{\@myraisei}{\space}}{%
@@ -265,26 +267,33 @@
 % If the text is in a font other than usual, place the font command
 %   outside \charscale, not inside.
 \ExplSyntaxOn
-\DeclareDocumentCommand \charscale { s O{1} m }
- {
+\DeclareDocumentCommand \charscale { s O{1} m } {%
   % Allows empty or blank to be used, and still provide default values:
   \ifthenelse{\equal{#2}{}\OR\equal{#2}{\space}}{%
-    \def\@myargs{1}}{\def\@myargs{#2}%
-  }
-  \StrDel{\@myargs}{\space}[\@myargsns] % needs {\space} not { }
-  \StrCut{\@myargsns}{,}{\@myscalet}{\@mycoord}
+    \def\@myargs{1}%
+  }{%
+    \def\@myargs{#2}%
+  }%
+  \StrDel{\@myargs}{\space}[\@myargsns]% needs {\space} not { }
+  \StrCut{\@myargsns}{,}{\@myscalet}{\@mycoord}%
   \ifthenelse{\equal{\@myscalet}{}}{%
-    \def\@myscale{1}}{\def\@myscale{\@myscalet}%
-  }
+    \def\@myscale{1}%
+  }{%
+    \def\@myscale{\@myscalet}%
+  }%
   \FPmax{\@myscale}{\@myscale}{0.5}% not permitted below this scale
-  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}
+  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}%
   \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{%
-    \def\@myx{0pt}}{\def\@myx{\@myxt}%
-  }
+    \def\@myx{0pt}%
+  }{%
+    \def\@myx{\@myxt}%
+  }%
   \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{%
-    \def\@myy{0pt}}{\def\@myy{\@myyt}%
-  }
-  \IfBooleanTF{#1}
+    \def\@myy{0pt}%
+  }{%
+    \def\@myy{\@myyt}%
+  }%
+  \IfBooleanTF{#1}%
   {% starred
     \ifvmode\else\unskip\fi%
     \stake\makebox[0pt][l]{%
@@ -295,11 +304,10 @@
       \smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}%
     }%
     \smash{\phantom{\scalebox{\@myscale}{#3}}}%
-  }
- }
+  }%
+ }% end \charscale
 \ExplSyntaxOff
 %%
-
 
 
 %%
@@ -328,7 +336,8 @@
 \FPround{\@mytempDetailsFontN}{\@mytempDetailsFontN}{2}%
 \FPmul{\@mytempDetailsSkipN}{\@mytempDetailsN}{\strip@pt\baselineskip}%
 \FPround{\@mytempDetailsSkipN}{\@mytempDetailsSkipN}{2}%
-\fontsize{\@mytempDetailsFontN pt}{\@mytempDetailsSkipN pt}\selectfont}%
+\fontsize{\@mytempDetailsFontN pt}{\@mytempDetailsSkipN pt}\selectfont%
+}%
 {\endgroup}
 %
 %%
@@ -430,69 +439,6 @@
 %%
 
 
-%% superscripts and subscripts
-\let\subs\relax
-\let\sups\relax
-\let\textsuperscript\relax
-\let\textsubscript\relax
-% Perhaps superscripts and subscripts (scientific) are in the font, or not.
-% Problem: The best fonts have these characters at size/weight designed
-%   to mingle with normal size. But many fonts merely scaled characters,
-%   which will be too light at the small size.
-% The unstarred version of these commands use the Open Type features when
-%   they are present, then faking (auto scale/raise) if features not present. 
-% The starred version just fakes, without regard for features.
-% 
-
-% Note that the effect of these commands continues, not just one-shot:
-\gdef\realmarker{\global\toggletrue{@realmarker}} % anywhere in text
-\gdef\fakemarker{\global\togglefalse{@realmarker}} % anywhere in text
-\newlength\@hoAhl % height of Ahl, locally measured and set when needed
-%%
-\ExplSyntaxOn
-%
-\DeclareDocumentCommand \sups { m }
- {%
-  \iftoggle{@realmarker}{%
-    \fontspec_if_feature:nTF {sups}{%
-      \ifvmode\else\unskip\fi%
-      {\addfontfeature{VerticalPosition=Superior}\smash{#1}}%
-    }{%
-      \setlength\@hoAhl{\heightof{Ahl}}% local
-      \ifvmode\else\unskip\fi\charscale[0.7,0pt,0.5\@hoAhl]{#1}%
-    }%
-  }{%
-    \setlength\@hoAhl{\heightof{Ahl}}% local
-    \ifvmode\else\unskip\fi%
-    {\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,0.5\@hoAhl]{#1}}%
-  }%
- }% end \sups
-%
-\DeclareDocumentCommand \subs { m }
- {%
-  \iftoggle{@realmarker}{%
-    \fontspec_if_feature:nTF {sinf}{%
-      \ifvmode\else\unskip\fi%
-      {\addfontfeature{VerticalPosition=ScientificInferior}\smash{#1}}%
-    }{%
-      \fontspec_if_feature:nTF {subs}{%
-        \ifvmode\else\unskip\fi%
-        {\addfontfeature{VerticalPosition=Inferior}\smash{#1}}%
-      }{%
-        \setlength\@hoAhl{\heightof{Ahl}}% local
-        \ifvmode\else\unskip\fi\charscale[0.7,0pt,-0.2\@hoAhl]{#1}%
-      }%
-    }%
-  }{%
-    \setlength\@hoAhl{\heightof{Ahl}}% local
-    \ifvmode\else\unskip\fi%
-    {\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,-0.2\@hoAhl]{#1}}%
-  }%
- }% end \subs
-%
-\cs_new_eq:NN \textsuperscript \sups
-\cs_new_eq:NN \textsubscript \subs
-\ExplSyntaxOff
 %%
 \gdef\specialblankline{\null} % deprecated
 %%

@@ -295,8 +295,7 @@
   }% end subchfont
   \FPdiv{\@qclineth}{\strip@pt\@tempLength}{\strip@pt\normalxheight}% fontscale
   \FPmul{\@howthick}{\@qclineth}{0.049}% typical emdash thickness, em.
-  \FPadd{\@howraise}{\@qctweak}{0.23}% typical emdash height em raised.
-  \FPmul{\@howraise}{\@howraise}{\@qclineth}%
+  \FPmul{\@howraise}{0.23}{\@qclineth}% typical emdash height em raised.
   \ifthenelse{\equal{#1}{} \OR \equal{#1}{ }}{}{% no line, else:
     \ifthenelse{\equal{#1}{*}}{% line fills:
       ~\leaders%
@@ -311,6 +310,7 @@
   \NoIndentAfterThis%
 } % end \QuickChapter
 %%
+
 
 %% New in version 1.40: \cleartorecto and \cleartoend
 % \cleartorecto works same as \clearpage when next page is recto.

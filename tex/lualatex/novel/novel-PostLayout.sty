@@ -21,21 +21,7 @@
 
 
 
-%% Values to be used by footnotes:
-\FPdiv{\@myFontScale}{\strip@pt\@NormalEmSize}{12}
-% Substitute for \footnotesize, but only works for actual footnotes,
-%   about 10pt with similarly reduced skip:
-\FPmul{\@myfootnotesizeN}{\@myFontScale}{10}
-\FPround{\@myfootnotesizeN}{\@myfootnotesizeN}{2}
-\FPmul{\@myfootnoteskipN}{\@myFontScale}{\strip@pt\baselineskip}
-\FPmul{\@myfootnoteskipN}{\@myfootnoteskipN}{0.84}
-\FPround{\@myfootnoteskipN}{\@myfootnoteskipN}{2}
-%% end footnote values.
-
-
-
-
-% Used in conjunction with `shademargins' and `cropmarks' options.
+% \@getPageXY is used by `shademargins' and `cropmarks' options.
 % The 72.27pt compensates for built-in 1in TeX offsets.
 % Position of left edge of TrimBox, rightwards from left edge of MediaBox:
 \newlength\Trim@Left
@@ -58,8 +44,7 @@
 %% end \@getPageXY.
 
 
-
-%% CLOSECROP CLASS OPTION
+%% ACTIVATE CLOSECROP CLASS OPTION
 %% ----------------------------------------------------------------------------
 % The `closecrop' class option is only effective in draft mode.
 % It preserves the text layout, but removes most of the margin white space.
@@ -90,8 +75,7 @@
 %% end closecrop
 
 
-
-%% SHADEMARGINS CLASS OPTION (Includes Unsafe Zone)
+%% ACTIVATE SHADEMARGINS CLASS OPTION (Includes Unsafe Zone)
 %% ----------------------------------------------------------------------------
 %% With class option `shademargins' (only effective in draft mode):
 % Based on code by Ulrike Fischer at tex.stackexchange.com, CC-by-sa-3.0:
@@ -172,7 +156,10 @@
 %% end shademargins and unsafe zone
 
 
-% Labels each page with DRAFT at upper left, if in draft mode:
+%% LABEL DRAFT OPTION
+%% ----------------------------------------------------------------------------
+% Writes DRAFT inside upper left of TrimBox, when in draft mode.
+% This macro must go here, in order, so that the label is not over-shaded.
 \ifdraftdoc
   \AddToShipoutPictureBG{%
   \@getPageXY%
@@ -184,8 +171,7 @@
 %% end label draft.
 
 
-
-%% CROPMARKS CLASS OPTION
+%% ACTIVATE CROPMARKS CLASS OPTION
 %% ----------------------------------------------------------------------------
 % Cropmarks (trim marks, really) are not important in this document class.
 % That's because the targeted printing services generally do not want them.
@@ -268,7 +254,7 @@
 
 
 
-%%
+%
 %% End of file `novel-PostLayout.sty'.
 
 

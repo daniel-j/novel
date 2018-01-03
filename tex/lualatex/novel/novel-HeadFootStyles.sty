@@ -25,8 +25,8 @@
 %% in the Preamble.
 
 \gdef\@HeadFootStyle{1} % default: header but not footer
-\gdef\@myVersoEmblem{} % no default emblem
-\gdef\@myRectoEmblem{} % no default emblem
+\gdef\@VersoEmblem{} % no default emblem
+\gdef\@RectoEmblem{} % no default emblem
 
 
 %% SET HEADER/FOOTER STYLE AND RESERVE SPACE FOR HEADER/FOOTER
@@ -159,8 +159,8 @@
 %
 % See docs for what these emblems do, if used:
 \newcommand\SetEmblems[2]{ % verso, recto
-  \gdef\@myVersoEmblem{{\headfont #1}}
-  \gdef\@myRectoEmblem{{\headfont #2}}
+  \gdef\@VersoEmblem{{\headfont #1}}
+  \gdef\@RectoEmblem{{\headfont #2}}
 }
 \let\SetEmblem\SetEmblems% for convenience
 % If you want something fancier than \thepage:
@@ -315,10 +315,10 @@
     \if@StyledHeader\else
       \fancyhead[LE]{%
         \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
-        \@myVersoEmblem%
+        \@VersoEmblem%
       }
       \fancyhead[RO]{%
-        \@myRectoEmblem%
+        \@RectoEmblem%
         \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
       }
       \fancyhead[CE]{\@lshftext\versoheadtext}
@@ -331,10 +331,10 @@
     \if@StyledFooter\else
       \fancyfoot[LE]{%
         \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
-        \@myVersoEmblem%
+        \@VersoEmblem%
       }
       \fancyfoot[RO]{%
-        \@myRectoEmblem%
+        \@RectoEmblem%
         \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
       }
     \fi
@@ -350,14 +350,14 @@
     \if@StyledHeader\else
       \fancyhead[LE]{%
         \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
-        \@myVersoEmblem%
+        \@VersoEmblem%
         \hspace{1em}%
         {\@lshftext\versoheadtext}%
       }
       \fancyhead[RO]{%
         {\@lshftext\rectoheadtext}%
         \hspace{1em}%
-        \@myRectoEmblem%
+        \@RectoEmblem%
         \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
       }
     \fi
@@ -379,10 +379,10 @@
     \if@StyledHeader\else
       \fancyhead[LE]{%
         \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
-        \@myVersoEmblem%
+        \@VersoEmblem%
       }
       \fancyhead[RO]{%
-        \@myRectoEmblem%
+        \@RectoEmblem%
         \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
       }
       \fancyhead[RE]{\@lshftext\versoheadtext}
@@ -429,10 +429,10 @@
     \fancyhead[LO,RE,LE,RO,CE,CO]{}
     \fancyhead[LE]{%
       \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
-      \@myVersoEmblem%
+      \@VersoEmblem%
     }
     \fancyhead[RO]{%
-      \@myRectoEmblem%
+      \@RectoEmblem%
       \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
     }
     \fancyfoot[LO,RE,LE,RO,CE,CO]{}

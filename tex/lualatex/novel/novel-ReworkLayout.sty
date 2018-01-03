@@ -15,28 +15,44 @@
 [2018/01/02 v1.46.5q LaTeX file (reworked layout calculations)]
 %%
 
-%%
-%% File `novel-CalculateLayout.sty' calculated layout based on
-%%   values from \Set commands, and defaults.
-%% If no \Rework setting was used, the layout is final,
-%%   so this file is not loaded.
-%% But if the Preamble used one of both \Rework settings,
-%%   then this file is loaded, and it re-processes the layout.
-%% Normal font size and/or baselineskip are adjusted so that
-%%   the paragraph structures and pagination that would have been
-%%   produced by the first calculation, are retained after rework.
-%% This is done in a single pass, without requiring re-compile.
-%% It relies on the fact that when fonts and microtype settings are fixed,
-%%   line breaks are determined by the ratio of \textwidth to \NormalEmSize.
-%% And, when \@LinesPerPage is constant, page breaks are unchanged,
-%%   even if you decide to add or remove header/footer.
-%% If this file is loaded, it is \AtEndPreamble, following
-%%   `novel-CalculateLayout.sty', and preceding `novel-PostLayout.sty'.
-%% Prior to v. 1.48, rework was within `novel-CalculateLayout.sty'.
-%%
+
+%% This file may or may not be loaded, depending on whether any \Rework
+%%   command was used. The decision is made within `novel-CalculateLayout.sty'.
+%% Results of the rework are passed back to `novel-CalculateLayout.sty'
+%%   to produce finished values.
+%% Prior to v. 1.48, rework was entirely within `novel-CalculateLayout.sty'.
 
 
-%% A few values from the original calculation must be stored:
+%% THEORY OF REWORK
+%% ----------------------------------------------------------------------------
+% When fonts and microtype settings are held constant, pagagraph line breaks
+%   are determined by the ratio of font point size to text width.
+% Thus, line breaks are preserved by scaling font point size and text width
+%   to the same values.
+% Text width is determined by the available horizontal space between the outer
+%   and inner margins. So, calculate how much this proportionately changes,
+%   then (if possible) apply the result to font point size and text width.
+% Pagination is determined by lines per page, regardless of header or footer,
+%   and regardless of the available vertical space.
+%   Thus, lines per page cannot be reworked.
+% In general, the aspect ration of available vertical/horizontal space, bounded
+%   by the margins, will be different before and after rework. What to do?
+% You can choose whether priority is given to maintaining the aspect ratio,
+%   or to meeting the new margins.
+% If you choose to preserve aspect ratio, it can always be done, but either
+%   the horizontal or vertical margins will need to be enlarged over the
+%   values specified for rework. This is automatically calculated, and the
+%   excess margin will be evenly distributed as needed.
+% If you choose to honor the new margins, that may or may not succeed.
+% When it succeeds, then the new baselineskip will be larger or smaller
+%   than it was before, in relation to font point size.
+% When it does not succeed, it is because the minimum baselineskip, in relation
+%   to font point size, cannot squeeze the lines into available vertical space.
+%   In this case, the new font point size will be reduced even more, so that
+%   the lines fit at minimum baselineskip. Then the txt width is reduced,
+%   to preserve line breaks. The excess side margin is distributed.
+%%
+% A few values from the original calculation must be stored:
 \newlength\@OriginalEmSize
   \gsetlength\@OriginalEmSize{\@NormalEmSize}
 \newlength\@OriginalTextWidth % same as original available width
@@ -45,16 +61,12 @@
   \gsetlength\@OriginalHeight{\@AvailableHeight}
 \newlength\@OriginalBaselineSkip
   \gsetlength\@OriginalBaselineSkip{\baselineskip}
-%%
-
-
 % Change the values of trim size and margins, as requested.
 % If not changed, same as before:
 \if@ReworkTrimSize
   \gsetlength\@TrimWidth{\@NewTrimWidth}
   \gsetlength\@TrimHeight{\@NewTrimHeight}
 \fi
-%
 \if@ReworkMargins
   \gsetlength\@TopMargin{\@NewTopMargin}
   \gsetlength\@OuterMargin{\@NewOuterMargin}
@@ -65,6 +77,7 @@
 \gsetlength\@AvailableWidth{\@TrimWidth-\@OuterMargin-\@InnerMargin}
 \gsetlength\@AvailableHeight{\@TrimHeight-\@TopMargin-\@BottomMargin}
 %%
+
 
 %%
 \if@AspectPriority

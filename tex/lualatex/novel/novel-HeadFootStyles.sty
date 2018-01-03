@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-HeadFootStyles.sty}%
-[2018/01/02 v1.46.5q LaTeX file (header and footer layouts and styles)]
+[2018/01/03 v1.46.5r LaTeX file (header and footer layouts and styles)]
 %% 
 
 
@@ -40,6 +40,9 @@
 % If you wish to create a custom head/foot style, you must first choose
 %   one of the pre-configured styles, then customize it. That way,
 %   the layout engine knows whether header or footer are present.
+\newif \if@StyledHeader % true if user-customized header using \fancyhead
+\newif \if@StyledFooter % true if user-customized footer using \fancyfoot
+%
 \gdef\SetHeadFootStyle#1{%
   \if@coverart
     \gdef\@HeadFootStyle{0} % required: no header/footer for coverart
@@ -133,18 +136,6 @@
 %% end set style and reserve space for header/footer.
 
 
-%% Note that `style' sometimes means `layout`.
-
-% Create flags to know if \fancyhead and \fancyfoot have been defined by user,
-%   somewhere in the Preamble. If not, then pre-defined layout based on
-%   trimsize will be applied \AtEndPreamble.
-\newif \if@StyledHeader % true if user-customized header using \fancyhead
-\newif \if@StyledFooter % true if user-customized footer using \fancyfoot
-\newif \if@DeleteCSline % true when using dropfolioinside
-\let\dropfolionow\relax % compatibility with earlier version.
-%
-
-
 %% Used in novel-headfootstyles.sty:
 % \SetLooseHead looseness factor (fontspec LetterSpace) 0=tight, 50=default
 \gdef\SetLooseHead#1{
@@ -211,74 +202,111 @@
 % Re-define \thispagestyle based on layout. When it requests only the page
 % number, decide what to do based on this command and whether footer is used:
 \newif \if@ThisPageStyle % true if \thispagestyle declared for current page
-\AtBeginShipout{\global\@ThisPageStylefalse} % re-sets when page done
+\newif \if@DeleteCSline % true when using @dropfolioinside
+\AtBeginShipout{% re-sets when page done
+  \global\@DeleteCSlinefalse%
+  \global\@ThisPageStylefalse%
+}
 \LetLtxMacro{\@myTempTPS}{\thispagestyle}
 %
 \gdef\thispagestyle#1{%
   \global\@ThisPageStyletrue%
   \@tempTFfalse%
+  % Style `fancy' is same as normal style:
   \ifthenelse{\equal{#1}{fancy}}{%
     \@tempTFtrue%
     \@myTempTPS{fancy}%
   }{}%
+  % Style `empty' has no visible content in header or footer.
+  % This style is pre-defined, so no need to re-define it here.
   \ifthenelse{\equal{#1}{empty}}{%
     \@tempTFtrue%
     \@myTempTPS{empty}%
   }{}%
-  \ifthenelse{\equal{#1}{plain} \OR \equal{#1}{fancyplain}}{%
-    \@tempTFtrue%
-    \if@HasFooter\@myTempTPS{fancyplain}%
-    \else\@myTempTPS{empty}%
-    \fi%
-  }{}%
+  % Style `footer' has no visible content in header.
+  % If the normal style has a footer, it will be used as-is. However, if the
+  %   normal style does not have a footer, then (unlike the above style)
+  %   the page number will not be placed at bottom; as with style `empty'.
   \ifthenelse{\equal{#1}{footer}}{%
     \@tempTFtrue%
-    \if@HasFooter\@myTempTPS{footer}%
+    \if@HasFooter\@myTempTPS{@footer}%
     \else\@myTempTPS{empty}%
     \fi%
   }{}%
+  % Style `forcenumber' is rarely used. If the normal style has a footer,
+  %   it will be used as-is (presumably contains the page number), and there
+  %   will be no visible content in the header.
+  % But if there is no normal footer, then the outside portion of the header
+  %   is printed. No other portion of the header. Presumably the page number
+  %   is located at the outside of the header.
   \ifthenelse{\equal{#1}{forcenumber}}{%
     \@tempTFtrue%
-    \if@HasFooter\@myTempTPS{footer}%
-    \else\@myTempTPS{fancynumber}%
+    \if@HasFooter\@myTempTPS{@footer}%
+    \else\@myTempTPS{@forcenumber}%
     \fi%
   }{}%
-  \ifthenelse{\equal{#1}{dropfoliobeneath}}{% after \clearpage
+  % Style `dropfoliobeneath': There will be no visible content in header.
+  % If the normal style has a footer, it will be used as-is. This assumes
+  %   that the page number is contained in the footer, the usual case.
+  % If the normal style has no footer, then the page number will be centered
+  %   within the lower margin, at the position where an exta line would be.
+  %   Thus, pagination of the main text is unaffected.
+  % Since the number is closer than usual to the page bottom edge, you must
+  %   ensure that it does not intrude into the unsafe zone (where printers
+  %   prohibit any printable matter). TeX cannot check this for you. However,
+  %   you can define an Unsafe Zone, and inspect placement of the number
+  %   in draft mode.
+  % Styles `plain*' and `fancyplain*' (with asterisk) are aliases.
+  \ifthenelse{\equal{#1}{dropfoliobeneath}%
+    \OR \equal{#1}{plain*} \OR \equal{#1}{fancyplain*}}{%
     \@tempTFtrue%
-    \if@HasFooter\@myTempTPS{footer}%
-    \else\@myTempTPS{dropfoliobeneath}%
+    \if@HasFooter\@myTempTPS{@footer}%
+    \else%
+      \@myTempTPS{@dropfoliobeneath}%
+      \typeout{^^JClass `novel' Alert: Page no. \thepage\space in margin. ^^J%
+        Review layout to ensure that this is within the Safe Area. ^^J%
+      }%
     \fi%
   }{}%
-  \ifthenelse{\equal{#1}{dropfolioinside}% after \clearpage
-  \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{% compatibility
-    \@tempTFtrue\if@HasFooter\@myTempTPS{footer}%
-    \else
-      \enlargethispage{-\nbs}
-      \@myTempTPS{dropfolioinside}%
+  % Style `dropfolioinside': There will be no visible content in header.
+  % If the normal style has a footer, it will be used as-is. This assumes
+  %   that the page number is contained in the footer, the usual case.
+  % If the normal style has not footer, then the page number will be centered
+  %   where the last line of main text would ordinarily be. No extra gap.
+  %   That may cause the (former) last line of main text to flow to the top of
+  %   the next page, and so forth. However, if this page style is used on
+  %   a page with ChapterStart, then the height of ChapterStart will be
+  %   automatically reduced by one line, so that there is no repagination.
+  % Styles `plain', `fancyplain', `dropfolio', and `dropfoliolater' are aliases
+  %   for `dropfolioinside'. I couldn't make up my mind regarding the
+  %   command name. For compatibility, all these do the same thing.
+  \ifthenelse{\equal{#1}{dropfolioinside}%
+  \OR \equal{#1}{plain} \OR \equal{#1}{fancyplain}%
+  \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{%
+    \@tempTFtrue%
+    \if@HasFooter\@myTempTPS{@footer}%
+    \else%
+      \global\@DeleteCSlinetrue%
+      \enlargethispage{-\nbs}%
+      \@myTempTPS{@dropfolioinside}%
     \fi%
   }{}%
+  % Verify that an allowable choice was made:
   \if@tempTF\else%
     \ClassError{novel}{^^JPage \thepage\space has \string\thispagestyle ^^J%
      but its argument is not on the list of choices. See docs. ^^J}%
   \fi%
-} %
-% Here are the available page styles:
-\fancypagestyle{fancyplain}{ % substitute for plain
-  % No header. Page number centered at bottom.
+} % end \thispagestyle.
+%
+\let\dropfolionow\relax % compatibility with earlier version.
+%
+% Here are the style definitions:
+\fancypagestyle{@footer}{ % blanks header, but leaves footer as-is
   \renewcommand\headrulewidth{0pt}
   \renewcommand\footrulewidth{0pt}
   \fancyhead[LO,RE,LE,RO,CE,CO]{}
-  \fancyfoot[LO,RE,LE,RO,CE,CO]{}
-  \fancyfoot[CO,CE]{\@lspagenum\pagenumberstyle}
 }
-\fancypagestyle{footer}{ % blanks header, but leaves footer as-is
-  \renewcommand\headrulewidth{0pt}
-  \renewcommand\footrulewidth{0pt}
-  \fancyhead[LO,RE,LE,RO,CE,CO]{}
-  %\fancyfoot[LO,RE,LE,RO,CE,CO]{}
-  %\fancyfoot[CO,CE]{\@lspagenum\pagenumberstyle}
-}
-\fancypagestyle{dropfolioinside}{
+\fancypagestyle{@dropfolioinside}{ % page number where last line would be
   \renewcommand\headrulewidth{0pt}
   \renewcommand\footrulewidth{0pt}
   \fancyhead[LO,RE,LE,RO,CE,CO]{}
@@ -287,7 +315,7 @@
     \raisebox{\dimexpr\@FootJump\nbs}{\@lspagenum\pagenumberstyle}%
   }
 }
-\fancypagestyle{dropfoliobeneath}{
+\fancypagestyle{@dropfoliobeneath}{ % page number in margin below text
   \renewcommand\headrulewidth{0pt}
   \renewcommand\footrulewidth{0pt}
   \fancyhead[LO,RE,LE,RO,CE,CO]{}
@@ -296,8 +324,7 @@
     \raisebox{\dimexpr\@FootJump\nbs-\nbs}{\@lspagenum\pagenumberstyle}%
   }
 }
-% Not a user command, use plain or fancyplain:
-\fancypagestyle{fancynumber}{ % if has header but not footer
+\fancypagestyle{@forcenumber}{ % if has header but not footer
   \renewcommand\headrulewidth{0pt}
   \renewcommand\footrulewidth{0pt}
   \fancyhead[LO,RE,LE,RO,CE,CO]{}

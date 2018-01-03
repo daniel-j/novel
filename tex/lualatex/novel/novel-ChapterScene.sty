@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-ChapterScene.sty}%
-[2018/01/02 v1.46.5q LaTeX file (chapter and scene macros)]
+[2018/01/03 v1.46.5r LaTeX file (chapter and scene macros)]
 %%
 
 
@@ -155,8 +155,10 @@
 \ExplSyntaxOn
 \DeclareDocumentEnvironment {ChapterStart} %
 { O{\@setchapterstartheight} O{\@setchapterstart} }{%
-  \gdef\@thiscsstyle{#2}%
-  \thispagestyle{\@thiscsstyle}%
+  \if@ThisPageStyle\else%
+    \gdef\@thiscsstyle{#2}%
+    \thispagestyle{\@thiscsstyle}%
+  \fi%
   \gsetlength\parindent{0pt}% within environment
   \ResetFootnoteSymbol% resets symbolic markers, but not numerical markers
   \IfStrEq{#1}{*}{%
@@ -168,10 +170,14 @@
   \FPsub{\@fixlines}{\@fixlines}{0.001}% fudge to avoid rounding problems
   \FPround{\@thiscsheight}{\@thiscsheight}{0}%
   \FPiflt{\@thiscsheight}{4}%
-    \IfStrEq{\@thiscsstyle}{dropfolioinside}{%
-      \ClassError{novel}{ChapterStart~height~insufficient~for~dropfolioinside}%
-        {With~dropfolioinside,~the~ChapterStart~height~must~be~at~least~4.}%
-    }{}%
+    \def\@smcserr{%
+      \ClassError{novel}{ChapterStart~height~insufficient~for~thispagestyle}%
+       {With~your~choice~for~thispagestyle,~the~height~must~be~at~least~4.}%
+    }%
+    \IfStrEq{\@thiscsstyle}{dropfolioinside}{\@smcserr}{}%
+    \IfStrEq{\@thiscsstyle}{dropfoliolater}{\@smcserr}{}%
+    \IfStrEq{\@thiscsstyle}{plain}{\@smcserr}{}%
+    \IfStrEq{\@thiscsstyle}{fancyplain}{\@smcserr}{}%
   \else\fi%
   \FPiflt{\@thiscsheight}{3}%
     \ClassError{novel}{ChapterStart~height~must~be~at~least~3}%

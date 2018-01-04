@@ -1357,16 +1357,17 @@ Default author verso, title recto.</p>
 <div class="d4" id="d4.3.4">
 <p class="noindent">You may customize the appearance, and to some extent the content, of the various parts of the header and footer. These are global settings, in Preamble.</p>
 
-<h5 id="h4.3.4.1">4.3.4.1 <code>\SetHeadJump{<em>number</em>}</code>, <code>\SetFootJump{<em>number</em>}</code></h5>
+<h5 id="h4.3.4.1">4.3.4.1 Gap Between Header/Footer and Main Text</h5>
 <div class="d5" id="d4.3.4.1">
-<p class="item"><b>A.</b> These two commands control the separation between the header/footer and the main text. If your style does not have a header and/or footer, then the corresponding setting does not matter.</p>
+<p class="code"><code>\SetHeadJump{<em>number</em>}</code>, <code>\SetFootJump{<em>number</em>}</code></p>
+<p class="item"><b>A.</b> These two commands control the separation between the header/footer and the main text. If your style does not have a header and/or footer, then the corresponding setting will be ignored.</p>
 <p class="item"><b>B.</b> When you change the "jump," the header or footer remains in the same place. However, the inter-line spacing (baseline skip) of the main text is tweaked to fit, while maintaining the same number of lines per page. Thus, there is no problem with the margins.</p>
-<p class="item"><b>C.</b> Note that <i>novel</i> does not use arcane settings such as <i>headsep</i>, <i>footskip</i>, or <i>headheight</i>.</p>
-<p class="floatright" style="text-indent:0px"><img src="html-resources/headjump1.png" width="158" height="125" alt="headjump 1"/><br/><img src="html-resources/footjump2.png" width="130" height="116" alt="footjump 2"/></p>
-<p class="item"><b>D.</b> The head and/or foot "jump" is a multiple of the normal baseline skip. When the jumps are set to <i>1</i>, the header (if used) will be where the textblock would be, if it had one more line on top. The footer will be where the textblock would be, if it had one more line at the bottom. Values of <i>2</i> would skip a line at top and bottom. In other words, integer jumps maintain the line grid.</p>
-<p class="item"><b>E.</b> The header and/or footer do not need to be on line grid. The default jumps are <i>1.5</i> for each, which balances the need to separate the header/footer from the text, with the need to avoid wasting vertical space.</p>
-<p class="item"><b>F.</b> The maximum jump is <i>3</i>, minimum <i>1</i>. The two jumps do not need to be identical.</p>
-<div style="clear:both"></div>
+<p class="item"><b>C.</b> Note that <i>novel</i> does not use arcane settings such as <i>headsep</i>, <i>footskip</i>, or <i>headheight</i>. Those TeX internals are automatically calculated.</p>
+<p class="item"><b>D.</b> The head and/or foot "jump" is a multiple of the normal baseline skip. Each value is a number between 1 and 3, and may be decimal. The jumps do not need to be identical. Default is 1.5 for each. Measurements are from baseline to baseline.</p>
+<p class="centerimg" style="text-indent:0px"><img src="html-resources/header-footer-measurements.png" width="700" height="378" alt="measurements at top and bottom" title="measurements at top and bottom"/></p>
+<p class="item"><b>E.</b> The distance from the topmost baseline (whether header or main text), to the top margin, is fixed at 1 normal em. This provides adequate clearance for capital letters with upper diacritical marks. The distance from the lowermost baseline (whether main text or footer), to the lower margin, is fixed at 0.3 normal em. This provides adequate clearance for descenders.</p>
+<p class="item"><b>F.</b> When in draft mode, the <code>shademargins</code> option shades the margins in medium gray, and shades the area reserved for header/footer in light gray. This was used in the above image.</p>
+<p class="item" style="position:relative"><b>G.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> The head/foot jumps are global, and cannot be changed later in the document.</p>
 </div><!-- end 4.3.4.1 -->
 
 <h5 id="h4.3.4.2">4.3.4.2. <code>\SetHeadFont[<em>features</em>]{<em>font</em>}</code></h5>

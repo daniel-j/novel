@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2018/01/03 v1.46.5r LaTeX file (text macros usable within document body)]
+[2018/01/03 v1.46.5s LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -22,12 +22,6 @@
 %% These are not commands used in Preamble for setup, although a few of them
 %%   can be used in Preamble for setup, then again in body for change.
 
-
-%%
-% New in version 1.38, \straightquote and \straightdblquote:
-\gdef\straightquote{{\addfontfeature{Ligatures=ResetAll}'}}
-\gdef\straightdblquote{{\addfontfeature{Ligatures=ResetAll}"}}
-%%
 
 
 %% The following commands are BANNED.
@@ -41,12 +35,12 @@
 %% Standard LaTeX font sizes are ineffective. Use novel's own methods.
 % If you write one of these size commands, it will silently be ignored:
 %   \small, \footnotesize, \scriptsize, \tiny,
-% \  large, \Large, \LARGE, \huge, \Huge, \HUGE.
+% \  large, \Large, \LARGE, \huge, \Huge, \HUGE, \textls
 %
 %% Internal subdivisions are ineffective.
 % The command will merely echo its argument, without any functionality:
 %   \part, \chapter, \section, \subsection, \subsubsection,
-%   \paragraph, \subparagraph, \textls,
+%   \paragraph, \subparagraph.
 %
 %% Some commands will generate an error, so that you know they cannot be used:
 %   \maketitle, \makeindex, \tableofcontents, \listoftables, \listoffigures,
@@ -58,13 +52,19 @@
 %% Commands normally provided in other classes, pertaining to floats, figures,
 %    and tables, are not defined in `novel' class.
 %    If you attempt to use them, an error will result.
-
+%%
 
 
 %% AND NOW TO THE GOOD STUFF
 %% ----------------------------------------------------------------------------
 
-% Acronyms often look too big in regular capitals, but too small in
+%%
+% New in version 1.38, \straightquote and \straightdblquote:
+\gdef\straightquote{{\addfontfeature{Ligatures=ResetAll}'}}
+\gdef\straightdblquote{{\addfontfeature{Ligatures=ResetAll}"}}
+%%
+
+%% Acronyms often look too big in regular capitals, but too small in
 % small caps. Command \acronym{} provides an intermediate size:
 \gdef\acronym#1{% do not confuse with `acronym' package
   \if@HasDecoFont%
@@ -73,6 +73,10 @@
     #1% simply echo the argument, if no decofont
   \fi%
 }%
+%%
+
+%% Deco glyphs are decorative elements chosen from the decofont by code.
+% They are documented in file NovelDeco-glyphs.pdf, in the `extras' folder.
 \gdef\decoglyph#1{%
   \if@HasDecoFont%
     \IfBeginWith{#1}{n}{% normal weight symbol (same as regular)
@@ -94,46 +98,34 @@
     ~% non-breaking space, if no decofont
   \fi%
 }%
+%%
 
-
-
-% \memo{} does not print or save its argument.
+%% \memo{} does not print or save its argument.
 % Useful when you wish to put a note to yourself in the *.tex document.
 % Not the same as % comment, because anything after the braces will print.
 \long\gdef\memo#1{}
-%
-\gdef\stake{\rule{0pt}{1pt}} % placeholder
-%
-% \forceindent and \backindent perform or remove indent, using \hspace{}.
-% Rationale: Sometimes \indent and \noindent neutralized by another command.
-
-% See novel.cls for accompanying AtBeginDocument routine.
-
 %%
-% \smcp{} and \textsc{} small caps (Open Type) and \allsmcp{}:
-%
+
+%% \stake is like \strut, but does not occupy uch vertical space.
+\gdef\stake{\rule{0pt}{1pt}} % placeholder
+%%
+
+%% \smcp{} and \textsc{} small caps (Open Type) and \allsmcp{}:
 \ExplSyntaxOn
-%
-\DeclareDocumentCommand \smcp { +m }
- {%
+\DeclareDocumentCommand \smcp { +m } {% lowercase to small caps
   {\addfontfeature{Letters=SmallCaps}#1}%
- }
-%
-\DeclareDocumentCommand \allsmcp { +m }
- {%
+}
+\DeclareDocumentCommand \allsmcp { +m } {% lowercase+uppercase to small caps
   \fontspec_if_feature:nTF {c2sc}{%
    {\addfontfeatures{Letters=UppercaseSmallCaps, Letters=SmallCaps}#1}%
   }{%
    {\addfontfeature{Letters=SmallCaps}\MakeLowercase{#1}}%
   }%
  }
-%
 \ExplSyntaxOff
-%
 \let\textsc\smcp\relax % unified
 \let\oldscshape\scshape\relax % in case needed later
 \let\scshape\smcp\relax % unified
-%
 \providecommand\FirstLineFont{\smcp} % package `magaz'
 \renewcommand\FirstLineFont{\smcp}
 %%
@@ -146,7 +138,7 @@
 %% Just in case `xcolor' re-defines its internals, to prevent code bomb:
 \ProvideDocumentCommand\@declaredcolor { m } {}
 \ProvideDocumentCommand\@undeclaredcolor { o m } {}
-%%
+% For convenience:
 \if@graytext % and the usual colors, including black and white.
   \definecolor[named]{gray1}{gray}{0.15} % ten percent gray, etc.
   \definecolor[named]{gray2}{gray}{0.25}
@@ -176,7 +168,6 @@
 \fi
 %%
 
-
 % This code is slightly modified from package `etextools' by Florent Chervet.
 % Its license: "This work may be distributed and/or modified under the 
 %   conditions of the LaTeX Project Public License, either version 1.3 of this 
@@ -194,10 +185,7 @@
 \global\advance\nov@ettl@fter\@ne%
 \expandafter\aftergroup\csname nov@ettl@fterGroup\the\nov@ettl@fter\endcsname%
 }
-% End code from `etextools`.
-
-
-
+%% End code from `etextools`.
 
 %% \flexbox based on code by Werner at tex.stackexchange.com, CC-by-sa-3.0:
 % Optional first argument is minimum width of box.
@@ -205,12 +193,10 @@
 % Box width will be the greater of #1 or the width of #2.
 \newcommand{\flexbox}[2][\parindent]{%
   \settowidth{\@tempLength}{#2}%
-  \ifdim\@tempLength < #1%
-    \makebox[#1][l]{#2}%
-  \else%
-    #2%
-  \fi%
+  \ifdimcomp{\@tempLength}{<}{#1}{\makebox[#1][l]{#2}}{#2}%
 }
+%%
+
 %% \bigemdash inspired by code by RTBarnard at stackoverflow.com, CC-by-sa-3.0:
 % Allows a rule of variable length to fill available space at its right.
 % There must be a "right-hand limit" imposed by something, such as by enclosing
@@ -243,8 +229,7 @@
  }
 %%
 
-%%
-% \charscale[scale,x,y]{text} and starred version
+%% \charscale[scale,x,y]{text} and starred version
 % This is an "in-line" means of adjusting font size
 %   and position, without changing the baselineskip.
 % If the optional argument is unused or empty, then the text is not scaled
@@ -309,8 +294,7 @@
 \ExplSyntaxOff
 %%
 
-
-%%
+%% Environment parascale.
 % If you really must change font size and baselineskip on a paragraph basis,
 %   then use an environment. For example, the text on your Copyright page might
 %   be smaller (and less baselineskip) than normal.
@@ -339,9 +323,9 @@
 \fontsize{\@mytempDetailsFontN pt}{\@mytempDetailsSkipN pt}\selectfont%
 }%
 {\endgroup}
-%
 %%
-% Environment toc (alternative table of contents):
+
+%% Environment toc (alternative table of contents):
 % optional argument: additional vspace (\nbs) after each \tocitem entry.
 % required: LR margin increase, to narrow the table (0pt = full textwidth).
 \newlength\@tocnumwid
@@ -357,7 +341,7 @@
   \endgroup%
   \end{adjustwidth}\par%
 }%
-%% \tocitem[number]{description}{page} provides a one-line table entry in toc.
+% \tocitem[number]{description}{page} provides a one-line table entry in toc.
 % optional number might be chapter number. Can use ~ to offset.
 % unstarred: distance between description and page is not decorated.
 % starred (better): distance between description and page has dotted line.
@@ -388,7 +372,7 @@
   #3\par\vspace{\@tocskip}%
 }%
 %% end toc and \tocitem.
-%%
+
 %% legalese environment. Certain info, such as Copyright page, customarily is
 % neither justified nor hyphenated. Can be used wherever desired, of course.
 \newenvironment{legalese}
@@ -400,7 +384,8 @@
   \stake\hspace{-\@tempLength}#1%
 }
 %%
-% \showlength[decimal places]{length}{units}
+
+%% \showlength[decimal places]{length}{units}
 % Returns length as a string with the units, but does not change the length.
 % length is any existing length
 % units may be pt, bp, mm, cm, in
@@ -426,25 +411,22 @@
 }
 %% end \showlength
 
-
 %% \squeeze{} and \crush{} slightly shrink the horizonal dimension of the
 % enclosed text. May span paragraphs. Emergency only! No compounding.
 \long\gdef\squeeze#1{{\addfontfeature{FakeStretch=0.99}#1}}
 \long\gdef\crush#1{{\addfontfeature{FakeStretch=0.98}#1}}
 %%
 
-
 %% \lnum for lining numbers.
 \gdef\lnum#1{{\addfontfeature{Numbers=Lining}#1}}
 %%
 
-
-%%
+%% Do not use:
 \gdef\specialblankline{\null} % deprecated
 %%
 
-
-%% Allows text to be placed (potentially) off-grid, with grid resuming after.
+%% Environment linegap.
+% Allows text to be placed (potentially) off-grid, with grid resuming after.
 \newif \if@WithinLinegap % true within linegap environment
 \newcounter{currentlinegap} % 0 when not within linegap, >0 otherwise.
 \ExplSyntaxOn
@@ -472,9 +454,8 @@
   \vspace*{#1\nbs}%
   \setcounter{currentlinegap}{0}%
 }
-\ExplSyntaxOff % end linegap environment
+\ExplSyntaxOff
 %%
-
 
 %% New in v. 1.46.2. The `column' environment.
 % Not to be confused with `columns' in other classes.
@@ -496,7 +477,7 @@
 }%
 %%
 
-
+%% Some things must wait until after layout calculations:
 \gdef\@ActivateTextLengths{% called by `novel.cls' \AtEndPreamble
   % Store some normal values (main font) for global use in document body:
   \newlength\nfs % abbreviation for normal font point size
@@ -517,12 +498,12 @@
   \newlength\normaldescender % depth of lowercase gjpqy
     \gsetlength\normaldescender{\depthof{gjpqy}}
 }% end \@ActivateTextLengths
-
-
-
-
 %%
+
+%% More things that must wait:
 \gdef\@ActivateTextMacros{% called by `novel.cls' \AtBeginDocument
+  % \forceindent and \backindent perform or remove indent, using \hspace{}.
+  % Rationale: Sometimes \indent and \noindent neutralized by another command.
   \gdef\forceindent{\ifvmode\else\unskip\fi\stake\hspace{\normalparindent}}
   \gdef\backindent{\ifvmode\else\unskip\fi\hspace{-\normalparindent}}
 }% end \@ActivateTextMacros

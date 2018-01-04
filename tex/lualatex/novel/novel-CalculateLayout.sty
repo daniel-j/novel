@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-CalculateLayout.sty}%
-[2018/01/03 v1.46.5r LaTeX file (layout calculations)]
+[2018/01/03 v1.46.5s LaTeX file (layout calculations)]
 %%
 
 %%
@@ -31,13 +31,13 @@
 \fi
 % Default margins based on Trim Height, unless \SetMargins used:
 \if@SetMargins\else
-  \ifthenelse{\dimtest{\@TrimHeight}{<}{8.99in}}{ % small sizes:
+  \ifdimcomp{\@TrimHeight}{<}{8.99in}{ % small sizes:
     \gsetlength\@TopMargin{0.5in}
     \gsetlength\@OuterMargin{0.5in}
     \gsetlength\@BottomMargin{0.5in}
     \gsetlength\@InnerMargin{0.75in}
   }{ % medium sizes:
-    \ifthenelse{\dimtest{\@TrimHeight}{<}{9.99in}}{
+    \ifdimcomp{\@TrimHeight}{<}{9.99in}{ %
       \gsetlength\@TopMargin{0.75in}
       \gsetlength\@OuterMargin{0.75in}
       \gsetlength\@BottomMargin{0.75in}
@@ -178,17 +178,17 @@
 %% FINISH LAYOUT (but post-layout deals with special class options)
 %% ----------------------------------------------------------------------------
 % Caution if font size (set or reworked) is small:
-\FPiflt{\strip@pt\@NormalEmSize}{10}
+\ifdimcomp{\@NormalEmSize}{<}{10pt}{ %
   \typeout{^^JClass `novel' Alert: Normal font at less than 10pt. ^^J%
     Whether or not this is too small, depends on circumstances. ^^J%
     Beware if you use footnotes, which are smaller. ^^J%
   }
-\fi
-\FPiflt{\strip@pt\@NormalEmSize}{8.03} % 8 PostScript points
+}{} %
+\ifdimcomp{\@NormalEmSize}{<}{8.03pt}{ % 8 PostScript points (TeX bp)
   \ClassWarning{novel}{^^JNormal font at less than 8 points. ^^J%
     This is usually undesirable. May be rejected by some print services. ^^J%
   }
-\fi
+}{} %
 % Default Media Size is same as Trim Size, unless \SetMediaSize used:
 \if@MediaSize\else
     \gdef\@AlignTrim{center}
@@ -265,11 +265,11 @@
 %   shrinking the headsep and possibly affecting the textblock position.
 % This unlikely problem cannot be fixed by adjusting the headheight, but it
 %   can be fixed by adjusting the topmargin and headsep to compensate:
-\FPifgt{\@TentativeEmN}{\strip@pt\@NormalEmSize}
+\ifdimcomp{\@NormalEmSize}{<}{\@TentativeEmN pt}{ %
   \setlength\@tempLength{\@TentativeEmN pt}
   \gsetlength\topmargin{\topmargin-0.7\@tempLength+0.7\@NormalEmSize}
   \gsetlength\headsep{\headsep+0.7\@tempLength-0.7\@NormalEmSize}
-\fi
+}{} %
 %%
 % It seems that, unless specified by user, TeX may place the top text baseline
 %   in a vertical position that depends on the height of text in that line.
@@ -289,7 +289,7 @@
   \ClassError{novel}{Media Size too small for TrimSize}%
   {You wrote \string\SetMediaSize\space with length(s) too small ^^J%
    for the default Trim Size or your values in \string\SetTrimSize.}%
-}{}
+}{} %
 % end sanity check
 %% end finish layout.
 

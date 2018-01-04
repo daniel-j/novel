@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-PostLayout.sty}%
-[2018/01/03 v1.46.5r LaTeX file (post-layout modifications)]
+[2018/01/03 v1.46.5s LaTeX file (post-layout modifications)]
 %%
 
 %%
@@ -89,7 +89,7 @@
   % Then header and/or footer are filled with a lighter gray background.
   % Then Unsafe Zone (UZ) sits atop the other background fills, as darker gray.
   % The UZ is constructed from four strips, one at each side.
-  \AddToShipoutPictureBG{% fills trim area with gray
+  \AddToShipoutPictureBG{% fills trim area with medium gray
     \@getPageXY%
     \AtPageLowerLeft{\color[gray]{0.883215}%
       \hspace{\Trim@Left}%
@@ -109,8 +109,37 @@
         {\textwidth}{\dimexpr\@TrimHeight-\@TopMargin-\@BottomMargin}
     }%
   }%
+  \if@HasHeader% fills header (and its jump) with light gray
+    \AddToShipoutPictureBG{%
+      \@getPageXY%
+      \AtPageLowerLeft{\color[gray]{0.949123}%
+      \ifodd\c@page%
+        \hspace{\dimexpr\oddsidemargin+72.27pt}%
+      \else%
+        \hspace{\dimexpr\evensidemargin+72.27pt}%
+      \fi%
+        \rule[\Trim@Bottom+\@TrimHeight-\@TopMargin-\@HeadJump\nbs]%
+          {\@TrimWidth-\@OuterMargin-\@InnerMargin}{\@HeadJump\nbs}%
+      }%
+    }%
+  \fi%
   %
-  \if@UnsafeZone%
+  \if@HasFooter% fills footer (and its jump) with light gray
+    \AddToShipoutPictureBG{%
+      \@getPageXY%
+      \AtPageLowerLeft{\color[gray]{0.949123}%
+      \ifodd\c@page%
+        \hspace{\dimexpr\oddsidemargin+72.27pt}%
+      \else%
+        \hspace{\dimexpr\evensidemargin+72.27pt}%
+      \fi%
+        \rule[\Trim@Bottom+\@BottomMargin]%
+          {\@TrimWidth-\@OuterMargin-\@InnerMargin}{\@FootJump\nbs}%
+      }%
+    }%
+  \fi%
+  %
+  \if@UnsafeZone% fills unsafe zones with dark gray
     \AddToShipoutPictureBG{% top unsafe zone
       \@getPageXY%
       \AtPageLowerLeft{\color[gray]{0.542763}%

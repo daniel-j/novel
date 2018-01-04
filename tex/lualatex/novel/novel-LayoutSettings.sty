@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2018/01/03 v1.46.5r LaTeX file (layout settings)]
+[2018/01/03 v1.46.5s LaTeX file (layout settings)]
 %%
 
 
@@ -43,11 +43,11 @@
 \newlength\@TrimWidth
 \newlength\@TrimHeight
 \newcommand\SetTrimSize[2]{% width, height
-  \ifthenelse{\dimtest{#1}{<}{2.99in}}{
+  \ifdimcomp{#1}{<}{3in}{
     \ClassError{novel}{Unacceptably small Trim Width}%
      {Trim Width must be at least 3in.}%
   }{}
-  \ifthenelse{\dimtest{#2}{<}{2.99in}}{
+  \ifdimcomp{#2}{<}{3in}{
     \ClassError{novel}{Unacceptably small Trim Height}%
      {Trim Height must be at least 3in.}%
   }{}

@@ -274,6 +274,7 @@ function closeall() {
           <li><a href="#h4.3.1">4.3.1 Margins</a>
             <ul id="u4.3.1">
               <li><a href="#h4.3.1.1">4.3.1.1 Gutter? Which?</a></li>
+              <li><a href="#h4.3.1.2">4.3.1.2 Unsafe Zone</a></li>
             </ul>
           </li>
           <li><a href="#h4.3.2">4.3.2 Lines Per Page</a></li>
@@ -788,11 +789,13 @@ function closeall() {
 
 <h3 id="h2.3">2.3. shademargins</h3>
 <div class="d3" id="d2.3">
-<p class="item"><img class="floatright" style="margin-top:6px" src="html-resources/shademargins.png" width="132" height="205" title="shademargins" alt="shademargins"/><b>A.</b> Only effective with <i>draft</i> option. May NOT be used for final, print-ready PDF.</p>
-<p class="item"><b>B.</b> Does not require <i>graytext</i> option.</p>
-<p class="item"><b>C.</b> Applies gray shade to margin areas. Helps to detect objects that overflow into margins. Also helps to visualize centering within text block.</p>
-<p class="item"><b>D.</b> Header and Footer, if any, are within the rectangle bounded by the margins. They do not sit in the gray area.</p>
-<p class="item"><b>E.</b> If Media Size exceeds Trim Size, the area outside the Trim Size will not be gray, because it is not part of the margins in the finished book. See sections <a href="#h4.1.1">4.1.1</a> and <a href="#h4.1.2">4.1.2</a>.</p>
+<p class="item"><img class="floatright" style="margin-top:6px" src="html-resources/using-shademargins.png" width="363" height="319" title="shademargins" alt="shademargins"/><b>A.</b> Only effective with <i>draft</i> option. May NOT be used for final, print-ready PDF.</p>
+<p class="item"><b>B.</b> Helps to visualize and detect possible layout problems.</p>
+<p class="item"><b>C.</b> Does not require <i>graytext</i> option.</p>
+<p class="item"><b>D.</b> Applies dark gray shade to unsafe areas (if set). Applies medium gray shade to margin areas. Applies light gray shade to header/footer areas.
+<p class="item"><b>E.</b> Margins include areas inside and outside the unsafe zones.</p>
+<p class="item"><b>F.</b> Header and Footer, if any, are within the rectangle bounded by the margins.</p>
+<p class="item"><b>G.</b> If Media Size exceeds Trim Size, the area outside the Trim Size will <em>not</em> be gray, because it is not part of the finished book. See sections <a href="#h4.1.1">4.1.1</a> and <a href="#h4.1.2">4.1.2</a>.</p>
 <p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Technical Info: During page shipout, adds the gray as background color, with a white box above it, then text (and images, if any) on top.</p>
 <div style="clear:both"></div>
 </div><!-- end 2.3 -->
@@ -1095,16 +1098,16 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 
 <h4 id="h4.1.1">4.1.1. Trim Size and TrimBox</h4>
 <div class="d4" id="d4.1.1">
-<p class="item"><b>A.</b> <b>Trim Size</b> is the finished size of your book, width and height (but not thickness). In the case of softcover books, it is the exact size.</p>
-<p>In the case of hardcover books, where the cover is slightly larger than the pages, your print service will tell you whether they mean the cover size or the page size.</p>
-<p class="item"><b>B.</b> PDF/X internally specifies the Trim Size as a rectangular <b>TrimBox</b>. This provides invisible instructions to an automated cutting machine, when the Trim Size is smaller than the actual paper sheet.</p>
-<p class="item"><b>C.</b> Your print service has a list of standard trim sizes. For fiction, you probably want "creme" (off-white) paper, which eliminates a few of the choices. Choice of size may also be limited by the distribution channels.</p>
-<p class="item"><b>D.</b> Trim Size is set using this command in Preamble:</p>
+<p class="noindent">Trim Size is globally set in Preamble:</p>
 <p class="code"><code>\SetTrimSize{<em>width</em>}{<em>height</em>}</code></p>
 <p>The width and height must have dimensions, such as <i>in</i> or <i>cm</i>.</p>
-<p class="item"><b>E.</b> If you do not specify the Trim Size, the default is <i>5.5in</i> wide, <i>8.5in</i> high. This is a widely-used "trade" size for softcover print-on-demand fiction in the U.S.A. If in doubt, leave the default.</p>
-<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you ever need to <i>retroactively</i> change Trim Size, see <a href="#hA">Appendix A</a>.</p>
-<p class="item" style="position:relative"><b>G.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/>  Do not request a <i>mass-market paperback</i> Trim Size unless you really, truly, know what you are doing. Since you are not a major writer for a major publishing house, you don't know; so, don't do it.</p>
+<p class="item"><b>A.</b> <b>Trim Size</b> is the finished size of your book, width and height (but not thickness). In the case of softcover books, it is the exact size.</p>
+<p>In the case of hardcover books, where the cover is slightly larger than the pages, your print service will tell you whether they mean the cover size or the page size.</p>
+<p class="item"><b>B.</b> PDF/X internally specifies the Trim Size as a rectangular <b>TrimBox</b>. This provides invisible instructions to an automated cutting machine, when the Trim Size is smaller than the actual paper sheet. You do not set the TrimBox yourself.</p>
+<p class="item"><b>C.</b> Your print service has a list of standard trim sizes. For fiction, you probably want "creme" (off-white) paper, which eliminates a few of the choices. Choice of size may also be limited by the distribution channels.</p>
+<p class="item"><b>D.</b> If you do not specify the Trim Size, the default is <i>5.5in</i> wide, <i>8.5in</i> high. This is a widely-used "trade" size for softcover print-on-demand fiction in the U.S.A. If in doubt, leave the default.</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you ever need to <i>retroactively</i> change Trim Size, see <a href="#hA">Appendix A</a>.</p>
+<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Do not request a <i>mass-market paperback</i> Trim Size unless you really, truly, know what you are doing. Since you are not a major writer for a major publishing house, you don't know; so, don't do it.</p>
 </div><!-- end 4.1.1 -->
 
 <h4 id="h4.1.2">4.1.2. Media Size and MediaBox</h4>
@@ -1116,7 +1119,7 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <p>Some printers are programmed to halt when they see a Media Size misfit. This is a big nuisance, because commercial printers rely on rapid production. In this case, the print service will demand that you set the PDF Media Size equal to their actual paper sheet size. The TrimBox will float within the MediaBox.</p>
 <p class="item"><b>D.</b> <img class="floatright" src="html-resources/mediasize.png" width="202" height="264" title="Trim Size floated in larger Media Size" alt="Trim Size floated in larger Media Size"/>At right, the book's Trim Size (green border) is centered in a larger PDF Media Size. The invisible <b>TrimBox</b> is outlined in green. Anything outside the TrimBox does not appear in the finished book.</p>
 <p class="item"><b>E.</b> When you request PDF/X compliance, the TrimBox is automatically added. If Trim Size equals Media Size, then the TrimBox is at the outer edges of the PDF.</p>
-<p class="item"><b>F.</b> If you are required to float the Trim Size in a larger Media Size, use this command in Preamble:</p>
+<p class="item"><b>F.</b> If you are required to float the Trim Size in a larger Media Size, is is globally set in Preamble:</p>
 <p class="code"><code>\SetMediaSize[<em>alignment</em>]{<em>width</em>}{<em>height</em>}</code></p>
 <p>By default, the TrimBox is horizontally and vertically centered in the MediaBox. If the optional <i>alignment</i> is set to <code>corner</code> then the TrimBox will be placed at a corner of the MediaBox (verso at upper left, recto at upper right, so they are back-to-back). Do not use <code>corner</code> unless requested by your print service. However, if you are hand-making a sample copy at home, using <code>corner</code> will reduce the amount of cutting.</p>
 <p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/>  Again: You usually will <i>not</i> set Media Size manually.</p>
@@ -1247,23 +1250,37 @@ Nonexistent Publications • Portland, Oregon\par<br/>
 
 <h4 id="h4.3.1">4.3.1. Margins</h4>
 <div class="d4" id="d4.3.1">
+<p class="noindent">Margins are globally set in Preamble:</p>
+<p class="code"><code>\SetMargins{<em>top</em>}{<em>outer</em>}{<em>bottom</em>}{<em>inner</em>}</code></p>
+<p>Mnemonic for order of margins: "TOBI, or not TOBI, that is the question."</p>
+<p>Each of the settings must have dimension, such as <i>in</i> or <i>mm</i>.</p>
 <p class="item"><b>A.</b> <b>Margins</b> are required on all four edges of the page. They do not have to be the same width. Generally the margin at the inside edge (spine margin) is wider. The <i>novel</i> class does not provide for marginal notes.</p>
-<p class="item"><b>B.</b> In the case of fiction, it is usually the case that the inside margin is the widest. But this is not a rule for all books. All that is required is that each margin be "wide enough" for the printing process.</p>
+<p class="item"><b>B.</b> In the case of fiction, it is usually the case that the inner margin is the widest. But this is not a rule for all books. All that is required is that each margin be "wide enough" for the printing process.</p>
 <p class="item"><b>C.</b> Print services are not used to seeing books with exotic margins (such as bottom margin twice the size of top margin). They may think that there is a mistake in your PDF, or in the print job, if you do that.</p>
 <p class="item"><b>D.</b> Normally, your TeX document will be compiled to a PDF that is electronically at the exact Trim Size. And normally, print services want it to be that way. When you view your PDF, the text will shift from side to side as you move through the pages, due to the slightly increased margin at the inside edge.</p>
 <p class="item"><b>E.</b> <img class="floatright" src="html-resources/margins-trim-media.png" width="202" height="264" title="Trim Size floated in larger Media Size" alt="Trim Size floated in larger Media Size"/>Margins are always relative to the Trim Size. If you are using a larger Media Size, the area outside the TrimBox is <i>not</i> counted among the margins; it is simply wasted area. This is illustrated at right, where a smaller Trim Size is floated in a marger Media Size. The margins are shown in gray.</p> 
-<p class="item"><b>F.</b> Here is how margins are set in Preamble:</p>
-<p class="code"><code>\SetMargins{<em>top</em>}{<em>outside</em>}{<em>bottom</em>}{<em>inside</em>}</code></p>
-<p>Mnemonic for order of margins: "TOBI, or not TOBI, that is the question."</p>
-<p>Each of the settings must have dimension, such as <i>in</i> or <i>mm</i>.</p>
-<p class="item"><b>G.</b> If you do not use this command, then margins are pre-configured. The minimum pre-configured margins are 0.5in at top, outside, and bootm, and 0.75in at inside. This meets the requirements of nearly any printing technology, unless your book is extremely thick. If your Trim Size is among the larger ones, then the pre-configured margins are larger than these minimums.</p>
-<p class="item"><b>H.</b> If your pages have header/footer, they sit inside the rectangle bounded by the four margins. That is, they do <i>not</i> sit inside the marginal areas.</p>
-<p class="item" style="position:relative"><b>I.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you ever need to <i>retroactively</i> change margins, see <a href="#hA">Appendix A</a>.</p>
+<p class="item"><b>F.</b> If you do not use this command, then margins are pre-configured. The minimum pre-configured margins are 0.5in at top, outside, and bootm, and 0.75in at inside. This meets the requirements of nearly any printing technology, unless your book is extremely thick. If your Trim Size is among the larger ones, then the pre-configured margins are larger than these minimums.</p>
+<p class="item"><b>G.</b> If your pages have header/footer, they sit inside the rectangle bounded by the four margins. That is, they do <i>not</i> sit inside the marginal areas.</p>
+<p class="item" style="position:relative"><b>H.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you ever need to <i>retroactively</i> change margins, see <a href="#hA">Appendix A</a>.</p>
 
 <h5 id="h4.3.1.1">4.3.1.1. Gutter? Which Gutter?</h5>
 <div class="d5" id="d4.3.1.1">
-<p><img class="floatright" src="html-resources/whichgutter.png" width="276" height="219" title="Which gutter?" alt="Which gutter?"/>Be aware that there is a lot of confusion regarding the word "gutter." In the accompanying diagram, it might mean any of A, B, C, or D, depending on who is doing the talking and which software is in use.</p>
-<p>The <i>novel</i> class uses <em>inside margin</em>, also known as <em>spine margin</em>, to mean <i>C</i>. There is no setting for "gutter" as such.</p>
+<p><img class="floatright" src="html-resources/whichgutter.png" width="276" height="219" title="Which gutter?" alt="Which gutter?"/>Be aware that there is a lot of confusion regarding the word "gutter."</p>
+<p>In the accompanying diagram, the central shaded area is at the spine, where there must be an allowance for the book assembly process. "Gutter" might mean any of A, B, C, or D, depending on who is doing the talking, and which software is in use.</p>
+<p>The <i>novel</i> class uses <em>inner margin</em>, also known as <em>spine margin</em>, to mean <i>C</i>. There is no setting for "gutter" as such.</p>
+<div style="clear:both"></div>
+</div><!-- end 4.3.1.1 -->
+
+<h5 id="h4.3.1.2">4.3.1.2. Unsafe Zone</h5>
+<div class="d5" id="d4.3.1.2">
+<p class="noindent">Optional global setting, in Preamble:</p>
+<p class="code"><code>\SetUnsafeZone{<em>top</em>}{<em>outer</em>}{<em>bottom</em>}{<em>inner</em>}</code></p>
+<p class="item"><b>A.</b> This applies only to interior text block. It does not apply to cover artwork.</p>
+<p class="item"><b>B.</b> Printers have a "safe zone," where you are allowed to place text and images. The area outside the safe zone is the "unsafe zone." If anything lies within the unsafe zone, even in part, then the file may print badly, or be rejected by commercial printers.</p>
+<p class="item"><b>C.</b> Some printers describe the unsafe zone as "minimum margins." But in most cases, visually appealing margins are wider than the unsafe zone. If so, then there will be an area that lies outside the margins, but inside the safe zone. You may be able to place items there, for special effects.</p>
+<p class="item"><img class="floatright" src="html-resources/unsafezone-margins.png" width="208" height="319" title="unsafe zone vs margin" alt="unsafe zone vs margin"/><b>D.</b> You do not need to set the unsafe zone. Whether or not you do, and regardless of any values you choose, the result does not affect the finished, final PDF. The zones are not enforced.</p>
+<p class="item"><b>E.</b> If you set unsafe zone, then the unsafe area will have a dark gray background, when you use <code>[draft,shademargins]</code> as class options. This allows you to visualize whether anything intrudes into the unsafe zone.</p>
+<p class="item"><b>F.</b> Unsafe sone is a sub-area of the margins. That is, the margins include the unsafe zone (if set), and usually some additional area. The accompanying image shows a page with narrow unsafe zone, and wider margins.</p>
 <div style="clear:both"></div>
 </div><!-- end 4.3.1.1 -->
 </div><!-- end 4.3.1 -->
@@ -1271,7 +1288,7 @@ Nonexistent Publications • Portland, Oregon\par<br/>
 <h4 id="h4.3.2">4.3.2. Lines Per Page</h4>
 <div class="d4" id="d4.3.2">
 <p class="item"><b>A.</b> Lines per page refers only to the textblock, and does <em>not</em> include header/footer. Lines are not stretched to fill short pages.</p>
-<p class="item"><b>B.</b> By default, a suitable number of lines per page are set, based on other dimemsions. You can change the default with this command, in Preamble:</p>
+<p class="item"><b>B.</b> By default, a suitable number of lines per page are automatically set, based on other dimensions. You can change the default with this command, in Preamble:</p>
 <p class="code"><code>\SetLinesPerPage{<em>integer</em>}</code></p>
 <p> Any non-integer will be rounded. There is no direct command to set the <em>leading</em>, also known as line-to-line spacing or <em>baselineskip</em>. Instead, it is calculated from the textblock height and number of lines.</p>
 <p class="item" style="position:relative"><b>C.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If the calculated leading is less than <i>1.2x</i> the font size, an error will result. It is difficult for TeX to honor all layout settings with such a small leading, which would normally be unacceptable for fiction in any case. If the calculated leading is at least <i>1.2x</i> the font size, but less than <i>1.25x</i> the font size, then the log file will have an Alert message, suggesting that you should consider using fewer lines per page. If the leading exceeds <i>1.4x</i> the font size, then the log will have an Alert, suggesting more lines per page. The Alert messages are friendly; you do not necessarily have to do anything.</p>
@@ -2499,7 +2516,7 @@ Lord Withens shrugged, and rode on. There was nothing to do but remain silent, t
 <div class="d5" id="d8.3.1.1">
 <p class="noindent">A <em>Display Page</em> has its own design, and stands by itself. Examples are Half-Title, Title, Copyright, Dedication, Epigraph, Table of Contents, Map, Part Separator, and of course Blank.</p>
 <p>Half-Title, Title, Dedication, and Part Separators are always single-page recto. A Table of Contents begins recto, but may continue verso. An Epigraph is single-page, and may be recto or verso.</p>
-<p>Maps are one per page, and may be recto or verso. If you intend to create a large map that spreads verso-recto, be aware that the technology you will be using does not allow continuous image through the spine area. Instead, you must create two separate maps, one per page. There will be the usual inside margins.</p>
+<p>Maps are one per page, and may be recto or verso. If you intend to create a large map that spreads verso-recto, be aware that the technology you will be using does not allow continuous image through the spine area. Instead, you must create two separate maps, one per page. There will be the usual inner margins.</p>
 <p>A Blank page is almost always verso; the only exception is when multiple blanks appear at the very end of the book.</p>
 <p>Each kind of display page has its own style, and position. What they have in common is that all of them lack a header or footer (and thus, lack a printed page number). Use <code>\thispagestyle{empty}</code>.</p>
 <p>If a display page extends to a second page (such as Table of Contents), then use <code>\thispagestyle{empty}</code> at its begining and end, to ensure that both pages omit header and footer.</p>
@@ -2734,7 +2751,7 @@ Finally, I would like to thank... \lipsum[1]<br/>
 
 <h5 id="h8.3.2.11">8.2.1.11. Map</h5>
 <div class="d5" id="d8.3.2.11">
-<p class="noindent">A Map is a <a href="#h8.3.1.1">Display Page</a>, which may be verso or recto. You may use more than one Map, but be aware that in the printing technology available to you via <i>novel</i> class, a single Map cannot be continued as a spread across the spine; you must break it into two independent Maps, allowing for the inside margins.</p>
+<p class="noindent">A Map is a <a href="#h8.3.1.1">Display Page</a>, which may be verso or recto. You may use more than one Map, but be aware that in the printing technology available to you via <i>novel</i> class, a single Map cannot be continued as a spread across the spine; you must break it into two independent Maps, allowing for the inner margins.</p>
 <p>Many works of fiction have a map or other diagram. It might be the map of a real or fictional geographic area. It might be the map of a crime scene. It might be an inheritance chart. Even though fictional, it is usually placed in front matter, presumably because a map does not actually tell any part of the story.</p>
 <p>I have seen maps placed very early, or very late, in front matter. The general rule seems to be, "put it where it fits." However, do not place a map where some other item <i>must</i> be located, and do not place a map on the final verso that faces the beginning of main matter, due to its visual distraction.</p>
 <p>A single map, or maybe two, need not be mentioned in a table of contents or illustrations. If you have a lot of them strewn around the book, then they should be listed in such a table; but this is very rare in fiction.</p>
@@ -3275,7 +3292,7 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 <div id="pageF" class="page">
 
 
-<h2 id="hF">Drop Caps</h2>
+<h2 id="hF">F. Drop Caps</h2>
 <div class="d2" id="dF">
 <p class="item">A <i>drop cap</i> is an enlarged letter (or image) at the beginning of chapter text, with the first few lines of text wrapped around it:</p>
 <p class="centerimg"><img src="html-resources/dropcap.png" width="431" height="112" title="drop cap" alt="drop cap"/></p>
@@ -3304,20 +3321,20 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 <p class="code"><code>scale=<em>number</em></code> &nbsp; Scales drop cap letter (not image). Default 1.</p>
 <p class="code"><code>bloat=<em>number</em></code> &nbsp; Horizontally scales drop cap letter (not image). Default 1. (note5)</p>
 <p class="code"><code>depth=<em>integer</em></code> &nbsp; Adds blank line(s) beneath drop cap baseline. Default 0. (note 6)</p>
-<p><img src="html-resources/" class="floatright" width="" height="" title="gap" alt="gap"/>&bull;Note 1: The <code>gap</code> is equivalent to <i>lettrine's</i> <code>findent</code>. There is no equivalent to <code>nindent</code> or <code>slope</code>. If you wish to move the first line of text closer to the drop cap, use <code>\kern</code> or <code>\hspace</code> there.</p>
-<p><img src="html-resources/" class="floatright" width="" height="" title="ante*=``" alt="ante*=``"/>&bull;Note 2: <code>ante</code> is typically used for placing quotation mark before the drop cap. But the authoritative <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> recommends that such an opening mark be omitted, at least in American style. If the mark is placed, it is at normal text font, size, and position (this is the style used).</p>
-<p>&bull;Note 3: <code>ante</code> begins at the margin, and thus pushes the drop cap to the right. With <code>ante*</code> its text hangs in the left margin, so that the drop cap is aligned with the margin. This is visually better, providing that you have enough margin to accomodate the ante text.</p>
-<p>Example at right: <code>\dropcap[ante*=``]{I}</code></p>
-<p>&bull;Note 4: You may use <code>\charscale</code> to manipulate the size and position of ante text. No other styling (such as font or color) may be applied. The ante text will always be black, in the main font. This is standard.</p>
-<p><img src="html-resources/" class="floatright" width="" height="" title="scale=1.2,bloat=.75" alt="scale=1.2,bloat=.75"/>&bull;Note 5: <code>bloat</code> multiplies <code>scale</code> horizontally. The primary use of <code>bloat</code> is to tweak where the lines break, by making the drop cap slightly narrower or thicker.</p>
-<p>Example at right: <code>\dropcap[scale=1.2,bloat=0.75]{I}</code>.</p>
-<p>&bull;Note 6: If the drop cap character has a prominent descender, then you may need to create room underneath it using <code>depth</code>, or the descender wil intrude into the text beneath it. This can only be decided on a per-character basis, depending on the font.</p>
-<p class="item"><img src="html-resources/" class="floatright" width="" height="" title="I-shade.png" alt="I-shade.png"/><b>C.</b> An image is auto-detected by file extension png, PNG, jpg, JPG, jpeg, or JPEG. It will be aligned so that its bottom is at the lowest indented baseline. You may position the image using the <code>hoffset</code> and <code>voffset</code> option keys. The image cannot be scaled by <code>hscale</code> or <code>vscale</code>, because it must be at exact size and resolution. Thus, whether or not the image's top aligns in the desired location, depends on how you created the image.</p>
+<p><img src="html-resources/dropcap-gap.png" class="floatright" width="82" height="150" title="dropcap gap" alt="dropcap gap"/>&bull; Note 1: The <code>gap</code> is equivalent to <i>lettrine's</i> <code>findent</code>. There is no equivalent to <code>nindent</code> or <code>slope</code>. If you wish to move the first line of text closer to the drop cap, use <code>\kern</code> or <code>\hspace</code> there.</p>
+<p>&bull; Note 2: <code>ante</code> is typically used for placing quotation mark before the drop cap. But the authoritative <i style="cursor:help" title="Chicago Manual of Style">CMoS</i> recommends that such an opening mark be omitted, at least in American style. If the mark is placed, it is at normal text font, size, and position (this is the style used).</p>
+<p><img src="html-resources/dropcap-antestar.png" class="floatright" width="110" height="102" title="ante*=``" alt="ante*=``"/>&bull; Note 3: <code>ante</code> begins at the margin, and thus pushes the drop cap to the right. With <code>ante*</code> its text hangs in the left margin, so that the drop cap is aligned with the margin. This is visually better, providing that you have enough margin to accomodate the ante text. Setting an <a href="#h4.3.1.2">unsafe zone</a> may be helpful.</p>
+<p>Example at right: <code>\dropcap[ante*=``]{O}</code></p>
+<p>&bull; Note 4: You may use <code>\charscale</code> to manipulate the size and position of ante text. No other styling (such as font or color) may be applied. The ante text will always be black, in the main font. This is standard.</p>
+<p><img src="html-resources/dropcap-scalebloat.png" class="floatright" width="98" height="107" title="scale=1.2,bloat=.75" alt="scale=1.2,bloat=.75"/>&bull; Note 5: <code>bloat</code> multiplies <code>scale</code> horizontally. If you use both scale and bloat, they multiply horizontally. The primary use of <code>bloat</code> is to tweak where the lines break, by making the drop cap slightly narrower or thicker.</p>
+<p>Example at right: <code>\dropcap[scale=1.2,bloat=0.75]{O}</code>.</p>
+<p>&bull; Note 6: If the drop cap character has a prominent descender, then you may need to create room underneath it using <code>depth</code>, or the descender wil intrude into the text beneath it. This can only be decided on a per-character basis, depending on the font.</p>
+<p class="item"><img src="html-resources/I-shade.png" class="floatright" width="84" height="88" title="dropcap I image" alt="dropcap I image"/><b>C.</b> An image is auto-detected by file extension png, PNG, jpg, JPG, jpeg, or JPEG. It will be aligned so that its bottom is at the lowest indented baseline. You may position the image using the <code>hoffset</code> and <code>voffset</code> option keys. The image cannot be scaled by <code>hscale</code> or <code>vscale</code>, because it must be at exact size and resolution. Thus, whether or not the image's top aligns in the desired location, depends on how you created the image.</p>
 <p>Example at right: <code>\dropcap[voffset=-0.15em]{I-shade.png}</code>.</p>
 <p class="item"><b>D.</b> If <code>lines=1</code>, then <code>\dropcap</code> has no effect. This applies whether or not the command or <code>ante</code> is starred. That is, the following lines of code have the same result:</p>
 <p class="code"><code>&ldquo;It was dark and stormy,&rdquo; he said.</code></p>
 <p class="code"><code>\dropcap[<i>any keys</i>,lines=1,ante*=&ldquo;]{I}t was dark and stormy,&rdquo; he said.</code></p>
-<p class="item"><b>E.</b> When the drop cap is a letter (not image) at <code>scale=1</code>, its top will lie at the capital X-height of main text. This is the most commonly-used style. If the letter has upper diacritical mark, then the mark will be set higher.</p>
+<p class="item"><b>E.</b> When the drop cap is a letter (not image) without scale, or with <code>scale=1</code>, its top will lie at the capital X-height of main text. This is the most commonly-used style. If the letter has upper diacritical mark, then the mark will be set higher.</p>
 </div><!-- end F.2 -->
 
 <h3 id="hF.3">F.3. \dropcap*[<em>options</em>]{<em>letter</em>} &nbsp; starred version</h3>
@@ -3325,6 +3342,7 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 <p class="item"><b>A.</b> <img src="html-resources/Iboxcap.png" class="floatright" width="84" height="191" title="starred dropcap and image" alt="starred dropcap and image"/>In its starred form, <code>\dropcap*</code> will place a rectangular box around the drop cap letter (but not image).</p>
 <p class="item"><b>B.</b> If the letter is in the Latin-1 or Latin Extended A character sets, then the box will ignore any upper diacritical mark, so that the mark sits above the box.</p>
 <p class="item"><b>C.</b> The boxed letter is a convenient reference frame, in case you wish to create an image of the letter in a graphics program. If you do that, then you will probably need to apply some negative <code>voffset</code> to the image. You may also wish to kern the first line closer to the image.</p>
+<p class="item"><b>D.</b> Example: At right, the top section shows a drop cap I with box. This portion of the PDF was imported to a graphics program, and the boxed area was used as template for the image shown in the lower section. Then the image was substituted for the original boxed letter.</p>
 </div><!-- end F.3 -->
 
 <h3 id="hF.4">F.4. Drop Cap Font and Color</h3>

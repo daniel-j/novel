@@ -1947,17 +1947,17 @@ I\hspace{-.05em}t was a dark and stormy night.
 <h4 id="h6.2.7">6.2.7. Local Feature Changes</h4>
 <div class="d4" id="d6.2.7">
 <p class="noindent"><code><b>{\addfontfeature{<em>feature</em>} <em>text</em>}</b></code> for changing Open Type features.</p>
-<p>If a font is already defined, you can locally add one or more <a href="#hE.2">features</a>. For example, suppose that you defined <code>\mynewfont</code> without using its Open Type feature <i>ss03</i> (we will assume that the font actually has this feature). In a particular place, you wish to activate <i>ss03</i>. The code looks like this:</p>
+<p class="item"><b>A.</b> If a font is already defined, you can locally add one or more <a href="#hE.2">features</a>. For example, suppose that you defined <code>\mynewfont</code> without using its Open Type feature <i>ss03</i> (we will assume that the font actually has this feature). In a particular place, you wish to activate <i>ss03</i>. The code looks like this:</p>
 <p class="code"><code>{\mynewfont\addfontfeature{RawFeature=+ss03} <em>text</em>}</code> % Note + sign. Braces outside.</p>
 <p>That limits the scope of the feature to the included group, in TeX terminology.</p>
-<p>You can modify features used by any defined font, whether you defined it yourself or it is one of the <i>novel</i> built-in font commands. You can add more than one feature. If the requested feature does not exist in the font, then your request will be ignored.</p>
-<p>What about removing a feature that is already present in the font definition? Suppose you defined <code>\mynewfont</code> so that <i>Numbers=OldStyle</i> is used. On a local basis, can you change the style of numbers? Usually, yes. You could use <i>Numbers=Lining</i> to over-ride the feature. Sometimes it depends on how you chose the features, as a matter of syntax. See the <i>fontspec</i> documentation.</p>
+<p class="item"><b>B.</b> You can modify features used by any defined font, whether you defined it yourself or it is one of the <i>novel</i> built-in font commands. You can add more than one feature. If the requested feature does not exist in the font, then your request will be ignored.</p>
+<p class="item"><b>C.</b> What about removing a feature that is already present in the font definition? Suppose you defined <code>\mynewfont</code> so that <i>Numbers=OldStyle</i> is used. On a local basis, can you change the style of numbers? Usually, yes. You could use <i>Numbers=Lining</i> to over-ride the feature. Sometimes it depends on how you chose the features, as a matter of syntax. See the <i>fontspec</i> documentation.</p>
 </div><!-- end 6.2.7 -->
 
 <h4 id="h6.2.8">6.2.8. Color Text (actually, grayscale)</h4>
 <div class="d4" id="d6.2.8">
-<p class="noindent">For this effect, the <a href="#h2.2"><i>graytext</i></a> class option must be used, or any color command will be ignored, and its included text will be rendered in black (even if the requested color is white). Images are unaffected.</p>
-<p><code><b>\color{<em>name</em>}</b></code> or <code><b>\color[gray]{<em>scale</em>}</b></code> is used within a group. All text will be in grayscale, from where the command is placed, until the group ends. If the command is not at the beginning of the group, it does not affect prior text. Example:</p>
+<p class="item"><b>A.</b> For this effect, the <a href="#h2.2"><i>graytext</i></a> class option must be used, or any color command will be ignored, and its included text will be rendered in black (even if the requested color is white). Images are unaffected.</p>
+<p class="item"><b>B.</b> <code><b>\color{<em>name</em>}</b></code> or <code><b>\color[gray]{<em>scale</em>}</b></code> is used within a group. All text will be in grayscale, from where the command is placed, until the group ends. If the command is not at the beginning of the group, it does not affect prior text. Example:</p>
 <p class="code"><code>
 \begingroup<br/>
 This text is unaffected by the following command.<br/>
@@ -1969,12 +1969,12 @@ This text is in lightgray, until the group ends.<br/>
 <p class="code"><code>\textcolor{gray7}{This text is in color gray7, a medium-light gray.}<br/>
 \textcolor[gray]{0.32}{This text is in 32 percent gray.}</code></p>
 <p style="margin-top:10px">Whether you use <code>\color</code> or <code>\textcolor</code>, there are two ways to specify the color: by name, or by scale, using package <i>xcolor</i> syntax.</p>
-<p>&bull; The following color names are accepted, and will be converted to some shade of gray (from dark to light): black, blue, violet, darkgray, purple, red, teal, olive, magenta, gray, brown, green, orange, cyan, lightgray, lime, pink, yellow, white.</p>
-<p>The above names are often not helpful, so <i>novel</i> also allows you to use these: black, gray1, gray2, gray3, gray4, gray5, gray6, gray7, gray8, gray9, white. The scale is not uniform (gray5 is not 50 percent gray), but the values are usefully spaced.</p>
-<p>Other names "known to dvips," such as <i>Apricot</i>, do not work. An error will result.</p>
-<p>&bull; To specify color by scale, follow the color command with <i>[gray]{<em>scale</em>}</i>, where the scale is a number between 0 (black) and 1 (white). Example:<code> \color[gray]{0.63}</code>.</p>
-<p>&bull; If you use <i>xcolor</i> syntax to request an rgb color, it will be converted to 1-channel grayscale.</p>
-<p>&bull; Absolutely no transparency!</p>
+<p class="item"><b>C.</b> The following color names are accepted, and will be converted to some shade of gray (from dark to light): black, blue, violet, darkgray, purple, red, teal, olive, magenta, gray, brown, green, orange, cyan, lightgray, lime, pink, yellow, white.</p>
+<p class="item"><b>D.</b> The above names are often not helpful, so <i>novel</i> also allows you to use these: black, gray1, gray2, gray3, gray4, gray5, gray6, gray7, gray8, gray9, white. The scale is not uniform (gray5 is not 50 percent gray), but the values are usefully spaced.</p>
+<p class="item"><b>E.</b> To specify color by scale, follow the color command with <i>[gray]{<em>scale</em>}</i>, where the scale is a number between 0 (black) and 1 (white). Example:<code> \color[gray]{0.63}</code>.</p>
+<p>If you use <i>xcolor</i> syntax to request an rgb color, it will be converted to 1-channel grayscale.</p>
+<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Absolutely no transparency!</p>
+<p class="item" style="position:relative"><b>G.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Other names "known to dvips," such as <i>Apricot</i>, do not work. An error will result.</p>
 </div><!-- end 6.2.8 -->
 </div><!-- end 6.2 -->
 
@@ -1984,15 +1984,14 @@ This text is in lightgray, until the group ends.<br/>
 
 <h4 id="h6.3.1">6.3.1. What to Avoid</h4>
 <div class="d4" id="d6.3.1">
-<p class="noindent">&bull; The <code>\raisebox</code> command does not play well with novel. It can be used, but there is the great risk of disturbing the line grid. Use <code><a href="#h6.1.2">\charscale</a></code> instead.</p>
-<p>&bull; If you must use the <code>\vspace</code> command (or its relative, <code>\vskip</code>) be sure to measure the space in units of <code>\nbs</code> (normal baseline skip).</p>
-<p>&bull; Avoid the <i>minipage</i> and <i>parbox</i> environments. These are likely to disrupt the line grid. When that happens, restoring the grid is your own responsibility. You may find the <i>adjustwidth</i> and <i>linegap</i> environments to be useful, as described in the next section.</p>
-<p>&bull; In most cases, do not use the center environment. You may use <code>{\centering ... \par}</code> instead, for a single paragraph. The center environment may cause the text to go off-grid. That's not a problem on some stand-alone pages where you don't care about the grid, but it is ugly in the middle of running text.</p>
-<p>&bull; Avoid positioning via the <i>textblock</i> or <i>textblock*</i> environments (package <i>textpos</i>). Actually, <i>novel</i> uses that code internally. But if not handled with more care than usual, positioned text can disrupt the baseline and position of surrounding text. You may use <code><a href="#h6.1.2">\charscale</a></code> to position small amounts of text safely, but not on a paragraph basis. Images have built-in positioning arguments, which may also be useful for positioned text.</p>
-<p>&bull; Do not use floats. If you try, then <i>novel</i> may intercept them with a nasty message.</p>
-<p>&bull; Do not use tables. Nasty message will result. But <i>novel</i> has its <a href="#h8.3.2.7">own provision</a> for a Table of Contents, and the code may be used for other purposes as well.</p>
-<p>&bull; If you use images, then use only the image commands provided by novel: <code><a href="#h7.3.2">\InlineImage</a></code> and <code><a href="#h7.3.4">\FloatImage</a></code>.<p>
-<p>&bull; There is no built-in provision for a two-column environment. However, you can place text <a href="#h7.3.5">alongside</a> an image.</p>
+<p class="item"><b>A.</b> The <code>\raisebox</code> command does not play well with novel. It can be used, but there is the great risk of disturbing the line grid. Use <code><a href="#h6.1.2">\charscale</a></code> instead.</p>
+<p class="item"><b>B.</b> If you must use the <code>\vspace</code> command (or its relative, <code>\vskip</code>) be sure to measure the space in units of <code>\nbs</code> (normal baseline skip).</p>
+<p class="item"><b>C.</b> Avoid the <i>minipage</i> and <i>parbox</i> environments. These are likely to disrupt the line grid. When that happens, restoring the grid is your own responsibility. You may find the <i>adjustwidth</i> and <i>linegap</i> environments to be useful, as described in the next section.</p>
+<p class="item"><b>D.</b> In most cases, do not use the center environment. You may use <code>{\centering ... \par}</code> instead, for a single paragraph. The center environment may cause the text to go off-grid. That's not a problem on some stand-alone pages where you don't care about the grid, but it is ugly in the middle of running text.</p>
+<p class="item"><b>E.</b> Avoid positioning via the <i>textblock</i> or <i>textblock*</i> environments (package <i>textpos</i>). Actually, <i>novel</i> uses that code internally. But if not handled with more care than usual, positioned text can disrupt the baseline and position of surrounding text. You may use <code><a href="#h6.1.2">\charscale</a></code> to position small amounts of text safely, but not on a paragraph basis. Images have built-in positioning arguments, which may also be useful for positioned text.</p>
+<p class="item"><b>F.</b> Do not use floats, other than <i>novel's</i> own <code>\FloatImage</code>. If you try, then <i>novel</i> may intercept them with a nasty message.</p>
+<p class="item"><b>G.</b> Do not use tables. Nasty message will result. But <i>novel</i> has its <a href="#h8.3.2.7">own provision</a> for a Table of Contents, and the code may be used for other purposes as well. If you must have a table, create it in another program or document class, reduce it to a raster image, and place the image in your <i>novel</i> document.</p>
+<p class="item"><b>H.</b> If you use images, then use only the image commands provided by novel: <code><a href="#h7.3.2">\InlineImage</a></code> and <code><a href="#h7.3.4">\FloatImage</a></code>. There is also a special provision for color cover artwork.<p>
 </div><!-- end 6.3.1 -->
 
 <h4 id="h6.3.2">6.3.2. Some Useful Commands</h4>
@@ -2043,16 +2042,17 @@ This text is in lightgray, until the group ends.<br/>
 
 <h3 id="h6.4">6.4 Superscripts, Subscripts</h3>
 <div class="d3" id="d6,4">
-<p class="noindent">In <i>novel</i>, superscripts and subscripts are called "markers." Most book-quality Open Type fonts have markers in style sets (<i>sups</i>, <i>sinf</i>, <i>subs</i>).</p>
-<p>In professional fonts, marker glyph weights are adjusted for consistent appearance compared to ordinary glyphs. However, many free fonts do not adjust marker glyph weights, so the markers may appear too small, or too light. You may choose whether to use a font's own markers, or allow <i>novel</i> to generate markers, depending on whichever you think looks better.</p>
-<p>&bull; <i>real</i> markers attempt to use the Open Type feature <i>sups</i> for superscripts, and the feature <i>sinf</i> (preferred) or <i>subs</i> (alternate) for subscripts. If the requested feature is not available for the font, then it will be automatically faked, by scaling/raising/lowering ordinary characters from the basefont (lining numerals will be used).</p>
-<p>&bull; <i>fake</i> markers ignore whether the Open Type features are available, and simply fakes them.</p>
+<p class="item"><b>A.</b> In <i>novel</i>, superscripts and subscripts are called "markers." Most book-quality Open Type fonts have markers in style sets (<i>sups</i>, <i>sinf</i>, <i>subs</i>).</p>
+<p class="item"><b>B.</b> In professional fonts, marker glyph weights are adjusted for consistent appearance compared to ordinary glyphs. However, many free fonts do not adjust marker glyph weights, so the markers may appear too small, or too light. You may choose whether to use a font's own markers, or allow <i>novel</i> to generate markers, depending on whichever you think looks better.</p>
+<p class="item"><b>C.</b> <i>real</i> markers attempt to use the Open Type feature <i>sups</i> for superscripts, and the feature <i>sinf</i> (preferred) or <i>subs</i> (alternate) for subscripts. Real markers are the best choice for professional fonts. If the requested feature is not available for the font, then it will be automatically faked, by scaling/raising/lowering ordinary characters from the basefont (lining numerals will be used).</p>
+<p class="item"><b>D.</b> <i>fake</i> markers ignore whether the Open Type features are available, and simply fakes them. Sometimes this is the best choice for fonts that do not have properly designed markers.</p>
 
 <h4 id="h6.4.1">6.4.1 <code>\SetMarkerStyle[<em>real,fake</em>]{<em>asterisk, dagger, number</em>}</code></h4>
 <div class="d4" id="d6.4.1">
-<p>This command may only be used in the Preamble. It globally sets the kind of marker to be used. Default is <i>real</i> and <i>asterisk</i>.</p>
-<p>The optional argument applies real or fake markers, as described above.</p>
-<p>The required argument applies only to markers created by the <code>\footnote</code> command. It does not apply to endnotes, or to manually placed superscripts and subscripts.</p>
+<p class="item"><b>A.</b> This command may only be used in the Preamble. It globally sets the kind of marker to be used. Default is <i>real</i> and <i>asterisk</i>.</p>
+<p class="item"><b>B.</b> The optional argument applies real or fake markers, as described above.</p>
+<p class="item"><b>C.</b> The required argument applies only to markers created by the <code>\footnote</code> command. It does not apply to endnotes, or to manually placed superscripts and subscripts.</p>
+<p class="item"><b>D.</b> The available choces for marker style:</p>
 <p>&bull; <i>asterisk</i> (default) uses symbolic footnote markers. The symbols rotate in order * † ‡ § ** †† ‡‡ §§ until reset.</p>
 <p>&bull; <i>dagger</i> uses symbolic footnote markers, but without asterisks. The symbols rotate in order † ‡ § †† ‡‡ §§ until reset.</p>
 <p>&bull; <i>number</i> uses numerical footnote markers. Due to possible conflict, the log file will have a "Big Bad Warning" if you use a numerical footnote marker in a document that also has endnotes, since endnotes always have numerical markers.</p>
@@ -2060,24 +2060,24 @@ This text is in lightgray, until the group ends.<br/>
 
 <h4 id="h6.4.2">6.4.2 <code>\realmarker</code>, <code>\fakemarker</code></h4>
 <div class="d4" id="d6.4.2">
-<p class="noindent">Within the body of the document, you may use <code>\realmarker</code> and <code>\fakemarker</code> to change your preference. The choice remains in effect until you change it again.</p>
-<p>The option real/fake applies wherever superscripts or subscripts are used, not just for footnotes or endnotes.</p>
+<p class="item"><b>A.</b> Within the body of the document, you may use <code>\realmarker</code> and <code>\fakemarker</code> to change your preference. The choice remains in effect until you change it again.</p>
+<p class="item"><b>B.</b> The option real/fake applies wherever superscripts or subscripts are used, not just for footnotes or endnotes.</p>
 </div><!-- end 6.4.2 -->
 </div><!-- end 6.4 -->
 
 <h3 id="h6.5">6.5. Footnotes and Endnotes</h3>
 <div class="d3" id="d6.5">
-<p class="noindent">The <i>novel</i> class has <em>limited</em> support for footnotes, because they are rarely used in fiction. Nevertheless, I have seen them. The notes may be factual or imaginary.</p>
-<p>If there are more than a handful of notes, then use endnotes to avoid a constant disruption of the text flow. You may use both footnotes and endnotes.</p>
-<p>Footnotes and endnotes insert superscripts (markers) at the appropriate point in the main text. The actual footnote or endnote begins with the marker in ordinary text, not as a superscript.</p>
+<p class="item"><b>A.</b> The <i>novel</i> class has <em>limited</em> support for footnotes, because they are rarely used in fiction. Nevertheless, I have seen them. The notes may be factual or imaginary.</p>
+<p class="item"><b>B.</b> If there are more than a handful of notes, then use endnotes to avoid a constant disruption of the text flow. You may use both footnotes and endnotes.</p>
+<p class="item"><b>C.</b> Footnotes and endnotes insert superscripts (markers) at the appropriate point in the main text. The actual footnote or endnote begins with the marker in ordinary text, not as a superscript.</p>
 
 <h4 id="h6.5.1">6.5.1 Footnotes</h4>
 <div class="d4" id="d6.5.1">
-<p>Footnotes appear at the bottom of the page where they are placed. There is no option to accumulate them to another location. Very long footnotes might straddle pages, but that situation is uncommon in fiction (and not within your control).</p>
+<p class="item"><b>A.</b> Footnotes appear at the bottom of the page where they are placed. There is no option to accumulate them to another location. Very long footnotes might straddle pages, but that situation is uncommon in fiction (and not within your control).</p>
 <p class="code"><code>\footnote[<em>option</em>]{<em>text</em>}</code></p>
-<p>The <code>\footnote</code> command places a superscript "marker" at the place where the command is written. The included text is written at the bottom of the page, beneath a short line that separates it from the main text. The footnote text is at smaller size and line skip, and has the same marker placed before it (but not as superscript). All of this is automatic.</p>
-<p>You may, if necessary, apply some style to the footnote text. For example, if you are referring to another work, its title might be in italics.</p>
-<p>Normally, no option is used. If you use option <i>0</i> (zero) then no marker will appear in the main text, and the footnote text will also appear without a marker. The count of markers is not incremented. This applies whether the markers are numbers or symbols.</p>
+<p class="item"><b>B.</b> The <code>\footnote</code> command places a superscript "marker" at the place where the command is written. The included text is written at the bottom of the page, beneath a short line that separates it from the main text. The footnote text is at smaller size and line skip, and has the same marker placed before it (but not as superscript). All of this is automatic.</p>
+<p class="item"><b>C.</b> You may, if necessary, apply some style to the footnote text. For example, if you are referring to another work, its title might be in italics.</p>
+<p class="item"><b>D.</b> Normally, no option is used. If you use option <i>0</i> (zero) then no marker will appear in the main text, and the footnote text will also appear without a marker. The count of markers is not incremented. This applies whether the markers are numbers or symbols.</p>
 <p>&bull; Trick: If you are using footnote numbers, but wish to place a special footnote using a symbol, you can do it manually. For example:</p>
 <p class="code"><code>He blinked.*\footnote[0]{* No, he didn't.}</code></p>
 <p>&bull; Avoid use of underlining, as it is considered bad style, due to visual distraction. If necessary, use italics.</p>
@@ -2090,10 +2090,10 @@ This text is in lightgray, until the group ends.<br/>
 
 <h5 id="h6.5.2.1">6.5.2.1 <code>\endnote</code>, <code>\ResetEndnote</code>, <code>\memo{}</code></h5>
 <div class="d5" id="d6.5.2.1">
-<p class="noindent">The <code>\endnote</code> command inserts a numerical superscript in the text. A running count of the numbers is automatically updated. This command does nothing else.</p>
-<p>The endnote numbers normally run continuously through the text, without reset. If you wish to reset the count (perhaps at new chapters), you have to do it manually, using <code>\ResetEndnote</code> at the appropriate location.</p>
-<p>Since <code>\endnote</code> gobbles any following space, use <code>\endnote{}</code> to preserve the space.</p>
-<p>When you use <code>\endnote</code>, there is no provision for the actual note, at that place in the text. The <i>novel</i> class does not know, and does not care, whether or not you actually write the endnote later.</p>
+<p class="item"><b>A.</b> The <code>\endnote</code> command inserts a numerical superscript in the text. A running count of the numbers is automatically updated. This command does nothing else.</p>
+<p class="item"><b>B.</b> Endnote numbers normally run continuously through the text, without reset. If you wish to reset the count (perhaps at new chapters), you have to do it manually, using <code>\ResetEndnote</code> at the appropriate location.</p>
+<p class="item"><b>C.</b> Since <code>\endnote</code> gobbles any following space, use <code>\endnote{}</code> to preserve the space.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> When you use <code>\endnote</code>, there is no provision for the actual note, at that place in the text. The <i>novel</i> class does not know, and does not care, whether or not you actually write the endnote later.</p>
 <p>If you wish to write an in-place reminder to yourself, about why you put an endnote marker there, use <code>\memo{<i>text</i>}</code>. The argument of <code>\memo</code> will not be printed, and will not be remembered for later use. Note that <code>\memo</code> is not like the percent <code>%</code> comment, because anything following <code>\memo</code> will be honored. Also, don't use space both before and after <code>\memo{}</code>, because both spaces will appear when typeset:</p>
 <p class="code"><i>Wrong:</i> <code>... in the sacred book.\endnote \memo{Dorf, VI} Afterward, Shange left for ...</code><br/>
 <i>Correct:</i> <code>... in the sacred book.\endnote\memo{Dorf, VI} Afterward, Shange left for ...</code></p>
@@ -2101,13 +2101,13 @@ This text is in lightgray, until the group ends.<br/>
 
 <h5 id="h6.5.2.2">6.5.2.2 <code>\endnotetext{<em>number</em>}{<em>text</em>}</code></h5>
 <div class="d5" id="d6.5.2.2">
-<p class="noindent">The <code>\endnotetext</code> command is a simple way of styling endnotes. You do not have to use it, if you have your own method. These may be placed per-chapter, or at the final end. The <i>novel</i> class does not keep track of them.</p>
-<p>The first argument is usually the endnote number. A period and following space will automatically be added, so that the text of the note is block-indented. You may use <code>\emph{<em>number</em>}</code> if you prefer the number to be in italics.</p>
+<p class="item"><b>A.</b> The <code>\endnotetext</code> command is a simple way of styling endnotes. You do not have to use it, if you have your own method. These may be placed per-chapter, or at the final end. The <i>novel</i> class does not keep track of them.</p>
+<p class="item"><b>B.</b> The first argument is usually the endnote number. A period and following space will automatically be added, so that the text of the note is block-indented. You may use <code>\emph{<em>number</em>}</code> if you prefer the number to be in italics.</p>
 <p>The text must be one paragraph. Be sure to end with <code>\par</code> or equivalent.</p>
-<p>If the note needs more than one paragraph, then continue like this, with an empty note number:</p>
+<p class="item"><b>C.</b> If the note needs more than one paragraph, then continue like this, with an empty note number:</p>
 <p class="code"><code>\endnotetext{}{\indent <em>text</em>}</code></p>
-<p>&bull; In <i>novel</i>, you must create and style the page(s) with endnotes yourself! There is no provision for bibliography, and no provision for any other kind of automated styling. This is because the endnotes, being fictional, are more like the main text than any academic style. Think of the endnotes as just another chapter, but starting with something that identifies them as being endnotes. Pagination continues as main matter, with Arabic page numbers. This is recommended by <i style="cursor:help" title="Chicago Manual of Style">CMoS</i>, for both fiction and nonfiction.</p>
-<p>&bull; There is no track of which endnote number was placed where. You will have to keep track of them yourself. In the following example, the author knows that the endnote numbers are <i>9</i> and <i>10</i>, only after an initial typesetting run showed the numbers. Then, the endnote texts were added.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> In <i>novel</i>, you must create and style the page(s) with endnotes yourself! There is no provision for bibliography, and no provision for any other kind of automated styling. This is because the endnotes, being fictional, are more like the main text than any academic style. Think of the endnotes as just another chapter, but starting with something that identifies them as being endnotes. Pagination continues as main matter, with Arabic page numbers. This is recommended by <i style="cursor:help" title="Chicago Manual of Style">CMoS</i>, for both fiction and nonfiction.</p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> There is no track of which endnote number was placed where. You will have to keep track of them yourself. In the following example, the author knows that the endnote numbers are <i>9</i> and <i>10</i>, only after an initial typesetting run showed the numbers. Then, the endnote texts were added.</p>
 <p>Example of an endnote:</p>
 <p class="code">
 <code><small>

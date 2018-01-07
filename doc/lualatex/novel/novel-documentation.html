@@ -425,8 +425,8 @@ function closeall() {
           <li><a href="#h7.3.1">7.3.1 \charscale Text</a></li>
           <li><a href="#h7.3.2">7.3.2 \InlineImage</a></li>
           <li><a href="#h7.3.3">7.3.3 Text Over \InlineImage</a></li>
-          <li><a href="#h7.3.4">7.3.4 \BlockImage</a></li>
-          <li><a href="#h7.3.5">7.3.5 \BlockImage With Text</a></li>
+          <li><a href="#h7.3.4">7.3.4, 7.3.5 \BlockImage <em>obsolete</em></a></li>
+          <li><a href="#h7.3.6">7.3.6 \FloatImage</a></li>
         </ul>
       </li><!-- end 7.3 -->
       <li id="l7.4"><span class="n"></span><a href="#h7.4">7.4. Color Cover Artwork</a>
@@ -590,7 +590,7 @@ function closeall() {
 <div id="main">
 <!-- **************************************************************************************** -->
 
-<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.46.4f, 2017/12/11</span></h1>
+<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.46.5s, 2018/01/06 - DEV</span></h1>
 <p class="noindent"><span id="screennoscript" class="screennoscript"><b>For enchanced navigation of this file, turn on JavaScript.</b></span></p>
 <div><script type="text/javascript">if(document.getElementById("screennoscript")){document.getElementById("screennoscript").style.display="none";}</script></div>
 <p class="noindent">The <i>novel</i> document class provides an integrated method for creating original works of fiction, such as a novel or collection of short stories. It may also be used for popular non-fiction, using design similar to that seen for fiction. It does not provide support for academic or mathematical works.</p>
@@ -1650,7 +1650,7 @@ In the latter days of the Dorf dynasty, a marvelous apparition sent the King's g
 <p class="noindent"><img class="floatright" src="html-resources/ctimg35.png" width="79" height="196" alt="example of chapter title image, text over"/> You may position text over an image. It is best to use black text, or grayscale text that is much darker than the underlying image. Results are uncertain if you try to place light text over a dark image, because it depends on the print technology, which is not within your control.</p>
 <p>Example, where the command <code>\unifrac</code> calls for the font <i>UnifrakturMaguntia.ttf</i>. Note that the font command is <i>outside</i> \charscale:</p>
 <p class="code"><code><small>\begin{ChapterStart}<br/>
-\BlockImage{sword.png} <span class="ap">% centered by default</span><br/>
+\FloatImage{sword.png} <span class="ap">% centered by default</span><br/>
 {\unifrak\centering\charscale[3,0pt,4\nbs]{35}\par}<br/>
 </small>\end{ChapterStart}</code></p>
 </div><!-- end 5.1.4.1 -->
@@ -1660,7 +1660,7 @@ In the latter days of the Dorf dynasty, a marvelous apparition sent the King's g
 <p class="noindent">If the text is not ordinary black, or not much darker than the background image, then it is better to include the text as part of the raster image. The reason is that "white ink" will not be used for your book. Also, you cannot use image transparency.</p>
 <p>Although light text over a dark image may appear as expected in PDF, and print that way on some printers, there are many exceptions. If in doubt, ask your print service. In this example, the number is built into the image itself:</p>
 <p class="code"><img class="floatright" src="html-resources/smfingerprint8.png" width="86" height="70" alt="example of chapter title image, raster text"/><code><small>\begin{ChapterStart}<br/>
-\BlockImage[l]{smfingerprint8.png}<br/>
+\FloatImage[l]{smfingerprint8.png}<br/>
 \end{ChapterStart}</small></code></p>
 </div><!-- end 5.1.4.2 -->
 </div><!-- end 5.1.4 -->
@@ -1991,7 +1991,7 @@ This text is in lightgray, until the group ends.<br/>
 <p>&bull; Avoid positioning via the <i>textblock</i> or <i>textblock*</i> environments (package <i>textpos</i>). Actually, <i>novel</i> uses that code internally. But if not handled with more care than usual, positioned text can disrupt the baseline and position of surrounding text. You may use <code><a href="#h6.1.2">\charscale</a></code> to position small amounts of text safely, but not on a paragraph basis. Images have built-in positioning arguments, which may also be useful for positioned text.</p>
 <p>&bull; Do not use floats. If you try, then <i>novel</i> may intercept them with a nasty message.</p>
 <p>&bull; Do not use tables. Nasty message will result. But <i>novel</i> has its <a href="#h8.3.2.7">own provision</a> for a Table of Contents, and the code may be used for other purposes as well.</p>
-<p>&bull; If you use images, then use only the image commands provided by novel: <code><a href="#h7.3.2">\InlineImage</a></code> and <code><a href="#h7.3.4">\BlockImage</a></code>.<p>
+<p>&bull; If you use images, then use only the image commands provided by novel: <code><a href="#h7.3.2">\InlineImage</a></code> and <code><a href="#h7.3.4">\FloatImage</a></code>.<p>
 <p>&bull; There is no built-in provision for a two-column environment. However, you can place text <a href="#h7.3.5">alongside</a> an image.</p>
 </div><!-- end 6.3.1 -->
 
@@ -2239,7 +2239,7 @@ This text is in lightgray, until the group ends.<br/>
 <h3 id="h7.3">7.3. Placing Images In Your Document</h3>
 <div class="d3" id="d7.3">
 <p class="noindent">An image may be placed as an inline element, using the <code>\InlineImage</code> or <code>\InlineImage*</code> command. This allows the image to mingle with text, and even have text as an overlay.</p>
-<p><code>\BlockImage</code> places the image as a block element. It may be accompanied by text, within the same block. IMPORTANT: Beginning with version 1.46, the behavior of this command has changed. See its description, below.</p>
+<p><code>\FloatImage</code> places the image as a block element. If it doesn't fit where the command is called, then it will be moved to the next page, without disturbing the flow of text.</p>
 <p>If your book has a lot of images mingled with text, then you should consider using a page layout program (such as Scribus) instead of TeX. That's because the best strategies for an image-intensive picture book are very different from the strategies adoped by <i>novel</i>.</p>
 <p>&bull; Beware of image overlap. Images are not allowed to overlap each other, in the kind of commercial printing that is likely to be used for your book. However, since overlap is generally legal in PDF, TeX will not issue an error.</p>
 <p>&bull; Do not use the ordinary TeX commands, or environments, for floats or figures.</p>
@@ -2269,7 +2269,7 @@ This text is in lightgray, until the group ends.<br/>
 \InlineImage[2.3em, -0.4em]{imageFile.png}<br/>
 \InlineImage[0pt-\widthof{eee}, b+\heightof{X}-0.2em]{imageFile.jpg}
 </code></p>
-<p>The image occupies zero vertical space. So, it will not push apart baselines. The next line(s) of text may overlie the image. In some cases, this is desirable. If you do not want that effect, then you can either insert a suitable number of <code>\null</code> lines after the image, or use the <code>\BlockImage</code> command instead.</p>
+<p>The image occupies zero vertical space. So, it will not push apart baselines. The next line(s) of text may overlie the image. In some cases, this is desirable. If you do not want that effect, then you can either insert a suitable number of <code>\null</code> lines after the image, or use the <code>\FloatImage</code> command instead.</p>
 <p>With the un-starred <code>\InlineImage</code> command, the image occupies its natural horizontal width. That is, text following the image will (if it fits) continue from the right edge of the image. But with the starred <code>\InlineImage*</code> command, the image occupies zero width. In this case, text following the image will continue from the left of the image, and overlie the image.</p>
 <p>Having text overlie the image is allowable, and can create some interesting special effects. But when your print service sees what you have done, they may think that it is a mistake. Be sure that you discuss this with them.</p>
 <p>If you do allow text to overlie an image, be sure that the image is very light. Repeat: <em>very light</em>. Depending on the printing technology, an image may print darker than you see on your computer screen, and that would make text hard to read. At low print volume, your print service will probably use a technology that is like an industrial-strength home inkjet printer, which can make very sharp text over images. However, if your book goes to volume production, then the technology will be different. Volume printing will use halftoned images, and the text overlay may also become halftoned, which will reduce its sharpness considerably.</p>
@@ -2293,33 +2293,24 @@ He would have taken the car, had it not been stolen. But that was why he was her
 <p class="centerimg"><img src="html-resources/inlineimagest.png" width="651" height="249" alt="example of InlineImage*"/></p>
 </div><!-- end 7.3.3 -->
 
-<h4 id="h7.3.4">7.3.4. <code>\BlockImage[<em>alignment,hoffset,voffset</em>]{<em>imageFile.png or .jpg</em>}[<em>accompanying text</em>]</code></h4>
+<h4 id="h7.3.4">7.3.4, 7.3.5. <code>\BlockImage</code> &nbsp; <em>obsolete</em></h4>
 <div class="d4" id="d7.3.4">
-<p>The <code>\BlockImage</code> command places its image as a block element, distinct from the preceding or following text. Be sure to close the preceding paragraph before writing <code>\BlockImage</code>.</p>
-<p>The command takes an optional argument with up to three comma-separated values. The first is <i>alignment</i>: <code>l</code>, <code>c</code>, or <code>r</code> for left, center, or right. The second and third values are lengths, <i>hoffset</i> and <i>voffset</i> for the image. Positive offsets are up and right.</p>
-<p>Unlike the <code>\InlineImage</code> command, you may not use "b" in the vertical offset. By default, the top of the image is aligned to the baseline of where text would be, if you did not place an image. You may find that <code>\normalXheight</code> is a useful vertical offset, at it aligns the top of the image to where the X-height would be.</p>
-<p>Following the mandatory image filename, an optional argument allows text to appear in the same block as the image. See the next section.</p>
-<p>An automatic calculation ensures that text after <code>\BlockImage</code> will comfortably clear the bottom of the image (taking its voffset into account). The text will be on-grid.</p>
-<p>Remember that TeX does not care if the image overflows into the margins. Thus, you must review the PDF to ensure that an image does not appear in an unsuitable location. You can visualize margins using the <i>draft,shademargins</i> document class options.</p>
-</div><!-- end 7.3.4 -->
+<p class="noindent">The <code>\BlockImage</code> command was available prior to version 1.48. It is now obsolete.</p>
+<p>Existing documents can continue to use <code>\BlockImage</code>. New documents must use <code>\FloatImage</code> instead. These are different commands with different behavior. <code>\FloatImage</code> is much better suited to what a novelist needs to do.</p>
+</div><!-- end 7.3.4, 7.3.5 -->
 
-<h4 id="h7.3.5">7.3.5. <code>\BlockImage</code> with Accompanying Text</h4>
-<div class="d4" id="d7.3.5">
-<p><b>Attention:</b> Changed behavior of <code>\BlockImage</code> in v. 1.46. See <a href="#hNI.3">Issue NI.3</a></p>
-<p class="noindent">The second optional argument of <code>\BlockImage</code>, following the image filename, may contain text that will accompany the image in the same block of vertical space. The text may be more than one paragraph.</p>
-<p>This feature is of limited usefulness in the main body of text. Its primary purpose is to assist with layout of things such as title page and chapter starts, where there might be an image mingled with text.</p>
-<p>If the image is aligned at left or right, then the accompanying text block will be separated from the image by the length of the normal paragraph indent. Within this block, the text will be justified. The usual indentation rules apply.</p>
-<p>If the image is aligned at center, then the accompanying text will also be centered (and usually will overlie the image). If you wish to confine the width of this text block to less than the full page text width, then wrap the accompanying text (inside the brackets) in an <i>adjustwidth</i> environment.</p>
-<p>Whatever the alignment of image offset, the first line of accompanying text will be vertically located on-grid, where the first line of text would ordinarily sit. If you wish to displace it vertically, then begin the accompanying text with <code>\pushtextdown{<em>length</em>}</code>. It is best to measure the length in terms of the normal baselineskip, <code>\nbs</code>.</p>
-<p>Note that you cannot automatically "flow" text around an image in <i>novel</i> class. Although there is a LaTeX package that will do that, parts of it are incompatible with the grid structure of <i>novel</i>, so the package is disallowed. If you cleverly place just the right amount of accompanying text, then you can fill the area next to the image; but this is not automated.</p>
-<p>If you write too much accompanying text, it will overflow into the text that follows. There is no automatic increase in the vertical space reserved for the image.</p>
-<p>Example:</p>
-<p class="code"><code><small>It was a dark and stormy night. Lord Withens mounted his horse and rode through the darkness, accidentally trampling some petunias in Her Ladyship's garden.\par<br/>
-\BlockImage[r]{gnome.png}[\pushtextdown{2\nbs}Suddenly he was confronted by an irate gnome, who expressed an opinion in the crudest of language, even for a gnome.\par]<br/>
-Lord Withens shrugged, and rode on. There was nothing to do but remain silent, this time taking more care. He would speak with his wife about the gnome situation when he returned.\par</small></code></p>
-<p class="centerimg"><img src="html-resources/gnome-censored.png" width="437" height="270" alt="example of BlockImage with accompanying text"/></p>
-<p>&bull; In general, avoid using accompanying text with an image, with the possible exception of titles and other special layouts. There is little need for it in the flowing text of a novel. If you find that you need to use it frequently, then perhaps your book would benefit from a page layout program such as <i>Scribus</i>, instead of TeX.</p>
-</div><!-- end 7.3.5 -->
+<h4 id="h7.3.6">7.3.6. <code>\FloatImage[<em>xoffset,yoffset</em>]{<em>ImageFile .png or .jpg</em>}</code> also starred</h4>
+<div class="d4" id="d7.3.4">
+<p class="noindent"><code>\FloatImage</code> places the image in its own block, like a paragraph.</p>
+<p>The image will be horizontally centered. If that is not what you wish, then you can widen the image in a graphics program, adding white space as needed. Or, you can use <code>xoffset</code> to move the image, keeping in mind that a centered image will need more offset.</p>
+<p>The top of the image will be positioned at the baseline of text, where text would have been without the image. You may adjust that position using <code>voffset</code> where a positive length is upward. In some cases, <code>\nfs</code> (the normal text em) is a good choice for <code>yoffset</code>.</p>
+<p>The height of the image is automatically measured, so that the following paragraph will be positioned at an integral number of baseline skips. This maintains the text line grid.</p>
+<p>If the the image cannot fit where it is requested, because there is not enough room on that page, then it will "float" to the top of the following page. The flow of text will be uninterrupted. The starred command floats the image to the bottom of the next page instead of the top (but this is unusual).</p>
+<p>In ordinary TeX behavior, if a floated image is simply too big to fit on a page, its placement is delayed to some later time (such as a chapter ending). This is not how it works in <i>novel</i> class. Instead, if a floated image is too big, it is still placed on the next available page, and is allowed to overflow into the header/footer or margins. Then, it is your task to redesign the image so that it fits, perhaps with the help of the <code><a href="#h2.3">[draft,shademargins]</a></code> class options.</p>
+<p>No other kind of float is available, not even by loading other packages. The <i>novel</i> class is not intended for books that rely on floats. Other document classes already have that capability.</p>
+<p>If you wish to place a vector image, or a table, then design it in another program (or another TeX document class), and place it in the form of a raster image in your <i>novel</i> document.</p>
+<p>If you need to place an image as a block element, but do not want it to possibly float to the next page, then use <code>\InlineImage</code>, and wrap it in a <a href="#h6.3.2"><i>linegap</i></a> environment big enough to hold it.</p>
+</div><!-- end 7.3.6 -->
 </div><!-- end 7.3 -->
 
 <h3 id="h7.4">7.4. Color Cover Artwork</h3>
@@ -2764,7 +2755,7 @@ Finally, I would like to thank... \lipsum[1]<br/>
 <code><small>
 \clearpage<br/>
 \thispagestyle{empty}<br/>
-\BlockImage{areamap.png} <span class="ap">% 600dpi b/w</span><br/>
+\FloatImage{areamap.png} <span class="ap">% 600dpi b/w</span><br/>
 \vspace{2\nbs}<br/>
 \begin{center}<br/>
 1. Alice Springs\\<br/>
@@ -3506,12 +3497,10 @@ It was a dark and stormy night, etc.<br/>
 <p>This depends on which languages are involved. The solution is simple: Discard the <i>*.aux</i> and <i>*.synctex.gz</i> files generated by previous compilation. Then try again.</p>
 </div><!-- end NI.2 -->
 
-<h3 id="hNI.3"><span class="n"></span>NI.3. (News, v.1.46) Changed Behavior of \BlockImage</h3>
+<h3 id="hNI.3"><span class="n"></span>NI.3. (News, v.1.48) \BlockImage obsolete</h3>
 <div class="d3" id="uNI.3">
-<p class="item"><b>A.</b> Prior to version 1.46, the <code>\BlockImage</code> command measured the height of the image. It also measured the height of optional text that accompanied the image within its block. Unfortunately, the text measurement was unreliable.</p>
-<p class="item"><b>B.</b> From version 1.46, <code>\BlockImage</code> still measures and clears the height of the image, with subsequent text (not in the same block as the image) on-grid.</p>
-<p class="item"><b>C.</b> However, the new behavior does <i>not</i> measure the height of optional text that accompanies <code>\BlockImage</code> within its block. If there is too much of it, then it will overflow down into the subsequent text. The subsequent text will not be pushed down or off-grid.</p>
-<p class="item"><b>D.</b> Very few users, if any, will be affected. But if you started a document using <i>novel</i> prior to v. 1.46, and you use <code>\BlockImage</code>, then be sure to review the results.</p>
+<p class="item">The <code>\BlockImage</code> command is obsolete. It will continue to be recongized in existing documents. New documents must use <code>\FloatImage</code> instead.</p>
+<p>The new command is not a drop-in replacement. Be sure to read its description and usage in <a href="#h7.3.6">section 7.3.6</a>.</p>
 </div><!-- end NI.3 -->
 
 <h3 id="hNI.4"><span class="n"></span>NI.4. (News, v.1.46.1) Printing This HTML File</h3>

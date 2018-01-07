@@ -215,6 +215,7 @@
 %% ----------------------------------------------------------------------------
 %% New in v.1.48. \FloatImage. Will always be centered.
 % \FloatImage[xoffset,yoffset]{yourimagename.png} % or jpg
+% Unstarred command (recommended) floats image to top. Starred to bottom.
 % This is a substitute for other floats. Does not require `float' package.
 % Suggested offsets: [0pt,\nfs]
 % If the floated image can fit where placed in flow of text, then it will be
@@ -225,14 +226,16 @@
 %   if necessary. This requires you to check it visually. Unlike usual TeX
 %   behavior, an excessively tall image will not be pushed to a later position.
 \gdef\ftype@figure{1}
-\DeclareDocumentCommand \FloatImage { O{} m } {%
+\DeclareDocumentCommand \FloatImage { s O{} m } {%
   \iftoggle{@inheadfoot}{%
     \ClassError{novel}{Cannot use FloatImage in header or footer}%
       {Header footer allow InlineImage but not FloatImage.}%
   }{}%
-  \@TestImageExtension{#2}%
-  \@float{figure}[!ht]%
-  \@FloatImage[#1]{#2}%
+  \@TestImageExtension{#3}%
+  \IfBooleanTF{#1}%
+  {\@float{figure}[!hb]}%
+  {\@float{figure}[!ht]}%
+  \@FloatImage[#2]{#3}%
   \end@float\par%
 } %
 %

@@ -82,6 +82,7 @@
 \RequirePackage{xifthen} % improved ifthenelse handling
 \RequirePackage{xstring} % parses strings
 \RequirePackage{fp} % used everywhere for math calculations
+\RequirePackage{xfp} % more math calculations
 \RequirePackage{keyval} % used by drop cap
 \FPmessagesfalse % eliminates numerous friendly messages from the log
 %

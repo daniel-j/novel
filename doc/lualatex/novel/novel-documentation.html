@@ -2299,16 +2299,17 @@ He would have taken the car, had it not been stolen. But that was why he was her
 <p>Existing documents can continue to use <code>\BlockImage</code>. New documents must use <code>\FloatImage</code> instead. These are different commands with different behavior. <code>\FloatImage</code> is much better suited to what a novelist needs to do.</p>
 </div><!-- end 7.3.4, 7.3.5 -->
 
-<h4 id="h7.3.6">7.3.6. <code>\FloatImage[<em>xoffset,yoffset</em>]{<em>ImageFile .png or .jpg</em>}</code> also starred</h4>
+<h4 id="h7.3.6">7.3.6. <code>\FloatImage[<em>xoffset,yoffset</em>][<em>float method</em>]{<em>ImageFile .png or .jpg</em>}</code></h4>
 <div class="d4" id="d7.3.4">
 <p class="noindent"><code>\FloatImage</code> places the image in its own block, like a paragraph.</p>
 <p>The image will be horizontally centered. If that is not what you wish, then you can widen the image in a graphics program, adding white space as needed. Or, you can use <code>xoffset</code> to move the image, keeping in mind that a centered image will need more offset.</p>
 <p>The top of the image will be positioned at the baseline of text, where text would have been without the image. You may adjust that position using <code>voffset</code> where a positive length is upward. In some cases, <code>\nfs</code> (the normal text em) is a good choice for <code>yoffset</code>.</p>
 <p>The height of the image is automatically measured, so that the following paragraph will be positioned at an integral number of baseline skips. This maintains the text line grid.</p>
-<p>If the the image cannot fit where it is requested, because there is not enough room on that page, then it will "float" to the top of the following page. The flow of text will be uninterrupted. The starred command floats the image to the bottom of the next page instead of the top (but this is unusual).</p>
+<p>The <i>float method</i> is a code describing how the floated image should be placed. Typical float methods are <code>!ht</code> (default) and <code>!b</code>. These are the usual float codes (this portion of the documentation is under development).</p>
 <p>In ordinary TeX behavior, if a floated image is simply too big to fit on a page, its placement is delayed to some later time (such as a chapter ending). This is not how it works in <i>novel</i> class. Instead, if a floated image is too big, it is still placed on the next available page, and is allowed to overflow into the header/footer or margins. Then, it is your task to redesign the image so that it fits, perhaps with the help of the <code><a href="#h2.3">[draft,shademargins]</a></code> class options.</p>
 <p>No other kind of float is available, not even by loading other packages. The <i>novel</i> class is not intended for books that rely on floats. Other document classes already have that capability.</p>
 <p>If you wish to place a vector image, or a table, then design it in another program (or another TeX document class), and place it in the form of a raster image in your <i>novel</i> document.</p>
+<p>Note that the <i>floatpag</i> package does not work in <i>novel</i>. If a floated image occupies a full page, you cannot customize the head/foot style for that page; it will be the same as it was on the calling page.</p>
 <p>If you need to place an image as a block element, but do not want it to possibly float to the next page, then use <code>\InlineImage</code>, and wrap it in a <a href="#h6.3.2"><i>linegap</i></a> environment big enough to hold it.</p>
 </div><!-- end 7.3.6 -->
 </div><!-- end 7.3 -->

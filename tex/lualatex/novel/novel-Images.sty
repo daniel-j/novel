@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Images.sty}%
-[2018/01/06 v1.46.5u LaTeX file (image placement)]
+[2018/01/06 v1.46.5v LaTeX file (image placement)]
 %%
 
 
@@ -214,28 +214,28 @@
 %% FLOAT IMAGE
 %% ----------------------------------------------------------------------------
 %% New in v.1.48. \FloatImage. Will always be centered.
-% \FloatImage[xoffset,yoffset]{yourimagename.png} % or jpg
-% Unstarred command (recommended) floats image to top. Starred to bottom.
+% \FloatImage[xoffset,yoffset][float method]{yourimagename.png} % or jpg
 % This is a substitute for other floats. Does not require `float' package.
-% Suggested offsets: [0pt,\nfs]
-% If the floated image can fit where placed in flow of text, then it will be
-%   placed there. If not, then at the top of the next page. If the image is
-%   short enough, the text will continue beneath it. If tall, then the image
-%   will be by itself on that page. If the image is too tall for the
-%   available text height, it will remain on that page, and overflow at bottom
-%   if necessary. This requires you to check it visually. Unlike usual TeX
-%   behavior, an excessively tall image will not be pushed to a later position.
+% Suggested offsets: [0pt,\nfs]. Suggested float method: either !ht or !b.
+% The use of ! in the float method is recommended.
+% Method !ht attempts to place the image where the code is written. But if it
+%   doesn't fit on that page, it will float to the to[ of the next page.
+% Method !b attempts to place the image on the bottom of the page where the
+%   code is written. If not, it floats to the next page.
+% The various methods are the same as standard floats.
 \gdef\ftype@figure{1}
-\DeclareDocumentCommand \FloatImage { s O{} m } {%
+\DeclareDocumentCommand \FloatImage { s O{} O{!ht} m } {% starred not in use
   \iftoggle{@inheadfoot}{%
     \ClassError{novel}{Cannot use FloatImage in header or footer}%
       {Header footer allow InlineImage but not FloatImage.}%
   }{}%
-  \@TestImageExtension{#3}%
-  \IfBooleanTF{#1}%
-  {\@float{figure}[!hb]}%
-  {\@float{figure}[!ht]}%
-  \@FloatImage[#2]{#3}%
+  \@TestImageExtension{#4}%
+  \ifthenelse{\equal{#3}{} \OR \equal{#3}{\space}}{%
+    \@float{figure}[!ht]
+  }{%
+    \@float{figure}[#3]
+  }%
+  \@FloatImage[#2]{#4}%
   \end@float\par%
 } %
 %

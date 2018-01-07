@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Images.sty}%
-[2018/01/03 v1.46.5s LaTeX file (image placement)]
+[2018/01/03 v1.46.5t LaTeX file (image placement)]
 %%
 
 
@@ -21,6 +21,14 @@
 %% Normally, a work of fiction has no (or very few) images within the main
 %%   body of text. Images are more likely on display pages (such as title page)
 %%   or in chapter starts, or maps.
+
+%% There are two ways to place an image: inline, or float.
+%% Inline image does not occupy its own block, but mingles with flowing text.
+%% Float image occupies its own block, which will be placed where the command
+%%   is written, if it fits on that page. If it doesn't fit, then it will be
+%%   placed at the top of the following page. Surrounding text will be
+%%   typeset so at to not leave a big gap. Althouth TeX allows several
+%%   options for positioning a float, `novel' only allows one method.
 
 %% Be sure to read the separate documentation about how to prepare images.
 %% In general: (1) png or jpg only. (2) Flattened, no transparency.
@@ -40,6 +48,11 @@
 \newlength\@imagevoffset
 \newlength\@mytotalht
 
+% Duplicated from settings:
+\setlength\floatsep{0pt}
+\setlength\textfloatsep{0pt}
+\setlength\dbltextfloatsep{0pt}
+\setlength\intextsep{0pt}
 
 %% New in version 1.2: cover image.
 \newcommand\SetCoverImage[1]{
@@ -54,11 +67,11 @@
     \ClassError{novel}{Cover image has wrong file extension}%
     {Cover image must be jpg, JPG, jpeg, or JPEG.}
   \fi%
-}
+} % end \SetCoverImage
 %%
 
 
-% New in version 1.44: flexible images (without built-in resolution dpi).
+% New in version 1.44:
 % If an image fails to have its resolution declared inside the file,
 %   this value will be the assumed resolution.
 \gdef\@novereserror{%
@@ -79,46 +92,8 @@
 \gdef\@ActivateFlexResolution{% called by `novel.cls' \AtEndPreamble
   \pdfimageresolution=\@novimgres % from \SetFlexResolution. Default 300.
   \LetLtxMacro\SetFlexResolution\relax % cannot use past Preamble
-}
-%%
-
-
-
-% \InlineImage[hoffset,voffset]{imagefile.png or jpg} and starred version.
+}%
 %
-% Use hoffset to displace the image horizontally. Positive is to the right.
-% Use voffset to displace the image vertically. Positive is upward.
-% Can use hoffset by itself, then voffset defaults to 0pt.
-%
-% The TOP of the image is placed at the baseline of text (unless offset).
-% To place image so that its BOTTOM (rather than top) is at the text baseline,
-%   use voffset b. Can also use b+2em or b-3.4pt etc. without spaces.
-% To place image so that its top is as text X height, voffset \heightof{X}.
-%
-% You can combine lengths, such as:
-%   voffset 0.2em+\heightof{X} or b-\heightof{Aring}+0.5em
-% However, do not begin the string with + or - followed directly by \heightof.
-%
-% Unstarred command: Image occupies its natural width, so that following text
-%   (if on same line) is after the image.
-% Starred command: Image occupies zero width, so that following text (if on
-%   the same line) overlays the image.
-% In all cases, the image occupies zero height, so that following text lines
-%   will overlay the image, unless you insert some \null lines.
-% In some case, having following text overlay the image is desirable. But talk
-%   with your print service about that. Not all like it.
-% If the image rises above its line of text, it may overlay text on the
-%   preceding line, which obscures that text. Don't do it.
-%
-% Clever use of hoffset, with narrowed textblock, can place text beside image.
-%
-% \imagewidth and \imageheight may be used for offsets, or for any other
-%   purpose once the image is placed. These lengths retain their values
-%   until a subsequent image is placed, not including in header/footer.
-%
-\def\Aring{Å} % has typical maximum accented character height in Latin-1.
-%
-
 \gdef\imagestarred{false}
 \gdef\imagefilename{unknown}
 % Neutralize \includegraphics, so it is no longer a user command:
@@ -130,7 +105,7 @@
     You cannot use the \string\includegraphics\space command.}%
 }
 %
-\newcommand\pushtextdown[1]{%
+\newcommand\pushtextdown[1]{% OBSOLETE
   \ifthenelse{\equal{#1}{} \OR \equal{#1}{ } \OR \equal{#1}{0}}{%
     \def\@howmuchdown{0em}%
   }{%
@@ -139,29 +114,46 @@
   ~\par\vspace*{-\nbs}\vspace*{\@howmuchdown}\par%
 }
 %
-% \InlineImage can be used in body, header, footer.
-% However, macros such as \imagefilename, \imagewidth, etc.
-%   are only set or re-set when the image in in the body.
-% That prevents an intervening header/footer image from over-writing
-%   values set by the most recent body image.
-% The unstarred command occupies the width of the image.
-% The starred command occupies zero width.
-%
-\ExplSyntaxOn
-\DeclareDocumentCommand \InlineImage { s O{0pt} m }{%
+\newcommand\@TestImageExtension[1]{%
   \@tempTFfalse%
-  \IfEndWith{#3}{png}{\@tempTFtrue}{}%
-  \IfEndWith{#3}{PNG}{\@tempTFtrue}{}%
-  \IfEndWith{#3}{jpg}{\@tempTFtrue}{}%
-  \IfEndWith{#3}{JPG}{\@tempTFtrue}{}%
-  \IfEndWith{#3}{jpeg}{\@tempTFtrue}{}%
-  \IfEndWith{#3}{JPEG}{\@tempTFtrue}{}%
+  \IfEndWith{#1}{png}{\@tempTFtrue}{}%
+  \IfEndWith{#1}{PNG}{\@tempTFtrue}{}%
+  \IfEndWith{#1}{jpg}{\@tempTFtrue}{}%
+  \IfEndWith{#1}{JPG}{\@tempTFtrue}{}%
+  \IfEndWith{#1}{jpeg}{\@tempTFtrue}{}%
+  \IfEndWith{#1}{JPEG}{\@tempTFtrue}{}%
   \if@tempTF\else%
-    \ClassError{novel}{^^JImage~`#3'~format~not~allowed}%
-    {Image~`#3'~has~file~type~not~allowed~in~`novel'~class.~ ^^J%
-     Must~have~file~extension~png,~jpg,~jpeg~(or~capitalized).~ ^^J%
-     Others~such~as~pdf~bmp,~tiff,~eps,~pdf,~svg~are~not~allowed.}%
+    \ClassError{novel}{Image format `#1' not allowed, page \thepage}%
+    {Image `#1' has file type not allowed in `novel' class. ^^J%
+     Must have file extension png, jpg, jpeg (or capitalized). ^^J%
+     Others such as pdf, bmp, tiff, eps, svg are not allowed. ^^J%
+     The file extension is mandatory.}%
   \fi%
+} %
+%%
+
+
+%% INLINE IMAGE
+%% ----------------------------------------------------------------------------
+% \InlineImage[xoffset,yoffset]{imagename.png} or jpg
+% As the name implies, an inline image is used within the flow of text, rather
+%   than in its own block. It may be used in main body, header, and footer.
+% Macros such as \imagefilename, \imagewidth, etc.
+%   are only set or re-set when the image in in the body. That prevents an
+%   intervening header/footer image from over-writing values set by%
+%   the most recent body image.
+% Without offsets, the image is positioned with is left edge at the cursor,
+%   and its top edge at the text baseline. Positive offsets are right and up.
+% If improperly positioned, the image can overlie (obscure) text that was
+%   previously placed. This is rarely desirable and may be flagged by
+%   some print services, because it looks wrong.
+% The image will underlie anything that follows. This may be used as a
+%   special effect, if allowed by the print service (probably OK).
+% With the un-starred command, the image occupies its natural cursor width.
+% With the starred command, the image occupies zero cursor width, so that
+%   anything following will overlie it.
+\DeclareDocumentCommand \InlineImage { s O{0pt} m }{%
+  \@TestImageExtension{#2}%
   \StrDel{#2}{\space}[\@myila]%
   \StrCut{\@myila}{,}{\@myilxa}{\@myilya}%
   \ifthenelse{\equal{\@myilxa}{} \OR \equal{\@myilxa}{0}}{%
@@ -180,9 +172,9 @@
   \iftoggle{@inheadfoot}{}{%
     \setlength\imageheight{\@imageheight}%
     \global\imageheight=\imageheight%
-    \typeout{^^JClass~`novel'~Info:~%
-      An~image~was~placed~on~page~\thepage.\space ^^J%
-      Review~layout~to~ensure~that~it~does~not~overflow~into~margins. ^^J}%
+    \typeout{^^JClass `novel' Info: %
+      An image was placed on page \thepage. ^^J%
+      Review layout to ensure that it does not overflow into margins. ^^J}%
   }%
   %
   \setlength\@imagehoffset{\@myilx}%
@@ -214,63 +206,114 @@
   }% end IfBooleanTF{#1}
   \iftoggle{@inheadfoot}{}{\setlength\imagehoffset{\@imagehoffset}}%
   \iftoggle{@inheadfoot}{}{\setlength\imagevoffset{\@imagevoffset}}%
-} % end DeclareDocumentCommand \InlineImage
-\ExplSyntaxOff
-%
+} % 
+% end Inline Image
 %%
 
-%% RE-DEFINED in V. 1.46. Now must be placed within linegap environment.
-%% \BlockImage[alignment]{image}[text]
-% Alignment may have up to 3 comma-separated values. Default is [c]
-% First alignment: l, c, r (left, center, right).
-% Second alignment: x-offset of image (not text). Default 0pt. May use 0.
-% Third alignment: y-offset of image (not text). Default 0pt. May use 0.
-% Offsets are positive right and up.
-% The optional text, if used, must have its opening bracket immediately
-% follow the image closing brace, without intervening space.
-% Text may have line break or more than one paragraph, and may be styled.
-% But any font family change must go outside this command, not within the text.
-% The text will begin in the same block of vertical space as the image.
-% If image is centered, the text will automatically be centered, so that
-% it necessarily overlies the image.
-% \forceindent or \backindent may be needed. Text may have several paragraphs.
-% Beware of using this command near bottom of page.
-% Use linegap environment to clear both image and accompanying text.
-% To displace accompanying text, begin it with \vspace*{length}\par.
-% Use adjustwidth environment between linegap and BlockImage centered,
-%   if you have accompanying text that you wish to confine in width.
-\ExplSyntaxOn
-\DeclareDocumentCommand \BlockImage { O{c} m +O{} }{
+
+%% FLOAT IMAGE
+%% ----------------------------------------------------------------------------
+%% New in v.1.48. \FloatImage. Will always be centered.
+% \FloatImage[xoffset,yoffset]{yourimagename.png} % or jpg
+% This is a substitute for other floats. Does not require `float' package.
+% Suggested offsets: [0pt,\nfs]
+% If the floated image can fit where placed in flow of text, then it will be
+%   placed there. If not, then at the top of the next page. If the image is
+%   short enough, the text will continue beneath it. If tall, then the image
+%   will be by itself on that page. If the image is too tall for the
+%   available text height, it will remain on that page, and overflow at bottom
+%   if necessary. This requires you to check it visually. Unlike usual TeX
+%   behavior, an excessively tall image will not be pushed to a later position.
+\gdef\ftype@figure{1}
+\DeclareDocumentCommand \FloatImage { O{} m } {%
   \iftoggle{@inheadfoot}{%
-    \ClassError{novel}{Cannot~use~BlockImage~in~header~or~footer}%
-      {Header~footer~allow~InlineImage~but~not~BlockImage.}%
+    \ClassError{novel}{Cannot use FloatImage in header or footer}%
+      {Header footer allow InlineImage but not FloatImage.}%
   }{}%
-  \@tempTFfalse%
-  \IfEndWith{#2}{png}{\@tempTFtrue}{}%
-  \IfEndWith{#2}{PNG}{\@tempTFtrue}{}%
-  \IfEndWith{#2}{jpg}{\@tempTFtrue}{}%
-  \IfEndWith{#2}{JPG}{\@tempTFtrue}{}%
-  \IfEndWith{#2}{jpeg}{\@tempTFtrue}{}%
-  \IfEndWith{#2}{JPEG}{\@tempTFtrue}{}%
-  \if@tempTF\else%
-    \ClassError{novel}{Image~`#2'~format~not~allowed,~page~\thepage}%
-    {Image~`#2'~has~file~type~not~allowed~in~`novel'~class.~ ^^J%
-     Must~have~file~extension~png,~jpg,~jpeg~(or~capitalized).~ ^^J%
-     Others~such~as~pdf~bmp,~tiff,~eps,~pdf,~svg~are~not~allowed.}%
-  \fi%
+  \@TestImageExtension{#2}%
+  \@float{figure}[!ht]%
+  \@FloatImage[#1]{#2}%
+  \end@float\par%
+} %
+%
+\DeclareDocumentCommand \@FloatImage { O{} m }{% DO NOT CALL DIRECTLY
+  \StrDel{#1}{\space}[\@mycoord]%
+  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}%
+  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{%
+    \def\@myx{0pt}%
+  }{%
+    \def\@myx{\@myxt}%
+  }%
+  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{%
+    \def\@myy{0pt}%
+  }{%
+    \def\@myy{\@myyt}%
+  }%
+  %
+  \gdef\@mygraphic{\novel@includegraphics[draft=false]{#2}}%
+  \gsetlength\@imagewidth{\widthof{\@mygraphic}}%
+  \gsetlength\@imageheight{\heightof{\@mygraphic}}%
+  \setlength\@imagehoffset{\@myx}%
+  \IfBeginWith{\@myy}{b}{%
+    \ClassError{novel}{Cannot use voffset `b' on %
+      \string\FloatImage, page \thepage}%
+     {The `b' voffset only works with \string\InlineImage\space, %
+      not \string\FloatImage.}%
+  }{%
+    \setlength\@imagevoffset{\@myy-\@imageheight}%
+  }%
+  %
+  \setlength\@mytotalht{\@imageheight-\@myy+\nfs}%
+  \FPdiv{\@mytotalhtN}{\strip@pt\@mytotalht}{\strip@pt\nbs}%
+  \FPadd{\@mytotalhtN}{\@mytotalhtN}{0.5}% round upward
+  \FPround{\@mytotalhtN}{\@mytotalhtN}{0}% to integer
+  \FPmin{\@allowmyoverflow}{\@mytotalhtN}{\@LinesPerPage}% not exceeding lpp
+  % If the image is too tall for a page, that will be ignored.
+  % This prevents TeX from pushing the float to a later page.
+  \begin{linegap}{\@allowmyoverflow}%
+  %
+    {\centering%
+      \makebox[0pt][l]{%
+        \hspace{\dimexpr\@myx-0.5\@imagewidth}%
+        \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}%
+      }%
+    \par}%
+    \vspace*{-\nbs}%
+  \end{linegap}%
+} % 
+% end Float Image
+%%
+
+
+%% BLOCK IMAGE (OBSOLETE)
+%% ----------------------------------------------------------------------------
+%% \BlockImage[alignment]{image}[text]
+%% OBSOLETE FROM VERSION 1.48. USE \FloatImage INSTEAD.
+%% If you have a document that uses this, it will continue to work.
+%% However, it is no longer documented. Do not use in new documents.
+\DeclareDocumentCommand \BlockImage { O{c} m +O{} }{% OBSOLETE
+  \ClassWarning{novel}{^^J\string\BlockImage\space command is obsolete. ^^J%
+    It will remain in effect for existing documents that use it. ^^J%
+    New documents must use \string\FloatImage\space instead. ^^J%
+    Purpose and syntax is slightly different. See docs. ^^J}%
+  \iftoggle{@inheadfoot}{%
+    \ClassError{novel}{Cannot use BlockImage in header or footer}%
+      {Header footer allow InlineImage but not BlockImage.}%
+  }{}%
+  \@TestImageExtension{#2}%
   % Allows empty or blank to be used, and still provide default values:
   \ifthenelse{\equal{#1}{} \OR \equal{#1}{\space}}{%
     \def\@myargs{c}}{\def\@myargs{#1}%
-  }
-  \StrDel{\@myargs}{\space}[\@myargsns] % needs {\space} not { }
-  \StrCut{\@myargsns}{,}{\@myalign}{\@mycoord}
-  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}
+  }%
+  \StrDel{\@myargs}{\space}[\@myargsns]% needs {\space} not { }
+  \StrCut{\@myargsns}{,}{\@myalign}{\@mycoord}%
+  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}%
   \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{%
     \def\@myx{0pt}}{\def\@myx{\@myxt}%
-  }
+  }%
   \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{%
     \def\@myy{0pt}}{\def\@myy{\@myyt}%
-  }
+  }%
   %
   \gdef\@mygraphic{\novel@includegraphics[draft=false]{#2}}%
   \setlength\@imagewidth{\widthof{\@mygraphic}}%
@@ -279,10 +322,10 @@
   \global\@imageheight=\@imageheight%
   \setlength\@imagehoffset{\@myx}%
   \IfBeginWith{\@myy}{b}{%
-    \ClassError{novel}{Cannot~use~voffset~`b'~on~%
-      \stringBlockImage,~page~\thepage}%
-     {The~`b'~voffset~only~works~with~\string\InlineImage\space,~%
-      not~\string\BlockImage.}
+    \ClassError{novel}{Cannot use voffset `b' on %
+      \string\BlockImage, page \thepage}%
+     {The `b' voffset only works with \string\InlineImage\space, %
+      not \string\BlockImage.}%
   }{%
     \setlength\@imagevoffset{-\@imageheight}%
     \addtolength\@imagevoffset{\@myy}%
@@ -330,9 +373,10 @@
     \end{adjustwidth}%
   }{}%
   \end{linegap}%
-} % end \BlockImage
-\ExplSyntaxOff
+} % end \BlockImage (OBSOLETE)
 %%
+
+
 
 
 

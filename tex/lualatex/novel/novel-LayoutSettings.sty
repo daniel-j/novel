@@ -325,10 +325,10 @@
 \@twosidetrue
 \@mparswitchtrue
 %
-\abovedisplayskip \z@
-\abovedisplayshortskip \z@
-\belowdisplayshortskip \z@
-\belowdisplayskip \z@
+\setlength\abovedisplayskip{0pt}
+\setlength\abovedisplayshortskip{0pt}
+\setlength\belowdisplayshortskip{0pt}
+\setlength\belowdisplayskip{0pt}
 \global\@topnum \z@
 %
 \setlength\smallskipamount{0pt}
@@ -340,8 +340,10 @@
 \setlength\marginparwidth{0pt}
 \setlength\marginparsep{0pt}
 \setlength\marginparpush{0pt}
+\setlength\floatsep{0pt}
 \setlength\textfloatsep{0pt}
 \setlength\dbltextfloatsep{0pt}
+\setlength\intextsep{0pt}
 % \topskip will be set as normal baslineskip, which must first be calculated.
 % That is done in novel-CalculateLayout.sty.
 \widowpenalty 150 % same as TeX default

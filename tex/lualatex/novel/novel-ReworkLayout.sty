@@ -81,17 +81,17 @@
 
 %%
 \if@AspectPriority
-  \FPdiv{\@TWratio}{\strip@pt\@AvailableWidth}{\strip@pt\@OriginalTextWidth}
-  \FPdiv{\@THratio}{\strip@pt\@AvailableHeight}{\strip@pt\@OriginalHeight}
+  \edef\@TWratio{\fpeval{\@AvailableWidth/\@OriginalTextWidth}}
+  \edef\@THratio{\fpeval{\@AvailableHeight/\@OriginalHeight}}
   \FPmin{\@TMratio}{\@TWratio}{\@THratio}
   \gsetlength\textwidth{\@TMratio\@OriginalTextWidth}
   \gsetlength\@NormalEmSize{\@TMratio\@OriginalEmSize}
   \gsetlength\baselineskip{\@TMratio\@OriginalBaselineSkip}
   % Find whether limiting factor is width or height:
   \ifdimcomp{\@THratio-\@THratio}{<}{0pt}{%
+    \gsetlength\@OuterMargin{\fpeval{\@OuterMargin+0.5\@AvailableWidth-0.5\textwidth}}
+    \gsetlength\@InnerMargin{\fpeval{\@InnerMargin+0.5\@AvailableWidth-0.5\textwidth}}
     \setlength\@tempLength{0.5\@AvailableWidth-0.5\textwidth}
-    \gsetlength{\@OuterMargin}{\@OuterMargin+\@tempLength}
-    \gsetlength{\@InnerMargin}{\@InnerMargin+\@tempLength}
     \FPround{\@tempN}{\strip@pt\@tempLength}{2}
     \setlength\@tempLength{\@tempN pt}
     \FPround{\@tempN}{\@TMratio}{4}
@@ -100,9 +100,11 @@
       Scale \@tempN\space applied to text size and baselineskip. ^^J%
     }
   }{%
-    \setlength\@tempLength{\@AvailableHeight-\@AdjLPP\baselineskip}
-    \setlength\@tempLength{\@tempLength-\baselineskip+\@NormalEmSize}
-    \setlength\@tempLength{0.5\@tempLength}
+    %\setlength\@tempLength{\@AvailableHeight-\@AdjLPP\baselineskip}
+    %\setlength\@tempLength{\@tempLength-\baselineskip+\@NormalEmSize}
+    %\setlength\@tempLength{0.5\@tempLength}
+
+    \setlength\@tempLength{\fpeval{0.5(\@AvailableHeight-\@AdjLPP\baselineskip-\baselineskip+\@NormalEmSize)}}
     \gsetlength{\@TopMargin}{\@TopMargin+\@tempLength}
     \gsetlength{\@BottomMargin}{\@BottomMargin+\@tempLength}
     \FPround{\@tempN}{\strip@pt\@tempLength}{2}
@@ -116,16 +118,14 @@
 \else % margins priority:
   % Discover what happens if scaled according to text width:
   \gsetlength\textwidth{\@AvailableWidth}
-  \FPdiv{\@TWratio}{\strip@pt\textwidth}{\strip@pt\@OriginalTextWidth}
+  \edef\@TWratio{\fpeval{\textwidth/\@OriginalTextWidth}}
   \gsetlength\@NormalEmSize{\@TWratio\@OriginalEmSize}
   \gsetlength\baselineskip{1.2\@NormalEmSize} % test for least allowable
   \setlength\@tempLength{\@AdjLPP\baselineskip}
   \ifdimcomp{\@AvailableHeight-\@tempLength}{<}{0pt}{%
     % Will not fit vertically, so will need to re-scale \@NormalEmSize.
     \gsetlength\@NormalEmSize{\@OriginalEmSize}
-    \FPadd{\@AdjLPP}{\@AdjLPP}{1.3}
-    \FPdiv{\@InvAdjLPP}{1}{\@AdjLPP}
-    \gsetlength\baselineskip{\@InvAdjLPP\@AvailableHeight}
+    \gsetlength\baselineskip{\fpeval{\@AvailableHeight/(\@AdjLPP+1.3)}pt}
     \FPdiv\@THratio{\strip@pt\baselineskip}{\strip@pt\@OriginalBaselineSkip}
     \gsetlength\@NormalEmSize{0.8333\baselineskip} % 0.8333 = 1/1.2, tight skip
     \FPdiv{\@tempN}{\strip@pt\@NormalEmSize}{\strip@pt\@OriginalEmSize}
@@ -149,8 +149,7 @@
       \@THratio\space applied to baselineskip. ^^J%
     }%
   }{% Fits vertically. Keep \@NormalEmSize. Calculate \baselineskip to fit:
-      \gsetlength\@AvailableHeight{\@AvailableHeight-1.3\@NormalEmSize}
-      \gsetlength\baselineskip{\@InvAdjLPP\@AvailableHeight}
+      \gsetlength\baselineskip{\fpeval{(\@AvailableHeight-1.3*\@NormalEmSize)/\@AdjLPP}pt}
       \FPdiv{\@BLratio}{\strip@pt\baselineskip}{\strip@pt\@OriginalBaselineSkip}
       \FPround{\@BLratio}{\@BLratio}{4}
       \FPround{\@TWratio}{\@TWratio}{4}

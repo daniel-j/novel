@@ -95,7 +95,7 @@
 %%
 % TeX assumes that your layout has a footer, even if you do not want one.
 %   Novel handles this by setting the baseline of the mandatory footer at
-%   normal baselineskip below the last line of main text. Then, one line is
+%   1 normal baselineskip below the last line of main text. Then, one line is
 %   subtracted from the occupied line count. That places the empty, unused
 %   virtual footer in the lower margin, where it does not matter. When you
 %   do have a footer, the necessary line space is added, and the content
@@ -120,12 +120,15 @@
   % Estimate \baselineskip as 1.3\@NormalEmSize, which is a comfortable value.
   % Calculate resulting \@LinesPerPage, then proceed as if set.
   % Actual \baselineskip will be re-calculated later.
-  \gsetlength\@tempLength{1.3\@NormalEmSize}
-  \FPdiv{\@tempN}{\strip@pt\@AvailableHeight}{\strip@pt\@tempLength}
-  \FPsub{\@tempN}{\@tempN}{0.231} % 0.231 = 0.3/1.3
-  \if@HasHeader\FPsub{\@tempN}{\@tempN}{\@HeadJump}\fi
-  \if@HasFooter\FPsub{\@tempN}{\@tempN}{\@FootJumpFix}\fi
-  \FPtrunc{\@LinesPerPage}{\@tempN}{0} % final, integer floor
+  \edef\@tempLPP{%
+    \fpeval{% package xfp
+      (\@AvailableHeight - 0.3\@NormalEmSize) % adjusts for final descenders
+      / (1.3*\@NormalEmSize) % denominator, with desired skip/em ratio
+      -\@HeadJump -\@FootJumpFix % adjustments
+    }%
+  } %
+  \FPtrunc{\@LinesPerPage}{\@tempLPP}{0} % final, integer floor
+
 \fi
 % Error if too few lines per page, whether set or default:
 \FPiflt{\@LinesPerPage}{10}
@@ -144,13 +147,12 @@
 %   (\@AvailableHeight-1.3\@NormalEmSize)  divided by
 %   (\@HeadJump+\@LinesPerPage+\@FootJumpFix)
 %
-\setlength\@tempLength{\@AvailableHeight-1.3\@NormalEmSize} % numerator
-\FPadd{\@tempN}{\@HeadJump}{\@LinesPerPage}
-\FPadd{\@AdjLPP}{\@tempN}{\@FootJumpFix} % adj lines per page, incl head/foot
-\FPdiv{\@InvAdjLPP}{1}{\@AdjLPP} % inverse of adjusted lines per page
-\gsetlength\baselineskip{\@InvAdjLPP\@tempLength} % tentative
-\FPtrunc\@baselineskipN{\strip@pt\baselineskip}{2}
-\gsetlength\baselineskip{\@baselineskipN pt} % rounded down to 2 decimal places
+\xdef\@AdjLPP{\fpeval{\@HeadJump+\@LinesPerPage+\@FootJumpFix}} % used often
+\edef\@tempBLS{%
+  \fpeval{(\@AvailableHeight-1.3\@NormalEmSize) / \@AdjLPP}%
+} %
+\FPtrunc\@tempBLS{\@tempBLS}{2} % round down to 2 decimalplaces
+\gsetlength\baselineskip{\@tempBLS pt}
 %
 % Error if \baselineSkip is too tight, in relation to normal em size:
 \ifdimcomp{\baselineskip}{<}{1.2\@NormalEmSize}{%

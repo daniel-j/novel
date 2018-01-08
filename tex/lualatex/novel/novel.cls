@@ -429,7 +429,7 @@
     \gdef\sorry@no#1{} % let them be used
   \else % block them (default)
     \gdef\sorry@no#1{\@ifpackageloaded{#1}{%
-      \ClassError{novel}{Sorry, package `#1' cannot be used}%
+      \ClassError{novel}{Sorry, package `#1' cannot be used in `novel' class}%
       {The `novel' class does not allow use of package `#1'. ^^J%
        You must remove it from the Preamble, and also remove its commands ^^J%
        from the document body. In rare cases, the offending package ^^J%
@@ -441,7 +441,7 @@
   \sorry@no{geometry} % internal layout methods, not geometry
   \sorry@no{pdfx} \sorry@no{xmpincl} \sorry@no{hyperxmp} \sorry@no{pdfxmult}
   \sorry@no{inputenc} \sorry@no{fontenc}
-  \sorry@no{wrapfigure} \sorry@no{wrapfig}
+  %\sorry@no{wrapfig}
   \sorry@no{float} \sorry@no{morefloats}
   \sorry@no{footmisc} \sorry@no{footnote} \sorry@no{manyfoot}
   \sorry@no{caption} \sorry@no{subcaption}

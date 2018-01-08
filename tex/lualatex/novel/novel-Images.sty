@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Images.sty}%
-[2018/01/06 v1.46.5v LaTeX file (image placement)]
+[2018/01/07 v1.46.5x LaTeX file (image placement)]
 %%
 
 
@@ -214,59 +214,51 @@
 %% FLOAT IMAGE
 %% ----------------------------------------------------------------------------
 %% New in v.1.48. \FloatImage. Will always be centered.
-% \FloatImage[xoffset,yoffset][float method]{yourimagename.png} % or jpg
+% \FloatImage[floatmethod,xoffset,yoffset]{yourimagename.png} % or jpg
 % This is a substitute for other floats. Does not require `float' package.
 % Suggested offsets: [0pt,\nfs]. Suggested float method: either !ht or !b.
 % The use of ! in the float method is recommended.
 % Method !ht attempts to place the image where the code is written. But if it
-%   doesn't fit on that page, it will float to the to[ of the next page.
+%   doesn't fit on that page, it will float to the top of the next page.
 % Method !b attempts to place the image on the bottom of the page where the
-%   code is written. If not, it floats to the next page.
-% The various methods are the same as standard floats.
-\gdef\ftype@figure{1}
-\DeclareDocumentCommand \FloatImage { s O{} O{!ht} m } {% starred not in use
+%   code is written. If not, it floats to the bottom of the next page.
+% Allowed float method parameters: ! h t b  (but not p or H).
+% Parsing the optional argument: comma-separated values, ignoring space.
+%   May be empty before or between commas.
+%   Example: [,,!b] is read as xoffset empty (defaults to 0pt),
+%     yoffset empty (defaults to 0pt), float method !b.
+%   Example: [!b] is invalid, because a single value should be xoffset.
+\providecommand*\floatlocation[2]{\@namedef{fps@#1}{#2}}
+\floatlocation{figure}{!ht} % default
+\gdef\ftype@figure{1} % mystery TeX code
+\DeclareDocumentCommand \FloatImage { s O{} m } {% starred not in use
   \iftoggle{@inheadfoot}{%
     \ClassError{novel}{Cannot use FloatImage in header or footer}%
       {Header footer allow InlineImage but not FloatImage.}%
   }{}%
-  \@TestImageExtension{#4}%
-  \ifthenelse{\equal{#3}{} \OR \equal{#3}{\space}}{%
-    \@float{figure}[!ht]
-  }{%
-    \@float{figure}[#3]
-  }%
-  \@FloatImage[#2]{#4}%
+  \@TestImageExtension{#3}%
+  % Sadly, parsing with `xstring' involves roundabout code:
+  \StrDel{#2}{\space}[\@tempArgs]%
+  \StrCut{\@tempArgs}{,}{\@tempArgA}{\@tempArgX}%
+    \StrCut{\@tempArgX}{,}{\@tempArgB}{\@tempArgC}%
+    \ifthenelse{\equal{\@tempArgA}{}}{\def\@tempArgAa{!ht}}{\def\@tempArgAa{\@tempArgA}}%
+    \ifthenelse{\equal{\@tempArgB}{0} \OR \equal{\@tempArgB}{}}{\def\@tempArgBb{0pt}}{\def\@tempArgBb{\@tempArgB}}%
+    \ifthenelse{\equal{\@tempArgC}{0} \OR \equal{\@tempArgC}{}}{\def\@tempArgCc{0pt}}{\def\@tempArgCc{\@tempArgC}}%
+    \StrSubstitute{\@tempArgAa}{H}{!h}[\@tempArgAA]%
+    \floatlocation{figure}{\@tempArgAA}% current float method
+    \@float{figure}%
+  \@FloatImage{\@tempArgBb}{\@tempArgCc}{#3}%
   \end@float\par%
+  \floatlocation{figure}{!ht}% restore default float method
 } %
 %
-\DeclareDocumentCommand \@FloatImage { O{} m }{% DO NOT CALL DIRECTLY
-  \StrDel{#1}{\space}[\@mycoord]%
-  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}%
-  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{%
-    \def\@myx{0pt}%
-  }{%
-    \def\@myx{\@myxt}%
-  }%
-  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{%
-    \def\@myy{0pt}%
-  }{%
-    \def\@myy{\@myyt}%
-  }%
-  %
-  \gdef\@mygraphic{\novel@includegraphics[draft=false]{#2}}%
+\DeclareDocumentCommand \@FloatImage { m m m }{% DO NOT CALL DIRECTLY
+  \gdef\@mygraphic{\novel@includegraphics[draft=false]{#3}}%
   \gsetlength\@imagewidth{\widthof{\@mygraphic}}%
   \gsetlength\@imageheight{\heightof{\@mygraphic}}%
-  \setlength\@imagehoffset{\@myx}%
-  \IfBeginWith{\@myy}{b}{%
-    \ClassError{novel}{Cannot use voffset `b' on %
-      \string\FloatImage, page \thepage}%
-     {The `b' voffset only works with \string\InlineImage\space, %
-      not \string\FloatImage.}%
-  }{%
-    \setlength\@imagevoffset{\@myy-\@imageheight}%
-  }%
-  %
-  \setlength\@mytotalht{\@imageheight-\@myy+\nfs}%
+  \setlength\@imagehoffset{#1}%
+  \setlength\@imagevoffset{#2-\@imageheight}%
+  \setlength\@mytotalht{\@imageheight-#2+\nfs}%
   \FPdiv{\@mytotalhtN}{\strip@pt\@mytotalht}{\strip@pt\nbs}%
   \FPadd{\@mytotalhtN}{\@mytotalhtN}{0.5}% round upward
   \FPround{\@mytotalhtN}{\@mytotalhtN}{0}% to integer
@@ -277,8 +269,8 @@
   %
     {\centering%
       \makebox[0pt][l]{%
-        \hspace{\dimexpr\@myx-0.5\@imagewidth}%
-        \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}%
+        \hspace{\dimexpr\@imagehoffset-0.5\@imagewidth}%
+        \stake\smash{\raisebox{\@imagevoffset}{\@mygraphic}}%
       }%
     \par}%
     \vspace*{-\nbs}%

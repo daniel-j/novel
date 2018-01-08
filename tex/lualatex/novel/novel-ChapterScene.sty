@@ -159,6 +159,7 @@
     \gdef\@thiscsstyle{#2}%
     \thispagestyle{\@thiscsstyle}%
   \fi%
+  \suppressfloats[t] % ensures that a floated image does not go on top
   \gsetlength\parindent{0pt}% within environment
   \ResetFootnoteSymbol% resets symbolic markers, but not numerical markers
   \IfStrEq{#1}{*}{%

@@ -213,10 +213,10 @@
 
 %% FLOAT IMAGE
 %% ----------------------------------------------------------------------------
-%% New in v.1.48. \FloatImage. Will always be centered.
+%% New in v.1.48. \FloatImage. Centered unless offset.
 % \FloatImage[floatmethod,xoffset,yoffset]{yourimagename.png} % or jpg
 % This is a substitute for other floats. Does not require `float' package.
-% Suggested offsets: [0pt,\nfs]. Suggested float method: either !ht or !b.
+% Suggested: [!ht,0pt,\nfs].
 % The use of ! in the float method is recommended.
 % Method !ht attempts to place the image where the code is written. But if it
 %   doesn't fit on that page, it will float to the top of the next page.
@@ -225,9 +225,8 @@
 % Allowed float method parameters: ! h t b  (but not p or H).
 % Parsing the optional argument: comma-separated values, ignoring space.
 %   May be empty before or between commas.
-%   Example: [,,!b] is read as xoffset empty (defaults to 0pt),
-%     yoffset empty (defaults to 0pt), float method !b.
-%   Example: [!b] is invalid, because a single value should be xoffset.
+%   Example: [,,2em] is read as default method, xoffset 0pt, yoffset 2em.
+%   Example: [!b] is valid, because a single value is read as method.
 \providecommand*\floatlocation[2]{\@namedef{fps@#1}{#2}}
 \floatlocation{figure}{!ht} % default
 \gdef\ftype@figure{1} % mystery TeX code
@@ -241,11 +240,24 @@
   \StrDel{#2}{\space}[\@tempArgs]%
   \StrCut{\@tempArgs}{,}{\@tempArgA}{\@tempArgX}%
     \StrCut{\@tempArgX}{,}{\@tempArgB}{\@tempArgC}%
-    \ifthenelse{\equal{\@tempArgA}{}}{\def\@tempArgAa{!ht}}{\def\@tempArgAa{\@tempArgA}}%
-    \ifthenelse{\equal{\@tempArgB}{0} \OR \equal{\@tempArgB}{}}{\def\@tempArgBb{0pt}}{\def\@tempArgBb{\@tempArgB}}%
-    \ifthenelse{\equal{\@tempArgC}{0} \OR \equal{\@tempArgC}{}}{\def\@tempArgCc{0pt}}{\def\@tempArgCc{\@tempArgC}}%
-    \StrSubstitute{\@tempArgAa}{H}{!h}[\@tempArgAA]%
-    \floatlocation{figure}{\@tempArgAA}% current float method
+    \ifthenelse{\equal{\@tempArgA}{}}{%
+      \def\@tempArgAa{!ht}%
+    }{%
+      \def\@tempArgAa{\@tempArgA}%
+    }%
+    \ifthenelse{\equal{\@tempArgB}{0}\OR\equal{\@tempArgB}{}}{%
+      \def\@tempArgBb{0pt}%
+    }{%
+      \def\@tempArgBb{\@tempArgB}%
+    }%
+    \ifthenelse{\equal{\@tempArgC}{0}\OR\equal{\@tempArgC}{}}{%
+      \def\@tempArgCc{0pt}%
+    }{%
+      \def\@tempArgCc{\@tempArgC}%
+    }%
+    \StrSubstitute{\@tempArgAa}{H}{!h}[\@tempArgAA]% replace H with !h
+    \StrDel{\@tempArgAA}{p}[\@tempArgAAA]% ignore p
+    \floatlocation{figure}{\@tempArgAAA}% enable current float method
     \@float{figure}%
   \@FloatImage{\@tempArgBb}{\@tempArgCc}{#3}%
   \end@float\par%

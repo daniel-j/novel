@@ -17,7 +17,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2018/01/03 v1.46.5s LaTeX document class]
+\ProvidesClass{novel}[2018/01/08 v1.46.5y LaTeX document class]
 %%
 %% Version 1.46: Possibly final version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
@@ -426,34 +426,46 @@
   \@DisableHeadFootSettings % in file `novel-HeadFootStyles.sty'
   % Dealing with known incompatible packages:
   \if@novelunblock
-    \gdef\sorry@no#1{} % let them be used
+    \gdef\sorry@no#1#2{} % let them be used
   \else % block them (default)
-    \gdef\sorry@no#1{\@ifpackageloaded{#1}{%
-      \ClassError{novel}{Sorry, package `#1' cannot be used in `novel' class}%
-      {The `novel' class does not allow use of package `#1'. ^^J%
-       You must remove it from the Preamble, and also remove its commands ^^J%
-       from the document body. In rare cases, the offending package ^^J%
-       was loaded by some other package.}%
+    \gdef\sorry@no#1#2{
+      \@ifpackageloaded{#1}{%
+       \ClassError{novel}{Sorry, package `#1' cannot be used in `novel' class}%
+        {Reason: `novel' has #2 ^^J%
+         Note: The offending package may have been loaded by another package.}%
       }{}%
     }
   \fi
   % List of blocked packages (not exhaustive, since TeX has so many):
-  \sorry@no{geometry} % internal layout methods, not geometry
-  \sorry@no{pdfx} \sorry@no{xmpincl} \sorry@no{hyperxmp} \sorry@no{pdfxmult}
-  \sorry@no{inputenc} \sorry@no{fontenc}
-  %\sorry@no{wrapfig}
-  \sorry@no{float} \sorry@no{morefloats}
-  \sorry@no{footmisc} \sorry@no{footnote} \sorry@no{manyfoot}
-  \sorry@no{caption} \sorry@no{subcaption}
-  \sorry@no{multirow} \sorry@no{tabu} \sorry@no{tabularx} \sorry@no{tabulary}
-  \sorry@no{array}
-  \sorry@no{showkeys}
-  \sorry@no{booktabs}
-  \sorry@no{eqparbox}
-  \sorry@no{pdfpages}
-  \sorry@no{nth} \sorry@no{engord}
-  \sorry@no{endnotes}
-  \sorry@no{acronym}
+  \sorry@no{geometry}{its own layout commands.}
+  \sorry@no{pdfx}{built-in PDF/X capability.}
+  \sorry@no{xmpincl}{built-in PDF/X capability.}
+  \sorry@no{hyperxmp}{built-in PDF/X capability.}
+  \sorry@no{pdfxmult}{built-in PDF/X capability.}
+  \sorry@no{inputenc}{utf-8 encoding always.}
+  \sorry@no{fontenc}{`fontspec' and utf-8 encoding always.}
+  \sorry@no{wrapfig}{its own \string\WrapImage\space command.}
+  \sorry@no{float}{its own \string\FloatImage\space command.}
+  \sorry@no{morefloats}{its own \string\FloatImage\space command.}
+  \sorry@no{footmisc}{limited built-in footnote methods.}
+  \sorry@no{footnote}{limited built-in footnote methods.}
+  \sorry@no{manyfoot}{limited built-in footnote methods.}
+  \sorry@no{caption}{its own \string\FloatImage\space command.}
+  \sorry@no{subcaption}{its own \string\FloatImage\space command.}
+  \sorry@no{multirow}{built-in TOC capability, but disallows other tables.}
+  \sorry@no{tabu}{built-in TOC capability, but disallows other tables.}
+  \sorry@no{tabularx}{built-in TOC capability, but disallows other tables.}
+  \sorry@no{tabulary}{built-in TOC capability, but disallows other tables.}
+  \sorry@no{array}{built-in TOC capability, but disallows other tables.}
+  \sorry@no{showkeys}{an aversion to academic-style layouts.}
+  \sorry@no{booktabs}{no capability for this, due to printer requirements.}
+  \sorry@no{eqparbox}{conflicting layout requirements.}
+  \sorry@no{pdfpages}{specific requirements that exclude PDF import. ^^J%
+    This has to do with file requirements for commercial printers.}
+  %\sorry@no{nth} %  probably OK, internal redefinition of \textsuperscript
+  %\sorry@no{engord} %  probably OK, internal redefinition of \textsuperscript
+  \sorry@no{endnotes}{limited built-in endnote methods.}
+  \sorry@no{acronym}{its own acronym method.}
   % end list of incompatible packages
   \@ifpackageloaded{pagegrid}{
     \ifdraftdoc

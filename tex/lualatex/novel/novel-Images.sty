@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Images.sty}%
-[2018/01/07 v1.46.5x LaTeX file (image placement)]
+[2018/01/08 v1.46.5y LaTeX file (image placement)]
 %%
 
 
@@ -382,6 +382,406 @@
   \end{linegap}%
 } % end \BlockImage (OBSOLETE)
 %%
+
+
+
+%% CODE MODIFIED FROM PACKAGE WRAPFIG:  `wrapfig.sty', ver 3.6  (Jan 31, 2003)
+%% ----------------------------------------------------------------------------
+%  Copyright (C) 1991-2003   by Donald Arseneau
+%  This software is released under the terms of the LaTeX Project 
+%  public license.
+%
+\newdimen\NWF@size
+\newcount\c@NWF@wrappedlines % used globally
+\newbox\NWF@box
+\newtoks\NWF@everypar
+\newif\ifNWF@float
+\let\@@parshape\parshape
+\let\NWF@@everypar\everypar
+%
+% \WrapImage[position,xoffset,yoffset]{imagename.png} % or .jpg
+% Position may be one of l r o i L R O I  (default r)
+%  l = left, L = left and float
+%  r = right, R = right and float
+%  o = outside of page, O = outside and float
+%  i = inside (spine) of page, I = inside and float
+% Height and width of image is measured automatically.
+\ExplSyntaxOn % gets rid of spaces introduced by line breaks, etc.
+\DeclareDocumentCommand \WrapImage { O{r} m } {% specific to `novel' class
+  % This roundabout code for parsing the optional argument is due to the
+  %   expansion limitations of package `xstring':
+  \StrDel{#1}{\space}[\@wrapoptargs]
+  \StrCut{\@wrapoptargs}{,}{\@wrapoptpos}{\@wrapoptother}
+  \ifthenelse{\equal{\@wrapoptpos}{}\OR\equal{\@wrapoptpos}{\space}}{%
+    \def\@wrapoptposA{r}
+  }{%
+    \def\@wrapoptposA{\@wrapoptpos}
+  }
+  \StrCut{\@wrapoptother}{,}{\@wrapoptx}{\@wrapopty}
+  \ifthenelse{\equal{\@wrapoptx}{}\OR\equal{\@wrapoptx}{\space}}{%
+    \def\@wrapoptxA{0pt}
+  }{%
+    \def\@wrapoptxA{\@wrapoptx}
+  }
+  \ifthenelse{\equal{\@wrapopty}{}\OR\equal{\@wrapopty}{\space}}{%
+    \def\@wrapoptyA{0pt}
+  }{%
+    \def\@wrapoptyA{\@wrapopty}
+  }
+  \edef\@wrapoptyA{\dimexpr\@wrapoptyA+\normalxheight}
+  \@tempTFfalse
+  \ifthenelse{%
+    \equal{\@wrapoptposA}{l} \OR \equal{\@wrapoptposA}{L} \OR %
+    \equal{\@wrapoptposA}{r} \OR \equal{\@wrapoptposA}{R} \OR %
+    \equal{\@wrapoptposA}{o} \OR \equal{\@wrapoptposA}{O} \OR %
+    \equal{\@wrapoptposA}{i} \OR \equal{\@wrapoptposA}{I} %
+  }{\@tempTFtrue}{}
+  \if@tempTF\else
+    \ClassError{novel}{Bad~position~ argument~ for~ \string\WrapImage}%
+     {Argument:~ [position,xoffset,yoffset]~ where~ position~ ^^J%
+      is~ one~ of~ l~ r~ o~ i~ L~ R~ O~ I.}%
+  \fi
+  %
+  \begin{@wrapfloat}{\@wrapoptposA}% default r
+  \InlineImage[\@wrapoptxA,\@wrapoptyA]{#2}% \InlineImage from `novel' class
+  \rule[\dimexpr\normalxheight-\imageheight]{0pt}{\dimexpr\imageheight-\normalxheight+0.3\nfs}% because \InlineImage uses \smash
+  \end{@wrapfloat}%
+} %
+%
+\DeclareDocumentEnvironment{@wrapfloat} { m } {% specific to `novel' class
+  \ifvoid\NWF@box\else
+    \NWFclear
+  \fi
+  \xdef\NWF@place{\string`\@car#1r\@nil}%
+  \ifnum\lccode\NWF@place=\NWF@place
+    \global\NWF@floatfalse
+  \else
+     \global\NWF@floattrue
+  \fi
+  \ifx\parshape
+    \NWF@fudgeparshape 
+  \fi%
+  \global\setbox\NWF@box\vtop
+  \bgroup
+  \setlength\hsize{0pt}
+  \setbox\z@\hbox
+  \bgroup
+  \ignorespaces 
+}{%
+  \ifdim\hsize>\z@ %
+    \par\hrule\@width\hsize\@height\z@ % force width
+  \else%
+    \unskip \egroup \box\z@ % or end hbox
+  \fi
+  \egroup % end the \vtop; width is known so now is "later"
+  \def\width{\wd\NWF@box} %
+  \ifdim\ht\NWF@box>\topskip  % too much height, set flag.
+    \ht\NWF@box\z@ %
+  \fi
+  \ifdim\ht\NWF@box<.5\p@ % too tall (starts with \vbox) or too short
+    \global\setbox\NWF@box\vtop{\vskip-1.4ex\unvbox\NWF@box} %
+  \fi
+  \global\NWF@size\dp\NWF@box % box is guaranteed to have little height.
+  \global\advance\NWF@size1.5\baselineskip
+  \global\advance\NWF@size\tw@\intextsep % normally 0pt in `novel' class
+  \aftergroup\NWF@startfloating % even when not really floating!
+  \ifNWF@float\else
+    \ifhmode
+       {\unskip \parfillskip\z@skip \par \vskip-\parskip}%
+       \aftergroup\noindent
+    \fi
+  \fi
+  \global\@ignoretrue
+} %
+%
+% Subvert \everypar to float fig and do wrapping.  Also for non-float.
+\def\NWF@startfloating{%
+  \NWF@everypar\expandafter{\the\everypar}
+  \let\everypar\NWF@everypar
+  \NWF@@everypar{%
+    \ifvoid\NWF@box\else%
+      \NWF@floathand%
+    \fi%
+    \the\everypar%
+    \NWF@wraphand%
+  }%
+}
+%
+\def\NWF@floathand{%
+  \ifx\parshape
+    \NWF@fudgeparshape \NWF@fltmes
+  \else
+    \ifx\par\@@par
+      \ifnum\@@parshape=\z@
+        \ifdim\hangindent=\z@
+          \setbox\z@\lastbox
+          \begingroup
+          \@@par
+          \NWF@@everypar{}
+          \NWF@putfigmaybe
+          \endgroup % start wrapping
+          \ifvoid\z@\else
+            \box\z@ % replace indentation
+          \fi
+        \else
+          \NWF@fltmes
+        \fi
+      \else
+        \NWF@fltmes
+      \fi
+    \else
+      \NWF@fltmes
+    \fi
+  \fi
+}
+%
+% Put fig here if it fits or if it can't float
+\def\NWF@putfigmaybe{%
+  \ifinner % inner page
+    \vskip-\parskip \global\NWF@floatfalse
+    \let\pagetotal\maxdimen % kludge flag for "not top of page"
+  \else % outer page
+    \@tempdima\pagedepth % save page depth
+    {\advance\parskip\@tempdima\vskip-\parskip}% back up to baseline
+    \penalty\interlinepenalty % update pg. parameters
+    \@tempdimb\pagegoal
+    \advance\@tempdimb-\pagetotal % room left on page
+    \ifdim\@tempdimb<\z@ %
+       \global\NWF@floatfalse
+       \ifdim-\@tempdimb>\pageshrink\else
+         \pagebreak
+       \fi
+    \else
+       \ifdim\NWF@size>\@tempdimb
+          \ifNWF@float
+            \dimen@.5\baselineskip
+          \else
+            \dimen@ 2\baselineskip
+          \fi
+          \ifdim\pagestretch>\dimen@
+            \dimen@\pagestretch
+          \fi
+          \ifdim\pagefilstretch>\z@
+            \dimen@\@tempdimb
+          \fi
+          \ifdim\pagefillstretch>\z@
+            \dimen@\@tempdimb
+          \fi
+          \advance\dimen@.5\baselineskip
+          \ifdim\dimen@>\@tempdimb %
+             \global\NWF@floatfalse \pagebreak
+          \fi
+       \else %
+          \global\NWF@floatfalse
+       \fi
+     \fi
+     \vskip\@tempdima\relax % (return erased page depth)
+  \fi
+  \noindent
+  \ifNWF@float
+    \NWF@fltmes
+  \else % putting here;
+    {%
+      \ifodd % assign l/r to i/o placement
+        \if@twoside
+          \c@page
+        \else
+          \@ne
+        \fi
+        \lccode`i`l\lccode`o`r
+      \else
+        \lccode`i`r\lccode`o`l
+      \fi
+      \xdef\NWF@place{\the\lccode\lccode\NWF@place} % twice to get only l or r
+    }%
+    \hbox to\z@{% llap or rlap depending on {l} or {r}; calc effective width
+    \@tempdima\wd\NWF@box
+    \@tempdimb\z@
+    \advance\@tempdima-\@tempdimb
+    \advance\@tempdima\columnsep
+    \@tempdimb\hsize
+    \advance\@tempdimb-\@tempdima
+    \xdef\NWF@adjlw{\the\@tempdima}%
+    \ifnum `l=\NWF@place % fig on left
+      \hss % figure overlaps space to the left
+      \def\@tempa{\kern\columnsep}% position to left of the gap
+    \else  %  fig on right
+      \@tempdima\z@ % no left indentation
+      \kern\@tempdimb \kern\columnsep
+      \def\@tempa{\hss}% figure overlaps space to the right
+    \fi
+    \ifdim\@tempdimb<\hsize
+      \xdef\NWF@wrapil{\the\@tempdima \the\@tempdimb}% indentation and length
+      \xdef\NWF@adjtlm{\the\@tempdima}%
+    \else
+      \xdef\NWF@wrapil{\z@ \the\hsize}%
+      \xdef\NWF@adjlw{\z@}\xdef\NWF@adjtlm{\z@}%
+    \fi
+    \ifdim\pagetotal=\z@ %
+      \global\advance\NWF@size-\intextsep
+    \else %
+      \setbox\NWF@box\hbox{\lower\intextsep\box\NWF@box}%
+    \fi \dp\NWF@box\z@ \box\NWF@box \@tempa
+    }% end \hbox to \z@
+    \aftergroup\NWF@startwrapping % after the \endgroup which immediately follows
+  \fi
+}
+%
+\def\NWF@startwrapping{%
+  {%
+    \advance\NWF@size1.1\baselineskip
+    \divide\NWF@size\baselineskip \global\c@NWF@wrappedlines\NWF@size
+  }%
+  \ifnum\c@NWF@wrappedlines>\@ne
+    \let\parshape\NWF@fudgeparshape
+    \let\NWF@pspars\@empty
+    \let\NWF@@par\par
+    \def\@setpar##1{\def\NWF@@par{##1}}
+    \def\par{\@par}
+    \let\@par\NWF@mypar
+    \xdef\NWF@restoretol{\tolerance\the\tolerance}
+    \tolerance9999
+    \advance\linewidth-\NWF@adjlw
+    \advance\@totalleftmargin\NWF@adjtlm
+  \fi
+}
+%
+\def\NWF@wraphand{%
+  \ifnum\c@NWF@wrappedlines<\tw@
+    \NWF@finale
+  \else
+    \begingroup % Create \parshape command:
+    \@tempcnta\@ne
+    \let\NWF@wrapil\relax
+    \gdef\NWF@ps{}%
+    \@whilenum \@tempcnta<\c@NWF@wrappedlines\do{% repeated indentation, length
+      \xdef\NWF@ps{\NWF@ps\NWF@wrapil}\advance\@tempcnta\@ne
+    }%
+    \endgroup
+    \ifx\NWF@pspars\@empty
+      \@@parshape\c@NWF@wrappedlines
+      \NWF@ps
+      \NWF@noil
+    \else % use external `parshape' values to modify my parshape
+      \NWF@modps
+    \fi
+  \fi
+}
+%
+\def\NWF@mypar{
+  \relax
+  \NWF@@par % what the rest of LaTeX expects \par to be (usually \@@par)
+  \ifnum\@@parshape=\z@
+    \let\NWF@pspars\@empty
+  \fi % reset `parshape'
+  \global\advance\c@NWF@wrappedlines-\prevgraf
+  \prevgraf\z@
+  \ifnum\c@NWF@wrappedlines<\tw@
+    \NWF@finale
+  \fi
+}
+%
+\def\NWF@modps{
+  \begingroup
+  \afterassignment\@tempdimb \@tempdima\NWF@pspars % a=ind, b=wid
+  \advance\@tempdima-\NWF@adjtlm
+  \advance\@tempdimb\NWF@adjlw
+  \let\NWF@wrapil\NWF@pspars%
+  \edef\@tempb{%
+    \@@parshape\c@NWF@wrappedlines \NWF@ps \the\@tempdima \the\@tempdimb%
+  }%
+  \expandafter\endgroup\@tempb
+}
+%
+\let\@@setpar\@setpar
+\def\NWF@noil{\z@ \hsize}
+\let\NWF@pspars\@empty
+%
+\def\NWF@fudgeparshape{
+  \relax
+  \ifnum\c@NWF@wrappedlines<\tw@
+    \NWF@finale
+  \else
+    \afterassignment\NWF@fudgeparshapee \fam
+  \fi
+}
+%
+\def\NWF@fudgeparshapee{
+  \ifnum\fam=\@ne 
+    \expandafter \NWF@parshapeee
+  \else
+    \@@parshape\fam
+  \fi
+}
+%
+\def\NWF@parshapeee#1#2{%
+  \begingroup\delimitershortfall#1%
+  \nulldelimiterspace#2%
+  \edef\@tempa{%
+    \def\noexpand\NWF@pspars{\the\delimitershortfall \the\nulldelimiterspace}%
+  }%
+  \expandafter\endgroup\@tempa
+  \NWF@wraphand%
+}
+%
+\def\NWF@finale{%
+  \ifx\parshape
+    \NWF@fudgeparshape
+    \NWF@restoretol
+    \let\@setpar\@@setpar
+    \let\par\NWF@@par
+    \advance\linewidth\NWF@adjlw
+    \advance\@totalleftmargin-\NWF@adjtlm
+    \ifx\par\@@par
+      \def\@par{\let\par\@@par\par}
+    \else
+      \let\@par\NWF@@par
+    \fi
+    \let\parshape\@@parshape
+    \parshape
+    \ifx\NWF@pspars\@empty
+      \z@
+    \else
+      \@ne
+      \NWF@pspars
+    \fi
+  \fi
+  \ifvoid\NWF@box
+    \ifx\everypar\NWF@everypar
+      \let\everypar\NWF@@everypar
+      \everypar\expandafter{\the\NWF@everypar}%
+    \fi
+  \fi%
+}
+%
+\newcommand{\NWFclear}{%
+  \par 
+  \ifvoid\NWF@box\else
+    \vskip\bigskipamount \box\NWF@box
+    \let\everypar\NWF@@everypar
+    \everypar\expandafter{\the\NWF@everypar}%
+  \fi
+  \global\c@NWF@wrappedlines\z@
+  \NWF@finale%
+}
+%
+\ExplSyntaxOff
+\begingroup
+\toks0={\let\everypar\NWF@@everypar \everypar\expandafter{\the\NWF@everypar}%
+   \let\parshape\@@parshape \let\@setpar\@@setpar }
+\toks1=\expandafter{\@arrayparboxrestore}
+\toks2=\expandafter{\clearpage}
+\edef\@tempa{%
+  \def\noexpand\@arrayparboxrestore{\the\toks0 \the\toks1}%
+  \def\noexpand\clearpage{\noexpand\protect\noexpand\NWFclear \the\toks2}%
+}
+\expandafter
+\endgroup
+\@tempa
+%
+\AtEndDocument{\NWFclear}
+%
+%% end code modified from package `wrapfig'.
 
 
 

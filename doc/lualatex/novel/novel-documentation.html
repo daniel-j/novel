@@ -2300,19 +2300,31 @@ He would have taken the car, had it not been stolen. But that was why he was her
 </div><!-- end 7.3.4, 7.3.5 -->
 
 <h4 id="h7.3.6">7.3.6. <code>\FloatImage[<em>floatmethod,xoffset,yoffset</em>]{<em>ImageFile .png or .jpg</em>}</code></h4>
-<div class="d4" id="d7.3.4">
+<div class="d4" id="d7.3.6">
 <p class="noindent"><code>\FloatImage</code> places the image in its own block, like a paragraph.</p>
 <p>The image will be horizontally centered. If that is not what you wish, then you can widen the image in a graphics program, adding white space as needed. Or, you can use <code>xoffset</code> to move the image.</p>
 <p>The top of the image will be positioned at the baseline of text, where text would have been without the image. You may adjust that position using <code>voffset</code> where a positive length is upward. In some cases, <code>\nfs</code> (the normal text em) is a good choice for <code>yoffset</code>.</p>
 <p>The height of the image is automatically measured, so that the following paragraph will be positioned at an integral number of baseline skips. This maintains the text line grid.</p>
 <p>The optional argument is comma-separated, with up to three values. The first is float method. The second (if used) is horizontal offset. The third (if used) is vertical offset. In some cases, changing the vertical offset will determine where the image fits.</p>
-<p>The <i>float method</i> is a code describing how the floated image should be placed. Typical float methods are <code>!ht</code> (default) and <code>!b</code>. You may use any combination of <code>!htb</code>. If you use <code>H</code> it will be quiety replaced by <code>!h</code>, and if you use <code>p</code> it will quietly be ignored. (This portion of the documentation is under development).</p>
-<p>In ordinary TeX behavior, if a floated image is simply too big to fit on a page, its placement is delayed to some later time (such as a chapter ending). This is not how it works in <i>novel</i> class. Instead, if a floated image is too big, it is still placed on the next available page, and is allowed to overflow into the header/footer or margins. Then, it is your task to redesign the image so that it fits, perhaps with the help of the <code><a href="#h2.3">[draft,shademargins]</a></code> class options.</p>
-<p>No other kind of float is available, not even by loading other packages. The <i>novel</i> class is not intended for books that rely on floats. Other document classes already have that capability.</p>
+<p>The <i>float method</i> is a code describing how the floated image should be placed. Typical float methods are <code>!ht</code> (default) and <code>!b</code>. You may use any combination of <code>! h t b</code>. If you use <code>H</code> it will be quiety replaced by <code>!h</code>, and if you use <code>p</code> it will quietly be ignored.</p>
+<p>No other kind of float is available, not even by loading other packages. The <i>novel</i> class is not intended for books that rely on floats. Other document classes already have that capability. Or, consider using a page layout program instead of TeX.</p>
 <p>If you wish to place a vector image, or a table, then design it in another program (or another TeX document class), and place it in the form of a raster image in your <i>novel</i> document.</p>
+<p>If a full-page floated image is too tall to fit in the available text area, other TeX packages will delay its placement. However, <i>novel</i> will place the image on the first available page, allowing it to overflow into the footer or bottom margin. Sometimes, that does not need to be fixed, if room is available there. Otherwise, use class options <code>[draft,shademargins]</code> to locate places where there is overflow, then change the image size in a graphics program.</p>
 <p>Note that the <i>floatpag</i> package does not work in <i>novel</i>. If a floated image occupies a full page, you cannot customize the head/foot style for that page; it will be the same as it was on the calling page.</p>
-<p>If you need to place an image as a block element, but do not want it to possibly float to the next page, then use <code>\InlineImage</code>, and wrap it in a <a href="#h6.3.2"><i>linegap</i></a> environment big enough to hold it.</p>
 </div><!-- end 7.3.6 -->
+
+<h4 id="h7.3.7">7.3.7. <code>\WrapImage[<em>position,xoffset,yoffset</em>]{<em>ImageFile .png or .jpg</em>}</code></h4>
+<div class="d4" id="d7.3.7">
+<p class="noindent">This command uses built-in, customized code from the <i>wrapfig</i> package. Thus, do not load this package yourself.</p>
+<p><img class="floatright" src="html-resources/wrapme.png" width="104" height="104" alt="Wrap me!" title="Wrap me!"/><code>\WrapImage</code> allows text (may be more than one paragraph) to wrap around an image. What you are now reading uses this technique in HTML. The text is wrapped around the image at right. Next to the image, the lines of text are shorter. Past the bottom of the image, the line length is restored to its usual size. In HTML, this is called <i>floating</i> an image; in TeX, it is called <i>wrapping</i>. Unlike what you see here, your document's text will be justified, whether the lines are short or long.</p>
+<p>The optional argument has up to three comma-separated values. The first is position, which may be any one of these letters: <code>l r o i L R O I</code>. Default is <code>r</code>. The letters place the image at left, right, outside, or inside (spine).</p>
+<p>Lowercase position places the image where you wrote the code. However, if there is not enough space to fit it (too close to bottom of page), then both the image and the wrapped text will be moved to the next page. This leaves a white gap at the bottom of the previous page, which is undesirable. But it guarantees that the image remains attached to the expected text.</p>
+<p>Uppercase position places the image where you wrote the code, if possible. However, if the image cannot fit there, then the image is floated to the next page, and accompanies the first new paragraph. This avoids a white gap at page bottom, but the image no longer accompanies the expected text. If you use this kind of position, avoid referring to "the image at right" or anything else that makes no sense if the image is moved.</p>
+<p>The remaining part of the optional argument offsets the image horizontally and vertically.</p>
+<p>The top of the image will be placed as the X-height or normal text. This provides a good compromise between visual clearance and conserving space. You cannot increase the separation between text and image via command. If you ned more white space around the image, then enlarge it in a graphics program, with surrounding white areas.</p>
+<p>Normally, <code>\WrapImage</code> is written between paragraphs, and the image will appear with the next paragraph (unless moved). If you wish, you can write <code>\WrapImage</code> mid-paragraph.</p>
+<p>You cannot wrap around a shape other than a rectangle. For that, you need a page layout program. Note: Actually, it can be done in TeX, but the code is mind-boggling and not part of any package. Don't ask.</p>
+</div><!-- end 7.3.7 -->
 </div><!-- end 7.3 -->
 
 <h3 id="h7.4">7.4. Color Cover Artwork</h3>

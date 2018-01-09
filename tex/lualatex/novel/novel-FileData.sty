@@ -83,6 +83,12 @@
 \gdef\SetProducer#1{\gdef\@novelProducer{#1}}
 \SetProducer{LuaLaTeX with novel-pdfx and hyperref} % default
 %
+% \SetDesignerLabel{}  (only effective with `designer' class option)
+% New in version 1.48. Not actually part of File Data.
+% Merely places info on cover page of designer PDF. 
+\long\gdef\SetDesignerLabel#1{\long\gdef\@DesignerLabel{#1}}
+\SetDesignerLabel{unspecified} % default empty
+%
 %% End file data.
 
 

@@ -39,12 +39,23 @@
 %% Preliminary tests for cases forbidding PDF/X:
 \ifdraftdoc
   \global\@pdfxISofftrue
-  \if@pdfxSEToff
-    \ClassWarning{novel}{^^JYou requested PDF/X compliance in draft mode. ^^J%
-     Sorry, but you cannot have both at the same time. ^^J%
-     Your document was processed with \string\SetPDFX\{off\}. ^^J}%
-  \fi
 \fi
+\if@DesignerMode
+  \global\@pdfxISofftrue
+\fi
+%
+\AtBeginDocument{%
+  \if@pdfxSEToff\else
+    \ifdraftdoc
+      \typeout{^^JClass `novel' Alert: No PDF/X in draft mode. ^^J%
+       Your document was processed with \string\SetPDFX\{off\}. ^^J}%
+    \fi
+    \if@DesignerMode
+      \typeout{^^JClass `novel' Alert: No PDF/X in designer mode. ^^J%
+       Your document was processed with \string\SetPDFX\{off\}. ^^J}%
+    \fi
+  \fi
+} %
 %%
 
 

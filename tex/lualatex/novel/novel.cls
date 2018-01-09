@@ -2,10 +2,6 @@
 %% This is file `novel.cls', part of class `novel'.
 %% Copyright 2017 Robert Allgeyer.  Contact:  anytthree [at] gmail.com
 %% 
-%% Wanted: Replacement maintainer. The original creator wants to move on.
-%% AFAIK this code is tested and suitable for general use.
-%% Contact CTAN (and me) if interested in taking over the maintenance.
-%% 
 %% This file may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3c
 %% of this license or (at your option) any later version.
@@ -137,6 +133,11 @@
 }% end \gsetlength
 %%
 
+%% Helps to avoid underfull vbox warnings when using certain environments:
+\LetLtxMacro\@MyClearpage\clearpage\relax
+\gdef\clearpage{\vfill\@MyClearpage} % \vfill beats \vfil
+%%
+
 
 %% Process document class options.
 %% ----------------------------------------------------------------------------
@@ -244,6 +245,14 @@
 \newif \if@testsuite
 \DeclareOption{test}{\@testsuitetrue}
 %
+% New in version 1.48: Designer Mode.
+% Allows some things that would otherwise be banned in a full novel.
+% Limits page output to three (fixed cover, user verso, user recto).
+% Allows design of things such as tables, then PDF can be rasterized
+%   in a graphics program, and images placed in the novel.
+\newif \if@DesignerMode
+\DeclareOption{designer}{\@DesignerModetrue}
+%
 %% Note that document size and normal font size are not class options.
 %% They are set by commands in the Preamble, and have default values.
 %
@@ -271,6 +280,9 @@
   \global\@cropviewfalse
   \global\@closecropfalse
   \global\@graytextfalse
+\fi
+\if@DesignerMode
+  \@novelunblocktrue
 \fi
 %% end class options
 
@@ -394,6 +406,44 @@
 %% end special features of test suite.
 
 
+%% Designer mode.
+% Thanks to user `Compholio' at stackoverflow.com
+\newcounter{@DesignerPage}
+\if@DesignerMode
+  \newcommand{\@DesignerPages}[1]{%
+    \setcounter{@DesignerPage}{0}%
+    \gdef\maxpages{#1}%
+    \ifx\latex@outputpage\@undefined\relax%
+        \global\let\latex@outputpage\@outputpage%
+    \fi%
+    \gdef\@outputpage{%
+        \stepcounter{@DesignerPage}%
+        \ifnum\value{@DesignerPage}>\maxpages\relax%
+            % Do not output the page
+        \else%
+            \latex@outputpage%
+        \fi%
+    }%
+  }
+  \@DesignerPages{3} % cover, verso, recto
+  \AfterEndPreamble{%
+    \null\null
+    \charscale[1.6]{DESIGNER MODE}\par
+    \null
+    Portion of artwork for this book:\par
+    Title: \theTitle\par
+    Author: \theAuthor\par
+    \null
+    Info:\par
+    \@DesignerLabel\par
+    \null
+    Timestamp: \pdfcreationdate\par
+    \clearpage%
+  }%
+\fi
+%% end designer mode.
+
+
 %% \AtEndPreamble sets defaults, calculates layout, and writes PDF/X
 %% ----------------------------------------------------------------------------
 % This is prior to \AtBeginDocument, and ensures that the results are available
@@ -420,52 +470,98 @@
   \@ActivateTextMacros % in `novel-TextMacros.sty'
   \@ActivateFootnotes % in `novel-Footnotes.sty'
   % Commands that cannot be used after Preamble:
-  \@DisableLayoutSettings % in file \novel-LayoutSettings.sty'
+  \if@DesignerMode\else
+    \@DisableFontSizes % in file `novel-LayoutSettings.sty'
+    \@DisableIncludeGraphics % in file `novel-Images.sty'
+    \let\itemize\relax
+    \let\enditemize\relax
+    \let\item\relax
+    \let\enumerate\relax
+    \let\endenumerate\relax
+    \let\description\relax
+    \let\enddescription\relax
+  \fi
+  \@DisableLayoutSettings % in file `novel-LayoutSettings.sty'
   \@DisableFileDataSettings % in file `novel-FileData.sty'
   \@DisableChapterSceneSettings % in file `novel-ChapterScene.sty'
   \@DisableHeadFootSettings % in file `novel-HeadFootStyles.sty'
   % Dealing with known incompatible packages:
   \if@novelunblock
-    \gdef\sorry@no#1#2{} % let them be used
+    \gdef\sorry@no#1#2#3{} % let them be used, if unblock or DesignerMode
   \else % block them (default)
-    \gdef\sorry@no#1#2{
+    \gdef\sorry@no#1#2#3{
       \@ifpackageloaded{#1}{%
        \ClassError{novel}{Sorry, package `#1' cannot be used in `novel' class}%
         {Reason: `novel' has #2 ^^J%
+         See `novel' HTML documentation, section #3. ^^J%
          Note: The offending package may have been loaded by another package.}%
       }{}%
     }
   \fi
+  \gdef\really@no#1#2#3{ % cannot be used, even with unblock or DesignerMode
+    \@ifpackageloaded{#1}{%
+     \ClassError{novel}{Sorry, package `#1' cannot be used in `novel' class}%
+      {Reason: `novel' has #2 ^^J%
+       See `novel' HTML documentation, section #3. ^^J%
+       Note: The offending package may have been loaded by another package.}%
+    }{}%
+  }
   % List of blocked packages (not exhaustive, since TeX has so many):
-  \sorry@no{geometry}{its own layout commands.}
-  \sorry@no{pdfx}{built-in PDF/X capability.}
-  \sorry@no{xmpincl}{built-in PDF/X capability.}
-  \sorry@no{hyperxmp}{built-in PDF/X capability.}
-  \sorry@no{pdfxmult}{built-in PDF/X capability.}
-  \sorry@no{inputenc}{utf-8 encoding always.}
-  \sorry@no{fontenc}{`fontspec' and utf-8 encoding always.}
-  \sorry@no{wrapfig}{its own \string\WrapImage\space command.}
-  \sorry@no{float}{its own \string\FloatImage\space command.}
-  \sorry@no{morefloats}{its own \string\FloatImage\space command.}
-  \sorry@no{footmisc}{limited built-in footnote methods.}
-  \sorry@no{footnote}{limited built-in footnote methods.}
-  \sorry@no{manyfoot}{limited built-in footnote methods.}
-  \sorry@no{caption}{its own \string\FloatImage\space command.}
-  \sorry@no{subcaption}{its own \string\FloatImage\space command.}
-  \sorry@no{multirow}{built-in TOC capability, but disallows other tables.}
-  \sorry@no{tabu}{built-in TOC capability, but disallows other tables.}
-  \sorry@no{tabularx}{built-in TOC capability, but disallows other tables.}
-  \sorry@no{tabulary}{built-in TOC capability, but disallows other tables.}
-  \sorry@no{array}{built-in TOC capability, but disallows other tables.}
-  \sorry@no{showkeys}{an aversion to academic-style layouts.}
-  \sorry@no{booktabs}{no capability for this, due to printer requirements.}
-  \sorry@no{eqparbox}{conflicting layout requirements.}
-  \sorry@no{pdfpages}{specific requirements that exclude PDF import. ^^J%
-    This has to do with file requirements for commercial printers.}
-  %\sorry@no{nth} %  probably OK, internal redefinition of \textsuperscript
-  %\sorry@no{engord} %  probably OK, internal redefinition of \textsuperscript
-  \sorry@no{endnotes}{limited built-in endnote methods.}
-  \sorry@no{acronym}{its own acronym method.}
+  \really@no{geometry}{its own layout commands.}{4}
+  \really@no{pdfx}{built-in PDF/X capability.}{3.4}
+  \really@no{xmpincl}{built-in PDF/X capability.}{3.4}
+  \really@no{hyperxmp}{built-in PDF/X capability.}{3.4}
+  \really@no{pdfxmult}{built-in PDF/X capability.}{3.4}
+  \really@no{inputenc}{utf-8 encoding always.}{1.2.1}
+  \really@no{fontenc}{`fontspec' and utf-8 encoding always.}{1.2.1, 1.2.3}
+  \sorry@no{wrapfig}{its own \string\WrapImage\space command.}{7.3.7}
+  \sorry@no{floatflt}{its own \string\WrapImage\space command.}{7.3.7}
+  \sorry@no{floatfig}{its own \string\WrapImage\space command.}{7.3.7}
+  \sorry@no{float}{its own \string\FloatImage\space command.}{7.3.6}
+  \sorry@no{subfig}{its own \string\FloatImage\space command.}{7.3.6}
+  \sorry@no{lpic}{its own \string\FloatImage\space command.}{7.3.6}
+  \sorry@no{pinabel}{its own \string\FloatImage\space command.}{7.3.6}
+  \sorry@no{overpic}{its own \string\FloatImage\space command.}{7.3.6}
+  \sorry@no{morefloats}{its own \string\FloatImage\space command.}{7.3.6}
+  \sorry@no{placeins}{its own \string\FloatImage\space command.}{7.3.6}
+  \sorry@no{flafter}{its own \string\FloatImage\space command.}{7.3.6}
+  \sorry@no{endfloat}{its own \string\FloatImage\space command.}{7.3.6}
+  \sorry@no{footmisc}{limited built-in footnote methods.}{6.5}
+  \sorry@no{footnote}{limited built-in footnote methods.}{6.5}
+  \sorry@no{manyfoot}{limited built-in footnote methods.}{6.5}
+  \sorry@no{caption}{its own \string\FloatImage\space command.}{7.3.6}
+  \sorry@no{sidecap}{its own \string\FloatImage\space command.}{7.3.6}
+  \sorry@no{subcaption}{its own \string\FloatImage\space command.}{7.3.6}
+  \sorry@no{multirow}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
+  \sorry@no{tabu}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
+  \sorry@no{tabularx}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
+  \sorry@no{tabulary}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
+  \sorry@no{longtable}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
+  \sorry@no{paracol}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
+  \sorry@no{array}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
+  \really@no{showkeys}{an aversion to academic-style layouts. ^^J
+    This has to do with maintining text line grid.}{1.2.5}
+  \sorry@no{easylist}{an aversion to academic-style layouts. ^^J
+    This has to do with maintining text line grid.}{1.2.5}
+  \sorry@no{scrextend}{an aversion to academic-style layouts. ^^J
+    This has to do with maintining text line grid.}{1.2.5}
+  \sorry@no{listings}{an aversion to academic-style layouts. ^^J
+    This has to do with maintining text line grid.}{1.2.5}
+  \sorry@no{numitem}{an aversion to academic-style layouts. ^^J
+    This has to do with maintining text line grid.}{1.2.5}
+  \sorry@no{tasks}{an aversion to academic-style layouts. ^^J
+    This has to do with maintining text line grid.}{1.2.5}
+  \sorry@no{exsheets}{an aversion to academic-style layouts. ^^J
+    This has to do with maintining text line grid.}{1.2.5}
+  \really@no{booktabs}{no capability for this, due to printer specs.}{3.4}
+  \sorry@no{eqparbox}{conflicting layout requirements.}{6.3.1}
+  \really@no{pdfpages}{specific requirements that exclude PDF import. ^^J%
+    This has to do with file requirements for commercial printers. ^^J%
+    You may rasterize a page via graphics program, and place its image.}{3.4}
+  %\sorry@no{nth}{}{} %  probably OK, redefinition of \textsuperscript
+  %\sorry@no{engord}{}{} %  probably OK, redefinition of \textsuperscript
+  \really@no{endnotes}{limited, built-in endnote methods.}{6.5}
+  \really@no{acronym}{its own acronym style.}{6.2.4}
   % end list of incompatible packages
   \@ifpackageloaded{pagegrid}{
     \ifdraftdoc

@@ -459,18 +459,19 @@
 %
 \gdef\null{\hbox{\strut}} % May be important!
 %
-% Standard LaTeX font sizes are ineffective:
-\let\small\relax
-\let\footnotesize\relax
-\let\scriptsize\relax
-\let\tiny\relax
-%
-\let\large\relax
-\let\Large\relax
-\let\LARGE\relax
-\let\huge\relax
-\let\Huge\relax
-\let\HUGE\relax
+% Standard LaTeX font sizes are ineffective, unless in designer mode:
+\gdef\@DisableFontSizes{% called by `novel.cls' \AtBeginDocument
+  \let\small\relax
+  \let\footnotesize\relax
+  \let\scriptsize\relax
+  \let\tiny\relax
+  \let\large\relax
+  \let\Large\relax
+  \let\LARGE\relax
+  \let\huge\relax
+  \let\Huge\relax
+  \let\HUGE\relax
+} %
 % All these do is echo the argument, if any:
 \long\gdef\part#1{#1}
 \long\gdef\chapter#1{#1}
@@ -492,7 +493,6 @@
 \long\gdef\listoffigures\@nodocommand{listoffigures}
 %
 %% end disable or neutralize.
-
 
 
 %% Neutralize settings commands:

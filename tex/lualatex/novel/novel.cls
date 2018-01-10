@@ -13,7 +13,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2018/01/08 v1.46.5y LaTeX document class]
+\ProvidesClass{novel}[2018/01/09 v1.46.5z LaTeX document class]
 %%
 %% Version 1.46: Possibly final version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
@@ -245,14 +245,6 @@
 \newif \if@testsuite
 \DeclareOption{test}{\@testsuitetrue}
 %
-% New in version 1.48: Designer Mode.
-% Allows some things that would otherwise be banned in a full novel.
-% Limits page output to three (fixed cover, user verso, user recto).
-% Allows design of things such as tables, then PDF can be rasterized
-%   in a graphics program, and images placed in the novel.
-\newif \if@DesignerMode
-\DeclareOption{designer}{\@DesignerModetrue}
-%
 %% Note that document size and normal font size are not class options.
 %% They are set by commands in the Preamble, and have default values.
 %
@@ -280,9 +272,6 @@
   \global\@cropviewfalse
   \global\@closecropfalse
   \global\@graytextfalse
-\fi
-\if@DesignerMode
-  \@novelunblocktrue
 \fi
 %% end class options
 
@@ -406,44 +395,6 @@
 %% end special features of test suite.
 
 
-%% Designer mode.
-% Thanks to user `Compholio' at stackoverflow.com
-\newcounter{@DesignerPage}
-\if@DesignerMode
-  \newcommand{\@DesignerPages}[1]{%
-    \setcounter{@DesignerPage}{0}%
-    \gdef\maxpages{#1}%
-    \ifx\latex@outputpage\@undefined\relax%
-        \global\let\latex@outputpage\@outputpage%
-    \fi%
-    \gdef\@outputpage{%
-        \stepcounter{@DesignerPage}%
-        \ifnum\value{@DesignerPage}>\maxpages\relax%
-            % Do not output the page
-        \else%
-            \latex@outputpage%
-        \fi%
-    }%
-  }
-  \@DesignerPages{3} % cover, verso, recto
-  \AfterEndPreamble{%
-    \null\null
-    \charscale[1.6]{DESIGNER MODE}\par
-    \null
-    Portion of artwork for this book:\par
-    Title: \theTitle\par
-    Author: \theAuthor\par
-    \null
-    Info:\par
-    \@DesignerLabel\par
-    \null
-    Timestamp: \pdfcreationdate\par
-    \clearpage%
-  }%
-\fi
-%% end designer mode.
-
-
 %% \AtEndPreamble sets defaults, calculates layout, and writes PDF/X
 %% ----------------------------------------------------------------------------
 % This is prior to \AtBeginDocument, and ensures that the results are available
@@ -469,48 +420,23 @@
   \@ActivatePDFInfo % in file `novel-pdfx.sty'
   \@ActivateTextMacros % in `novel-TextMacros.sty'
   \@ActivateFootnotes % in `novel-Footnotes.sty'
-  % Commands that cannot be used after Preamble:
-  \if@DesignerMode
-    \@ActivateFontSizes % in file `novel-Layout-Settings.sty'
-  \else
-    \@DisableFontSizes % in file `novel-LayoutSettings.sty'
-    \@DisableIncludeGraphics % in file `novel-Images.sty'
-  \fi
+  \@DisableFontSizes % in file `novel-LayoutSettings.sty'
+  \@DisableIncludeGraphics % in file `novel-Images.sty'
   \@DisableLayoutSettings % in file `novel-LayoutSettings.sty'
   \@DisableFileDataSettings % in file `novel-FileData.sty'
   \@DisableChapterSceneSettings % in file `novel-ChapterScene.sty'
   \@DisableHeadFootSettings % in file `novel-HeadFootStyles.sty'
   % Dealing with known incompatible packages:
-  \if@novelunblock
-    \gdef\sorry@no#1#2#3{} % let them be used, if unblock or DesignerMode
-  \else % block them (default)
-    \gdef\sorry@no#1#2#3{
-      \@ifpackageloaded{#1}{%
-       \ClassError{novel}{Sorry, package `#1' cannot be used in `novel' class}%
-        {Reason: `novel' has #2 ^^J%
-         See `novel' HTML documentation, section #3. ^^J%
-         Note: The offending package may have been loaded by another package.}%
-      }{}%
-    }
-  \fi
-  \gdef\really@no#1#2#3{ % cannot be used, even with unblock or DesignerMode
+  \gdef\really@no#1#2#3{ % cannot be used, even with unblock
     \@ifpackageloaded{#1}{%
      \ClassError{novel}{Sorry, package `#1' cannot be used in `novel' class}%
-      {Reason: `novel' has #2 ^^J%
+      {No exceptions. You are out of luck. ^^J%
+       Reason: `novel' has #2 ^^J%
        See `novel' HTML documentation, section #3. ^^J%
        Note: The offending package may have been loaded by another package.}%
     }{}%
-  }
-  \if@DesignerMode
-    \gdef\warn@nodisp#1{}
-  \else
-    \gdef\warn@nodisp#1{%
-      \ClassWarning{novel}{You loaded package `#1'. Some of its commands ^^J%
-       may produce unexpected layout in the main document body. ^^J%
-       Better if you confine usage to display pages. ^^J}%
-    }
-  \fi
-  % List of blocked packages (not exhaustive, since TeX has so many):
+  } %
+  % List of always blocked packages (not exhaustive, since TeX has so many):
   \really@no{geometry}{its own layout commands.}{4}
   \really@no{pdfx}{built-in PDF/X capability.}{3.4}
   \really@no{xmpincl}{built-in PDF/X capability.}{3.4}
@@ -518,6 +444,33 @@
   \really@no{pdfxmult}{built-in PDF/X capability.}{3.4}
   \really@no{inputenc}{utf-8 encoding always.}{1.2.1}
   \really@no{fontenc}{`fontspec' and utf-8 encoding always.}{1.2.1, 1.2.3}
+  \really@no{biblatex}{no bibiography capability.}{1.2.5}
+  \really@no{showkeys}{an incompatible layout method.}{1.2.5}
+  \really@no{booktabs}{no capability for this, due to printer specs.}{3.4}
+  \really@no{pdfpages}{specific requirements that exclude PDF import. ^^J%
+    You may rasterize a page via graphics program, and place its image.}{3.4}
+  \really@no{bookmark}{focus on paper books, not e-books.}{(top of file)}
+  \really@no{endnotes}{limited, built-in endnote methods.}{6.5}
+  \really@no{acronym}{its own acronym style.}{6.2.4}
+  % Dealing with packages that might cause problems, but not always:
+  \if@novelunblock
+    \gdef\sorry@no#1#2#3{} % no package-specific errors, when unblock
+    \ClassWarning{novel}{Using `unblock' class option, at your own risk. ^^J%
+      If the unblocked packages and commands cause problems, ^^J%
+      they are not bugs. Do not report them. You have been warned. ^^J%
+      In most cases your document will compile without error, and often the^^J%
+      results are OK. But in other cases, unexpected typesetting results. ^^J}%
+  \else % package-specific errors, when no unblock
+    \gdef\sorry@no#1#2#3{
+      \@ifpackageloaded{#1}{%
+       \ClassError{novel}{Sorry, package `#1' cannot be used in `novel' class}%
+        {Reason: `novel' has #2 ^^J%
+         See `novel' HTML documentation, section #3. ^^J%
+         Note: The offending package may have been loaded by another package.}%
+      }{}%
+    } %
+  \fi
+  % Potential problem packages, blocked by default, but can be unblocked:
   \sorry@no{wrapfig}{its own \string\WrapImage\space command.}{7.3.7}
   \sorry@no{floatflt}{its own \string\WrapImage\space command.}{7.3.7}
   \sorry@no{floatfig}{its own \string\WrapImage\space command.}{7.3.7}
@@ -543,35 +496,27 @@
   \sorry@no{longtable}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
   \sorry@no{paracol}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
   \sorry@no{array}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
-  \really@no{biblatex}{an aversion to academic-style layouts. ^^J
-    This has to do with maintining text line grid.}{1.2.5}
-  \really@no{showkeys}{an aversion to academic-style layouts. ^^J
-    This has to do with maintining text line grid.}{1.2.5}
-  \sorry@no{easylist}{an aversion to academic-style layouts. ^^J
-    This has to do with maintining text line grid.}{1.2.5}
-  \sorry@no{scrextend}{an aversion to academic-style layouts. ^^J
-    This has to do with maintining text line grid.}{1.2.5}
-  \sorry@no{listings}{an aversion to academic-style layouts. ^^J
-    This has to do with maintining text line grid.}{1.2.5}
-  \sorry@no{numitem}{an aversion to academic-style layouts. ^^J
-    This has to do with maintining text line grid.}{1.2.5}
-  \sorry@no{tasks}{an aversion to academic-style layouts. ^^J
-    This has to do with maintining text line grid.}{1.2.5}
-  \sorry@no{exsheets}{an aversion to academic-style layouts. ^^J
-    This has to do with maintining text line grid.}{1.2.5}
-  \really@no{booktabs}{no capability for this, due to printer specs.}{3.4}
+  \sorry@no{easylist}{conflicting layout requirements.}{1.2.5}
+  \sorry@no{scrextend}{conflicting layout requirements.}{1.2.5}
+  \sorry@no{listings}{conflicting layout requirements.}{1.2.5}
+  \sorry@no{numitem}{conflicting layout requirements.}{1.2.5}
+  \sorry@no{tasks}{conflicting layout requirements.}{1.2.5}
+  \sorry@no{exsheets}{conflicting layout requirements.}{1.2.5}
   \sorry@no{eqparbox}{conflicting layout requirements.}{6.3.1}
-  \really@no{pdfpages}{specific requirements that exclude PDF import. ^^J%
-    This has to do with file requirements for commercial printers. ^^J%
-    You may rasterize a page via graphics program, and place its image.}{3.4}
-  \really@no{bookmark}{focus on paper books, not e-books.}{(top of file)}
-  %\sorry@no{nth}{}{} %  probably OK, redefinition of \textsuperscript
-  %\sorry@no{engord}{}{} %  probably OK, redefinition of \textsuperscript
-  \really@no{endnotes}{limited, built-in endnote methods.}{6.5}
-  \really@no{acronym}{its own acronym style.}{6.2.4}
-  \warn@nodisp{ulem}
-  \warn@nodisp{soul}
-  % end list of incompatible packages
+  % Can be used without unblock, but Alert:
+  \gdef\alert@nodisp#1{%
+    \@ifpackageloaded{#1}{%
+      \typeout{^^JClass `novel' Alert: Beware of package #1. ^^J%
+        Commands from this package may cause mis-positioning in main text. ^^J%
+        Maybe, maybe not. Best if usage is confined to display pages. ^^J}%
+    }%
+  } %
+  % List of Alert packages:
+  \alert@nodisp{nth}
+  \alert@nodisp{engord}
+  \alert@nodisp{ulem}
+  \alert@nodisp{soul}
+  % end list of potential problem packages.
   \@ifpackageloaded{pagegrid}{
     \ifdraftdoc
       \if@shademargins
@@ -584,7 +529,7 @@
        {Package `pagegrid' only with document class option `draft'.}%
     \fi
   }{} % end pagegrid
-}% end AtBeginDocument
+}% end \AtBeginDocument
 %%
 
 

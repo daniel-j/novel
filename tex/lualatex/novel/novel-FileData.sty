@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-FileData.sty}%
-[2018/01/08 v1.46.5y LaTeX file (File Data settings)]
+[2018/01/09 v1.46.5z LaTeX file (File Data settings)]
 %% 
 
 
@@ -82,12 +82,6 @@
 % Normally leave as default, but can change if urgent.
 \gdef\SetProducer#1{\gdef\@novelProducer{#1}}
 \SetProducer{LuaLaTeX with novel-pdfx and hyperref} % default
-%
-% \SetDesignerLabel{}  (only effective with `designer' class option)
-% New in version 1.48. Not actually part of File Data.
-% Merely places info on cover page of designer PDF. 
-\long\gdef\SetDesignerLabel#1{\long\gdef\@DesignerLabel{#1}}
-\SetDesignerLabel{unspecified} % default empty
 %
 %% End file data.
 

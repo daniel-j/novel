@@ -205,7 +205,8 @@ function closeall() {
       <li><a href="#h2.6">2.6 closecrop</a></li>
       <li><a href="#h2.7">2.7 xml</a></li>
       <li><a href="#h2.8">2.8 coverart</a></li>
-      <li><a href="#h2.9">2.9 other options (dev)</a></li>
+      <li><a href="#h2.9">2.9 developer options</a></li>
+      <li><a href="#h2.10">2.10 designer</a></li>
     </ul>
   </li><!-- end 2 -->
 
@@ -568,6 +569,9 @@ function closeall() {
     </ul>
   </li><!-- end F -->
 
+  <li id="lG"><span class="n"></span><a href="#hG"><b>G. Designer Mode</b></a>
+  </li><!-- end G -->
+
   <hr/>
 
   <li id="lSD"><span class="n" style="visibility:hidden"></span><a href="#hSD"><b>Sample Document</b></a>
@@ -847,14 +851,19 @@ function closeall() {
 <p class="item">This option is only used for cover artwork. See <a href="#h7.4">section 7.4</a>.</p>
 </div><!-- end 2.8 -->
 
-<h3 id="h2.9">2.9. Other Options <em>(primarily for developers)</em></h3>
+<h3 id="h2.9">2.9. Developer Options</h3>
 <div class="d3" id="d2.9">
-<p class="item"><b>A.</b> <code>unblock</code> Allows blocked, known-incompatible packages to load.</p>
+<p class="item"><b>A.</b> <code>unblock</code> Allows some blocked, known-incompatible packages to load.</p>
 <p class="item"><b>B.</b> <code>mtoff</code> The <i>microtype</i> package will not be loaded.</p>
 <p class="item"><b>C.</b> <code>polyoff</code> The <i>polyglossia</i> package will not be loaded.</p>
 <p class="item"><b>D.</b> <code>test</code> Only used with file <i>novel-testsuite.tex</i>.</p>
 <p class="item"><b>E.</b> <code>debug</code> OBSOLETE. Experimental in version 1.38. Now ignored.</p>
 </div><!-- end 2.9 -->
+
+<h3 id="h2.10">2.10. designer</h3>
+<div class="d3" id="d2.10">
+<p class="item">Activates designer mode. See <a href="#hG">Appendix G</a>.</p>
+</div><!-- end 2.8 -->
 
 
 </div><!-- end 2 -->
@@ -3301,6 +3310,7 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 <div class="d2" id="dF">
 <p class="item">A <i>drop cap</i> is an enlarged letter (or image) at the beginning of chapter text, with the first few lines of text wrapped around it:</p>
 <p class="centerimg"><img src="html-resources/dropcap.png" width="431" height="112" title="drop cap" alt="drop cap"/></p>
+<p>Drop caps are out of fashion, largely because they do not look good when used with dialog or with short paragraphs. If you intend to use them, be prepared to write in a style where each chapter begins with a substantial paragraph. Or, consider using a specially designed <a href="#h5.5">first line</a> instead.</p>
 
 <h3 id="hF.1">F.1 Built-In Method vs. Lettrine</h3>
 <div class="d3" id="dF.1">
@@ -3331,10 +3341,10 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 <p><img src="html-resources/dropcap-antestar.png" class="floatright" width="110" height="102" title="ante*=``" alt="ante*=``"/>&bull; Note 3: <code>ante</code> begins at the margin, and thus pushes the drop cap to the right. With <code>ante*</code> its text hangs in the left margin, so that the drop cap is aligned with the margin. This is visually better, providing that you have enough margin to accomodate the ante text. Setting an <a href="#h4.3.1.2">unsafe zone</a> may be helpful.</p>
 <p>Example at right: <code>\dropcap[ante*=``]{O}</code></p>
 <p>&bull; Note 4: You may use <code>\charscale</code> to manipulate the size and position of ante text. No other styling (such as font or color) may be applied. The ante text will always be black, in the main font. This is standard.</p>
-<p><img src="html-resources/dropcap-scalebloat.png" class="floatright" width="98" height="107" title="scale=1.2,bloat=.75" alt="scale=1.2,bloat=.75"/>&bull; Note 5: <code>bloat</code> multiplies <code>scale</code> horizontally. If you use both scale and bloat, they multiply horizontally. The primary use of <code>bloat</code> is to tweak where the lines break, by making the drop cap slightly narrower or thicker.</p>
-<p>Example at right: <code>\dropcap[scale=1.2,bloat=0.75]{O}</code>.</p>
-<p>&bull; Note 6: If the drop cap character has a prominent descender, then you may need to create room underneath it using <code>depth</code>, or the descender wil intrude into the text beneath it. This can only be decided on a per-character basis, depending on the font.</p>
-<p class="item"><img src="html-resources/I-shade.png" class="floatright" width="84" height="88" title="dropcap I image" alt="dropcap I image"/><b>C.</b> An image is auto-detected by file extension png, PNG, jpg, JPG, jpeg, or JPEG. It will be aligned so that its bottom is at the lowest indented baseline. You may position the image using the <code>hoffset</code> and <code>voffset</code> option keys. The image cannot be scaled by <code>hscale</code> or <code>vscale</code>, because it must be at exact size and resolution. Thus, whether or not the image's top aligns in the desired location, depends on how you created the image.</p>
+<p><img src="html-resources/dropcap-scalebloat.png" class="floatright" width="98" height="107" title="scale=1.2,bloat=.75" alt="scale=1.2,bloat=.75"/>&bull; Note 5: <code>bloat</code> multiplies <code>scale</code> horizontally. The primary use of <code>bloat</code> is to tweak where the lines break, by making the drop cap slightly narrower or thicker.</p>
+<p>Example at right: <code>\dropcap[scale=1.2,bloat=0.75]{O}</code>. The effective vertical scale is 1.2, and the effective horizontal scale is 1.2x0.75=0.8.</p>
+<p>&bull; Note 6: If the drop cap character has a prominent descender, then you may need to create room underneath it using <code>depth</code>, or the descender will intrude into the text beneath it. This can only be decided on a per-character basis, depending on the font.</p>
+<p class="item"><img src="html-resources/I-shade.png" class="floatright" width="84" height="88" title="dropcap I image" alt="dropcap I image"/><b>C.</b> If the content of the drop cap ends with png, PNG, jpg, JPG, jpeg, or JPEG, it will be interpreted as an image. It will be aligned so that its bottom is at the lowest indented baseline. You may position the image using the <code>hoffset</code> and <code>voffset</code> option keys. The image cannot be scaled by <code>hscale</code> or <code>vscale</code>, because it must be at exact size and resolution. Thus, whether or not the image's top aligns in the desired location, depends on how you created the image.</p>
 <p>Example at right: <code>\dropcap[voffset=-0.15em]{I-shade.png}</code>.</p>
 <p class="item"><b>D.</b> If <code>lines=1</code>, then <code>\dropcap</code> has no effect. This applies whether or not the command or <code>ante</code> is starred. That is, the following lines of code have the same result:</p>
 <p class="code"><code>&ldquo;It was dark and stormy,&rdquo; he said.</code></p>
@@ -3378,6 +3388,30 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 
 </div><!-- end F -->
 </div><!-- end Appendix F -->
+<!-- ************************************************************ -->
+<div id="pageG" class="page">
+
+
+<h2 id="hG">G. Designer Mode</h2>
+<div class="d2" id="dG">
+
+<p class="noindent">Beginning with version 1.48, there is now a <i>designer mode</i>, activated by using the <code><a href="#h2.10">designer</a></code> document class option. You may use this option with others (especially <i>draft</i> and <i>shademargins</i>).</p>
+
+<p>In <i>novel</i>, the focus is on a consistent line grid for main text, and predicatable positioning. Anything likely to disturb this is banned. For example, the font size <code>\Large</code> command is ordinarily ignored. You must place images using <i>novel's</i> own methods, rather than by directly using <code>\includegraphics</code>. Most floats and tables cannot be written, because their disruptive effect on line grid exceeds their necessity in works of fiction. A number of packages tha <i>might</i> cause problems are banned.</p>
+
+<p>But in designer mode, these restrictions are removed. <code>\Large</code> font size works, although its exact size may differ from what you would see in another document class. You can use <code>\includegraphics</code> (package <i>graphicx</i>) as-is. You can load packages that create floats and tables, and do a few other things. And, you can still use all of <i>novel's</i> built-in commands. However, some packages will still be banned, due to fundamental incompatibilities.</p>
+
+<p>The catch? In designer mode, your document will not print more than three pages. That's it. You can write as much as you want, but only three pages will print. The first page is a mandatory cover page, added by the code. The second and third pages can be used to shown a verso-recto page spread, when viewed in by a PDF reader in dual viewing mode.</p>
+
+<p>What does this do? In designer mode, you have more ways to write code, and perhaps can use code samples written by others. You can place vector images. The purpose is to create <a href="#h8.3.1.1">display pages</a> that are not part of the regular flow of main text. So, in this case, whether or not the line grid is disturbed, does not matter.</p>
+
+<p>The advantage of designer mode is that your designer document can use exactly the same Trim Size, Margins, fonts, and other settings that pertain to your main document. You can see what the artwork will look like, at correct size and position.</p>
+
+<p>When your designer mode document is finished, open its PDF in a graphics program such as GIMP. Black/white line art (text, drawing, solid black or white) should be imported at 600dpi, without anti-aliasing. Grayscale images should be imported at 300dpi, with anti-aliasing. In some cases, do it both ways. Crop and manipulate as needed. Export to *.png format, using the instructions pertaining to any other images. Then, place the images in your main document (which is not in designer mode) using <i>novel's</i> own commands.</p>
+
+
+</div><!-- end G -->
+</div><!-- end Appendix G -->
 <!-- ************************************************************ -->
 
 <!-- Future appendices go here. -->

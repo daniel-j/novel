@@ -470,7 +470,9 @@
   \@ActivateTextMacros % in `novel-TextMacros.sty'
   \@ActivateFootnotes % in `novel-Footnotes.sty'
   % Commands that cannot be used after Preamble:
-  \if@DesignerMode\else
+  \if@DesignerMode
+    \@ActivateFontSizes % in file `novel-Layout-Settings.sty'
+  \else
     \@DisableFontSizes % in file `novel-LayoutSettings.sty'
     \@DisableIncludeGraphics % in file `novel-Images.sty'
   \fi
@@ -541,6 +543,8 @@
   \sorry@no{longtable}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
   \sorry@no{paracol}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
   \sorry@no{array}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
+  \really@no{biblatex}{an aversion to academic-style layouts. ^^J
+    This has to do with maintining text line grid.}{1.2.5}
   \really@no{showkeys}{an aversion to academic-style layouts. ^^J
     This has to do with maintining text line grid.}{1.2.5}
   \sorry@no{easylist}{an aversion to academic-style layouts. ^^J
@@ -560,10 +564,13 @@
   \really@no{pdfpages}{specific requirements that exclude PDF import. ^^J%
     This has to do with file requirements for commercial printers. ^^J%
     You may rasterize a page via graphics program, and place its image.}{3.4}
+  \really@no{bookmark}{focus on paper books, not e-books.}{(top of file)}
   %\sorry@no{nth}{}{} %  probably OK, redefinition of \textsuperscript
   %\sorry@no{engord}{}{} %  probably OK, redefinition of \textsuperscript
   \really@no{endnotes}{limited, built-in endnote methods.}{6.5}
   \really@no{acronym}{its own acronym style.}{6.2.4}
+  \warn@nodisp{ulem}
+  \warn@nodisp{soul}
   % end list of incompatible packages
   \@ifpackageloaded{pagegrid}{
     \ifdraftdoc

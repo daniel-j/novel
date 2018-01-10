@@ -461,17 +461,32 @@
 %
 % Standard LaTeX font sizes are ineffective, unless in designer mode:
 \gdef\@DisableFontSizes{% called by `novel.cls' \AtBeginDocument
+  \let\HUGE\relax
+  \let\Huge\relax
+  \let\huge\relax
+  \let\LARGE\relax
+  \let\Large\relax
+  \let\large\relax
   \let\small\relax
   \let\footnotesize\relax
   \let\scriptsize\relax
   \let\tiny\relax
-  \let\large\relax
-  \let\Large\relax
-  \let\LARGE\relax
-  \let\huge\relax
-  \let\Huge\relax
-  \let\HUGE\relax
 } %
+% Only when in designer mode:
+% Note that these require fully scalable fonts:
+\gdef\@ActivateFontSizes{% called by `novel.cls' \AtBeginDocument
+  \gdef\HUGE{\fontsize{2.5\nfs}{2.5\nbs}\selectfont}
+  \gdef\Huge{\fontsize{2\nfs}{2\nbs}\selectfont}
+  \gdef\huge{\fontsize{1.75\nfs}{1.75\nbs}\selectfont}
+  \gdef\LARGE{\fontsize{1.5\nfs}{1.5\nbs}\selectfont}
+  \gdef\Large{\fontsize{1.333\nfs}{1.333\nbs}\selectfont}
+  \gdef\large{\fontsize{1.15\nfs}{1.15\nbs}\selectfont}
+  \gdef\small{\fontsize{0.925\nfs}{0.925\nbs}\selectfont}
+  \gdef\footnotesize{\fontsize{0.856\nfs}{0.856\nbs}\selectfont}
+  \gdef\scriptsize{\fontsize{0.792\nfs}{0.792\nbs}\selectfont}
+  \gdef\tiny{\fontsize{0.733\nfs}{0.733\nbs}\selectfont}
+} %
+% In `novel' there is no academic organization.
 % All these do is echo the argument, if any:
 \long\gdef\part#1{#1}
 \long\gdef\chapter#1{#1}

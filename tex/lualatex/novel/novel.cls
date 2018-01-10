@@ -473,12 +473,6 @@
   \if@DesignerMode\else
     \@DisableFontSizes % in file `novel-LayoutSettings.sty'
     \@DisableIncludeGraphics % in file `novel-Images.sty'
-    \let\itemize\relax
-    \let\enditemize\relax
-    \let\enumerate\relax
-    \let\endenumerate\relax
-    \let\description\relax
-    \let\enddescription\relax
   \fi
   \@DisableLayoutSettings % in file `novel-LayoutSettings.sty'
   \@DisableFileDataSettings % in file `novel-FileData.sty'
@@ -505,6 +499,15 @@
        Note: The offending package may have been loaded by another package.}%
     }{}%
   }
+  \if@DesignerMode
+    \gdef\warn@nodisp#1{}
+  \else
+    \gdef\warn@nodisp#1{%
+      \ClassWarning{novel}{You loaded package `#1'. Some of its commands ^^J%
+       may produce unexpected layout in the main document body. ^^J%
+       Better if you confine usage to display pages. ^^J}%
+    }
+  \fi
   % List of blocked packages (not exhaustive, since TeX has so many):
   \really@no{geometry}{its own layout commands.}{4}
   \really@no{pdfx}{built-in PDF/X capability.}{3.4}

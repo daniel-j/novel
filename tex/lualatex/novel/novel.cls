@@ -475,7 +475,6 @@
     \@DisableIncludeGraphics % in file `novel-Images.sty'
     \let\itemize\relax
     \let\enditemize\relax
-    \let\item\relax
     \let\enumerate\relax
     \let\endenumerate\relax
     \let\description\relax

@@ -13,118 +13,13 @@
 %% 
 %%
 \ProvidesFile{novel-Footnotes.sty}%
-[2018/01/09 v1.46.5z LaTeX file (commands for footnotes and endnotes)]
-%%
-
-
-
-%% Markers (superscript, subscripts):
-\newtoggle{@usesymbolmark} % true when footnote markers are symbolic
-\newtoggle{@realmarker} % true when OT features sups, sinf, subs requested
-%
-
-
-%% superscripts and subscripts
-\let\subs\relax
-\let\sups\relax
-\let\textsuperscript\relax
-\let\textsubscript\relax
-% Perhaps superscripts and subscripts (scientific) are in the font, or not.
-% Problem: The best fonts have these characters at size/weight designed
-%   to mingle with normal size. But many fonts merely scaled characters,
-%   which will be too light at the small size.
-% The unstarred version of these commands use the Open Type features when
-%   they are present, then faking (auto scale/raise) if features not present. 
-% The starred version just fakes, without regard for features.
-% 
-
-% Note that the effect of these commands continues, not just one-shot:
-\gdef\realmarker{\global\toggletrue{@realmarker}} % anywhere in text
-\gdef\fakemarker{\global\togglefalse{@realmarker}} % anywhere in text
-\newlength\@hoAhl % height of Ahl, locally measured and set when needed
-%%
-\ExplSyntaxOn
-%
-\DeclareDocumentCommand \sups { m } {%
-  \iftoggle{@realmarker}{%
-    \fontspec_if_feature:nTF {sups}{%
-      \ifvmode\else\unskip\fi%
-      {\addfontfeature{VerticalPosition=Superior}\smash{#1}}%
-    }{%
-      \setlength\@hoAhl{\heightof{Ahl}}% local
-      \ifvmode\else\unskip\fi\charscale[0.7,0pt,0.5\@hoAhl]{#1}%
-    }%
-  }{%
-    \setlength\@hoAhl{\heightof{Ahl}}% local
-    \ifvmode\else\unskip\fi%
-    {\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,0.5\@hoAhl]{#1}}%
-  }%
-}% end \sups
-%
-\DeclareDocumentCommand \subs { m } {%
-  \iftoggle{@realmarker}{%
-    \fontspec_if_feature:nTF {sinf}{%
-      \ifvmode\else\unskip\fi%
-      {\addfontfeature{VerticalPosition=ScientificInferior}\smash{#1}}%
-    }{%
-      \fontspec_if_feature:nTF {subs}{%
-        \ifvmode\else\unskip\fi%
-        {\addfontfeature{VerticalPosition=Inferior}\smash{#1}}%
-      }{%
-        \setlength\@hoAhl{\heightof{Ahl}}% local
-        \ifvmode\else\unskip\fi\charscale[0.7,0pt,-0.2\@hoAhl]{#1}%
-      }%
-    }%
-  }{%
-    \setlength\@hoAhl{\heightof{Ahl}}% local
-    \ifvmode\else\unskip\fi%
-    {\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,-0.2\@hoAhl]{#1}}%
-  }%
-}% end \subs
-%
-\cs_new_eq:NN \textsuperscript \sups
-\cs_new_eq:NN \textsubscript \subs
-\ExplSyntaxOff
-%%
-
-
-
-% \SetMarkerStyle does two things.
-% Option real: OT features sups, sinf, subs requested. Fake if not available.
-% Option fake: Always fake OT features sups, sinf, subs.
-% Mandatory: asterisk, dagger, number. Pertains to footnote markers only.
-% No matter real or fake, the asterisk symbol is always real, and the
-%   dagger, dbldagger, and section (when used as footnote markers)
-%   are always partially faked.
-\newcommand\SetMarkerStyle[2][real]{
-  \def\@goodfnm{no}
-  \ifthenelse{\equal{#2}{asterisk}}{%
-    \def\@goodfnm{yes}\global\toggletrue{@usesymbolmark}%
-    \gdef\@myfnsymbols{*}}{}
-  \ifthenelse{\equal{#2}{dagger}}{%
-    \def\@goodfnm{yes}\global\toggletrue{@usesymbolmark}%
-    \gdef\@myfnsymbols{†}}{}
-  \ifthenelse{\equal{#2}{number}}{%
-    \def\@goodfnm{yes}\global\togglefalse{@usesymbolmark}}{}
-  \def\@goodfnk{no}
-  \ifthenelse{\equal{#1}{real}\OR\equal{#1}{}}{%
-    \def\@goodfnk{yes}\global\toggletrue{@realmarker}}{}
-  \ifthenelse{\equal{#1}{fake}}{%
-    \def\@goodfnk{yes}\global\togglefalse{@realmarker}}{}
-  \ifthenelse{\equal{\@goodfnm}{no}\OR\equal{\@goodfnk}{no}}{%
-    \ClassError{novel}{Bad choice for \string\SetMarkers}%
-    {Optional: real, fake. Required: asterisk, dagger, number.}%
-  }{}
-}
-\LetLtxMacro{\SetMarkers}{\SetMarkerStyle} % backward compatibilty pre-v1.40.3.
-%
-\SetMarkerStyle[real]{asterisk} % default
+[2017/11/29 v1.46.1 LaTeX file (commands for footnotes and endnotes)]
 %%
 
 
 
 %% FOOTNOTES
-%% ----------------------------------------------------------------------------
+%% -----------------------------------------------------------------------------
 % In `novel' class, you may place footnotes at the botom of the textblock.
 % The markers may be symbolic (default begins with asterisk), or
 % set so that the asterisk is not used, or the markers may be numbers,
@@ -132,13 +27,6 @@
 % You can manually reset them at any time.
 % You can also make a non-marked footnote, which does not increment the count.
 
-
-% Lengths used to tweak vertical position of symbolic (text) footnote markers:
-\newlength\@twast % tweaks asterisk
-\newlength\@twdag % tweaks dagger
-\newlength\@twdbldag % tweaks double dagger
-\newlength\@twsect % tweaks section mark
-\newlength\@tweight % tweaks 8, reliably the tallest digit
 
 
 %% footnotesize is calculated by layout, based on normal font size and skip.
@@ -163,12 +51,12 @@
 \newtoggle{@usenomark} % when true: no mark, no increment count
 \newtoggle{@placedfootnotenumber} % true if any numerical footnote placed
 %
-\let\@myoldfootnote\footnote\relax % copies the original definition
+\let\my@oldfootnote\footnote\relax % copies the original definition
 \let\footnote\relax % so it can be re-defined, below
 %
 \gdef\@fourem{% length of rule separating footnotes from main text
-  \vspace{-\nbs}%
-  \noindent\strut\smash{\rule[-2pt]{0.33\textwidth}{0.05\@NormalEmSize}}%
+  \vspace{-\nbs}
+  \noindent\strut\smash{\rule[-2pt]{0.33\textwidth}{0.05\normalFontSize}}
 }
 \let\footnoterule\@fourem
 %
@@ -189,12 +77,12 @@
   }{%
     \global\togglefalse{@usenomark}%
   }%
-  \gdef\footnoterule{\vfill\@fourem}% %%%%%
+  \gdef\footnoterule{\@fourem}%
   \begingroup%
-  \def\footnotesize{% Not gdef. Local to footnote. Calculated during layout.
-    \@setfontsize\footnotesize{\@myfootnotesizeN pt}{\@myfootnoteskipN pt}%
+  \def\footnotesize{% Not gdef. Only here in footnote. Calculated during layout.
+    \@setfontsize\footnotesize{\@myfootnotesizenum pt}{\@myfootnoteskipnum pt}%
   }%
-  \unskip\@myoldfootnote{#2}%
+  \unskip\my@oldfootnote{#2}%
   \endgroup%
 } % end \footnote
 %
@@ -215,50 +103,22 @@
   {%
     \global\togglefalse{@placedfootnotenumber}%
     \ifthenelse{\equal{\@myfnsymbols}{*}}{%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{1}}{%
-        \charscale[1,0pt,-\@twast]{*}%
-      }{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{2}}{%
-        \charscale[0.8,0pt,-\@twdag]{†}%
-      }{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{3}}{%
-        \charscale[0.8,0pt,-\@twdbldag]{‡}%
-      }{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{4}}{%
-        \charscale[0.8,0pt,-\@twsect]{§}%
-       }{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{5}}{%
-        \charscale[1,0pt,-\@twast]{**}%
-      }{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{6}}{%
-        \charscale[0.8,0pt,-\@twdag]{††}%
-       }{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{7}}{%
-        \charscale[0.8,0pt,-\@twdbldag]{‡‡}%
-      }{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{8}}{%
-        \charscale[0.8,0pt,-\@twsect]{§§}%
-      }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{1}}{\charscale[1,0pt,-\@twast]{*}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{2}}{\charscale[0.8,0pt,-\@twdag]{†}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{3}}{\charscale[0.8,0pt,-\@twdbldag]{‡}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{4}}{\charscale[0.8,0pt,-\@twsect]{§}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{5}}{\charscale[1,0pt,-\@twast]{**}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{6}}{\charscale[0.8,0pt,-\@twdag]{††}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{7}}{\charscale[0.8,0pt,-\@twdbldag]{‡‡}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{8}}{\charscale[0.8,0pt,-\@twsect]{§§}}{}%
     }{}%
     \ifthenelse{\equal{\@myfnsymbols}{†}}{%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{1}}{%
-        \charscale[0.8,0pt,-\@twdag]{†}%
-      }{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{2}}{%
-        \charscale[0.8,0pt,-\@twdbldag]{‡}%
-       }{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{3}}{%
-        \charscale[0.8,0pt,-\@twsect]{§}%
-      }{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{4}}{%
-        \charscale[0.8,0pt,-\@twdag]{††}%
-      }{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{5}}{%
-        \charscale[0.8,0pt,-\@twdbldag]{‡‡}%
-      }{}%
-      \ifthenelse{\equal{\value{@fnsymbolcount}}{6}}{%
-        \charscale[0.8,0pt,-\@twsect]{§§}%
-      }{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{1}}{\charscale[0.8,0pt,-\@twdag]{†}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{2}}{\charscale[0.8,0pt,-\@twdbldag]{‡}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{3}}{\charscale[0.8,0pt,-\@twsect]{§}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{4}}{\charscale[0.8,0pt,-\@twdag]{††}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{5}}{\charscale[0.8,0pt,-\@twdbldag]{‡‡}}{}%
+      \ifthenelse{\equal{\value{@fnsymbolcount}}{6}}{\charscale[0.8,0pt,-\@twsect]{§§}}{}%
     }{}%
   }{%
     \global\toggletrue{@placedfootnotenumber}%
@@ -305,9 +165,9 @@
 
 
 %% ENDNOTES
-%% ----------------------------------------------------------------------------
+%% -----------------------------------------------------------------------------
 % \endnote only places a marker. It does not store a note for later use.
-% Since \endnote gobbles following space, in most cases use \endnote{}.
+% Since it gobbles following space, use \endnote{} when needed.
 % The \memo{} command is helpful, to make a non-printing note to yourself.
 % Whenever \endnote is used, the marker number and page is added to a list,
 % and the list is typed into the log file after the document ends. That way,
@@ -321,9 +181,7 @@
 {%
 \global\toggletrue{@gotendnotes}%
 \stepcounter{@endnotecount}\sups{\arabic{@endnotecount}}%
-\long\edef\@endnotelist{%
-  \@endnotelist\space (\arabic{@endnotecount},p.\thepage)%
-}%
+\long\edef\@endnotelist{\@endnotelist\space (\arabic{@endnotecount},p.\thepage)}%
 }
 %%
 % \endnotetext{ID}{text} where ID is (usually) the endnote number.
@@ -332,49 +190,19 @@
 % If ID is space or empty, then the entire text is block-indented. This is
 %   the method for continuing a prior endnote to a new paragraph. The text
 %   may begin with \forceindent, according to your needs.
-\DeclareDocumentCommand \endnotetext { m +m }{% xparse allows \end... commands!
+\DeclareDocumentCommand \endnotetext { m +m }% xparse allows \end... commands!
+{
   \ifthenelse{\equal{#1}{\space}\OR\equal{#1}{}}%
     {\noindent\hangindent=\parindent\flexbox{\space}#2\par}%
     {\noindent\hangindent=\parindent\flexbox{#1.}#2\par}%
-} %
+}
 %% end endnotes
 
 
-%% See novel.cls for the accompanying \AtBeginDocument routine.
 
+%% See novel.cls for the accompanying AtBeginDocument routine.
 
-%% Pertains to some standard LaTeX footnote code:
-\AtBeginShipout{\gdef\@fnafter{}}
-%%
-
-
-\gdef\@ActivateFootnotes{% called by `novel.cls' \AtBeginDocument
-  % Pertains to novel-footnotes.sty:
-  \LetLtxMacro\SetMarkerStyle\relax
-  \gsetlength\footnotesep{0.8\nbs}
-  % Adjusted position of footnote markers. Must wait for main font size:
-  \gsetlength\@twast{\heightof{*}-\normalAringheight}
-  \gsetlength\@twdag{\heightof{†}}
-  \gsetlength\@twdag{0.8\@twdag-\normalAringheight}
-  \gsetlength\@twdbldag{\heightof{‡}}
-  \gsetlength\@twdbldag{0.8\@twdbldag-\normalAringheight}
-  \gsetlength\@twsect{\heightof{§}}
-  \gsetlength\@twsect{0.8\@twsect-\normalAringheight}
-  \gsetlength\@tweight{\heightof{8}}%
-  \gsetlength\@tweight{0.8\@tweight-\normalAringheight}%
-  % Must wait to see how \SetFootnoteMarker was used:
-  \ifthenelse{\equal{\@myfnsymbols}{*}}{\setcounter{@maxfnsymbol}{8}}{}
-  \ifthenelse{\equal{\@myfnsymbols}{†}}{\setcounter{@maxfnsymbol}{6}}{}
-  % Values to be used by footnotes:
-  \FPdiv{\@myFontScale}{\strip@pt\@NormalEmSize}{12}
-  % Substitute for \footnotesize, but only works for actual footnotes,
-  %   about 10pt with similarly reduced skip:
-  \FPmul{\@myfootnotesizeN}{\@myFontScale}{10}
-  \FPround{\@myfootnotesizeN}{\@myfootnotesizeN}{2}
-  \FPmul{\@myfootnoteskipN}{\@myFontScale}{\strip@pt\nbs}
-  \FPmul{\@myfootnoteskipN}{\@myfootnoteskipN}{0.84}
-  \FPround{\@myfootnoteskipN}{\@myfootnoteskipN}{2}
-}% end \@ActivateFootnotes
+%% See novel.cls for the accompanying AtEndDocument routine.
 
 
 
@@ -382,21 +210,22 @@
 
 
 %% ATENDDOCUMENT
-%% ----------------------------------------------------------------------------
+%% -----------------------------------------------------------------------------
 %% Write a list of endnote (number,page) into log file,
 % and Big Bad Warning if numerical footnotes and endnotes both used:
 \AtEndDocument{%
-  \iftoggle{@gotendnotes}{%
-    \typeout{^^JClass `novel' Alert: You placed endnotes (number,page): ^^J%
-     \@endnotelist ^^J}%
-  }{}
-  %
-  \iftoggle{@placedfootnotenumber}{%
-    \iftoggle{@gotendnotes}{%
-      \ClassWarning{novel}{^^JBIG BAD WARNING! You used numbered footnotes ^^J%
-        and numbered endnotes. Better change to symbolic footnotes! ^^J}%
+  \iftoggle{@gotendnotes}%
+    {\typeout{^^J^^JClass `novel' Alert: You placed endnotes (number,page):^^J%
+    \@endnotelist%
+    ^^J^^J}%
     }{}
-  }{}%
+  %
+  \iftoggle{@placedfootnotenumber}%
+    {\iftoggle{@gotendnotes}%
+      {\typeout{^^JClass `novel' BIG BAD WARNING:^^J%
+        Numbered footnotes and endnotes! Better use symbolic footnotes!^^J^^J}%
+      }{}%
+    }{}%
 }% end \AtEndDocument
 %%
 

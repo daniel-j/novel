@@ -8,7 +8,6 @@ The current stable version is 1.46.1, 2017/11/29. There are no known outstanding
 
 If you already have a document using prior code, then review your document for use of the \BlockImage command. The functionality of this command is changed in v. 1.46. See The documentation.
 
-Here at GitHub is experimental code for possible enhancements. Do not use for production.
 
 The *novel* class requires TeXLive 2016 or later, or recent MiKTeX.
 

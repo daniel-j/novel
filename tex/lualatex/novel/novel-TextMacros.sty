@@ -13,119 +13,86 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2018/01/09 v1.46.5z LaTeX file (text macros usable within document body)]
+[2017/11/29 v1.46.1 LaTeX file (text macros usable within document body)]
 %%
 
 
-%% This file contains various commands usable within the document body,
-%%   for styling and otherwise manipulating text.
+%% This file contains various commands that are usable within the document body,
+%% for styling and otherwise manipulating text.
 %% These are not commands used in Preamble for setup, although a few of them
-%%   can be used in Preamble for setup, then again in body for change.
-
+%% can be used in Preamble for setup, then again in body for change.
 
 
 %% The following commands are BANNED.
-%% ----------------------------------------------------------------------------
+%% -----------------------------------------------------------------------------
 % The `novel' class disallows these commands, or neutralizes them by simply
-%   repeating their arguments. In some cases, they request functionality
-%   not implemented in `novel'. In other cases, the function is part of core,
-%   but would interfere with the `novel' emphasis on constant line skip.
-%   You may re-define the commands via your own code in Preamble (discouraged).
+% repeating their arguments. In some cases, they request functionality that is
+% not implemented in `novel'. In other cases, the functionality is part of core,
+% but would interfere with the `novel' emphasis on constant line skip.
+% You may re-define the commands using your own code in Preamble (discouraged).
 %
 %% Standard LaTeX font sizes are ineffective. Use novel's own methods.
 % If you write one of these size commands, it will silently be ignored:
-%   \small, \footnotesize, \scriptsize, \tiny,
-% \  large, \Large, \LARGE, \huge, \Huge, \HUGE, \textls
+% \small, \footnotesize, \scriptsize, \tiny,
+% \large, \Large, \LARGE, \huge, \Huge, \HUGE.
 %
 %% Internal subdivisions are ineffective.
 % The command will merely echo its argument, without any functionality:
-%   \part, \chapter, \section, \subsection, \subsubsection,
-%   \paragraph, \subparagraph.
+% \part{}, \chapter{}, \section{}, \subsection{}, \subsubsection{}, \paragraph{}, \subparagraph{}
 %
-%% Some commands will generate an error, so that you know they cannot be used:
-%   \maketitle, \makeindex, \tableofcontents, \listoftables, \listoffigures,
+%% Certain commands will generate an error, so that you know they cannot be used:
+% \maketitle, \makeindex, \tableofcontents, \listoftables, \listoffigures, \textls
 %
 %% You cannot use \includepdf (package: pdfpages).
 %
 %% You cannot use \includegraphics. Instead use novel's own image commands.
 %
-%% Commands normally provided in other classes, pertaining to floats, figures,
-%    and tables, are not defined in `novel' class.
-%    If you attempt to use them, an error will result.
-%%
+%% Commands normally provided in other classes, pertaining to floats, figures, and tables,
+%% are not defined in `novel' class. If you attempt to use them, an error will result.
+
 
 
 %% AND NOW TO THE GOOD STUFF
-%% ----------------------------------------------------------------------------
-
-%%
-% New in version 1.38, \straightquote and \straightdblquote:
-\gdef\straightquote{{\addfontfeature{Ligatures=ResetAll}'}}
-\gdef\straightdblquote{{\addfontfeature{Ligatures=ResetAll}"}}
-%%
-
-%% Acronyms often look too big in regular capitals, but too small in
-% small caps. Command \acronym{} provides an intermediate size:
-\gdef\acronym#1{% do not confuse with `acronym' package
-  \if@HasDecoFont%
-    {\decofont{#1}}%
-  \else%
-    #1% simply echo the argument, if no decofont
-  \fi%
-}%
-%%
-
-%% Deco glyphs are decorative elements chosen from the decofont by code.
-% They are documented in file NovelDeco-glyphs.pdf, in the `extras' folder.
-\gdef\decoglyph#1{%
-  \if@HasDecoFont%
-    \IfBeginWith{#1}{n}{% normal weight symbol (same as regular)
-      \StrBehind{#1}{n}[\@tempdecoglyph]{\@decoglyph\symbol{\@tempdecoglyph}}%
-    }{}%
-    \IfBeginWith{#1}{r}{% regular weight symbol
-      \StrBehind{#1}{r}[\@tempdecoglyph]{\@decoglyph\symbol{\@tempdecoglyph}}%
-    }{}%
-    \IfBeginWith{#1}{l}{% light weight symbol
-      \StrBehind{#1}{l}[\@tempdecoglyph]{\@decoglypha\symbol{\@tempdecoglyph}}%
-    }{}%
-    \IfBeginWith{#1}{e}{% extra light weight symbol
-      \StrBehind{#1}{e}[\@tempdecoglyph]{\@decoglyphb\symbol{\@tempdecoglyph}}%
-    }{}%
-    \IfBeginWith{#1}{t}{% thin weight symbol
-      \StrBehind{#1}{t}[\@tempdecoglyph]{\@decoglyphc\symbol{\@tempdecoglyph}}%
-    }{}%
-  \else%
-    ~% non-breaking space, if no decofont
-  \fi%
-}%
-%%
-
+%% -----------------------------------------------------------------------------
+%
 %% \memo{} does not print or save its argument.
 % Useful when you wish to put a note to yourself in the *.tex document.
 % Not the same as % comment, because anything after the braces will print.
 \long\gdef\memo#1{}
-%%
-
-%% \stake is like \strut, but does not occupy uch vertical space.
+%
 \gdef\stake{\rule{0pt}{1pt}} % placeholder
-%%
+%
+% \forceindent and \backindent perform or remove indent, using \hspace{}.
+% Rationale: Sometimes \indent and \noindent are neutralized by another command.
+\newlength\forceparlength % holds default value, even when \parindent changed
 
-%% \smcp{} and \textsc{} small caps (Open Type) and \allsmcp{}:
+% See novel.cls for accompanying AtBeginDocument routine.
+
+%%
+% \smcp{} and \textsc{} small caps (Open Type) and \allsmcp{}:
+%
 \ExplSyntaxOn
-\DeclareDocumentCommand \smcp { +m } {% lowercase to small caps
+%
+\DeclareDocumentCommand \smcp { +m }
+ {%
   {\addfontfeature{Letters=SmallCaps}#1}%
-}
-\DeclareDocumentCommand \allsmcp { +m } {% lowercase+uppercase to small caps
+ }
+%
+\DeclareDocumentCommand \allsmcp { +m }
+ {%
   \fontspec_if_feature:nTF {c2sc}{%
    {\addfontfeatures{Letters=UppercaseSmallCaps, Letters=SmallCaps}#1}%
   }{%
    {\addfontfeature{Letters=SmallCaps}\MakeLowercase{#1}}%
   }%
  }
+%
 \ExplSyntaxOff
+%
 \let\textsc\smcp\relax % unified
 \let\oldscshape\scshape\relax % in case needed later
 \let\scshape\smcp\relax % unified
+%
 \providecommand\FirstLineFont{\smcp} % package `magaz'
 \renewcommand\FirstLineFont{\smcp}
 %%
@@ -138,7 +105,7 @@
 %% Just in case `xcolor' re-defines its internals, to prevent code bomb:
 \ProvideDocumentCommand\@declaredcolor { m } {}
 \ProvideDocumentCommand\@undeclaredcolor { o m } {}
-% For convenience:
+%%
 \if@graytext % and the usual colors, including black and white.
   \definecolor[named]{gray1}{gray}{0.15} % ten percent gray, etc.
   \definecolor[named]{gray2}{gray}{0.25}
@@ -150,53 +117,52 @@
   \definecolor[named]{gray8}{gray}{0.75}
   \definecolor[named]{gray9}{gray}{0.87}
 \else
-  \LetLtxMacro\@mycolor\color\relax
-  \LetLtxMacro\color\relax
-  \DeclareDocumentCommand \color { o m } {%
-    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.542763}}{%
-      \@undeclaredcolor[gray]{0.542763}%
-    }{}% shademargins (unsafe zone)
-    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.883215}}{%
-      \@undeclaredcolor[gray]{0.883215}%
-    }{}% shademargins (margins)
-    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.949123}}{%
-      \@undeclaredcolor[gray]{0.949123}%
-    }{}% shademargins (head/foot)
-    % hingledingle is an alias for white, when "white" cannot be used:
-    \ifthenelse{\equal{#2}{hingledingle}}{\@declaredcolor{white}}{}%
-  }%
+  \let\my@color\color\relax
+  \let\color\relax
+  \DeclareDocumentCommand \color { o m }
+   {%
+   \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.903215}}{\@undeclaredcolor[gray]{0.903215}}{}% shademargins
+   \ifthenelse{\equal{#2}{hingledingle}}{\@declaredcolor{white}}{}% hingledingle is internal alias for white
+   }
 \fi
 %%
+
 
 % This code is slightly modified from package `etextools' by Florent Chervet.
 % Its license: "This work may be distributed and/or modified under the 
 %   conditions of the LaTeX Project Public License, either version 1.3 of this 
 %   license or (at your option) any later version."
 % My rationale for not simply loading the package: Other parts of the package
-%   generate warning messages, but the warnings do not apply in `novel'
-%   Also, I might wish to hack the code at some point.
+% generate warning messages, but the warnings do not apply. Also, I might
+% wish to hack the code at some point.
 \newcount\nov@ettl@fter
 \newrobustcmd\nov@AfterGroup{%
   \@ifstar{\nov@ettl@AfterGroup\@firstofone}{\nov@ettl@AfterGroup\unexpanded}%
 }
 \newrobustcmd\nov@ettl@AfterGroup[2]{%
-\csxdef{nov@ettl@fterGroup\number\numexpr\the\nov@ettl@fter+1}%
-{\global\csundef{nov@ettl@fterGroup\number\numexpr\the\nov@ettl@fter+1}#1{#2}}%
-\global\advance\nov@ettl@fter\@ne%
-\expandafter\aftergroup\csname nov@ettl@fterGroup\the\nov@ettl@fter\endcsname%
+ \csxdef{nov@ettl@fterGroup\number\numexpr\the\nov@ettl@fter+1}%
+ {\global\csundef{nov@ettl@fterGroup\number\numexpr\the\nov@ettl@fter+1}#1{#2}}%
+ \global\advance\nov@ettl@fter\@ne%
+ \expandafter\aftergroup\csname nov@ettl@fterGroup\the\nov@ettl@fter\endcsname%
 }
-%% End code from `etextools`.
+% End code from `etextools`.
+
+
+
 
 %% \flexbox based on code by Werner at tex.stackexchange.com, CC-by-sa-3.0:
 % Optional first argument is minimum width of box.
 % Second argument is contents of box.
 % Box width will be the greater of #1 or the width of #2.
+\newlength\@mylen
 \newcommand{\flexbox}[2][\parindent]{%
-  \settowidth{\@tempLength}{#2}%
-  \ifdimcomp{\@tempLength}{<}{#1}{\makebox[#1][l]{#2}}{#2}%
+  \settowidth{\@mylen}{#2}%
+  \ifdim\@mylen < #1%
+    \makebox[#1][l]{#2}%
+  \else%
+    #2%
+  \fi%
 }
-%%
-
 %% \bigemdash inspired by code by RTBarnard at stackoverflow.com, CC-by-sa-3.0:
 % Allows a rule of variable length to fill available space at its right.
 % There must be a "right-hand limit" imposed by something, such as by enclosing
@@ -206,30 +172,25 @@
 % Takes a single optional argument: Comma-separated raise, line thickness.
 %   If no argument or empty, defaults to [1,1].
 %   Without comma, argument defaults to [argument,1].
-%   First number: Scales raise/down. 1 = raise of emdash in typical fonts.
-%   Second number: Scales line thickness. 1 = emdash in typical fonts.
+%   First number: Scales the raise up or down. 1 = raise of emdash in typical fonts.
+%   Second number: Scales the line thickness. 1 = thickness of emdash in typical fonts.
 % NOTE: Built-in TeX PDF viewer might show the line at slightly incorrect
 %   width and height. Best seen in a "real" PDF viewer.
 \DeclareDocumentCommand \bigemdash { O{1,1} }
  {%
-  \ifthenelse{\equal{#1}{}\OR\equal{#1}{\space}}{%
-    \def\@myargsi{1,1}}{\def\@myargsi{#1}%
-  }%
+  \ifthenelse{\equal{#1}{}\OR\equal{#1}{\space}}{\def\@myargsi{1,1}}{\def\@myargsi{#1}}%
   \StrDel{\@myargsi}{\space}[\@myargs]%
   \StrCut{\@myargs}{,}{\@myraisei}{\@mythicki}%
-  \ifthenelse{\equal{\@myraisei}{}\OR\equal{\@myraisei}{\space}}{%
-    \def\@myraise{1}}{\def\@myraise{\@myraisei}%
-  }%
-  \ifthenelse{\equal{\@mythicki}{}\OR\equal{\@mythicki}{\space}}{%
-    \def\@mythick{1}}{\def\@mythick{\@mythicki}%
-  }%
+  \ifthenelse{\equal{\@myraisei}{}\OR\equal{\@myraisei}{\space}}{\def\@myraise{1}}{\def\@myraise{\@myraisei}}%
+  \ifthenelse{\equal{\@mythicki}{}\OR\equal{\@mythicki}{\space}}{\def\@mythick{1}}{\def\@mythick{\@mythicki}}%
   \FPmul{\@myraise}{\@myraise}{0.56}% ex, typical font emdash raise
   \FPmul{\@mythick}{\@mythick}{0.049}% em, typical font emdash thickness
   {\leaders\hbox{\rule[\@myraise ex]{1pt}{\@mythick em}}\hfill\stake}%
  }
 %%
 
-%% \charscale[scale,x,y]{text} and starred version
+%%
+% \charscale[scale,x,y]{text} and starred version
 % This is an "in-line" means of adjusting font size
 %   and position, without changing the baselineskip.
 % If the optional argument is unused or empty, then the text is not scaled
@@ -239,63 +200,46 @@
 % First argument is scale. Number>=0.5. Default 1. Relative to what the size
 %   would otherwise be. May multiply with an already-scaled font.
 % Second and third arguments are x-offset and y-offset, respectively.
-% Offsets are lengths, best measured in em or \nfs for horizontal,
-%   and em or \nfs or \nbs for vertical. Default 0pt. Can abbreviate as 0.
-% Posiive offsets are horizontal right, vertical up.
+% Offsets are lengths, best measured in em or \nfs for x,
+%   and em or \nfs or \nbs for y. Default 0pt. Can abbreviate as 0.
+% Posiive offsets are x right, y up.
 % Text is "smashed" and may go anywhere, even overlying other text or image.
 % The unstarred command occupies width equal to the scaled text,
 %   thus leaving a "hole" where the text would have been.
 % The starred command occupies zero width, thus no hole. Consecutive starred
 %   commands, without intervening space, displace from same origin.
 % The text must be on a single line, without break or wrap.
-% Do not use \\ or \par inside \charscale. Sometimes you need \par after it.
+% Do not use \\ or \par inside \charscale, but you sometimes need \par after it.
 % If the text is in a font other than usual, place the font command
 %   outside \charscale, not inside.
 \ExplSyntaxOn
-\DeclareDocumentCommand \charscale { s O{1} m } {%
+\DeclareDocumentCommand \charscale { s O{1} m }
+ {
   % Allows empty or blank to be used, and still provide default values:
-  \ifthenelse{\equal{#2}{}\OR\equal{#2}{\space}}{%
-    \def\@myargs{1}%
-  }{%
-    \def\@myargs{#2}%
-  }%
-  \StrDel{\@myargs}{\space}[\@myargsns]% needs {\space} not { }
-  \StrCut{\@myargsns}{,}{\@myscalet}{\@mycoord}%
-  \ifthenelse{\equal{\@myscalet}{}}{%
-    \def\@myscale{1}%
-  }{%
-    \def\@myscale{\@myscalet}%
-  }%
+  \ifthenelse{\equal{#2}{}\OR\equal{#2}{\space}}{\def\@myargs{1}}{\def\@myargs{#2}}
+  \StrDel{\@myargs}{\space}[\@myargsns] % needs {\space} not { }
+  \StrCut{\@myargsns}{,}{\@myscalet}{\@mycoord}
+  \ifthenelse{\equal{\@myscalet}{}}{\def\@myscale{1}}{\def\@myscale{\@myscalet}}
   \FPmax{\@myscale}{\@myscale}{0.5}% not permitted below this scale
-  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}%
-  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{%
-    \def\@myx{0pt}%
-  }{%
-    \def\@myx{\@myxt}%
-  }%
-  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{%
-    \def\@myy{0pt}%
-  }{%
-    \def\@myy{\@myyt}%
-  }%
-  \IfBooleanTF{#1}%
+  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}
+  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{\def\@myx{0pt}}{\def\@myx{\@myxt}}
+  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{\def\@myy{0pt}}{\def\@myy{\@myyt}}
+  \IfBooleanTF{#1}
   {% starred
     \ifvmode\else\unskip\fi%
-    \stake\makebox[0pt][l]{%
-      \smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}%
-    }%
+    \stake\makebox[0pt][l]{\smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}}%
   }{% unstarred
-    \stake\makebox[0pt][l]{%
-      \smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}%
-    }%
+    \stake\makebox[0pt][l]{\smash{\hspace{\@myx}\raisebox{\@myy}{\scalebox{\@myscale}{#3}}}}%
     \smash{\phantom{\scalebox{\@myscale}{#3}}}%
-  }%
- }% end \charscale
+  }
+ }
 \ExplSyntaxOff
 %%
 
-%% Environment parascale.
-% If you really must change font size and baselineskip on a paragraph basis,
+
+
+%%
+% If you really must change the font size and baselineskip on a paragraph basis,
 %   then use an environment. For example, the text on your Copyright page might
 %   be smaller (and less baselineskip) than normal.
 % The following environment takes an optional argument, which is the scale
@@ -315,17 +259,16 @@
 %   do the calculations yourself.
 \newenvironment{parascale}[1][1]
 {\begingroup%
-\FPmax{\@mytempDetailsN}{#1}{0.5}% must be at least half normal.
-\FPmul{\@mytempDetailsFontN}{\@mytempDetailsN}{\strip@pt\@NormalEmSize}%
-\FPround{\@mytempDetailsFontN}{\@mytempDetailsFontN}{2}%
-\FPmul{\@mytempDetailsSkipN}{\@mytempDetailsN}{\strip@pt\baselineskip}%
-\FPround{\@mytempDetailsSkipN}{\@mytempDetailsSkipN}{2}%
-\fontsize{\@mytempDetailsFontN pt}{\@mytempDetailsSkipN pt}\selectfont%
-}%
+\FPmax{\my@tempDetailsNum}{#1}{0.5}% must be at least half normal.
+\FPmul{\my@tempDetailsFontNum}{\my@tempDetailsNum}{\Current@FontSizeNum}%
+\FPround{\my@tempDetailsFontNum}{\my@tempDetailsFontNum}{2}%
+\FPmul{\my@tempDetailsSkipNum}{\my@tempDetailsNum}{\Current@BaselineSkipNum}%
+\FPround{\my@tempDetailsSkipNum}{\my@tempDetailsSkipNum}{2}%
+\fontsize{\my@tempDetailsFontNum pt}{\my@tempDetailsSkipNum pt}\selectfont}%
 {\endgroup}
+%
 %%
-
-%% Environment toc (alternative table of contents):
+% Environment toc (alternative table of contents):
 % optional argument: additional vspace (\nbs) after each \tocitem entry.
 % required: LR margin increase, to narrow the table (0pt = full textwidth).
 \newlength\@tocnumwid
@@ -333,15 +276,14 @@
 \newenvironment{toc}[2][0]%
 {%
   \begin{adjustwidth}{#2}{#2}%
-  \begingroup%
-  \setlength\parindent{0pt}% local
-  \setlength\@tocnumwid{\widthof{00.~}}% local
-  \setlength\@tocskip{#1\nbs}% local
+  \begingroup% lengths not global
+  \setlength\parindent{0pt}%
+  \setlength\@tocnumwid{\widthof{00.~}}%
+  \setlength\@tocskip{#1\nbs}%
 }{%
-  \endgroup%
-  \end{adjustwidth}\par%
+  \endgroup\end{adjustwidth}\par%
 }%
-% \tocitem[number]{description}{page} provides a one-line table entry in toc.
+%% \tocitem[number]{description}{page} provides a one-line table entry in toc.
 % optional number might be chapter number. Can use ~ to offset.
 % unstarred: distance between description and page is not decorated.
 % starred (better): distance between description and page has dotted line.
@@ -372,7 +314,7 @@
   #3\par\vspace{\@tocskip}%
 }%
 %% end toc and \tocitem.
-
+%%
 %% legalese environment. Certain info, such as Copyright page, customarily is
 % neither justified nor hyphenated. Can be used wherever desired, of course.
 \newenvironment{legalese}
@@ -380,36 +322,38 @@
 {}
 %
 \gdef\hangleft#1{% places content to left of usual position.
-  \setlength\@tempLength{\widthof{#1}}% local
-  \stake\hspace{-\@tempLength}#1%
+  \newlength\@temphangl%
+  \setlength\@temphangl{\widthof{#1}}%
+  \stake\hspace{-\@temphangl}#1%
 }
 %%
-
-%% \showlength[decimal places]{length}{units}
-% Returns length as a string with the units, but does not change the length.
+% \showlength[decimal places]{length}{units}
+% Returns the length as a string with the units, but does not change the length.
 % length is any existing length
 % units may be pt, bp, mm, cm, in
 % decimal places for rounding (0=integer, 1=one decimal point, etc.)
 % Example: \showlength[3]{17bp}{in}  returns  0.236in
+\newlength{\temp@showlength}
 \newcommand\showlength[3][]{%
-  \setlength\@tempLength{#2}%
-  \def\@tempLengthN{\strip@pt\@tempLength}%
+  \setlength\temp@showlength{#2}%
+  \def\temp@lengthnum{\strip@pt\temp@showlength}%
   \ifthenelse{\equal{#3}{bp}}{%
-    \FPmul{\@tempLengthN}{\@tempLengthN}{0.99626401}%
+    \FPmul{\temp@lengthnum}{\temp@lengthnum}{0.99626401}%
   }{}%
   \ifthenelse{\equal{#3}{mm}}{%
-    \FPmul{\@tempLengthN}{\@tempLengthN}{0.351459804}%
+    \FPmul{\temp@lengthnum}{\temp@lengthnum}{0.351459804}%
   }{}%
   \ifthenelse{\equal{#3}{cm}}{%
-    \FPmul{\@tempLengthN}{\@tempLengthN}{0.0351459804}%
+    \FPmul{\temp@lengthnum}{\temp@lengthnum}{0.0351459804}%
   }{}%
   \ifthenelse{\equal{#3}{in}}{%
-    \FPmul{\@tempLengthN}{\@tempLengthN}{0.013837}%
+    \FPmul{\temp@lengthnum}{\temp@lengthnum}{0.013837}%
   }{}%
-  \ifthenelse{\equal{#1}{}}{}{\FPround{\@tempLengthN}{\@tempLengthN}{#1}}%
-  \@tempLengthN{#3}%
+  \ifthenelse{\equal{#1}{}}{}{\FPround{\temp@lengthnum}{\temp@lengthnum}{#1}}%
+  \temp@lengthnum#3%
 }
 %% end \showlength
+
 
 %% \squeeze{} and \crush{} slightly shrink the horizonal dimension of the
 % enclosed text. May span paragraphs. Emergency only! No compounding.
@@ -417,129 +361,103 @@
 \long\gdef\crush#1{{\addfontfeature{FakeStretch=0.98}#1}}
 %%
 
+
 %% \lnum for lining numbers.
 \gdef\lnum#1{{\addfontfeature{Numbers=Lining}#1}}
 %%
 
-%% Do not use:
+
+%% superscripts and subscripts
+\let\subs\relax
+\let\sups\relax
+\let\textsuperscript\relax
+\let\textsubscript\relax
+\newlength\@hoAhl % measured when needed.
+% Perhaps superscripts and subscripts (scientific) are in the font, or not.
+% Problem: The best fonts have these characters at size/weight designed
+%   to mingle with normal size. But many fonts merely scaled characters,
+%   which will be too light at the small size.
+% The unstarred version of these commands use the Open Type features when
+%   they are present, then faking (auto scale/raise) if features not present. 
+% The starred version just fakes, without regard for features.
+% 
+
+% Note that the effect of these commands continues, not just one-shot:
+\gdef\realmarker{\toggletrue{@realmarker}} % anywhere in text
+\gdef\fakemarker{\togglefalse{@realmarker}} % anywhere in text
+%%
+\ExplSyntaxOn
+%
+\DeclareDocumentCommand \sups { m }
+ {%
+  \iftoggle{@realmarker}{%
+    \fontspec_if_feature:nTF {sups}{%
+      \ifvmode\else\unskip\fi{\addfontfeature{VerticalPosition=Superior}\smash{#1}}%
+    }{%
+      \setlength\@hoAhl{\heightof{Ahl}}%
+      \ifvmode\else\unskip\fi\charscale[0.7,0pt,0.5\@hoAhl]{#1}%
+    }%
+  }{%
+    \setlength\@hoAhl{\heightof{Ahl}}%
+    \ifvmode\else\unskip\fi{\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,0.5\@hoAhl]{#1}}%
+  }%
+ }% end \sups
+%
+\DeclareDocumentCommand \subs { m }
+ {%
+  \iftoggle{@realmarker}{%
+    \fontspec_if_feature:nTF {sinf}{%
+      \ifvmode\else\unskip\fi{\addfontfeature{VerticalPosition=ScientificInferior}\smash{#1}}%
+    }{%
+      \fontspec_if_feature:nTF {subs}{%
+        \ifvmode\else\unskip\fi{\addfontfeature{VerticalPosition=Inferior}\smash{#1}}%
+      }{%
+        \setlength\@hoAhl{\heightof{Ahl}}%
+        \ifvmode\else\unskip\fi\charscale[0.7,0pt,-0.2\@hoAhl]{#1}%
+      }%
+    }%
+  }{%
+    \setlength\@hoAhl{\heightof{Ahl}}%
+    \ifvmode\else\unskip\fi{\addfontfeature{Numbers=Lining}\charscale[0.7,0pt,-0.2\@hoAhl]{#1}}%
+  }%
+ }% end \subs
+%
+\cs_new_eq:NN \textsuperscript \sups
+\cs_new_eq:NN \textsubscript \subs
+\ExplSyntaxOff
+%%
 \gdef\specialblankline{\null} % deprecated
 %%
 
-%% Environment linegap.
-% Allows text to be placed (potentially) off-grid, with grid resuming after.
-\newif \if@WithinLinegap % true within linegap environment
-\newcounter{currentlinegap} % 0 when not within linegap, >0 otherwise.
-\ExplSyntaxOn % absorbs line returns here:
+
+%% New in v. 1.46: Allows text to be placed (potentially) off-grid, with grid resuming after.
+\newcounter{currentlinegap} % 0 when not within a linegap environment, >0 otherwise.
+\ExplSyntaxOn
 \DeclareDocumentEnvironment {linegap} { m } {%
-  \FPifint{#1}\else
+  \FPifint{#1}\else%
     \ClassError{novel}{Non-integer~linegap~on~page~\thepage}%
      {Only~integer~>=~1~allowed~for~linegap.}%
-  \fi
-  \FPiflt{#1}{1}
+  \fi%
+  \FPiflt{#1}{1}%
     \ClassError{novel}{Insufficient~linegap~on~page~\thepage}%
      {Only~integer~>=~1~allowed~for~linegap.}%
-  \fi
-  \par
-  \null
-  \vspace*{-\nbs}
-  \global\@WithinLinegaptrue
-  \begin{textblock*}{\textwidth}[0,0](0pt,0pt)
-  \setcounter{currentlinegap}{#1}
-  \strut\par
-  \vspace*{-\nbs}
+  \fi%
+  \par%
+  \null%
+  \vspace*{-\nbs}%
+  \begin{textblock*}{\textwidth}[0,0](0pt,0pt)%
+  \setcounter{currentlinegap}{#1}%
+  \strut\par%
+  \vspace*{-\nbs}%
 }{% close the environment:
-  \end{textblock*}
-  \global\@WithinLinegapfalse
-  \par
-  \vspace*{#1\nbs}
-  \setcounter{currentlinegap}{0}
-} %
-\ExplSyntaxOff
+  \end{textblock*}%
+  \par%
+  \vspace*{#1\nbs}%
+  \setcounter{currentlinegap}{0}%
+}
+\ExplSyntaxOff % end linegap environment
 %%
 
-
-%% New in version 1.48: two columns, cannot cross page break.
-%% \sidebyside[a,b,c,d]{column 1 content}{column 2 content} % a,b,c,d lengths
-% a = left margin to left edge of left column (left indent)
-% b = left margin to right edge of left column ( = a + column width)
-% c = left margin to left edge of right column ( = a + b + gap)
-% d = left margin to right edge of right column ( = textwidth - right indent)
-% Thus 0pt <= a < b < c < d <= \textwidth.
-% Default: no indents, equal column widths, separated by \normalparindent.
-\DeclareDocumentCommand\sidebyside { O{} +m +m } {% no ExplSyntax, no more %:
-  \StrDel{#1}{\space}[\@argsns]
-  \StrCut{\@argsns}{,}{\@argsone}{\@argsothera}
-  \StrCut{\@argsothera}{,}{\@argstwo}{\@argsotherb}
-  \StrCut{\@argsotherb}{,}{\@argsthree}{\@argsfour}
-  \ifthenelse{\equal{\@argsone}{}}{%
-    \def\@sbsll{0pt}
-  }{%
-    \def\@sbsll{\@argsone}
-  }%
-  \setlength\@tempLength{0.5\textwidth-0.5\normalparindent}
-  \ifthenelse{\equal{\@argstwo}{}}{%
-    \edef\@sbslr{\the\@tempLength}
-  }{%
-    \edef\@sbslr{\@argstwo}
-  }%
-  \setlength\@tempLength{0.5\textwidth+0.5\normalparindent}
-  \ifthenelse{\equal{\@argsthree}{}}{%
-    \edef\@sbsrl{\the\@tempLength}
-  }{%
-    \edef\@sbsrl{\@argsthree}
-  }%
-  \ifthenelse{\equal{\@argsfour}{}}{%
-    \edef\@sbsrr{\the\textwidth}
-  }{%
-    \edef\@sbsrr{\@argsfour}
-  }%
-  \null\vspace{-\baselineskip}
-  \begin{adjustwidth}{\@sbsll}{\dimexpr\textwidth-\@sbsrr}
-  \noindent\begin{minipage}[t]{\dimexpr\@sbslr-\@sbsll}
-  \strut #2\strut
-  \end{minipage}\hspace{\normalparindent}\begin{minipage}[t]{\dimexpr\@sbsrr-\@sbsrl}
-  \strut #3\strut
-  \end{minipage}
-  \end{adjustwidth}
-  \null\vspace{-\baselineskip}
-} %
-%% end \sidebyside
-
-
-
-%% Some things must wait until after layout calculations:
-\gdef\@ActivateTextLengths{% called by `novel.cls' \AtEndPreamble
-  % Store some normal values (main font) for global use in document body:
-  \newlength\nfs % abbreviation for normal font point size
-    \gsetlength\nfs{\@NormalEmSize}
-  \newlength\nbs % abbreviation for normal baselineskip
-    \gsetlength\nbs{\baselineskip}
-  \gsetlength\parindent{1.5em} % may be locally changed
-  \newlength\normalparindent
-    \gsetlength\normalparindent{\parindent}
-  \newlength\normalxheight % height of lowercase x
-    \gsetlength\normalxheight{\heightof{x}}
-  \newlength\normalXheight % height of uppercase X
-    \gsetlength\normalXheight{\heightof{X}}
-  \newlength\normalscxheight % height of small cap x
-    \gsetlength\normalscxheight{\heightof{\textsc{x}}}
-  \newlength\normalAringheight % height of Å (usually tallest in Latin-1)
-    \gsetlength\normalAringheight{\heightof{Å}}
-  \newlength\normaldescender % depth of lowercase gjpqy
-    \gsetlength\normaldescender{\depthof{gjpqy}}
-  \newlength\@NovelCaulk % fills gaps that would cause underfull vbox
-    \gsetlength{\@NovelCaulk}{0pt plus 0.999\nbs minus 1pt}
-}% end \@ActivateTextLengths
-%%
-
-%% More things that must wait:
-\gdef\@ActivateTextMacros{% called by `novel.cls' \AtBeginDocument
-  % \forceindent and \backindent perform or remove indent, using \hspace{}.
-  % Rationale: Sometimes \indent and \noindent neutralized by another command.
-  \gdef\forceindent{\ifvmode\else\unskip\fi\stake\hspace{\normalparindent}}
-  \gdef\backindent{\ifvmode\else\unskip\fi\hspace{-\normalparindent}}
-}% end \@ActivateTextMacros
-%%
 
 
 %%

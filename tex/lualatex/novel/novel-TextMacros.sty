@@ -429,53 +429,82 @@
 % Allows text to be placed (potentially) off-grid, with grid resuming after.
 \newif \if@WithinLinegap % true within linegap environment
 \newcounter{currentlinegap} % 0 when not within linegap, >0 otherwise.
-\ExplSyntaxOn
+\ExplSyntaxOn % absorbs line returns here:
 \DeclareDocumentEnvironment {linegap} { m } {%
-  \FPifint{#1}\else%
+  \FPifint{#1}\else
     \ClassError{novel}{Non-integer~linegap~on~page~\thepage}%
      {Only~integer~>=~1~allowed~for~linegap.}%
-  \fi%
-  \FPiflt{#1}{1}%
+  \fi
+  \FPiflt{#1}{1}
     \ClassError{novel}{Insufficient~linegap~on~page~\thepage}%
      {Only~integer~>=~1~allowed~for~linegap.}%
-  \fi%
-  \par%
-  \null%
-  \vspace*{-\nbs}%
-  \global\@WithinLinegaptrue%
-  \begin{textblock*}{\textwidth}[0,0](0pt,0pt)%
-  \setcounter{currentlinegap}{#1}%
-  \strut\par%
-  \vspace*{-\nbs}%
+  \fi
+  \par
+  \null
+  \vspace*{-\nbs}
+  \global\@WithinLinegaptrue
+  \begin{textblock*}{\textwidth}[0,0](0pt,0pt)
+  \setcounter{currentlinegap}{#1}
+  \strut\par
+  \vspace*{-\nbs}
 }{% close the environment:
-  \end{textblock*}%
-  \global\@WithinLinegapfalse%
-  \par%
-  \vspace*{#1\nbs}%
-  \setcounter{currentlinegap}{0}%
-}
+  \end{textblock*}
+  \global\@WithinLinegapfalse
+  \par
+  \vspace*{#1\nbs}
+  \setcounter{currentlinegap}{0}
+} %
 \ExplSyntaxOff
 %%
 
-%% New in v. 1.46.2. The `column' environment.
-% Not to be confused with `columns' in other classes.
-% May only be used within `linegap' environment.
-% Mandatory argument: column width.
-% Optional argument: column offset from left.
-\newif \if@WithinColumn % true within column environment
-\newenvironment{column}[2][0pt]{%
-  \if@WithinLinegap\else%
-    \ClassError{novel}{Must nest `column' within `linegap' on p. \thepage}%
-     {The `column' environment(s) must be nested within `linegap'}%
-  \fi%
-  \global\@WithinColumntrue%
-  \begin{textblock*}{#2}(#1,0pt)\strut%
-  \ignorespaces%
-}{%
-  \end{textblock*}%
-  \global\@WithinColumnfalse%
-}%
-%%
+
+%% New in version 1.48: two columns, cannot cross page break.
+%% \sidebyside[a,b,c,d]{column 1 content}{column 2 content} % a,b,c,d lengths
+% a = left margin to left edge of left column (left indent)
+% b = left margin to right edge of left column ( = a + column width)
+% c = left margin to left edge of right column ( = a + b + gap)
+% d = left margin to right edge of right column ( = textwidth - right indent)
+% Thus 0pt <= a < b < c < d <= \textwidth.
+% Default: no indents, equal column widths, separated by \normalparindent.
+\DeclareDocumentCommand\sidebyside { O{} +m +m } {% no ExplSyntax, no more %:
+  \StrDel{#1}{\space}[\@argsns]
+  \StrCut{\@argsns}{,}{\@argsone}{\@argsothera}
+  \StrCut{\@argsothera}{,}{\@argstwo}{\@argsotherb}
+  \StrCut{\@argsotherb}{,}{\@argsthree}{\@argsfour}
+  \ifthenelse{\equal{\@argsone}{}}{%
+    \def\@sbsll{0pt}
+  }{%
+    \def\@sbsll{\@argsone}
+  }%
+  \setlength\@tempLength{0.5\textwidth-0.5\normalparindent}
+  \ifthenelse{\equal{\@argstwo}{}}{%
+    \edef\@sbslr{\the\@tempLength}
+  }{%
+    \edef\@sbslr{\@argstwo}
+  }%
+  \setlength\@tempLength{0.5\textwidth+0.5\normalparindent}
+  \ifthenelse{\equal{\@argsthree}{}}{%
+    \edef\@sbsrl{\the\@tempLength}
+  }{%
+    \edef\@sbsrl{\@argsthree}
+  }%
+  \ifthenelse{\equal{\@argsfour}{}}{%
+    \edef\@sbsrr{\the\textwidth}
+  }{%
+    \edef\@sbsrr{\@argsfour}
+  }%
+  \null\vspace{-\baselineskip}
+  \begin{adjustwidth}{\@sbsll}{\dimexpr\textwidth-\@sbsrr}
+  \noindent\begin{minipage}[t]{\dimexpr\@sbslr-\@sbsll}
+  \strut #2\strut
+  \end{minipage}\hspace{\normalparindent}\begin{minipage}[t]{\dimexpr\@sbsrr-\@sbsrl}
+  \strut #3\strut
+  \end{minipage}
+  \end{adjustwidth}
+  \null\vspace{-\baselineskip}
+} %
+%% end \sidebyside
+
 
 
 %% Some things must wait until after layout calculations:
@@ -498,6 +527,8 @@
     \gsetlength\normalAringheight{\heightof{Å}}
   \newlength\normaldescender % depth of lowercase gjpqy
     \gsetlength\normaldescender{\depthof{gjpqy}}
+  \newlength\@NovelCaulk % fills gaps that would cause underfull vbox
+    \gsetlength{\@NovelCaulk}{0pt plus 0.999\nbs minus 1pt}
 }% end \@ActivateTextLengths
 %%
 

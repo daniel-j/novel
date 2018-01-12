@@ -133,11 +133,6 @@
 }% end \gsetlength
 %%
 
-%% Helps to avoid underfull vbox warnings when using certain environments:
-\LetLtxMacro\@MyClearpage\clearpage\relax
-\gdef\clearpage{\vfill\@MyClearpage} % \vfill beats \vfil
-%%
-
 
 %% Process document class options.
 %% ----------------------------------------------------------------------------
@@ -421,7 +416,6 @@
   \@ActivateTextMacros % in `novel-TextMacros.sty'
   \@ActivateFootnotes % in `novel-Footnotes.sty'
   \@DisableFontSizes % in file `novel-LayoutSettings.sty'
-  \@DisableIncludeGraphics % in file `novel-Images.sty'
   \@DisableLayoutSettings % in file `novel-LayoutSettings.sty'
   \@DisableFileDataSettings % in file `novel-FileData.sty'
   \@DisableChapterSceneSettings % in file `novel-ChapterScene.sty'
@@ -452,13 +446,14 @@
   \really@no{bookmark}{focus on paper books, not e-books.}{(top of file)}
   \really@no{endnotes}{limited, built-in endnote methods.}{6.5}
   \really@no{acronym}{its own acronym style.}{6.2.4}
+  \really@no{wrapfig}{its own \string\WrapImage\space command.}{7.3.7}
   % Dealing with packages that might cause problems, but not always:
   \if@novelunblock
     \gdef\sorry@no#1#2#3{} % no package-specific errors, when unblock
     \ClassWarning{novel}{Using `unblock' class option, at your own risk. ^^J%
       If the unblocked packages and commands cause problems, ^^J%
       they are not bugs. Do not report them. You have been warned. ^^J%
-      In most cases your document will compile without error, and often the^^J%
+      Perhaps your document will compile without error, and perhaps the ^^J%
       results are OK. But in other cases, unexpected typesetting results. ^^J}%
   \else % package-specific errors, when no unblock
     \gdef\sorry@no#1#2#3{
@@ -471,7 +466,6 @@
     } %
   \fi
   % Potential problem packages, blocked by default, but can be unblocked:
-  \sorry@no{wrapfig}{its own \string\WrapImage\space command.}{7.3.7}
   \sorry@no{floatflt}{its own \string\WrapImage\space command.}{7.3.7}
   \sorry@no{floatfig}{its own \string\WrapImage\space command.}{7.3.7}
   \sorry@no{float}{its own \string\FloatImage\space command.}{7.3.6}

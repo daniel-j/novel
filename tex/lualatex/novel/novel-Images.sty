@@ -36,8 +36,6 @@
 %% (4) Image file must contain its resolution. (5) Exact size, without scaling.
 %% (6) No private metadata. (7) Be sure grayscale is 1-channel, not rgb gray.
 
-\ExplSyntaxOn % gets rid of spaces introduced by line breaks, etc.
-
 
 % Pertains to images:
 \newlength\imagewidth
@@ -49,7 +47,7 @@
 \newlength\@imagehoffset
 \newlength\@imagevoffset
 \newlength\@mytotalht
-
+\newif \if@UsingNovelCommand % true within \InlineImage etc.
 
 %% New in version 1.2: cover image.
 \newcommand\SetCoverImage[1]{
@@ -61,8 +59,8 @@
   \if@tempTF%
     \gdef\novelcoverimage{#1}
   \else%
-    \ClassError{novel}{Cover~ image~ has~ wrong~ file~ extension}%
-    {Cover~ image~ must~ be~ jpg,~ JPG,~ jpeg,~ or~ JPEG.}
+    \ClassError{novel}{Cover image has wrong file extension}%
+    {Cover image must be jpg, JPG, jpeg, JPEG.}%
   \fi%
 } % end \SetCoverImage
 %%
@@ -94,16 +92,16 @@
 \gdef\imagestarred{false}
 \gdef\imagefilename{unknown}
 \setkeys{Gin}{draft=false} % always shows the image, not a box outline
-% Neutralize \includegraphics, so it is no longer a user command:
-\LetLtxMacro\novel@includegraphics\includegraphics\relax
-% Standard \includegraphics banned:
-\gdef\@DisableIncludeGraphics{% called by `novel.cls' \AtBeginDocument
-  \LetLtxMacro\includegraphics\relax
-  \newcommand\includegraphics[2][]{
-    \ClassError{novel}{Cannot~use~\string\includegraphics,~page~\thepage}
-     {The~`novel'~class~has~custom~commands~for~placing~images.~See~docs.~ ^^J%
-      You~cannot~use~the~\string\includegraphics\space command.}%
-  }
+
+\LetLtxMacro\novel@sub@inclgr\includegraphics\relax
+\renewcommand\includegraphics[2][]{%
+  \@TestImageExtension{#2}%
+  \if@UsingNovelCommand\else%
+    \typeout{^^JClass `novel' Alert: \string\includegraphics\space used ^^J%
+     on page \thepage, without being called by a novel-specific command. ^^J%
+     Maybe OK, maybe not. See `novel' docs X.X.X. ^^J}%
+  \fi%
+  \novel@sub@inclgr[#1]{#2}%
 } %
 %
 \newcommand\pushtextdown[1]{% OBSOLETE
@@ -124,11 +122,11 @@
   \IfEndWith{#1}{jpeg}{\@tempTFtrue}{}%
   \IfEndWith{#1}{JPEG}{\@tempTFtrue}{}%
   \if@tempTF\else%
-    \ClassError{novel}{Image~format~`#1'~not~allowed,~page~\thepage}%
-    {Image~`#1'~has~file~type~not~allowed~in~`novel'~class.~^^J%
-     Must~have~file~extension~png,~jpg,~jpeg~(or~capitalized).~^^J%
-     Others~such~as~pdf,~bmp,~tiff,~eps,~svg~are~not~allowed.~^^J%
-     The~file~extension~is~mandatory.}%
+    \ClassError{novel}{Image format `#1' not allowed, page \thepage}%
+    {Image `#1' has file type not allowed in `novel' class. ^^J%
+     Must have file extension png, jpg, jpeg, pdf (or capitalized). ^^J%
+     Others such as bmp, tiff, eps, svg, jp2, jbig, are not allowed. ^^J%
+     The file extension is mandatory. Provide it, if missing.}%
   \fi%
 } %
 %%
@@ -154,7 +152,7 @@
 % With the starred command, the image occupies zero cursor width, so that
 %   anything following will overlie it.
 \DeclareDocumentCommand \InlineImage { s O{0pt} m }{%
-  \@TestImageExtension{#3}%
+  \@TestImageExtension{#3}% 
   \StrDel{#2}{\space}[\@myila]%
   \StrCut{\@myila}{,}{\@myilxa}{\@myilya}%
   \ifthenelse{\equal{\@myilxa}{} \OR \equal{\@myilxa}{0}}{%
@@ -164,7 +162,9 @@
     \def\@myily{0pt}}{\def\@myily{\@myilya}%
   }%
   \iftoggle{@inheadfoot}{}{\gdef\imagefilename{#3}}% for possible later use
-  \gdef\@mygraphic{\novel@includegraphics{#3}}%
+  \global\@UsingNovelCommandtrue%
+  \gdef\@mygraphic{\includegraphics{#3}}%
+  \gdef\@mygraphicname{#3}%
   \setlength\@imagewidth{\widthof{\@mygraphic}}%
   \global\@imagewidth=\@imagewidth%
   \iftoggle{@inheadfoot}{}{\setlength\imagewidth{\@imagewidth}}%
@@ -173,9 +173,6 @@
   \iftoggle{@inheadfoot}{}{%
     \setlength\imageheight{\@imageheight}%
     \global\imageheight=\imageheight%
-    \typeout{^^JClass~ `novel'~ Info: %
-      An~ image~ was~ placed~ on~ page~ \thepage.~ ^^J%
-      Review~layout~to~ensure~that~it~does~not~overflow~into~margins.~ ^^J}%
   }%
   %
   \setlength\@imagehoffset{\@myilx}%
@@ -207,6 +204,7 @@
   }% end IfBooleanTF{#1}
   \iftoggle{@inheadfoot}{}{\setlength\imagehoffset{\@imagehoffset}}%
   \iftoggle{@inheadfoot}{}{\setlength\imagevoffset{\@imagevoffset}}%
+  \global\@UsingNovelCommandfalse%
 } % 
 % end Inline Image
 %%
@@ -236,49 +234,52 @@
     \ClassError{novel}{Cannot~use~\string\FloatImage\space in~header/footer}%
       {Header~footer~allow~\string\InlineImage, but~not~\string\FloatImage.}%
   }{}%
-  \@TestImageExtension{#3}
+  \@TestImageExtension{#3}%
   % Sadly, parsing with `xstring' involves roundabout code:
-  \StrDel{#2}{\space}[\@tempArgs]
-  \StrCut{\@tempArgs}{,}{\@tempArgA}{\@tempArgX}
-  \StrCut{\@tempArgX}{,}{\@tempArgB}{\@tempArgC}
+  \StrDel{#2}{\space}[\@tempArgs]%
+  \StrCut{\@tempArgs}{,}{\@tempArgA}{\@tempArgX}%
+  \StrCut{\@tempArgX}{,}{\@tempArgB}{\@tempArgC}%
   \ifthenelse{\equal{\@tempArgA}{}}{%
-    \def\@tempArgAa{!ht}
+    \def\@tempArgAa{!ht}%
   }{%
-    \def\@tempArgAa{\@tempArgA}
+    \def\@tempArgAa{\@tempArgA}%
   }%
   \ifthenelse{\equal{\@tempArgB}{0}\OR\equal{\@tempArgB}{}}{%
-    \def\@tempArgBb{0pt}
+    \def\@tempArgBb{0pt}%
   }{%
-    \def\@tempArgBb{\@tempArgB}
+    \def\@tempArgBb{\@tempArgB}%
   }%
   \ifthenelse{\equal{\@tempArgC}{0}\OR\equal{\@tempArgC}{}}{%
-    \def\@tempArgCc{0pt}
+    \def\@tempArgCc{0pt}%
   }{%
-    \def\@tempArgCc{\@tempArgC}
+    \def\@tempArgCc{\@tempArgC}%
   }%
-  \StrSubstitute{\@tempArgAa}{H}{!h}[\@tempArgAA] % replace H with !h
-  \StrDel{\@tempArgAA}{p}[\@tempArgAAA] % ignore p
-  \floatlocation{figure}{\@tempArgAAA} % enable current float method
-  \vfil % One l.
-  \@float{figure}
-  \@FloatImage{\@tempArgBb}{\@tempArgCc}{#3}
-  \end@float\par
-  \floatlocation{figure}{!ht} % restore default float method
-  \null
-  \vspace{-\nbs}
+  \StrSubstitute{\@tempArgAa}{H}{!h}[\@tempArgAA]% replace H with !h
+  \StrDel{\@tempArgAA}{p}[\@tempArgAAA]% ignore p
+  \floatlocation{figure}{\@tempArgAAA}% enable current float method
+  \vfil% One l.
+  \@float{figure}%
+  \@FloatImage{\@tempArgBb}{\@tempArgCc}{#3}%
+  \end@float\par%
+  \floatlocation{figure}{!ht}% restore default float method
+  \null%
+  \vspace{-\nbs}%
+  \vspace{\@NovelCaulk}%
 } %
 %
 \DeclareDocumentCommand \@FloatImage { m m m }{% DO NOT CALL DIRECTLY
-  \gdef\@mygraphic{\novel@includegraphics{#3}}
-  \gsetlength\@imagewidth{\widthof{\@mygraphic}}
-  \gsetlength\@imageheight{\heightof{\@mygraphic}}
-  \setlength\@imagehoffset{#1}
-  \setlength\@imagevoffset{#2-\@imageheight+\normalXheight}
-  \setlength\@mytotalht{\@imageheight+0.3\nbs}
-  \FPdiv{\@mytotalhtN}{\strip@pt\@mytotalht}{\strip@pt\nbs}
-  \FPadd{\@mytotalhtN}{\@mytotalhtN}{0.5} % round upward
-  \FPround{\@mytotalhtN}{\@mytotalhtN}{0} % to integer
-  \FPmin{\@allowmyoverflow}{\@mytotalhtN}{\@LinesPerPage} % not exceeding lpp
+  \global\@UsingNovelCommandtrue%
+  \gdef\@mygraphic{\includegraphics[scale=\@TMratio]{#3}}%%%%%
+  \gdef\@mygraphicname{#3}%
+  \gsetlength\@imagewidth{\widthof{\@mygraphic}}%
+  \gsetlength\@imageheight{\heightof{\@mygraphic}}%
+  \setlength\@imagehoffset{#1}%
+  \setlength\@imagevoffset{#2-\@imageheight+\normalXheight}%
+  \setlength\@mytotalht{\@imageheight+0.3\nbs}%
+  \FPdiv{\@mytotalhtN}{\strip@pt\@mytotalht}{\strip@pt\nbs}%
+  \FPadd{\@mytotalhtN}{\@mytotalhtN}{0.5}% round upward
+  \FPround{\@mytotalhtN}{\@mytotalhtN}{0}% to integer
+  \FPmin{\@allowmyoverflow}{\@mytotalhtN}{\@LinesPerPage}% not exceeding lpp
   % If a full-page image is too tall for a page, standard TeX float will
   %   delay it until the time that floats are cleared, typically by \clearpage.
   %   That would probably be at the end of a chapter.
@@ -288,17 +289,18 @@
   %   opportunity, rather than being delayed. As a consquence, an oversized
   %   full-page float may overflow into the footer or bottom margin.
   %   To fix that (if it matters), you need to edit the image in graphics.
-  \begin{linegap}{\@allowmyoverflow}
-    \vspace*{-\nfs}
-    \null
-    {\centering
+  \begin{linegap}{\@allowmyoverflow}%
+    \vspace*{-\nfs}%
+    \null%
+    {\centering%
       \makebox[0pt][l]{%
-        \hspace{\dimexpr\@imagehoffset-0.5\@imagewidth}
-        \stake\smash{\raisebox{\@imagevoffset}{\@mygraphic}}
+        \hspace{\dimexpr\@imagehoffset-0.5\@imagewidth}%
+        \stake\smash{\raisebox{\@imagevoffset}{\@mygraphic}}%
       }%
       \par%
     }%
-  \end{linegap}
+  \end{linegap}%
+  \global\@UsingNovelCommandfalse%
 } % 
 % end Float Image
 %%
@@ -311,91 +313,94 @@
 %% If you have a document that uses this, it will continue to work.
 %% However, it is no longer documented. Do not use in new documents.
 \DeclareDocumentCommand \BlockImage { O{c} m +O{} }{% OBSOLETE
-  \ClassWarning{novel}{^^J\string\BlockImage\space command~is~obsolete.~ ^^J%
-    It~will~remain~in~effect~for~existing~documents~that~use~it.~ ^^J%
-    New~documents~must~use~\string\FloatImage\space instead.~ ^^J%
-    Purpose~and~syntax~is~slightly~different.~See~docs.~ ^^J}%
+  \ClassWarning{novel}{^^J\string\BlockImage\space command is obsolete. ^^J%
+    It will remain in effect for existing documents that use it. ^^J%
+    New documents must use \string\FloatImage\space instead.  ^^J%
+    Purpose and syntax is slightly different. See docs.  ^^J}%
   \iftoggle{@inheadfoot}{%
-    \ClassError{novel}{Cannot~use~\string\BlockImage\space in~header/footer}%
-      {Header~footer~allow~\string\InlineImage, but~not~\string\BlockImage.}%
+    \ClassError{novel}{Cannot use \string\BlockImage\space in header/footer}%
+      {Header footer allow \string\InlineImage, but not \string\BlockImage.}%
   }{}%
   \@TestImageExtension{#2}%
   % Allows empty or blank to be used, and still provide default values:
   \ifthenelse{\equal{#1}{} \OR \equal{#1}{\space}}{%
-    \def\@myargs{c}}{\def\@myargs{#1}
+    \def\@myargs{c}}{\def\@myargs{#1}%
   }%
   \StrDel{\@myargs}{\space}[\@myargsns]% needs {\space} not { }
-  \StrCut{\@myargsns}{,}{\@myalign}{\@mycoord}
-  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}
+  \StrCut{\@myargsns}{,}{\@myalign}{\@mycoord}%
+  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}%
   \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{%
-    \def\@myx{0pt}}{\def\@myx{\@myxt}
+    \def\@myx{0pt}}{\def\@myx{\@myxt}%
   }%
   \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{%
-    \def\@myy{0pt}}{\def\@myy{\@myyt}
+    \def\@myy{0pt}}{\def\@myy{\@myyt}%
   }%
   %
-  \gdef\@mygraphic{\novel@includegraphics{#2}}
-  \setlength\@imagewidth{\widthof{\@mygraphic}}
-  \global\@imagewidth=\@imagewidth
-  \setlength\@imageheight{\heightof{\@mygraphic}}
-  \global\@imageheight=\@imageheight
-  \setlength\@imagehoffset{\@myx}
+  \global\@UsingNovelCommandtrue%
+  \gdef\@mygraphic{\includegraphics{#2}}%
+  \gdef\@mygraphicname{#2}%
+  \setlength\@imagewidth{\widthof{\@mygraphic}}%
+  \global\@imagewidth=\@imagewidth%
+  \setlength\@imageheight{\heightof{\@mygraphic}}%
+  \global\@imageheight=\@imageheight%
+  \setlength\@imagehoffset{\@myx}%
   \IfBeginWith{\@myy}{b}{%
-    \ClassError{novel}{Cannot~use~voffset~`b'~on~ %
-      \string\BlockImage,~page~\thepage}%
-     {The~`b'~voffset~only~works~with~\string\InlineImage,~ %
-      not~\string\BlockImage.}%
+    \ClassError{novel}{Cannot use voffset `b' on %
+      \string\BlockImage, page \thepage}%
+     {The `b' voffset only works with \string\InlineImage, %
+      not \string\BlockImage.}%
   }{%
-    \setlength\@imagevoffset{-\@imageheight}
-    \addtolength\@imagevoffset{\@myy}
+    \setlength\@imagevoffset{-\@imageheight}%
+    \addtolength\@imagevoffset{\@myy}%
   }%
   %
-  \setlength\@mytotalht{0pt}
-  \addtolength\@mytotalht{\@imageheight}
-  \addtolength\@mytotalht{-\@myy}
-  \addtolength\@mytotalht{1em}
-  \def\@mytotalhtN{\strip@pt\@mytotalht}
-  \FPdiv{\@mytotalhtN}{\@mytotalhtN}{\strip@pt\nbs}
-  \FPadd{\@mytotalhtN}{\@mytotalhtN}{0.5}
-  \FPround{\@mytotalhtN}{\@mytotalhtN}{0}
+  \setlength\@mytotalht{0pt}%
+  \addtolength\@mytotalht{\@imageheight}%
+  \addtolength\@mytotalht{-\@myy}%
+  \addtolength\@mytotalht{1em}%
+  \def\@mytotalhtN{\strip@pt\@mytotalht}%
+  \FPdiv{\@mytotalhtN}{\@mytotalhtN}{\strip@pt\nbs}%
+  \FPadd{\@mytotalhtN}{\@mytotalhtN}{0.5}%
+  \FPround{\@mytotalhtN}{\@mytotalhtN}{0}%
   %
-  \begin{linegap}{\@mytotalhtN}
+  \begin{linegap}{\@mytotalhtN}%
   %
   \ifthenelse{\equal{\@myalign}{c}\OR\equal{\@myalign}{}}{%
     {\centering%
       \makebox[0pt][l]{%
-        \hspace{\dimexpr\@myx-0.5\@imagewidth}
-        \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}
+        \hspace{\dimexpr\@myx-0.5\@imagewidth}%
+        \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}%
       }%
-      \par
+      \par%
     }
-    \vspace*{-\nbs}
-    {\centering #3\par}
+    \vspace*{-\nbs}%
+    {\centering #3\par}%
   }{}%
   \ifthenelse{\equal{\@myalign}{r}}{%
     \noindent\makebox[0pt][l]{%
-      \hspace{\dimexpr\textwidth+\@myx-\@imagewidth}
-      \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}
+      \hspace{\dimexpr\textwidth+\@myx-\@imagewidth}%
+      \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}%
     }\par%
-    \vspace{-2\nbs}
-    \begin{adjustwidth}{0pt}{\@imagewidth+\parindent}
-      \strut\par
-      #3\par
-    \end{adjustwidth}
+    \vspace{-2\nbs}%
+    \begin{adjustwidth}{0pt}{\@imagewidth+\parindent}%
+      \strut\par%
+      #3\par%
+    \end{adjustwidth}%
   }{}%
   \ifthenelse{\equal{\@myalign}{l}}{%
     \noindent\makebox[0pt][l]{%
-      \hspace{\@myx}
-      \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}
-    }
-    \par
-    \vspace{-2\nbs}
-    \begin{adjustwidth}{\@imagewidth+\parindent}{0pt}
-      \strut\par
-      #3\par
-    \end{adjustwidth}
+      \hspace{\@myx}%
+      \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}%
+    }%
+    \par%
+    \vspace{-2\nbs}%
+    \begin{adjustwidth}{\@imagewidth+\parindent}{0pt}%
+      \strut\par%
+      #3\par%
+    \end{adjustwidth}%
   }{}%
-  \end{linegap}
+  \end{linegap}%
+  \global\@UsingNovelCommandfalse%
 } % end \BlockImage (OBSOLETE)
 %%
 
@@ -429,370 +434,368 @@
 \DeclareDocumentCommand \WrapImage { O{r} m } {% specific to `novel' class
   % This roundabout code for parsing the optional argument is due to the
   %   expansion limitations of package `xstring':
-  \StrDel{#1}{\space}[\@wrapoptargs]
-  \StrCut{\@wrapoptargs}{,}{\@wrapoptpos}{\@wrapoptother}
+  \StrDel{#1}{\space}[\@wrapoptargs]%
+  \StrCut{\@wrapoptargs}{,}{\@wrapoptpos}{\@wrapoptother}%
   \ifthenelse{\equal{\@wrapoptpos}{}\OR\equal{\@wrapoptpos}{\space}}{%
-    \def\@wrapoptposA{r}
+    \def\@wrapoptposA{r}%
   }{%
-    \def\@wrapoptposA{\@wrapoptpos}
-  }
-  \StrCut{\@wrapoptother}{,}{\@wrapoptx}{\@wrapopty}
+    \def\@wrapoptposA{\@wrapoptpos}%
+  }%
+  \StrCut{\@wrapoptother}{,}{\@wrapoptx}{\@wrapopty}%
   \ifthenelse{\equal{\@wrapoptx}{}\OR\equal{\@wrapoptx}{\space}}{%
-    \def\@wrapoptxA{0pt}
+    \def\@wrapoptxA{0pt}%
   }{%
-    \def\@wrapoptxA{\@wrapoptx}
-  }
+    \def\@wrapoptxA{\@wrapoptx}%
+  }%
   \ifthenelse{\equal{\@wrapopty}{}\OR\equal{\@wrapopty}{\space}}{%
-    \def\@wrapoptyA{0pt}
+    \def\@wrapoptyA{0pt}%
   }{%
-    \def\@wrapoptyA{\@wrapopty}
-  }
-  \edef\@wrapoptyA{\dimexpr\@wrapoptyA+\normalXheight}
-  \@tempTFfalse
+    \def\@wrapoptyA{\@wrapopty}%
+  }%
+  \edef\@wrapoptyA{\dimexpr\@wrapoptyA+\normalXheight}%
+  \@tempTFfalse%
   \ifthenelse{%
     \equal{\@wrapoptposA}{l} \OR \equal{\@wrapoptposA}{L} \OR %
     \equal{\@wrapoptposA}{r} \OR \equal{\@wrapoptposA}{R} \OR %
     \equal{\@wrapoptposA}{o} \OR \equal{\@wrapoptposA}{O} \OR %
     \equal{\@wrapoptposA}{i} \OR \equal{\@wrapoptposA}{I} %
-  }{\@tempTFtrue}{} %
-  \if@tempTF\else
-    \ClassError{novel}{Bad~position~ argument~ for~ \string\WrapImage}%
-     {Argument:~ [position,xoffset,yoffset]~ where~ position~ ^^J%
-      is~ one~ of~ l~ r~ o~ i~ L~ R~ O~ I.}%
-  \fi
+  }{\@tempTFtrue}{}%
+  \if@tempTF\else%
+    \ClassError{novel}{Bad position argument for \string\WrapImage}%
+     {Argument: [position,xoffset,yoffset] where position ^^J%
+      is one of l r o i L R O I.}%
+  \fi%
   %
   \begin{@wrapfloat}{\@wrapoptposA}% default r
   \InlineImage[\@wrapoptxA,\@wrapoptyA]{#2}% \InlineImage from `novel' class
   \rule[\dimexpr\normalXheight-\imageheight]{0pt}%
     {\dimexpr\imageheight-\normalXheight+0.3\nfs}% \InlineImage uses \smash
-  \end{@wrapfloat}
-} %
+  \end{@wrapfloat}%
+}%
 %
 \DeclareDocumentEnvironment{@wrapfloat} { m } {% specific to `novel' class
-  \ifvoid\NWF@box\else
-    \NWFclear
-  \fi
+  \ifvoid\NWF@box\else%
+    \NWFclear%
+  \fi%
   \xdef\NWF@place{\string`\@car#1r\@nil}%
-  \ifnum\lccode\NWF@place=\NWF@place
-    \global\NWF@floatfalse
-  \else
-     \global\NWF@floattrue
-  \fi
-  \ifx\parshape
-    \NWF@fudgeparshape 
-  \fi
-  \global\setbox\NWF@box\vtop
-  \bgroup
-  \setlength\hsize{0pt}
-  \setbox\z@\hbox
-  \bgroup
-  \ignorespaces 
+  \ifnum\lccode\NWF@place=\NWF@place%
+    \global\NWF@floatfalse%
+  \else%
+     \global\NWF@floattrue%
+  \fi%
+  \ifx\parshape%
+    \NWF@fudgeparshape%
+  \fi%
+  \global\setbox\NWF@box\vtop%
+  \bgroup%
+  \setlength\hsize{0pt}%
+  \setbox\z@\hbox%
+  \bgroup%
+  \ignorespaces% 
 }{%
-  \ifdim\hsize>\z@
-    \par\hrule\@width\hsize\@height\z@ % force width
-  \else
-    \unskip \egroup \box\z@ % or end hbox
-  \fi
-  \egroup % end \vtop
-  \def\width{\wd\NWF@box}
-  \ifdim\ht\NWF@box>\topskip % too much height, set flag.
-    \ht\NWF@box\z@
-  \fi
-  \ifdim\ht\NWF@box<.5\p@ % too tall (starts with \vbox) or too short
-    \global\setbox\NWF@box\vtop{\vskip-1.4ex\unvbox\NWF@box}
-  \fi
-  \global\NWF@size\dp\NWF@box % box is guaranteed to have little height.
-  \global\advance\NWF@size1.5\baselineskip
-  \aftergroup\NWF@startfloating % even when not really floating!
-  \ifNWF@float\else
-    \ifhmode
+  \ifdim\hsize>\z@%
+    \par\hrule\@width\hsize\@height\z@% force width
+  \else%
+    \unskip \egroup \box\z@% or end hbox
+  \fi%
+  \egroup% end \vtop
+  \def\width{\wd\NWF@box}%
+  \ifdim\ht\NWF@box>\topskip% too much height, set flag.
+    \ht\NWF@box\z@%
+  \fi%
+  \ifdim\ht\NWF@box<.5\p@% too tall (starts with \vbox) or too short
+    \global\setbox\NWF@box\vtop{\vskip-1.4ex\unvbox\NWF@box}%
+  \fi%
+  \global\NWF@size\dp\NWF@box% box is guaranteed to have little height.
+  \global\advance\NWF@size1.5\baselineskip%
+  \aftergroup\NWF@startfloating% even when not really floating!
+  \ifNWF@float\else%
+    \ifhmode%
        {\unskip \parfillskip\z@skip \par \vskip-\parskip}%
-       \aftergroup\noindent
-    \fi
-  \fi
-  \global\@ignoretrue
+       \aftergroup\noindent%
+    \fi%
+  \fi%
+  \global\@ignoretrue%
 } %
 %
 % Subvert \everypar to float fig and do wrapping.  Also for non-float.
 \def\NWF@startfloating{%
-  \NWF@everypar\expandafter{\the\everypar}
-  \let\everypar\NWF@everypar
+  \NWF@everypar\expandafter{\the\everypar}%
+  \let\everypar\NWF@everypar%
   \NWF@@everypar{%
-    \ifvoid\NWF@box\else
-      \NWF@floathand
+    \ifvoid\NWF@box\else%
+      \NWF@floathand%
     \fi%
-    \the\everypar
-    \NWF@wraphand
+    \the\everypar%
+    \NWF@wraphand%
   }%
 }
 %
 \def\NWF@floathand{%
-  \ifx\parshape
-    \NWF@fudgeparshape \NWF@fltmes
-  \else
-    \ifx\par\@@par
-      \ifnum\@@parshape=\z@
-        \ifdim\hangindent=\z@
-          \setbox\z@\lastbox
-          \begingroup
-          \@@par
-          \NWF@@everypar{}
-          \NWF@putfigmaybe
-          \endgroup % start wrapping
+  \ifx\parshape%
+    \NWF@fudgeparshape
+    \NWF@fltmes%
+  \else%
+    \ifx\par\@@par%
+      \ifnum\@@parshape=\z@%
+        \ifdim\hangindent=\z@%
+          \setbox\z@\lastbox%
+          \begingroup%
+          \@@par%
+          \NWF@@everypar{}%
+          \NWF@putfigmaybe%
+          \endgroup% start wrapping
           \ifvoid\z@\else
-            \box\z@ % replace indentation
-          \fi
-        \else
-          \NWF@fltmes
-        \fi
-      \else
-        \NWF@fltmes
-      \fi
-    \else
-      \NWF@fltmes
-    \fi
-  \fi
+            \box\z@% replace indentation
+          \fi%
+        \else%
+          \NWF@fltmes%
+        \fi%
+      \else%
+        \NWF@fltmes%
+      \fi%
+    \else%
+      \NWF@fltmes%
+    \fi%
+  \fi%
 }
 %
 % Put fig here if it fits or if it can't float
 \def\NWF@putfigmaybe{%
-  \ifinner % inner page
-    \vskip-\parskip \global\NWF@floatfalse
-    \let\pagetotal\maxdimen % kludge flag for "not top of page"
-  \else % outer page
-    \@tempdima\pagedepth % save page depth
-    {\advance\parskip\@tempdima\vskip-\parskip} % back up to baseline
-    \penalty\interlinepenalty % update pg. parameters
-    \@tempdimb\pagegoal
-    \advance\@tempdimb-\pagetotal % room left on page
-    \ifdim\@tempdimb<\z@
-       \global\NWF@floatfalse
-       \ifdim-\@tempdimb>\pageshrink\else
-         \pagebreak
-       \fi
-    \else
-       \ifdim\NWF@size>\@tempdimb
-          \ifNWF@float
-            \dimen@.5\baselineskip
-          \else
-            \dimen@ 2\baselineskip
-          \fi
-          \ifdim\pagestretch>\dimen@
-            \dimen@\pagestretch
-          \fi
-          \ifdim\pagefilstretch>\z@
-            \dimen@\@tempdimb
-          \fi
-          \ifdim\pagefillstretch>\z@
-            \dimen@\@tempdimb
-          \fi
-          \advance\dimen@.5\baselineskip
-          \ifdim\dimen@>\@tempdimb %
-             \global\NWF@floatfalse \pagebreak
-          \fi
+  \ifinner% inner page
+    \vskip-\parskip \global\NWF@floatfalse%
+    \let\pagetotal\maxdimen% kludge flag for "not top of page"
+  \else% outer page
+    \@tempdima\pagedepth% save page depth
+    {\advance\parskip\@tempdima\vskip-\parskip}% back up to baseline
+    \penalty\interlinepenalty% update pg. parameters
+    \@tempdimb\pagegoal%
+    \advance\@tempdimb-\pagetotal% room left on page
+    \ifdim\@tempdimb<\z@%
+       \global\NWF@floatfalse%
+       \ifdim-\@tempdimb>\pageshrink\else%
+         \pagebreak%
+       \fi%
+    \else%
+       \ifdim\NWF@size>\@tempdimb%
+          \ifNWF@float%
+            \dimen@.5\baselineskip%
+          \else%
+            \dimen@ 2\baselineskip%
+          \fi%
+          \ifdim\pagestretch>\dimen@%
+            \dimen@\pagestretch%
+          \fi%
+          \ifdim\pagefilstretch>\z@%
+            \dimen@\@tempdimb%
+          \fi%
+          \ifdim\pagefillstretch>\z@%
+            \dimen@\@tempdimb%
+          \fi%
+          \advance\dimen@.5\baselineskip%
+          \ifdim\dimen@>\@tempdimb%
+             \global\NWF@floatfalse \pagebreak%
+          \fi%
        \else %
-          \global\NWF@floatfalse
-       \fi
-     \fi
-     \vskip\@tempdima\relax % (return erased page depth)
-  \fi
-  \noindent
-  \ifNWF@float
-    \NWF@fltmes
-  \else % place here
+          \global\NWF@floatfalse%
+       \fi%
+     \fi%
+     \vskip\@tempdima\relax% (return erased page depth)
+  \fi%
+  \noindent%
+  \ifNWF@float%
+    \NWF@fltmes%
+  \else% place here
     {%
-      \ifodd % assign l/r to i/o placement
-        \if@twoside
-          \c@page
-        \else
-          \@ne
-        \fi
-        \lccode`i`l\lccode`o`r
-      \else
-        \lccode`i`r\lccode`o`l
-      \fi
-      \xdef\NWF@place{\the\lccode\lccode\NWF@place} % twice to get only l or r
+      \ifodd% assign l/r to i/o placement
+        \if@twoside%
+          \c@page%
+        \else%
+          \@ne%
+        \fi%
+        \lccode`i`l\lccode`o`r%
+      \else%
+        \lccode`i`r\lccode`o`l%
+      \fi%
+      \xdef\NWF@place{\the\lccode\lccode\NWF@place}% twice to get only l or r
     }%
-    \hbox to\z@{ % llap or rlap depending on {l} or {r}; calc effective width
-      \@tempdima\wd\NWF@box
-      \@tempdimb\z@
-      \advance\@tempdima-\@tempdimb
-      \advance\@tempdima\columnsep
-      \@tempdimb\hsize
-      \advance\@tempdimb-\@tempdima
+    \hbox to\z@{% llap or rlap depending on {l} or {r}; calc effective width
+      \@tempdima\wd\NWF@box%
+      \@tempdimb\z@%
+      \advance\@tempdima-\@tempdimb%
+      \advance\@tempdima\columnsep%
+      \@tempdimb\hsize%
+      \advance\@tempdimb-\@tempdima%
       \xdef\NWF@adjlw{\the\@tempdima}%
-      \ifnum `l=\NWF@place % fig on left
-        \hss % figure overlaps space to the left
-        \def\@tempa{\kern\columnsep} % position to left of the gap
-      \else  %  fig on right
-        \@tempdima\z@ % no left indentation
-        \kern\@tempdimb
-        \kern\columnsep
+      \ifnum `l=\NWF@place% fig on left
+        \hss% figure overlaps space to the left
+        \def\@tempa{\kern\columnsep}% position to left of the gap
+      \else% fig on right
+        \@tempdima\z@% no left indentation
+        \kern\@tempdimb%
+        \kern\columnsep%
         \def\@tempa{\hss}% figure overlaps space to the right
-      \fi
-      \ifdim\@tempdimb<\hsize
-        \xdef\NWF@wrapil{\the\@tempdima \the\@tempdimb} % indent and length
-        \xdef\NWF@adjtlm{\the\@tempdima}
-      \else
-        \xdef\NWF@wrapil{\z@ \the\hsize}
-        \xdef\NWF@adjlw{\z@}\xdef\NWF@adjtlm{\z@}
-      \fi
-      \ifdim\pagetotal=\z@ \else %
-        \setbox\NWF@box\hbox{\box\NWF@box}
-      \fi 
-      \dp\NWF@box\z@
-      \box\NWF@box
-      \@tempa
+      \fi%
+      \ifdim\@tempdimb<\hsize%
+        \xdef\NWF@wrapil{\the\@tempdima \the\@tempdimb}% indent and length
+        \xdef\NWF@adjtlm{\the\@tempdima}%
+      \else%
+        \xdef\NWF@wrapil{\z@ \the\hsize}%
+        \xdef\NWF@adjlw{\z@}\xdef\NWF@adjtlm{\z@}%
+      \fi%
+      \ifdim\pagetotal=\z@ \else%
+        \setbox\NWF@box\hbox{\box\NWF@box}%
+      \fi%
+      \dp\NWF@box\z@%
+      \box\NWF@box%
+      \@tempa%
     }% end \hbox to \z@
-    \aftergroup\NWF@startwrapping % after the following \endgroup
-  \fi
+    \aftergroup\NWF@startwrapping% after the following \endgroup
+  \fi%
 }
 %
 \def\NWF@startwrapping{%
   {%
-    \advance\NWF@size1.1\baselineskip
-    \divide\NWF@size\baselineskip
-    \global\c@NWF@wrappedlines\NWF@size
+    \advance\NWF@size1.1\baselineskip%
+    \divide\NWF@size\baselineskip%
+    \global\c@NWF@wrappedlines\NWF@size%
   }%
-  \ifnum\c@NWF@wrappedlines>\@ne
-    \let\parshape\NWF@fudgeparshape
-    \let\NWF@pspars\@empty
-    \let\NWF@@par\par
-    \def\@setpar##1{\def\NWF@@par{##1}}
-    \def\par{\@par}
-    \let\@par\NWF@mypar
-    \xdef\NWF@restoretol{\tolerance\the\tolerance}
-    \tolerance9999
-    \advance\linewidth-\NWF@adjlw
-    \advance\@totalleftmargin\NWF@adjtlm
-  \fi
+  \ifnum\c@NWF@wrappedlines>\@ne%
+    \let\parshape\NWF@fudgeparshape%
+    \let\NWF@pspars\@empty%
+    \let\NWF@@par\par%
+    \def\@setpar##1{\def\NWF@@par{##1}}%
+    \def\par{\@par}%
+    \let\@par\NWF@mypar%
+    \xdef\NWF@restoretol{\tolerance\the\tolerance}%
+    \tolerance9999%
+    \advance\linewidth-\NWF@adjlw%
+    \advance\@totalleftmargin\NWF@adjtlm%
+  \fi%
 }
 %
 \def\NWF@wraphand{%
-  \ifnum\c@NWF@wrappedlines<\tw@
-    \NWF@finale
-  \else
-    \begingroup % Create \parshape command:
-    \@tempcnta\@ne
-    \let\NWF@wrapil\relax
+  \ifnum\c@NWF@wrappedlines<\tw@%
+    \NWF@finale%
+  \else%
+    \begingroup% Create \parshape command:
+    \@tempcnta\@ne%
+    \let\NWF@wrapil\relax%
     \gdef\NWF@ps{}%
-    \@whilenum \@tempcnta<\c@NWF@wrappedlines\do{ % repeat indentation, length
-      \xdef\NWF@ps{\NWF@ps\NWF@wrapil}
-      \advance\@tempcnta\@ne
+    \@whilenum \@tempcnta<\c@NWF@wrappedlines\do{% repeat indentation, length
+      \xdef\NWF@ps{\NWF@ps\NWF@wrapil}%
+      \advance\@tempcnta\@ne%
     }%
-    \endgroup
-    \ifx\NWF@pspars\@empty
-      \@@parshape\c@NWF@wrappedlines \NWF@ps \NWF@noil
-    \else % use external `parshape' values to modify my parshape
-      \NWF@modps
-    \fi
-  \fi
+    \endgroup%
+    \ifx\NWF@pspars\@empty%
+      \@@parshape\c@NWF@wrappedlines \NWF@ps \NWF@noil%
+    \else% use external `parshape' values to modify my parshape
+      \NWF@modps%
+    \fi%
+  \fi%
 }
 %
-\def\NWF@mypar{
-  \relax
-  \NWF@@par % what the rest of LaTeX expects \par to be (usually \@@par)
-  \ifnum\@@parshape=\z@
-    \let\NWF@pspars\@empty
-  \fi % reset `parshape'
-  \global\advance\c@NWF@wrappedlines-\prevgraf
-  \prevgraf\z@
-  \ifnum\c@NWF@wrappedlines<\tw@
-    \NWF@finale
-  \fi
+\def\NWF@mypar{%
+  \relax%
+  \NWF@@par% what the rest of LaTeX expects \par to be (usually \@@par)
+  \ifnum\@@parshape=\z@%
+    \let\NWF@pspars\@empty%
+  \fi% reset `parshape'
+  \global\advance\c@NWF@wrappedlines-\prevgraf%
+  \prevgraf\z@%
+  \ifnum\c@NWF@wrappedlines<\tw@%
+    \NWF@finale%
+  \fi%
 }
 %
-\def\NWF@modps{
-  \begingroup
-  \afterassignment\@tempdimb \@tempdima\NWF@pspars % a=indent, b=width
-  \advance\@tempdima-\NWF@adjtlm
-  \advance\@tempdimb\NWF@adjlw
-  \let\NWF@wrapil\NWF@pspars
+\def\NWF@modps{%
+  \begingroup%
+  \afterassignment\@tempdimb \@tempdima\NWF@pspars% a=indent, b=width
+  \advance\@tempdima-\NWF@adjtlm%
+  \advance\@tempdimb\NWF@adjlw%
+  \let\NWF@wrapil\NWF@pspars%
   \edef\@tempb{%
     \@@parshape\c@NWF@wrappedlines \NWF@ps \the\@tempdima \the\@tempdimb%
   }%
-  \expandafter\endgroup\@tempb
+  \expandafter\endgroup\@tempb%
 }
 %
 \let\@@setpar\@setpar
 \def\NWF@noil{\z@ \hsize}
 \let\NWF@pspars\@empty
 %
-\def\NWF@fudgeparshape{
-  \relax
-  \ifnum\c@NWF@wrappedlines<\tw@
-    \NWF@finale
-  \else
-    \afterassignment\NWF@fudgeparshapee \fam
-  \fi
+\def\NWF@fudgeparshape{%
+  \relax%
+  \ifnum\c@NWF@wrappedlines<\tw@%
+    \NWF@finale%
+  \else%
+    \afterassignment\NWF@fudgeparshapee \fam%
+  \fi%
 }
 %
-\def\NWF@fudgeparshapee{
-  \ifnum\fam=\@ne 
-    \expandafter \NWF@parshapeee
-  \else
-    \@@parshape\fam
-  \fi
+\def\NWF@fudgeparshapee{%
+  \ifnum\fam=\@ne%
+    \expandafter \NWF@parshapeee%
+  \else%
+    \@@parshape\fam%
+  \fi%
 }
 %
 \def\NWF@parshapeee#1#2{%
-  \begingroup
-  \delimitershortfall#1
-  \nulldelimiterspace#2
+  \begingroup%
+  \delimitershortfall#1%
+  \nulldelimiterspace#2%
   \edef\@tempa{%
-    \def\noexpand\NWF@pspars{\the\delimitershortfall \the\nulldelimiterspace}
+    \def\noexpand\NWF@pspars{\the\delimitershortfall \the\nulldelimiterspace}%
   }%
-  \expandafter\endgroup\@tempa
+  \expandafter\endgroup\@tempa%
   \NWF@wraphand%
 }
 %
 \def\NWF@finale{%
-  \ifx\parshape
-    \NWF@fudgeparshape
-    \NWF@restoretol
-    \let\@setpar\@@setpar
-    \let\par\NWF@@par
-    \advance\linewidth\NWF@adjlw
-    \advance\@totalleftmargin-\NWF@adjtlm
-    \ifx\par\@@par
-      \def\@par{\let\par\@@par\par}
-    \else
-      \let\@par\NWF@@par
-    \fi
-    \let\parshape\@@parshape
-    \parshape
-    \ifx\NWF@pspars\@empty
-      \z@
-    \else
-      \@ne
-      \NWF@pspars
-    \fi
-  \fi
-  \ifvoid\NWF@box
-    \ifx\everypar\NWF@everypar
-      \let\everypar\NWF@@everypar
-      \everypar\expandafter{\the\NWF@everypar}
-    \fi
+  \ifx\parshape%
+    \NWF@fudgeparshape%
+    \NWF@restoretol%
+    \let\@setpar\@@setpar%
+    \let\par\NWF@@par%
+    \advance\linewidth\NWF@adjlw%
+    \advance\@totalleftmargin-\NWF@adjtlm%
+    \ifx\par\@@par%
+      \def\@par{\let\par\@@par\par}%
+    \else%
+      \let\@par\NWF@@par%
+    \fi%
+    \let\parshape\@@parshape%
+    \parshape%
+    \ifx\NWF@pspars\@empty%
+      \z@%
+    \else%
+      \@ne%
+      \NWF@pspars%
+    \fi%
+  \fi%
+  \ifvoid\NWF@box%
+    \ifx\everypar\NWF@everypar%
+      \let\everypar\NWF@@everypar%
+      \everypar\expandafter{\the\NWF@everypar}%
+    \fi%
   \fi%
 }
 %
 \newcommand{\NWFclear}{%
-  \par 
-  \ifvoid\NWF@box\else
-    \vskip\bigskipamount \box\NWF@box
-    \let\everypar\NWF@@everypar
-    \everypar\expandafter{\the\NWF@everypar}
-  \fi
-  \global\c@NWF@wrappedlines\z@
-  \NWF@finale
+  \par%
+  \ifvoid\NWF@box\else%
+    \vskip\bigskipamount \box\NWF@box%
+    \let\everypar\NWF@@everypar%
+    \everypar\expandafter{\the\NWF@everypar}%
+  \fi%
+  \global\c@NWF@wrappedlines\z@%
+  \NWF@finale%
 }
 %
 
-%
-\ExplSyntaxOff
-% The following code cannot be enclosed in ExplSyntax:
 
-%
+% The following code cannot be enclosed in ExplSyntax:
 \begingroup
 \toks0={\let\everypar\NWF@@everypar \everypar\expandafter{\the\NWF@everypar}
    \let\parshape\@@parshape \let\@setpar\@@setpar }

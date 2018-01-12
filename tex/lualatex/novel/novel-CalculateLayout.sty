@@ -128,7 +128,6 @@
     }%
   } %
   \FPtrunc{\@LinesPerPage}{\@tempLPP}{0} % final, integer floor
-
 \fi
 % Error if too few lines per page, whether set or default:
 \FPiflt{\@LinesPerPage}{10}
@@ -167,6 +166,7 @@
 %% LOAD REWORK, IF USED
 %% ----------------------------------------------------------------------------
 % Note that \Rework does not change lines per page.
+\gdef\@TMratio{1}
 \if@ReworkTrimSize
   \RequirePackage{novel-ReworkLayout}
 \else

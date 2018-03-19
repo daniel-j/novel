@@ -369,7 +369,7 @@ function closeall() {
           <li><a href="#h6.2.1">6.2.1 Italics and Emphasis</a></li>
           <li><a href="#h6.2.2">6.2.2 Bold and Semibold</a></li>
           <li><a href="#h6.2.3">6.2.3 Underlining</a></li>
-          <li><a href="#h6.2.4">6.2.4 Small Caps, Acronyms</a></li>
+          <li><a href="#h6.2.4">6.2.4 Small Caps, Midcase</a></li>
           <li><a href="#h6.2.5">6.2.5 Local Tracking</a></li>
           <li><a href="#h6.2.6">6.2.6 Local Font Selection</a></li>
           <li><a href="#h6.2.7">6.2.7 Local Font Features</a></li>
@@ -402,39 +402,23 @@ function closeall() {
     </ul>
   </li><!-- end 6 -->
 
-  <li id="l7"><span class="n"></span><a href="#h7"><b>7. Interior Images, Cover Artwork</b></a>
+  <li id="l7"><span class="n"></span><a href="#h7"><b>7. Images</b></a>
     <ul id="u7">
-      <li id="l7.1"><span class="n"></span><a href="#h7.1">7.1 Raster Images Only</a>
+      <li id="l7.1"><span class="n"></span><a href="#h7.1">7.1 Technical Requirements</a>
         <ul id="u7.1">
-          <li><a href="#h7.1.1">7.1.1 Use PNG or JPG</a></li>
-          <li><a href="#h7.1.2">7.1.2 Saving the Resolution</a></li>
-          <li><a href="#h7.1.3">7.1.3 Removing Private Metadata</a></li>
+          <li><a href="#h7.1.1">7.1.1 Interior B/W, Grayscale</a></li>
+          <li><a href="#h7.1.2">7.1.2 Color Cover</a></li>
         </ul>
       </li><!-- end 7.1 -->
-      <li id="l7.2"><span class="n"></span><a href="#h7.2">7.2 Interior Image Workflow</a>
+      <li id="l7.2"><span class="n"></span><a href="#h7.2">7.2 Placing Interior Images</a>
         <ul id="u7.2">
-          <li><a href="#h7.2.1">7.2.1 Line Art in GIMP</a></li>
-          <li><a href="#h7.2.2">7.2.2 Grayscale in GIMP</a></li>
+          <li><a href="#h7.2.1">7.2.1 Image-Like Text</a></li>
+          <li><a href="#h7.2.2">7.2.2 \InlineImage</a></li>
+          <li><a href="#h7.2.3">7.2.3 Text Over \InlineImage</a></li>
+          <li><a href="#h7.2.4">7.2.4 \FloatImage</a></li>
+          <li><a href="#h7.2.5">7.2.5 \WrapImage</a></li>
         </ul>
       </li><!-- end 7.2 -->
-      <li id="l7.3"><span class="n"></span><a href="#h7.3">7.3 Placing Images</a>
-        <ul id="u7.3">
-          <li><a href="#h7.3.1">7.3.1 Image-Like Text</a></li>
-          <li><a href="#h7.3.2">7.3.2 \InlineImage</a></li>
-          <li><a href="#h7.3.3">7.3.3 Text Over \InlineImage</a></li>
-          <li><a href="#h7.3.4">7.3.4 \FloatImage</a></li>
-          <li><a href="#h7.3.5">7.3.5 \WrapImage</a></li>
-        </ul>
-      </li><!-- end 7.3 -->
-      <li id="l7.4"><span class="n"></span><a href="#h7.4">7.4. Color Cover Artwork</a>
-        <ul id="u7.4">
-          <li id="l7.4.1"><a href="#h7.4.1">7.4.1 Begin with PNG</a></li>
-          <li id="l7.4.2"><a href="#h7.4.2">7.4.2 Get Some Software</a></li>
-          <li id="l7.4.3"><a href="#h7.4.3">7.4.3 CMYK at Ink Limit</a></li>
-          <li id="l7.4.4"><a href="#h7.4.4">7.4.4 Convert to PDF/X</a></li>
-          <li id="l7.4.5"><a href="#h7.4.5">7.4.5 Final Check</a></li>
-        </ul>
-      </li><!-- end 7.4 -->
     </ul>
   </li><!-- end 7 -->
 
@@ -568,7 +552,7 @@ function closeall() {
 <div id="main">
 <!-- **************************************************************************************** -->
 
-<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.50pre1, 2018/03/16</span></h1>
+<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.50pre2, 2018/03/16</span></h1>
 <p class="noindent"><span id="screennoscript" class="screennoscript"><b>For enhanced navigation of this file, turn on JavaScript.</b></span></p>
 <div><script type="text/javascript">if(document.getElementById("screennoscript")){document.getElementById("screennoscript").style.display="none";}</script></div>
 
@@ -1121,7 +1105,7 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 
 <h4 id="h4.2.3">4.2.3. Advanced: The Deco Font</h4>
 <div class="d4" id="d4.2.3">
-<p class="item"><b>A.</b> Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <code><a href="#h5.1.3.3">\decoglyph</a></code> and <code><a href="#h6.2.4">\acronym</a></code> commands.</p>
+<p class="item"><b>A.</b> Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <code><a href="#h5.1.3.3">\decoglyph</a></code> and <code><a href="#h6.2.4">\midcase</a></code> commands.</p>
 <p class="item"><b>B.</b> Normally, you do not need to configure this font, as it is automatic. The only reason for changng it is if you are an advanced user, who wishes to use a substitute font with different decorations. However, you may <i>not</i> specify just any font! The substitute must be an edited version of <i>NovelDeco.otf</i>, with a different font name. If you don't know what that means, then don't do it.</p>
 <p class="code">
 <code>\SetDecoFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.3">5.1.3.3</a></em>
@@ -1835,7 +1819,7 @@ Even after his jodphurs had finally uncurled, Lord Withens could not master his 
 <p>If you are using a line for its graphic effect, the <code><a href="#bigemdash">\bigemdash</a></code> command might be helpful.</p>
 </div><!-- end 6.2.3 -->
 
-<h4 id="h6.2.4">6.2.4. Small Caps and Acronyms</h4>
+<h4 id="h6.2.4">6.2.4. Small Caps and Midcase</h4>
 <div class="d4" id="d6.2.4">
 <p class="item"><b>A.</b> <code>\scshape{text, may cross paragraphs}</code> is a general-purpose command for converting lowercase to small caps.</p>
 <p class="item"><b>B.</b> <code>\textsc{<em>text</em>}</code> does not cross paragraphs. Alias: <code>\smcp{<em>text</em>}</code>.</p>
@@ -1847,14 +1831,14 @@ Even after his jodphurs had finally uncurled, Lord Withens could not master his 
 \let\textsc\oldscshape\relax<br/>
 \let\scshape\oldscshape\relax</code></p>
 <p>The above code sends you in a time machine back to the Twentieth Century.</p>
-<p class="item"><b>G.</b> <code>\acronym{<em>text</em>}</code> is special to <i>novel</i>. If the <i>NovelDeco</i> font is installed, uppercase letters in the text will be converted to "mid-size capitals," and lowercase will remain lowercase, but with ascenders slightly reduced. The purpose of this command is so that acronyms such as NASA and NATO blend well with surrounding text. I have found that whereas ordinary uppercase is too conspicuous, small caps also looks wrong. Example:</p>
-<p class="code"><img class="floatright" src="html-resources/acronym2.png" width="192" height="89" alt="acronym"/>
+<p class="item"><b>G.</b> <code>\midcase{<em>text</em>}</code> is special to <i>novel</i>. If the <i>NovelDeco</i> font is installed, uppercase letters in the text will be converted to "mid-size capitals," and lowercase will remain lowercase, but with ascenders slightly reduced. The purpose of this command is so that acronyms such as NASA and NATO blend well with surrounding text. I have found that whereas ordinary uppercase is too conspicuous, small caps also looks wrong. Example:</p>
+<p class="code"><img class="floatright" src="html-resources/acronym2.png" width="192" height="89" alt="midcase"/>
 <code>
 The NATO alliance...\par<br/>
-The \acronym{NATO} alliance...\par<br/>
+The \midcase{NATO} alliance...\par<br/>
 The \allsmcp{NATO} alliance...\par
 </code></p>
-<p>Whether or not to use the \acronym command, is up to you. Since its letters are drawn from the <i>NovelDeco</i> font, rather than your main font, there may be some stylistic differences if your <i>parent font</i> is not Libertinus Serif.</p>
+<p>Whether or not to use the \midcase command, is up to you. Since its letters are drawn from the <i>NovelDeco</i> font, rather than your main font, there may be some stylistic differences if your <i>parent font</i> is not Libertinus Serif.</p>
 </div><!-- end 6.2.4 -->
 
 <h4 id="h6.2.5">6.2.5. Local Tracking Adjustment</h4>
@@ -2176,7 +2160,7 @@ He would have taken the car, had it not been stolen. But that was why he was her
 <div class="d4" id="d7.2.5">
 <p class="item"><b>A.</b> The <code>\WrapImage</code> command is a front-end to the included <i>wrapfig</i> package. Do not use commands from <i>wrapfig</i> directly.</p>
 <p class="item"><b>B.</b> <code>\WrapImage</code> is written between paragraphs. The image will appear with the next paragraph (unless moved). You cannot achieve the effect of wrapping an image mid-paragraph.</p>
-<p class="item"><b>C.</b> <img class="floatright" src="html-resources/wrapme.png" width="104" height="104" alt="Wrap me!" title="Wrap me!"/><code>\WrapImage</code> allows text (may be more than one paragraph) to wrap around an image. What you are now reading uses this technique in HTML. The text is wrapped around the image at right. Next to the image, the lines of text are shorter. Past the bottom of the image, the line length is restored to its usual size. In HTML, this is called <i>floating</i> an image; in TeX, it is called <i>wrapping</i>. Unlike what you see here, your document's text will be justified, whether the lines are short or long.</p>
+<p class="item" style="text-align:justify"><b>C.</b> <img class="floatright" style="position:relative; top:6px" src="html-resources/wrapme.png" width="104" height="104" alt="Wrap me!" title="Wrap me!"/><code>\WrapImage</code> allows text (may be more than one paragraph) to wrap around an image. What you are now reading uses this technique in HTML. The text is wrapped around the image at right. Next to the image, the lines of text are shorter. Past the bottom of the image, the line length is restored to its usual size. In HTML, this is called <i>floating</i> an image; but in TeX, it is called <i>wrapping</i>. Wrapped images are uncommon in fiction, but they might be more useful on display pages, which have many positioned elements but little running text.</p>
 <p class="item"><b>D.</b> The optional argument is position, which may be any one of these letters: <code>l r o i L R O I</code>. Default is <code>r</code>. The letters place the image at left, right, outside, or inside (spine).</p>
 <p>Lowercase position places the image where you wrote the code. However, if there is not enough space to fit it (too close to bottom of page), then both the image and the wrapped text will be moved to the next page. This leaves a white gap at the bottom of the previous page, which is undesirable. But it guarantees that the image remains attached to the expected text.</p>
 <p>Uppercase position places the image where you wrote the code, if possible. However, if the image cannot fit there, then the image is floated to the next page, and accompanies the first new paragraph. This avoids a white gap at page bottom, but the image no longer accompanies the expected text. If you use this kind of position, avoid referring to "the image at right" or anything else that makes no sense if the image is moved.</p>

@@ -88,28 +88,19 @@ If you change the font size or number of lines per page, then the tilted phrase 
 
 % NEXT PAGE:
 
-This page tests \string\BlockImage\space effects. Remember that \textit{novel} uses its own methods of placing images.
+This page tests \string\FloatImage\space effects. Remember that \textit{novel} uses its own methods of placing images.
 
-\BlockImage[r]{novel-testimage.png}[\pushtextdown{\nbs}Text accompanying image. This text appears to the left of the image. One line above this text was skipped.\par]
+There will be a gap before the image appears. In the tex code, find \string\vspace\space there, and change the space. At some point, the image will float to the top of the following page.
 
-Above, the top of the image sits where the baseline of text would be. The current paragraph comfortably clears the bottom of the image.
+\vspace{7\nbs}
 
-\null
+\FloatImage[ht]{novel-testimage.png}
 
-In the following example,  the accompanying text fills all available lines. This is \textit{not} the same as float/caption in other classes!
+Above, the top of the image sits where the baseline of text would be. If the image fits where placed, then this paragraph comfortably clears the bottom of the image. If the gap is increased so that the image flats to the top of the next page, then this paragraph will be directly beneath the preceding paragraph.
 
-\BlockImage[r]{novel-testimage.png}[Text accompanying image.  The fact that this text fills the available area is not automated.\par I first compiled with some random amount of text, then adjusted it so that it filled.\par]
 
-If you change the font size or lines per page, then the accompanying text, above, probably won't fill its space. Or, it may overflow, and mingle with this paragraph. So, this is not a technique with wide applicability.
-
-\null
-
-Below, the image is centered:
-
-\BlockImage[c]{novel-testimage.png}[\pushtextdown{\nbs}This text overlies the image.\par]
 
 \clearpage
-
 
 % NEXT PAGE:
 
@@ -133,6 +124,16 @@ In all of the above, the alignments will change, if you change the text size or 
 
 \clearpage
 
+
+% NEXT PAGE:
+
+This page tests \string\WrapImage. The command is written following the paragraph you are now reading.
+
+\WrapImage[r]{novel-testimage.png}
+
+The image will appear at right, with this text flowing around it. the first few lines will be at the left of the image. Then, as the paragraph continues, it eventually is restored to full text width, once it gets pas the bottom of the image. Note that the top of the image is aligned to the X-height of the first line of text.
+
+\clearpage
 
 % NEXT PAGE:
 

@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2018/03/16 v1.50pre1 LaTeX file (text macros usable within document body)]
+[2018/03/16 v1.50pre2 LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -66,8 +66,8 @@
 %%
 
 %% Acronyms often look too big in regular capitals, but too small in
-% small caps. Command \acronym{} provides an intermediate size:
-\gdef\acronym#1{% do not confuse with `acronym' package
+% small caps. Command \midcase{} provides an intermediate size:
+\gdef\midcase#1{%
   \if@HasDecoFont%
     {\decofont{#1}}%
   \else%

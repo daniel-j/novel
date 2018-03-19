@@ -316,16 +316,16 @@ end
   }{%
     \def\@tempArgCc{\@tempArgC}%
   }%
-  \StrDel{\@tempArgAa}{!}
-  \@tempTFfalse
-  \ifthenelse{\equal{\@tempArgAa}{ht}}{\@tempTFtrue}{}
-  \ifthenelse{\equal{\@tempArgAa}{hb}}{\@tempTFtrue}{}
-  \ifthenelse{\equal{\@tempArgAa}{t}}{\@tempTFtrue}{}
-  \ifthenelse{\equal{\@tempArgAa}{b}}{\@tempTFtrue}{}
-  \if@tempTF\else
+  \StrDel{\@tempArgAa}{!}[\@tempArgAa]%
+  \@tempTFfalse%
+  \ifthenelse{\equal{\@tempArgAa}{ht}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{\@tempArgAa}{hb}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{\@tempArgAa}{t}}{\@tempTFtrue}{}%
+  \ifthenelse{\equal{\@tempArgAa}{b}}{\@tempTFtrue}{}%
+  \if@tempTF\else%
     \ClassWarning{novel}{Incorrect position for \string\FloatImage, ^^J%
      page \thepage. Default position ht substituted.}%
-  \fi
+  \fi%
   \floatlocation{figure}{!\@tempArgAa}% enable current float method
   %\vfil% One l.
   \@float{figure}%

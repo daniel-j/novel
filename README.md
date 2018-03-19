@@ -15,7 +15,7 @@ If you already have a document using prior code, then review your document for u
 
 ## News
 
-March 16, 2018: Version 1.50pre1 for testing
+March 16, 2018: Version 1.50pre2 for testing
 
 Please test and report, in March 2018. I aim to have the tested version uploaded to CTAN before the end of the month.
 

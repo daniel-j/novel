@@ -13,7 +13,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2018/03/16 v1.50pre1 LaTeX document class]
+\ProvidesClass{novel}[2018/03/16 v1.50pre2 LaTeX document class]
 %%
 %% Version 1.46: Possibly final version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
@@ -409,7 +409,11 @@
   \RequirePackage{novel-CalculateLayout} % may load novel-ChangeLayout.sty
   \RequirePackage{novel-PostLayout} % calculates shademargins, cropmarks, etc.
   \RequirePackage{novel-pdfx}% also provides an \AtBeginDocument macro
-  \AtEndDocument{\cleartoend} % adds 1 or 2 blanks, for final verso blank
+  \AtEndDocument{%
+    \if@coverart\else%
+      \cleartoend% adds 1 or 2 blanks, for final verso blank
+    \fi%
+  }
 }%
 %% end AtEndPreamble
 

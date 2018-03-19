@@ -1,0 +1,32 @@
+% File borderland-03.txt
+% Version 2017/09/18
+% In the original, this was Chapter IV.
+
+\clearpage
+
+\begin{ChapterStart}
+\null\null
+\ChapterTitle{3. The Earth}
+\end{ChapterStart}
+
+Thus I was, and only the memory that I had lived through the dark, once before, served to sustain my thoughts. A great time passed---ages. And then a single star broke its way through the darkness. It was the first of one of the outlying clusters of this universe. Presently, it was far behind, and all about me shone the splendor of the countless stars. Later, years it seemed, I saw the sun, a clot of flame. Around it, I made out presently several remote specks of light---the planets of the Solar system. And so I saw the earth again, blue and unbelievably minute. It grew larger, and became defined.
+
+A long space of time came and went, and then at last I entered into the shadow of the world---plunging headlong into the dim and holy earth night. Overhead were the old constellations, and there was a crescent moon. Then, as I neared the earth’s surface, a dimness swept over me, and I appeared to sink into a black mist.
+
+For a while, I knew nothing. I was unconscious. Gradually, I became aware of a faint, distant whining. It became plainer. A desperate feeling of agony possessed me. I struggled madly for breath, and tried to shout. A moment, and I got my breath more easily. I was conscious that something was licking my hand. Something damp swept across my face. I heard a panting, and then again the whining. It seemed to come to my ears, now, with a sense of familiarity, and I opened my eyes. All was dark; but the feeling of oppression had left me. I was seated, and something was whining piteously, and licking me. I felt strangely confused, and, instinctively, tried to ward off the thing that licked. My head was curiously vacant, and, for the moment, I seemed incapable of action or thought. Then, things came back to me, and I called ‘Pepper,’ faintly. I was answered by a joyful bark, and renewed and frantic caresses.
+
+In a little while, I felt stronger, and put out my hand for the matches. I groped about, for a few moments, blindly; then my hands lit upon them, and I struck a light, and looked confusedly around. All about me, I saw the old, familiar things. And there I sat, full of dazed wonders, until the flame of the match burnt my finger, and I dropped it; while a hasty expression of pain and anger, escaped my lips, surprising me with the sound of my own voice.
+
+After a moment, I struck another match, and, stumbling across the room, lit the candles. As I did so, I observed that they had not burned away, but had been put out.
+
+As the flames shot up, I turned, and stared about the study; yet there was nothing unusual to see; and, suddenly, a gust of irritation took me. What had happened? I held my head, with both hands, and tried to remember. Ah! the great, silent Plain, and the ring-shaped sun of red fire. Where were they? Where had I seen them? How long ago? I felt dazed and muddled. Once or twice, I walked up and down the room, unsteadily. My memory seemed dulled, and, already, the thing I had witnessed came back to me with an effort.
+
+I have a remembrance of cursing, peevishly, in my bewilderment. Suddenly, I turned faint and giddy, and had to grasp at the table for support. During a few moments, I held on, weakly; and then managed to totter sideways into a chair. After a little time, I felt somewhat better, and succeeded in reaching the cupboard where, usually, I keep brandy and biscuits. I poured myself out a little of the stimulant, and drank it off. Then, taking a handful of biscuits, I returned to my chair, and began to devour them, ravenously. I was vaguely surprised at my hunger. I felt as though I had eaten nothing for an uncountably long while.
+
+As I ate, my glance roved about the room, taking in its various details, and still searching, though almost unconsciously, for something tangible upon which to take hold, among the invisible mysteries that encompassed me. ‘Surely,’ I thought, ‘there must be something---’ And, in the same instant, my gaze dwelt upon the face of the clock in the opposite corner. Therewith, I stopped eating, and just stared. For, though its ticking indicated most certainly that it was still going, the hands were pointing to a little \textit{before} the hour of midnight; whereas it was, as well I knew, considerably \textit{after} that time when I had witnessed the first of the strange happenings I have just described.
+
+For perhaps a moment I was astounded and puzzled. Had the hour been the same as when I had last seen the clock, I should have concluded that the hands had stuck in one place, while the internal mechanism went on as usual; but that would, in no way, account for the hands having traveled backward. Then, even as I turned the matter over in my wearied brain, the thought flashed upon me that it was now close upon the morning of the twenty-second, and that I had been unconscious to the visible world through the greater portion of the last twenty-four hours. The thought occupied my attention for a full minute; then I commenced to eat again. I was still very hungry.
+
+And so the days pass on, and I am still filled with a wonder to know the meaning of all that I saw on that memorable night. Yet, well I know that my curiosity is little likely to be satisfied.
+
+\clearpage

@@ -1,0 +1,33 @@
+% File borderland-20.txt
+% Version 2017/09/18
+% In the original, this was Chapter XXVI.
+
+\clearpage
+
+\begin{ChapterStart}
+\null\null
+\ChapterTitle{20. The Luminous Speck}
+\end{ChapterStart}
+
+I awake suddenly. It is still dark. I turn over, once or twice, in my endeavors to sleep again; but I cannot sleep. My head is aching, slightly; and, by turns I am hot and cold. In a little, I give up the attempt, and stretch out my hand, for the matches. I will light my candle, and read, awhile; perhaps, I shall be able to sleep, after a time. For a few moments, I grope; then my hand touches the box; but, as I open it, I am startled, to see a phosphorescent speck of fire, shining amid the darkness. I put out my other hand, and touch it. It is on my wrist. With a feeling of vague alarm, I strike a light, hurriedly, and look; but can see nothing, save a tiny scratch.
+
+‘Fancy!’ I mutter, with a half sigh of relief. Then the match burns my finger, and I drop it, quickly. As I fumble for another, the thing shines out again. I know, now, that it is no fancy. This time, I light the candle, and examine the place, more closely. There is a slight, greenish discoloration ‘round the scratch. I am puzzled and worried. Then a thought comes to me. I remember the morning after the Thing appeared. I remember that the dog licked my hand. It was this one, with the scratch on it; though I have not been even conscious of the abasement, until now. A horrible fear has come to me. It creeps into my brain---the dog’s wound, shines at night. With a dazed feeling, I sit down on the side of the bed, and try to think; but cannot. My brain seems numbed with the sheer horror of this new fear.
+
+Once, I rouse up, and try to persuade myself that I am mistaken; but it is no use. In my heart, I have no doubt.
+
+Hour after hour, I sit in the darkness and silence, and shiver, hopelessly....
+
+The day has come and gone, and it is night again.
+
+This morning, early, I shot the dog, and buried it, away among the bushes. It is better so. The foul growth had almost hidden its left side. And I---the place on my wrist has enlarged, perceptibly. Several times, I have caught myself muttering prayers---little things learnt as a child. God, Almighty God, help me! I shall go mad.
+
+Six days, and I have eaten nothing. It is night. I am sitting in my chair. Ah, God! I wonder have any ever felt the horror of life that I have come to know? I am swathed in terror. I feel ever the burning of this dread growth. It has covered all my right arm and side, and is beginning to creep up my neck. Tomorrow, it will eat into my face. I shall become a terrible mass of living corruption. There is no escape. Yet, a thought has come to me, born of a sight of the gun-rack, on the other side of the room. I have looked again---with the strangest of feelings. The thought grows upon me. God, Thou knowest, Thou must know, that death is better, aye, better a thousand times than This. This! Jesus, forgive me, but I cannot live, cannot, cannot! I dare not! I am beyond all help---there is nothing else left. It will, at least, spare me that final horror....
+
+I think I must have been dozing. I am very weak, and oh! so miserable, so miserable and tired---tired. The rustle of the paper, tries my brain. My hearing seems preternaturally sharp. I will sit awhile and think....
+
+Hush! I hear something, down---down in the cellars. It is a creaking sound. My God, it is the opening of the great, oak trap. What can be doing that? The scratching of my pen deafens me ... I must listen.... There are steps on the stairs; strange padding steps, that come up and nearer.... Jesus, be merciful to me, an old man. There is something fumbling at the door-handle. O God, help me now! Jesus---The door is opening---slowly. Somethi---
+
+\null
+{\centering\textit{...End Manuscript}\par}
+
+\clearpage % the following material begins with \cleartorecto

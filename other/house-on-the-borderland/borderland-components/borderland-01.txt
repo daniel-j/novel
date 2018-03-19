@@ -1,0 +1,71 @@
+% File borderland-01.txt
+% Version 2017/09/18
+% Now begins the manuscript. The first-person narrator is the Recluse.
+% In the original, this was Chapter II.
+
+\cleartorecto % this must begin recto
+
+\begin{ChapterStart}
+\null\null
+\ChapterTitle{1. The Plain of Silence}
+\end{ChapterStart}
+
+I am an old man. I live here in this ancient house, surrounded by huge, unkempt gardens.
+
+The peasantry, who inhabit the wilderness beyond, say that I am mad. That is because I will have nothing to do with them. I live here alone---no servants---I hate them. I have one friend, a dog; yes, I would sooner have old Pepper than the rest of Creation together. He, at least, understands me---and has sense enough to leave me alone when I am in my dark moods.
+
+I have decided to start a kind of diary; it may enable me to record some of the thoughts and feelings that I cannot express to anyone; but, beyond this, I am anxious to make some record of the strange things that I have heard and seen, during many years of loneliness, in this weird old building.
+
+For a couple of centuries, this house has had a reputation, a bad one, and, until I bought it, for more than eighty years no one had lived here; consequently, I got the old place at a ridiculously low figure.
+
+I am not superstitious; but I have ceased to deny that things happen in this old house---things that I cannot explain; and, therefore, I must needs ease my mind, by writing down an account of them, to the best of my ability; though, should this, my diary, ever be read when I am gone, the readers will but shake their heads, and be the more convinced that I was mad.
+
+This house, how ancient it is! though its age strikes one less, perhaps, than the quaintness of its structure, which is curious and fantastic to the last degree. Little curved towers and pinnacles, with outlines suggestive of leaping flames, predominate; while the body of the building is in the form of a circle.
+
+I have heard that there is an old story, told amongst the country people, to the effect that the devil built the place. However, that is as may be. True or not, I neither know nor care, save as it may have helped to cheapen it, ere I came.
+
+I must have been here some ten years before I saw sufficient to warrant any belief in the stories, current in the neighborhood, about this house. It is true that I had, on at least a dozen occasions, seen, vaguely, things that puzzled me, and, perhaps, had felt more than I had seen. Then, as the years passed, bringing age upon me, I became often aware of something unseen, yet unmistakably present, in the empty rooms and corridors. Still, it was as I have said many years before I saw any real manifestations of the so-called supernatural.
+
+It was not Halloween. If I were telling a story for amusement’s sake, I should probably place it on that night of nights; but this is a true record of my own experiences, and I would not put pen to paper to amuse anyone. No. It was after midnight on the morning of the twenty-first day of January. I was sitting reading, as is often my custom, in my study. Pepper lay, sleeping, near my chair.
+
+Without warning, the flames of the two candles went low, and then shone with a ghastly green effulgence. I looked up, quickly, and as I did so I saw the lights sink into a dull, ruddy tint; so that the room glowed with a strange, heavy, crimson twilight that gave the shadows behind the chairs and tables a double depth of blackness; and wherever the light struck, it was as though luminous blood had been splashed over the room.
+
+Down on the floor, I heard a faint, frightened whimper, and something pressed itself in between my two feet. It was Pepper, cowering under my dressing gown. Pepper, usually as brave as a lion!
+
+It was this movement of the dog’s, I think, that gave me the first twinge of \textit{real} fear. I had been considerably startled when the lights burnt first green and then red; but had been momentarily under the impression that the change was due to some influx of noxious gas into the room. Now, however, I saw that it was not so; for the candles burned with a steady flame, and showed no signs of going out, as would have been the case had the change been due to fumes in the atmosphere.
+
+I did not move. I felt distinctly frightened; but could think of nothing better to do than wait. For perhaps a minute, I kept my glance about the room, nervously. Then I noticed that the lights had commenced to sink, very slowly; until presently they showed minute specks of red fire, like the gleamings of rubies in the darkness. Still, I sat watching; while a sort of dreamy indifference seemed to steal over me; banishing altogether the fear that had begun to grip me.
+
+Away in the far end of the huge old-fashioned room, I became conscious of a faint glow. Steadily it grew, filling the room with gleams of quivering green light; then they sank quickly, and changed---even as the candle flames had done---into a deep, somber crimson that strengthened, and lit up the room with a flood of awful glory.
+
+The light came from the end wall, and grew ever brighter until its intolerable glare caused my eyes acute pain, and involuntarily I closed them. It may have been a few seconds before I was able to open them. The first thing I noticed was that the light had decreased, greatly; so that it no longer tried my eyes. Then, as it grew still duller, I was aware, all at once, that, instead of looking at the redness, I was staring through it, and through the wall beyond.
+
+Gradually, as I became more accustomed to the idea, I realized that I was looking out on to a vast plain, lit with the same gloomy twilight that pervaded the room. The immensity of this plain scarcely can be conceived. In no part could I perceive its confines. It seemed to broaden and spread out, so that the eye failed to perceive any limitations. Slowly, the details of the nearer portions began to grow clear; then, in a moment almost, the light died away, and the vision---if vision it were---faded and was gone.
+
+Suddenly, I became conscious that I was no longer in the chair. Instead, I seemed to be hovering above it, and looking down at a dim something, huddled and silent. In a little while, a cold blast struck me, and I was outside in the night, floating, like a bubble, up through the darkness. As I moved, an icy coldness seemed to enfold me, so that I shivered.
+
+After a time, I looked to right and left, and saw the intolerable blackness of the night, pierced by remote gleams of fire. Onward, outward, I drove. Once, I glanced behind, and saw the earth, a small crescent of blue light, receding away to my left. Further off, the sun, a splash of white flame, burned vividly against the dark.
+
+An indefinite period passed. Then, for the last time, I saw the earth---an enduring globule of radiant blue, swimming in an eternity of ether. And there I, a fragile flake of soul dust, flickered silently across the void, from the distant blue, into the expanse of the unknown.
+
+A great while seemed to pass over me, and now I could nowhere see anything. I had passed beyond the fixed stars and plunged into the huge blackness that waits beyond. All this time I had experienced little, save a sense of lightness and cold discomfort. Now however the atrocious darkness seemed to creep into my soul, and I became filled with fear and despair. What was going to become of me? Where was I going? Even as the thoughts were formed, there grew against the impalpable blackness that wrapped me a faint tinge of blood. It seemed extraordinarily remote, and mistlike; yet, at once, the feeling of oppression was lightened, and I no longer despaired.
+
+Slowly, the distant redness became plainer and larger; until, as I drew nearer, it spread out into a great, somber glare---dull and tremendous. Still, I fled onward, and, presently, I had come so close, that it seemed to stretch beneath me, like a great ocean of somber red. I could see little, save that it appeared to spread out interminably in all directions.
+
+In a further space, I found that I was descending upon it; and, soon, I sank into a great sea of sullen, red-hued clouds. Slowly, I emerged from these, and there, below me, I saw the stupendous plain that I had seen from my room in this house that stands upon the borders of the Silences.
+
+Presently, I landed, and stood, surrounded by a great waste of loneliness. The place was lit with a gloomy twilight that gave an impression of indescribable desolation.
+
+Afar to my right, within the sky, there burnt a gigantic ring of dull-red fire, from the outer edge of which were projected huge, writhing flames, darted and jagged. The interior of this ring was black, black as the gloom of the outer night. I comprehended, at once, that it was from this extraordinary sun that the place derived its doleful light.
+
+From that strange source of light, I glanced down again to my surroundings. Everywhere I looked, I saw nothing but the same flat weariness of interminable plain. Nowhere could I descry any signs of life; not even the ruins of some ancient habitation.
+
+Gradually, I found that I was being borne forward, floating across the flat waste. For what seemed an eternity, I moved onward. I was unaware of any great sense of impatience; though some curiosity and a vast wonder were with me continually. Always, I saw around me the breadth of that enormous plain; and, always, I searched for some new thing to break its monotony; but there was no change---only loneliness, silence, and desert.
+
+Presently, in a half-conscious manner, I noticed that there was a faint mistiness, ruddy in hue, lying over its surface. Still, when I looked more intently, I was unable to say that it was really mist; for it appeared to blend with the plain, giving it a peculiar unrealness, and conveying to the senses the idea of unsubstantiality.
+
+Gradually, I began to weary with the sameness of the thing. Yet, it was a great time before I perceived any signs of the place, toward which I was being conveyed.
+
+At first, I saw it, far ahead, like a long hillock on the surface of the Plain. Then, as I drew nearer, I perceived that I had been mistaken; for, instead of a low hill, I made out, now, a chain of great mountains, whose distant peaks towered up into the red gloom, until they were almost lost to sight.
+
+\clearpage

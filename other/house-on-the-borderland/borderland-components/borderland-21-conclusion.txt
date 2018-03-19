@@ -1,0 +1,90 @@
+% File borderland-21-conclusion.txt
+% Version 2017/09/18
+% The voice of the Introduction (Berreggnog) returns.
+% I have added "As Told by Mr. Berreggnog" for clarity.
+% This was Chapter XXVII in the original.
+
+\cleartorecto % this must begin recto
+
+\begin{ChapterStart}
+\null\null
+\ChapterTitle{Conclusion}
+\null
+\ChapterDeco{As Told by Mr. Berreggnog}
+\end{ChapterStart}
+
+I put down the Manuscript, and glanced across at Tonnison: he was sitting, staring out into the dark. I waited a minute; then I spoke.
+
+“Well?” I said.
+
+He turned, slowly, and looked at me. His thoughts seemed to have gone out of him into a great distance.
+
+“Was he mad?” I asked, and indicated the MS., with a half nod.
+
+Tonnison stared at me, unseeingly, a moment; then, his wits came back to him, and, suddenly, he comprehended my question.
+
+“No!” he said.
+
+I opened my lips, to offer a contradictory opinion; for my sense of the saneness of things, would not allow me to take the story literally; then I shut them again, without saying anything. Somehow, the certainty in Tonnison’s voice affected my doubts. I felt, all at once, less assured; though I was by no means convinced as yet.
+
+After a few moments’ silence, Tonnison rose, stiffly, and began to undress. He seemed disinclined to talk; so I said nothing; but followed his example.
+
+Somehow, as I rolled into my blankets, there crept into my mind a memory of the old gardens, as we had seen them. I remembered the odd fear that the place had conjured up in our hearts; and it grew upon me, with conviction, that Tonnison was right.
+
+It was very late when we rose---nearly midday; for the greater part of the night had been spent in reading the MS.
+
+Tonnison was grumpy, and I felt out of sorts. It was a somewhat dismal day, and there was a touch of chilliness in the air. There was no mention of going out fishing on either of our parts. We got dinner, and, after that, just sat and smoked in silence.
+
+Presently, Tonnison asked for the Manuscript: I handed it to him, and he spent most of the afternoon in reading it through by himself.
+
+It was while he was thus employed, that a thought came to me:---
+
+“What do you say to having another look at---?” I nodded my head down stream.
+
+Tonnison looked up. “Nothing!” he said, abruptly; and, somehow, I was less annoyed, than relieved, at his answer.
+
+After that, I left him alone.
+
+A little before teatime, he looked up at me, curiously.
+
+“Sorry, old chap, if I was a bit short with you just now;” (just now, indeed! he had not spoken for the last three hours) “but I would not go there again,” and he indicated with his head, “for anything that you could offer me. Ugh!” and he put down that history of a man’s terror and hope and despair.
+
+The next morning, we rose early, and went for our accustomed swim: we had partly shaken off the depression of the previous day; and so, took our rods when we had finished breakfast, and spent the day at our favorite sport.
+
+After that day, we enjoyed our holiday to the utmost; though both of us looked forward to the time when our driver should come; for we were tremendously anxious to inquire of him, and through him among the people of the tiny hamlet, whether any of them could give us information about that strange garden, lying away by itself in the heart of an almost unknown tract of country.
+
+At last, the day came, on which we expected the driver to come for us. He arrived early, while we were still abed; and, the first thing we knew, he was at the opening of the tent, inquiring whether we had had good sport. We replied in the affirmative; and then, almost in the same breath, we asked the question that was uppermost in our minds:---Did he know anything about an old garden, and a great ravine, and a lake, situated some miles away, down the river; also, had he ever heard of a great house thereabouts?
+
+No, he did not, and had not; yet, stay, he had heard a rumor, once upon a time, of a great, old house standing alone out in the wilderness; but, if he remembered rightly it was a place given over to the fairies; or, if that had not been so, he was certain that there had been something “quare” about it; and, anyway, he had heard nothing of it for a very long while. No, he could not remember anything particular about it; indeed, he did not know he remembered anything “at all, at all” until we questioned him.
+
+“Look here,” said Tonnison, finding that this was about all that he could tell us, “just take a walk ’round the village, while we dress, and find out something, if you can.”
+
+With a nondescript salute, the man departed on his errand; while we made haste to get into our clothes; after which, we began to prepare breakfast.
+
+We were just sitting down to it, when he returned.
+
+“It’s all in bed the lazy divvils is, sor,” he said, with a repetition of the salute, and an appreciative eye to the good things spread out on our provision chest, which we utilized as a table.
+
+“Oh, well, sit down,” replied my friend, “and have something to eat with us.” Which the man did without delay.
+
+After breakfast, Tonnison sent him off again on the same errand, while we sat and smoked. He was away some three-quarters of an hour, and, when he returned, it was evident that he had found out something. He had got into conversation with an ancient man of the village, who, probably, knew more---though it was little enough---of the strange house, than any other person living.
+
+The substance of this knowledge was, that, in the “ancient man’s” youth---and goodness knows how long back that was---there had stood a great house in the center of the gardens, where now was left only that fragment of ruin. This house had been empty for a great while; years before his---the ancient man’s---birth. It was a place shunned by the people of the village, as it had been shunned by their fathers before them. There were many things said about it, and all were of evil. No one ever went near it, either by day or night. In the village it was a synonym of all that is unholy and dreadful.
+
+And then, one day, a man, a stranger, had ridden through the village, and turned off down the river, in the direction of the House, as it was always termed by the villagers. Some hours afterward, he had ridden back, taking the track by which he had come, toward Ardrahan. Then, for three months or so, nothing was heard. At the end of that time, he reappeared, and gone straight down the bank of the river, in the direction of the House.
+
+Since that time, no one, save the porter chartered to bring over monthly supplies of necessaries from Ardrahan, had ever seen the stranger: and him, none had ever induced to talk; evidently, the porter had been well paid for his trouble.
+
+The years had moved onward, uneventfully enough, in that little hamlet; the porter making his monthly journeys, regularly.
+
+One day, the porter had appeared as usual on his customary errand. He had passed through the village without exchanging more than a surly nod with the inhabitants and gone on toward the House. Usually, it was evening before he made the return journey. On this occasion, however, he had reappeared in the village, a few hours later, in an extraordinary state of excitement, and with the astounding information, that the House had disappeared bodily, and that a stupendous pit now yawned in the place where it had stood.
+
+This news, it appears, so excited the curiosity of the villagers, that they overcame their fears, and marched \textit{en masse} to the place. There, they found everything, just as described by the carrier.
+
+This was all that we could learn. Of the author of the MS., who he was, and whence he came, we shall never know. His identity is, as he seems to have desired, buried forever.
+
+That same day, we left the lonely village of Kraighten. We have never been there since.
+
+Sometimes, in my dreams, I see that enormous pit, surrounded, as it is, on all sides by wild trees and bushes. And the noise of the water rises upward, and blends---in my sleep---with other and lower noises; while, over all, hangs the eternal shroud of spray.
+
+\clearpage % the main TeX file follows with \cleartoend

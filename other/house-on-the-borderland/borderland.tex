@@ -1,0 +1,244 @@
+% !TeX TS-program = LuaLaTeX
+% !TeX encoding = UTF-8
+\documentclass{novel} % v. 1.40.1 or later
+% Note that just about all of the setup uses defaults!
+\SetTitle{The House on the Borderland}
+% Abriged Version
+\SetAuthor{William Hope Hodgson}
+\SetPDFX[CGATSTR001]{X-1a:2001} % US Web Coated SWOP v2. Profile not embedded.
+
+\begin{document}
+
+% The House on the Borderland, abridged version
+% Version 2017/09/18
+% This is a demonstration of LuaLaTeX `novel' document class.
+
+
+% ----------------------------------------------------------------------------
+
+
+\frontmatter % Sets page to lowercase roman i.
+
+
+% Half-Title, page i
+\thispagestyle{empty}
+% \nbs is normal baseline skip.
+\vspace*{6\nbs} % Note asterisk. Without asterisk, does not force space, when at top of page.
+{\centering\charscale[1.4]{The House on the Borderland}\par}
+\cleartorecto % So that next page ii is blank.
+
+
+% Title, page iii
+\thispagestyle{empty}
+\vspace*{4\nbs}
+{\centering\charscale[4]{The House on}\par}
+\vspace{2\nbs} % Could use asterisk; doesn't matter mid-page, for this command.
+{\centering\charscale[4]{the Borderland}\par}
+\vspace{2\nbs}
+% In that era, books sometimes had elaborate subtitles, such as the following.
+% In our era, this is rarely done.
+\begin{center}
+\textit{From the Manuscript discovered in 1877\\
+by Messrs. Tonnison and Berreggnog\\
+in the Ruins that lie to the South of\\
+the Village of Kraighten, in the West of Ireland.\\
+Set out here, with Notes.}\par
+\end{center}
+\vspace{3\nbs}
+{\centering\charscale[2.5]{William Hope Hodgson}\par}
+\vspace{3\nbs}
+{\centering\textsc{ABRIDGED VERSION 2017/09/18}\par}
+\vfill % forces remainder to bottom of page
+{\centering A LuaLaTeX Typesetting Demonstration\par}
+\clearpage
+
+
+% Copyright, page iv
+\thispagestyle{empty}
+\null
+\vfill
+\begin{legalese}
+The main text of \textit{The House on the Borderland}, by William Hope Hodgson, is in the Public Domain of the United States of America because it was published in the U.S.A. prior to January 1, 1923. It is in the Public Domain of its creator’s home jurisdiction of the United Kingdom, because more than seventy years have passed since death of its creator in \lnum{1918}.\par
+\null
+Accompanying Cover Artwork, Foreword, and (to the extent covered by copyright law) book design and TeX markup, are Copyright ©\lnum{2017} Anonymous Editor, located in California, United States of America. These copyrights are hereby licensed under the LaTeX Project Public License, v. \lnum{1.3c}.\par
+\null
+This is a work of fiction. Places, events, and characters were created in the imagination of William Hope Hodgson.\par
+\null
+\allsmcp{ABRIDGED VERSION 2017/09/18.} This is a demonstration file for the LuaLaTeX \textit{novel} document class. It is not an authoritative edition. Substantial portions of the original work have been omitted, and portions of the included work have been edited.\par
+\null
+\allsmcp{DISCLAIMER:} Although the resulting PDF files are labeled as print-ready, there is \allsmcp{NO WARRANTY, EXPRESS OR IMPLIED} that they are actually suitable for printing or other publication.\par
+\end{legalese}
+\clearpage
+
+
+% Dedication, page v.
+% Although the poem, Shoon of the Dead, appears to be part of the original Dedication,
+% I have moved it to a separate Epigraph.
+% "Shoon" is an archaic word for "shoes."
+\thispagestyle{empty}
+\vspace*{6\nbs}
+{\centering\charscale[1.2]{To My Father}\par}
+\vspace{0.5\nbs}
+{\centering\textit{(Whose feet tread the lost aeons)}\par}
+\clearpage % Not \cleartorecto here, because Epigraph appears on verso.
+
+
+% Epigraph, page vi
+% This poem was apparently part of the original Dedication.
+% I have makde it a separate Epigraph, due to its length,
+% and also as a demonstration of how an Epigraph may sometimes be used verso instead of recto,
+% particularly when facing a table of contents.
+\thispagestyle{empty}
+% Although the header does not yet appear, I reset the head texts now, lest they be forgotten.
+\SetVersoHeadText{\textsc{William\, Hope\, Hodgson}}
+\SetRectoHeadText{\textsc{The\, House\, on\, the\, Borderland}}
+\vspace*{6\nbs}
+\begin{adjustwidth}{7em}{0em}
+\noindent Open the door,\\
+And listen!\\
+Only the wind’s muffled roar,\\
+And the glisten\\
+Of tears ’round the moon.\\
+And, in fancy, the tread\\
+Of vanishing shoon---\\
+Out in the night with the Dead.\par
+\null
+\noindent Hush! And hark\\
+To the sorrowful cry\\
+Of the wind in the dark.\\
+Hush and hark, without murmur or sigh,\\
+To shoon that tread the lost aeons:\\
+To the sound that bids you to die.\\
+Hush and hark! Hush and Hark!\\
+Shoon of the Dead\par
+\end{adjustwidth}
+\clearpage
+
+
+% Table of Contents, page vii
+\thispagestyle{empty}
+\vspace*{2\nbs}
+{\centering\charscale[1.4]{Contents}\par}
+\null
+\begin{toc}[0]{3em}
+\tocitem*{\textsc{Foreword}}{ix}
+\vspace{0.5\nbs}
+\tocitem*{\textsc{Author's Note}}{xi}
+\vspace{0.5\nbs}
+\tocitem*{\textsc{Introduction.} The Finding of the Manuscript}{1}
+\vspace{0.5\nbs}
+\tocitem*[1]{The Plain of Silence}{13}
+\tocitem*[2]{The House in the Arena}{18}
+\tocitem*[3]{The Earth}{24}
+\tocitem*[4]{The Thing in the Ravine}{27}
+\tocitem*[5]{The Cellars}{33}
+\tocitem*[6]{The Subterranean Pit}{37}
+\tocitem*[7]{The Trap in the Great Cellar}{44}
+\tocitem*[8]{The Sea of Sleep}{47}
+\tocitem*[9]{The Noise in the Night}{51}
+\tocitem*[10]{The Awakening}{60}
+\tocitem*[11]{The Slowing Rotation}{65}
+\tocitem*[12]{The Green Star}{71}
+\tocitem*[13]{The End of the Solar System}{78}
+\tocitem*[14]{The Celestial Globes}{82}
+\tocitem*[15]{The Dark Sun}{85}
+\tocitem*[16]{The Dark Nebula}{89}
+\tocitem*[17]{Pepper}{93}
+\tocitem*[18]{The Footsteps in the Garden}{94}
+\tocitem*[19]{The Thing From the Arena}{97}
+\tocitem*[20]{The Luminous Speck}{104}
+\vspace{0.5\nbs}
+\tocitem*{\textsc{Conclusion}}{107}
+\end{toc}
+\cleartorecto % So that next page viii is blank
+
+
+% Foreword, pages ix-x
+\thispagestyle{empty} % See also the use of this command at end of 2-page Foreword.
+% A Preface or Foreword does not have author/title in the header.
+% If it goes on for more than a page, or sometimes more than 2 pages,
+% then the header will show Preface or Foreword verso/recto.
+% Although this was not necessary in this document, due to having
+% a short Foreword, it is general practice for longer material.
+% In that case, use \SetVersoHeadText and \SetRectoHeadText.
+% Then, remember to change them again!
+\begin{ChapterStart}
+\null\null
+\ChapterTitle{Foreword}
+\end{ChapterStart}
+This abridged edition of \textit{The House on the Borderland} demonstrates the typesetting capabilities of LuaLaTeX, using the \textit{novel} document class. It is not an exact transcription of the original text, and should not be used as a reference for critical study.\par
+Hodgson’s complete novel has several early chapters dealing with swine-creatures, who lurk in the Pit near his house. In the interest of keeping this edition brief, I have removed most of the adventures involving those creatures, leaving only a brief, early encounter. I have kept the one essential swine-thing that appears in the fantastic dimension and materialize later in the story. Although this removes some of the action adventure, I believe that the remaining story is sufficiently coherent.\par
+The name “Pit” was originally used to mean both the large ravine, and the deep subterranean pit that lies underneath the house and has an entrance toward the ravine. For greater clarity, I have changed “Pit” to “ravine” when it does not refer to the subterranean pit, or to the demolished remains.\par
+The Recluse was accompanied by his elderly sister, who appears from time to time in the original story, usually as a background element. I have removed her, and all references to her and her cat, as they were not essential. I believe the result places tighter focus in the Recluse and his frame of mind.\par
+The original has portions that were supposed to be damaged or illegible, due to weathering of the manuscript prior to its discovery. Fragments were printed, along with notes to that effect. I did not think that the story was in any way advanced by their presence, other than as a pretense, so I removed them.\par
+The poem “Grief” appeared at the end of the plain text version. I do not know its position or purpose in the original print. Thus, I have taken the liberty of placing it at the end of the chapter where the Recluse first mentions his lost love, as if it were part of the diary entry there. I believe it is consistent with the tone and flow at that point.\par
+In Hodgson’s era, toward the tail end of Romanticism, many words were often used when few would have sufficed; an emotion rarely passed without being re-stated. From time to time throughout the book, I have deleted extraneous or redundant material, for the sake of directness and typeset appearance. The deletions may have been a few words, paragraphs, or entire chapters. In the remaining material, my own editing consists largely of necessary transitions, clarifications, and grammatical corrections due to splicing.\par
+\null
+\stake\hfill---Anonymous Editor\par
+\stake\hfill California, September 2017\par
+\thispagestyle{empty} % Retroactively blanks the header for this second page of Foreword.
+\cleartorecto
+
+
+% Author's Note (WHH), page xii.
+% This page was "Author's Introduction to the Manuscript" in the plain-text version that I used.
+% I have not seen the original book.
+% It is somewhat problematic, because it is signed by WHH as author, yet it is fictional.
+% Since it pretends to be a factual note by Hodgson, concerning material that came into his hands from someone else, I have decided to place it front matter, and re-title it as "Author's Note." This was a judgement call.
+% At the time I write this, extra inter-word space must be added when small caps are used in headers. This can be achieved using \, to add a half-space. In the future, this behavior may change. It is not a property of novel package, but of an included package.
+\begin{ChapterStart}[7]
+\null\null
+\ChapterTitle{Author’s Note}
+\end{ChapterStart}
+Many are the hours in which I have pondered upon the story that is set forth in the following pages. I trust that my instincts are not awry when they prompt me to leave the account, in simplicity, as it was handed to me.\par
+And the MS. itself---You must picture me, when first it was given into my care, turning it over, curiously, and making a swift, jerky examination. A small book it is; but thick, and all, save the last few pages, filled with a quaint but legible handwriting, and writ very close. I have the queer, faint, pit-water smell of it in my nostrils now as I write, and my fingers have subconscious memories of the soft, “cloggy” feel of the long-damp pages.\par
+I read, and, in reading, lifted the Curtains of the Impossible that blind the mind, and looked out into the unknown. Amid stiff, abrupt sentences I wandered; and, presently, I had no fault to charge against their abrupt tellings; for, better far than my own ambitious phrasing, is this mutilated story capable of bringing home all that the old Recluse, of the vanished house, had striven to tell.\par
+Of the simple, stiffly given account of weird and extraordinary matters, I will say little. It lies before you. The inner story must be uncovered, personally, by each reader, according to ability and desire. And even should any fail to see, as now I see, the shadowed picture and conception of that to which one may well give the accepted titles of Heaven and Hell; yet can I promise certain thrills, merely taking the story as a story.\par
+\null
+\stake\hfill---William Hope Hodgson\par
+\stake\hfill December 17, 1907\par
+
+
+% -------------------------------------------------------------------------------------
+
+
+\mainmatter % Includes \cleartorecto from novel v. 1.40.1.
+
+
+% Advantage of components: Can compile in pieces during editing.
+% Use \input, not \include.
+% Comment-out lines that are not used during partial compilation.
+\input{borderland-components/borderland-00-introduction.txt}
+\input{borderland-components/borderland-01.txt}
+\input{borderland-components/borderland-02.txt}
+\input{borderland-components/borderland-03.txt}
+\input{borderland-components/borderland-04.txt}
+\input{borderland-components/borderland-05.txt}
+\input{borderland-components/borderland-06.txt}
+\input{borderland-components/borderland-07.txt}
+\input{borderland-components/borderland-08.txt}
+\input{borderland-components/borderland-09.txt}
+\input{borderland-components/borderland-10.txt}
+\input{borderland-components/borderland-11.txt}
+\input{borderland-components/borderland-12.txt}
+\input{borderland-components/borderland-13.txt}
+\input{borderland-components/borderland-14.txt}
+\input{borderland-components/borderland-15.txt}
+\input{borderland-components/borderland-16.txt}
+\input{borderland-components/borderland-17.txt}
+\input{borderland-components/borderland-18.txt}
+\input{borderland-components/borderland-19.txt}
+\input{borderland-components/borderland-20.txt}
+\input{borderland-components/borderland-21-conclusion.txt}
+
+
+% No back matter. Indeed, back matter is very rare in faction, or even in nonfiction.
+% If this book had endnotes or Appendix, then it would be in main matter,
+% with continued Arabic page numbering.
+
+
+\cleartoend % Ensures final page is blank verso, possibly preceded by blank recto.
+
+
+\end{document}
+

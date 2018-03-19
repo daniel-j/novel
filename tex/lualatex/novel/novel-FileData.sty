@@ -1,6 +1,6 @@
 %%
-%% This is file `novel-FileData.sty', part of class `novel'.
-%% Copyright 2017 Robert Allgeyer.
+%% This is file `novel-FileData.sty', part of `novel' document class.
+%% Copyright 2017-2018 Robert Allgeyer.
 %%
 %% 
 %% This file may be distributed and/or modified under the
@@ -13,22 +13,42 @@
 %% 
 %%
 \ProvidesFile{novel-FileData.sty}%
-[2018/01/14 v1.46.2 LaTeX file (File Data settings)]
+[2018/03/16 v1.50pre1 LaTeX file (File Data settings)]
 %% 
 
 
+%% File Data, also known as PDF Metadata, is non-printing identifying
+%%   information in the PDF file. Some or all of it can be read by various
+%%   PDF reader software.
+%% PDF/X is also considered File Data, as it concerns the structure of the
+%%   file and its relationaship to printers, rather than its visible content.
+%% In principle, you could set the title as empty. But in that case, no other
+%%   File Data will be included, and you cannot have PDF/X compliance.
+%% There are many more kinds of File Data that a PDF can include, such as
+%%   subject and keywords. But `novel' is specifically for printing to paper,
+%%   not for electronic documents that would be found by database search.
+%%   Thus, there is no provision for such additional File Data.
+%% When you sign up with a print service, you will provide subject, keywords,
+%%   and description directly to their database, rather than in the PDF.
+%% No need to set copyright in metadata, since your file is only for use by
+%%   the print service, and is not being distributed as a PDF e-book.
+%%   Your copyright notice is on the printed page, where it should be.
+%% Particularly note that your print service is NOT the publisher: YOU are!
+
+
 %% FILE DATA (PDF Metadata)
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %%
 % \title{} or \SetTitle{}
 % Copied to File Data at end of Preamble, unless not set.
 % Provides \theTitle anywhere.
 % If not set, PDF cannot conform to PDF/X.
+\newif \if@HasTitle % true if \SetTitle or \title used
 \gdef\SetTitle#1{\gdef\@title{#1}} % for stylistic consistency
 \gdef\title#1{\gdef\@title{#1}}
 \gdef\thetitle{\@title} % for convenience
 \gdef\theTitle{\@title}
-\SetTitle{}
+\SetTitle{IMPORTANT: Provide Book Title} % Default v. 1.46.1. Formerly empty.
 %
 % \author{} or \SetAuthor{}
 % Copied to File Data at end of preamble, unless not set.
@@ -51,41 +71,32 @@
 % \SetApplication{}  (rarely used)
 % Also known as CreatorTool.
 % Name of the software that created the source document.
-% Changing this does not change the software, it just changes the name.
+% Changing this does not change the software, it just changes the information.
 % Normally leave as default, but can change if urgent.
 \gdef\SetApplication#1{\gdef\@novelApplication{#1}}
 \SetApplication{LuaLaTeX with novel and microtype} % default
 %
 % \SetProducer{}  (rarely used)
-% Name of the software that compiles to source to make PDF.
-% Changing this does not change the software, it just changes the name.
+% Name of the software that compiles the source to make PDF.
+% Changing this does not change the software, it just changes the information.
 % Normally leave as default, but can change if urgent.
 \gdef\SetProducer#1{\gdef\@novelProducer{#1}}
 \SetProducer{LuaLaTeX with novel-pdfx and hyperref} % default
-%
-% Although some other data fields could have been added,
-%   they do not pertain to fiction, especially if your book is print-on-demand.
-% For example, subject, keywords and description are not read from PDF metadata,
-%   you enter them in a form, when you obtain the ISBN.
-% No need to set copyright in metadata, since your book is only for use by
-%   the print service, and is not being distributed as a PDF e-book.
-%   Your copyright notice is on the printed page, where it should be.
-% Particularly note that your print service is NOT the publisher: YOU are!
 %
 %% End file data.
 
 
 %% SET PDF/X ARGUMENTS
-%% -----------------------------------------------------------------------------
-%% Arguments: [embed-icc or no-embed]{compliance standard}{output intent}
-%% Default option is no-embed.
-%% When this command is not used, it is equivalent to compliance `off'.
+%% ----------------------------------------------------------------------------
+%% \SetPDFX[Output Intent]{compliance standard} % No embed *.icc. Default.
+%% \SetPDFX*[Output Intent]{compliance standard} % Embed *.icc.
+%% Default up to and including v. 1.46: \SetPDFX{off}
+%% Default as of v. 1.46.1: \SetPDFX[CGATSTR001]{X-1a:2001}
 %
-\newif \if@chosenComplianceOK
-\newif \if@chosenEmbedOK
-\newif \if@gotConformance
-\newif \if@noembedicc \@noembedicctrue
-\newif \ifpdfx@isOFF \pdfx@isOFFtrue
+% \@pdfxSEToff refers to the setting, rather than whether it really is off.
+% \@pdfxISoff refers to whether it really is off.
+\newif \if@pdfxSEToff % Prior to v. 1.46.1, was \ifpdfx@isOFF.
+\newif \if@pdfxISoff % New in v. 1.46.1.
 % These will get meaningful info when an output intent file is loaded:
 \gdef\@OIidentifier{}
 \gdef\@OIcondition{}
@@ -94,76 +105,103 @@
 \gdef\@OIprofile{}
 %
 %%
+\newif \if@HasConformance
+\newif \if@EmbedICC
 \gdef\SetPDFX{\@ifstar\@setpdfxst\@setpdfxns}
 \newcommand\@setpdfxst[2][CGATSTR001]{
-  \global\@noembediccfalse
+  \global\@EmbedICCtrue
   \@setpdfx{#1}{#2}
 }
 \newcommand\@setpdfxns[2][CGATSTR001]{
-  \global\@noembedicctrue
+  \global\@EmbedICCfalse
   \@setpdfx{#1}{#2}
 }
 %
 \newcommand\@setpdfx[2]{
+  \@tempTFfalse
   \ifthenelse{\equal{#2}{off}}{
-    \global\pdfx@isOFFtrue
-    \@chosenComplianceOKtrue
+    \@tempTFtrue
+    \global\@pdfxSETofftrue
+    \global\@pdfxISofftrue
   }{}
   \ifthenelse{\equal{#2}{X-1a:2001}}{
-    \pdfx@isOFFfalse
-    \@chosenComplianceOKtrue
+    \@tempTFtrue
+    \global\@pdfxSETofffalse
+    \global\@pdfxISofffalse
     \gdef\@PDFversion{PDF/X-1}
     \gdef\@PDFXversion{PDF/X-1a:2001}
     \gdef\@PDFXconformance{PDF/X-1a:2001}
-    \global\@gotConformancetrue
+    \global\@HasConformancetrue
     \global\pdfminorversion=3
   }{}
   \ifthenelse{\equal{#2}{X-1a:2003}}{
-    \pdfx@isOFFfalse
-    \@chosenComplianceOKtrue
+    \@tempTFtrue
+    \global\@pdfxSETofffalse
+    \global\@pdfxISofffalse
     \gdef\@PDFversion{PDF/X-1}
     \gdef\@PDFXversion{PDF/X-1a:2003}
     \gdef\@PDFXconformance{PDF/X-1a:2003}
-    \global\@gotConformancetrue
+    \global\@HasConformancetrue
     \global\pdfminorversion=3
   }{}
   \ifthenelse{\equal{#2}{X-3:2002}}{
-    \pdfx@isOFFfalse
-    \@chosenComplianceOKtrue
+    \@tempTFtrue
+    \global\@pdfxSETofffalse
+    \global\@pdfxISofffalse
     \gdef\@PDFversion{PDF/X-3}
     \gdef\@PDFXversion{PDF/X-3:2002}
     \global\pdfminorversion=3
   }{}
   \ifthenelse{\equal{#2}{X-3:2003}}{
-    \pdfx@isOFFfalse
-    \@chosenComplianceOKtrue
+    \@tempTFtrue
+    \global\@pdfxSETofffalse
+    \global\@pdfxISofffalse
     \gdef\@PDFversion{PDF/X-3}
     \gdef\@PDFXversion{PDF/X-3:2003}
     \global\pdfminorversion=4
   }{}
-  \if@chosenComplianceOK\else
+  \if@tempTF\else
     \ClassError{novel}{Bad compliance argument for \string\SetPDFX}%
-     {Choose: off, X-1a:2001, X-1a:2003, X-3:2002, X-3:2003.^^J}%
+     {Choose: X-1a:2001, X-1a:2003, X-3:2002, X-3:2003, off.}%
   \fi
-  %
-  \ifpdfx@isOFF\else % Output Intent ignored if compliance is `off'.
-    % Grab the file that defines the output intent information:
-    \makeatletter % Apparently needed when non-*.sty is input within a command!
-    \IfFileExists{novel-#1.clo}{\input{novel-#1.clo}}{
-      \ClassError{novel}{Bad Output Intent argument for \string\SetPDFX}%
-       {Use filename (without~extension) of a file with *.clo~extension. ^^J%
-        Filename must begin with novel- ^^J%
-        The file must be where TeX can find it. Or use standard code: ^^J%
-        CGATSTR001, FOGRA39, JC200103.}%
-    }
-    \makeatother % back to usual
-  \fi
+  % Grab the file that defines the Output Intent information:
+  % File name format: novel-YourIntent.clo
+  % Setting: \SetPDFX[YourIntent]{compliance}
+  % Contents of file: See the above included Output Intent data.
+  \StrDel{#1}{\space}[\NPDFXOINS]
+  \IfFileExists{novel-\NPDFXOINS.clo}{\input{novel-\NPDFXOINS.clo}}{%
+    \ClassError{novel}{Bad Output Intent for \string\SetPDFX}%
+     {Use filename (without extension) of a file with *.clo extension. ^^J%
+      Filename must begin with novel- ^^J%
+      Example: File novel-FOGRA39.clo is called as [FOGRA39]. ^^J%
+      The file must be where TeX can find it. ^^J%
+      For contents of the file, see package documentation.}%
+   }{}%
 } % end \@setpdfx
 %
+\SetPDFX[CGATSTR001]{X-1a:2001} % Default, from v. 1.46.1. Formerly off.
 %%
 
 
 
+%% Neutralize file data settings:
+\gdef\@DisableFileDataSettings{% called by `novel.cls' \AtBeginDocument
+  \let\title\relax
+  \let\author\relax
+  \let\subtitle\relax
+  \LetLtxMacro\SetAuthor\relax
+  \LetLtxMacro\SetTitle\relax
+  \LetLtxMacro\SetSubtitle\relax
+  \LetLtxMacro\SetApplication\relax
+  \LetLtxMacro\SetProducer\relax
+  \LetLtxMacro\SetPDFX\relax
+}% end \@DisableFileDataSettings
+%%
+
+
+
+%%
+\endinput
 %%
 %% End of file `novel-FileData.sty'.
 

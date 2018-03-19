@@ -1,0 +1,421 @@
+%%
+%% This is file `novel-Fonts.sty', part of `novel' document class.
+%% Copyright 2017-2018 Robert Allgeyer.
+%%
+%% 
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%%
+\ProvidesFile{novel-Fonts.sty}%
+[2018/03/16 v1.50pre1 v1.50 LaTeX file (font settings and defaults)]
+%%
+
+
+%% Package `fontspec' was previously loaded by `\novel.cls'.
+
+
+%% INITIALIZATION
+%% ----------------------------------------------------------------------------
+% Fonts are chosen in Preamble using \Set commands. But they are not activated
+%   until \AtEndPreamble. Until then, the basic TeX font families must be
+%   temporarily specified, so that certain packages can load without compliant.
+% These are Latin Modern fonts, which are Open Type and will work, but are not
+%   stylistically suitable for works of fiction. The only reason they are
+%   used here, is because just about every TeX installation has them.
+\gdef\rmdefault{lmr} % Latin Modern Roman
+\gdef\sfdefault{lmss} % Latin Modern Sans
+\gdef\ttdefault{lmtt} % Latin Modern Mono
+% The following might become unnecessary if fontspec adds the capability to
+% disable keys. For now: Color and Opacity cannot be used as font features,
+%   for a black/white printed book. Alas, fontspec over-rules xcolor.
+% So, this code over-rules fontspec:
+\gdef\@CheckFontspecFeatures#1{%
+  \@tempTFfalse%
+  \IfSubStr{#1}{Color}{\@tempTFtrue}{}%
+  \IfSubStr{#1}{Colour}{\@tempTFtrue}{}%
+  \IfSubStr{#1}{color}{\@tempTFtrue}{}%
+  \IfSubStr{#1}{colour}{\@tempTFtrue}{}%
+  \IfSubStr{#1}{Opacity}{\@tempTFtrue}{}%
+  \IfSubStr{#1}{opacity}{\@tempTFtrue}{}%
+  \if@tempTF%
+    \ClassError{novel}{Color and Opacity forbidden as font features}%
+    {You defined a font, or added a font feature, with Color or Opacity. ^^J%
+     That is disallowed in `novel' class.}%
+  \fi%
+} % end \@CheckFontspecFeatures
+% Default font features (will be changed later):
+\defaultfontfeatures{} % reset
+\defaultfontfeatures{SmallCapsFeatures={Renderer=Basic},Ligatures=TeX,} % all
+% Main and sans fonts: kerning, ligatures, and OldStyle numbers if available:
+\defaultfontfeatures[\rmfamily,\sffamily]%
+  {Kerning=On,Numbers=OldStyle,Ligatures=Common}
+% Fake \microtypesetup until package loaded by \@ActivateFonts, \AtEndPreamble:
+\newif \if@MicrotypeSet
+\gdef\microtypesetup#1{
+  \gdef\@mymicrotypesetup{#1} % used in novel-Fonts.sty
+  \global\@MicrotypeSettrue
+}%
+%% end initialization
+
+
+%% SETTINGS FOR PARENT FONT, DESCENDANTS, OTHERS
+%% ----------------------------------------------------------------------------
+% In `novel' you do not \usepackage{font name} or \RequirePackage{font name}.
+%   You do not directly write \renewcommand\rmdefault{font name}.
+%   You do not directly use \setmainfont[features]{font name}.
+% Instead, `novel' requires a `parent font' to be set. The parent font is
+%   the ancestor of the main (normal) font, and several other descendants.
+% The parent font features, if any, should be a minimal set that will be
+%   applied to all descendants. For example, if the font has an an alternate
+%   style for a particular letter, and you want to use it for all descendants,
+%   then you would spedify that feature for the parent font.
+% For now, these settings are merely stored. Later, \AtEndPreamble,
+%   the main (normal) font inherits the settings for the parent font.
+%   Other descendants inherit those settings, with their own features added.
+%   Anything not set by you, will have a suitable default set automatically.
+\newif \if@ParentFontSet
+\gdef\parentfontfeatures{}
+\gdef\parentfontname{}
+\DeclareDocumentCommand \SetParentFont { O{} m O{} } {% from version 1.1.
+  \@CheckFontspecFeatures{#1,#3}
+  \gdef\parentfontfeatures{#1,#3}
+  \gdef\parentfontname{#2}
+  \global\@ParentFontSettrue
+}%
+\DeclareDocumentCommand \SetMasterFont { O{} m O{} } {% DEPRECATED
+  \@CheckFontspecFeatures{#1,#3}
+  \gdef\parentfontfeatures{#1,#3}
+  \gdef\parentfontname{#2}
+  \global\@ParentFontSettrue
+}%
+%
+% In a work of fiction, you probably do not need a sans or mono font.
+%   But TeX expects you do have them. So, \AtEndPreamble, Libertinus Sans
+%   and Libertinus Mono will be set as defaults, if you have those fonts.
+%   Otherwise, Latin Modern Sans and Mono will be used, but they are not
+%   well-suited to works of fiction.
+% If you wish to set your own sans and mono fonts, do it using standard
+%   `fontspec' syntax. There is no special method in `novel' class:
+%   \setsansfont[features]{font name}
+%   \setmonofont[features]{font name}
+%
+% The headfont is used in headers and footers:
+\newif \if@HeadFontSet
+\gdef\@headfontfeatures{}
+\gdef\@headfontname{}
+\DeclareDocumentCommand \SetHeadFont { O{} m O{} } {% revised v 1.40.3
+  \@CheckFontspecFeatures{#1,#3}
+  \gdef\@headfontfeatures{Numbers=Lining,%
+    WordSpace=\@looseheadword,#1,#3}% loose letters added in head/foot styles
+  \gdef\@headfontname{#2}
+  \global\@HeadFontSettrue
+}%
+% The chapter font is used by the \ChapterTitle{} command:
+\newif \if@ChapterFontSet
+\gdef\@chapterfontfeatures{}
+\gdef\@chapterfontname{}
+\DeclareDocumentCommand \SetChapterFont { O{} m O{} } {%
+  \@CheckFontspecFeatures{#1,#3}
+  \gdef\@chapterfontfeatures{Numbers=Lining,#1,#3}
+  \gdef\@chapterfontname{#2}
+  \global\@ChapterFontSettrue
+}%
+% The subch font is used by the \ChapterSubtitle{} command:
+\newif \if@SubchFontSet
+\gdef\@subchfontfeatures{}
+\gdef\@subchfontname{}
+\DeclareDocumentCommand \SetSubchFont { O{} m O{} } {%
+  \@CheckFontspecFeatures{#1,#3}
+  \gdef\@subchfontfeatures{Numbers=Lining,#1,#3}
+  \gdef\@subchfontname{#2}
+  \global\@SubchFontSettrue
+}%
+% The deco font is used for decorations and acronyms.
+% It must be NovelDeco.otf or a font based on NovelDeco.otf. No other!
+\newif \if@DecoFontSet
+\newif \if@HasDecoFont
+\gdef\@decofontfeatures{}
+\gdef\@decofontname{}
+\DeclareDocumentCommand \SetDecoFont { O{} m O{} } {%
+  \@CheckFontspecFeatures{#1,#3}
+  \gdef\@decofontname{#2}
+  \global\@DecoFontSettrue
+  \global\@HasDecoFonttrue
+  \newfontface\decofont[#1,#3]{#2}
+}%
+% For syntax consistency:
+\ExplSyntaxOn
+\cs_new_eq:NN \NewFontFamily \newfontfamily
+\cs_new_eq:NN \NewFontFace \newfontface
+\cs_new_eq:NN \SetSansFont \setsansfont
+\cs_new_eq:NN \SetMonoFont \setmonofont
+\cs_new_eq:NN \SetMathFont \setmathfont
+\cs_new_eq:NN \AddFontFeatures \addfontfeatures
+\cs_new_eq:NN \AddFontFeature \addfontfeatures
+\ExplSyntaxOff
+% New in v. 1.50: built-in drop caps.
+\gdef\@DropCapFont{} % until actually set, will be default main font
+\gdef\@DropCapColorModel{} % until actually set, using `xcolor' syntax
+\gdef\@DropCapColorValue{black} % until actually set, using `xcolor' syntax
+\gdef\NDC@charstyle{}
+\ExplSyntaxOn
+% The argument to \SetDropCapFont is a user-defined `fontspec' font command.
+% Example syntax, using `fontspec' in LuaLaTeX:
+%   Create font command, such as: \newfontface\mynicefont[options]{fontname}
+%   Then: \SetDropCapFont{\mynicefont}
+\newif \if@HasDropCapFont
+\DeclareDocumentCommand \SetDropCapFont { m } {%
+  \@HasDropCapFonttrue%
+  \gdef\@DropCapFont{#1}%
+  \gdef\NDC@charstyle{%
+    #1%
+    \if@HasDropCapColor%
+      \ifthenelse{\equal{\@DropCapColorModel}{}}{%
+        \color{\@DropCapColorValue}%
+      }{%
+        \color[\@DropCapColorModel]{\@DropCapColorValue}%
+      }%
+    \fi%
+  }%
+}%
+% The argument(s) to \SetDropCapColor use `xcolor' syntax:
+%   [colormodel]{value} OR {colorname}
+\newif \if@HasDropCapColor
+\DeclareDocumentCommand \SetDropCapColor { O{} m } {%
+  \if@graytext%
+    \@setdropcapcolor[#1]{#2}%
+  \else%
+    \ClassWarning{novel}{^^J\string\SetDropCapColor~ignored~unless~ ^^J%
+      `graytext'~class~option. ^^J}%
+  \fi%
+}% end \SetDropCapColor
+\DeclareDocumentCommand \@setdropcapcolor { O{} m } {%
+  \global\@HasDropCapColortrue%
+  \gdef\@DropCapColorModel{#1}%
+  \gdef\@DropCapColorValue{#2}%
+  \renewcommand\NDC@charstyle{%
+    \@DropCapFont%
+    \ifthenelse{\equal{\@DropCapColorModel}{}}{%
+      \color{\@DropCapColorValue}%
+    }{%
+      \color[\@DropCapColorModel]{\@DropCapColorValue}%
+    }%
+  }%
+}% end \@setdropcapcolor
+% for convenience:
+\cs_new_eq:NN \SetDropcapFont \SetDropCapFont
+\cs_new_eq:NN \SetDropcapColor \SetDropCapColor
+\ExplSyntaxOff
+%
+% A default math font (which presumably you do not need) is chosen here.
+% You may over-ride using `unicode-math' syntax \setmathfont in Preamble.
+\IfFontExistsTF{Libertinus Math}{ % stylistically consisent with novel text
+  \setmathfont[BoldFont={libertinusmath-regular.otf}]%
+    {libertinusmath-regular.otf}
+}{
+  \IfFontExistsTF{Latin Modern Math}{}{% default for package `unicode-math'
+  }{ % The following hack allows you to proceed without a real math font,
+     %   (but then you cannot print math):
+    \IfFontExistsTF{NovelDeco.otf}{%
+      \setmathfont[BoldFont={NovelDeco.otf}]{NovelDeco.otf} % fake math feature
+      \ClassWarning{novel}{^^JIgnore this if you used \string\setmathfont. ^^J%
+       Did not find suitable default math font. Used NovelDeco.otf. ^^J%
+       But NovelDeco does not have real math symbols. ^^J%
+       Math notation will print incorrectly. No problem if no math. ^^J}%
+    }{}% if no NovelDeco, do nothing here
+  }
+}%
+%% end settings for parent font and others.
+
+
+%% CREATING NEW FONT FONT FEATURES
+%% ----------------------------------------------------------------------------
+% \CreateFontFeature{substitutions}{feature code}
+% Problem: Font has one or more alternate glyphs that you would like to use,
+%   but they are not listed in a feature set for the font.
+% Solution: Create your own feature set, with \CreateFontFeature. The created
+%   feature may then be used like a real feature, in any font definition.
+% The substitutions are a comma-separated list, char=char.alt and so forth.
+% For example, the following substitutions are syntactically OK:
+%   emdash=emdah.alt, one=one.rev, ntilde=ntilde.03
+% If a substitution is not available in a particular font, it is ignored.
+% You have to look at the font in a font editor, to know what is available.
+% It is possible to make silly substitutions, such as a=b, five=three without
+%   throwing an error, unless your code causes a cycle.
+% The most useful application of this command is to reach alternate emdash,
+%   and alternate oldstyle one. Not every font has these.
+% The feature code is a 4-character pseudo- Open Type code, otherwise unused.
+% For example, the feature code might be myfs (my fake substitution)
+%   but it cannot be a pre-defined code such as lnum or smcp. It may be
+%   a style set such as ss03 if you are sure that the font in question
+%   do not already have ss03 (but this is taking a chance).
+% Once defined, you may use it like this (for example):
+%   \SetParentFont[RawFeature=+myfs]{fontname}
+%   \NewFontFamily\myfake[RawFeature=+myfs]{fontname}
+%   In the document body: {\addfontfeature{myfs} text}
+\DeclareDocumentCommand \CreateFontFeature { m m } {%
+  \IfEndWith{#1}{,}{\StrGobbleRight{#1}{1}[\@fakezero]}{\def\@fakezero{#1}}
+  \def\@fakeone{"\@fakezero"}
+  \StrSubstitute{\@fakeone}{=}{"]="}[\@fakeone]
+  \StrSubstitute{\@fakeone}{,}{",\space["}[\@fakeone]
+  \directlua{
+    fonts.handlers.otf.addfeature {
+      name = "#2",
+      type = "substitution",
+      data = {\@fakeone},
+    }
+  }
+} %
+%% end \CreateFontFeature. Above thanks to fontspec 2016.
+
+
+%% ACTIVATE FONTS \AtEndPreamble
+%% ----------------------------------------------------------------------------
+\gdef\@ActivateFonts{% called by `novel.cls' \AtEndPreamble
+  % We begin with the parent font:
+  \if@coverart %%%%%
+    \SetParentFont{NovelDeco.otf} %%%%%
+  \fi %%%%%
+  \if@ParentFontSet\else
+    \ifthenelse{\equal{\rmdefault}{lmr}}{%
+      % At this point, if \rmdefault is lmr, it means the user did not choose
+      %   a different font. Then, Libertinus Serif or Latin Modern Roman
+      %   will be automatically set as \rmdefault, if available:
+      \IfFontExistsTF{Libertinus Serif}{ % preferred default
+        \SetParentFont[%
+          BoldFont=libertinusserif-semibold.otf,%
+          BoldItalicFont=libertinusserif-semibolditalic.otf,%
+        ]{Libertinus Serif}
+      }{ % backup default, if Libertinus Serif not available:
+        \SetParentFont[%
+          SmallCapsFont={Latin Modern Roman Caps}%
+          ]{Latin Modern Roman}% only because it comes with LaTeX
+        \let\scshape\oldscshape % or small caps won't work
+        \let\smcp\oldscshape % or small caps won't work
+      }%
+    }{% However, if \rmdefault is not lmr, it means the user chose the font.
+      % If the choice was made via \SetParentFont, no problem. But if done by
+      %   incorrect method such as \setmainfont, \renewcommand\rmdefault,
+      %   or \usepackage{fontname}, an error is thrown:
+      \if@ParentFontSet\else
+        \ClassError{novel}{Wrong command used to set main font}%
+        {You tried to define the main document font the wrong way. ^^J%
+        Bad: \string\renewcommand\string\rmdefault\{font\}\space ^^J%
+        Bad: \string\usepackage\{font package\}\space ^^J%
+        Bad: \string\RequirePackage\{font package\}\space ^^J%
+        Bad: \string\setmainfont[features]\{font\}\sapce ^^J%
+        Those are incorrect in `novel' class. ^^J%
+        Use \string\SetParentFont[features]\{font\}\space instead. ^^J%
+        See `novel' documentation.}%
+      \fi
+    }%
+  \fi % end \if@ParentFontSet
+  % Now we are ready for the main (normal) font, descending from parent font:
+  \setmainfont[\parentfontfeatures]{\parentfontname}
+  \let\mainfont\rmfamily\relax % backwards compatibility
+  % The headfont, which descends from parent font:
+  \if@HeadFontSet\else % default if not user-set:
+    \SetHeadFont[Letters=SmallCaps,\parentfontfeatures,Scale=0.92]%
+      {\parentfontname}
+  \fi
+  \newfontfamily\headfont[\@headfontfeatures]{\@headfontname}
+  % The chapter font, descending from parent font:
+  \if@ChapterFontSet\else % if no user-set font, default:
+    \SetChapterFont[\parentfontfeatures,Scale=1.6]{\parentfontname}
+  \fi
+  \newfontfamily\chapterfont[\@chapterfontfeatures]{\@chapterfontname}
+  % The subch font, descending from parent font:
+  \if@SubchFontSet\else % if no user-set font, default:
+    \SetSubchFont[\parentfontfeatures,Scale=1.2]{\parentfontname}
+  \fi
+  \newfontfamily\subchfont[\@subchfontfeatures]{\@subchfontname}
+  % The remaining fonts are not descendants of parent font:
+  % The mono font:
+  \ifthenelse{\equal{\ttdefault}{lmtt}}{% over-ride:
+    \IfFontExistsTF{Libertinus Mono}{ % if available
+      \setmonofont[%
+        ItalicFont={},% Doesn't have these.
+        BoldFont={},%
+        BoldItalicFont={},%
+      ]{Libertinus Mono}
+    }{
+      \setmonofont{Latin Modern Mono}% backup
+    }
+  }{} % User \setmonofont, so leave alone.
+  % The sans font:
+  \ifthenelse{\equal{\sfdefault}{lmss}}{ % override:
+    \IfFontExistsTF{Libertinus Sans}{ % if available
+      \setsansfont{Libertinus Sans}
+    }{
+      \setsansfont{Latin Modern Sans}% backup
+    }
+  }{} % User \setsansfont, so leave alone.
+  % The decofont must be NovelDeco.otf or a user modification of that font:
+  \if@DecoFontSet\else
+    \IfFontExistsTF{NovelDeco.otf}{
+      \SetDecoFont{NovelDeco}
+    }{} % if not available, this will be detected below
+  \fi
+  % Decorative glyphs, only in this font. Should not be re-set by user.
+  \if@HasDecoFont % NovelDeco or a user-defined alternative was found:
+    \newfontface\@decoglyph[%
+      \@decofontfeatures,%
+    ]{\@decofontname}
+    \newfontface\@decoglypha[%
+      \@decofontfeatures,RawFeature=+ss01,%
+    ]{\@decofontname}
+    \newfontface\@decoglyphb[%
+      \@decofontfeatures,RawFeature=+ss02,%
+    ]{\@decofontname}
+    \newfontface\@decoglyphc[%
+      \@decofontfeatures,RawFeature=+ss03,%
+    ]{\@decofontname}
+  \fi% end \if@HasDecoFont
+  % New in version 1.50:
+  \if@HasDecoFont
+    \NewFontFace\decodropcapfont[RawFeature=+dcap]{\@decofontname}
+  \else
+    \NewFontFace\decodropcapfont[\parentfontfeatures,Numbers=Lining]%
+      {\parentfontname}
+  \fi
+  \if@HasDropCapFont\else
+    \SetDropCapFont{\decodropcapfont} % default
+  \fi
+  % This provides default microtype settings, allows the user to over-ride,
+  %    and hopefully prevents the user from choosing inappropriate settings:
+  \let\microtypesetup\relax % fake command no longer needed
+  \if@MicrotypeSet % true if user wrote \microtypesetup{} in Preamble
+    \IfSubStr{\@mymicrotypesetup}{config}{% user specified own config file
+      \gdef\@mymicrotypeset{\@mymicrotypesetup}
+    }{ % default to novel's config file
+      \gdef\@mymicrotypeset{%
+        config=novel-microtype,final,\@mymicrotypesetup}
+    }
+  \else % user did not write \microtypesetup{} in Preamble
+    \gdef\@mymicrotypeset{%
+      config=novel-microtype,final,stretch=20,shrink=20}
+  \fi
+  \if@mtoff
+    \providecommand\textls[2][]{##2} % echoes its mandatory argument
+  \else
+    \RequirePackage[\@mymicrotypeset]{microtype}
+    \renewcommand\textls[2][]{##2} % nullifies the microtype command (problems)
+  \fi
+  % end microtypesetup
+%
+} % end \@ActivateFonts, called by `novel.cls' \AtEndPreamble.
+%%
+
+
+%%
+\endinput
+%%
+%% End of file `novel-Fonts.sty'
+
+

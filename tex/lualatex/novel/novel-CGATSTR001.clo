@@ -1,10 +1,18 @@
-% Typically used in the USA. Novel file version 1.46.2
+%%
+%% This is file `novel-CGATSTR001.clo', part of `novel' document class.
+%% The values of the arguments are public industry standards.
+%%
+\ProvidesFile{novel-CGATSTR001.clo}%
+[2018/01/14 any version. (novel Output Intent CGATS TR 001)]
+%%
 
-% The values of the arguments are public industry standards.
+% Typically used in the USA.
 
 % Remember: TeX special characters must be backslashed here.
 % You may see % or # or _ in the data or file names.
 % Be sure that they are written as \% \# \_ or there will be trouble.
+
+% If any line is long, let it wrap. Do not attempt to break it onto multiple lines.
 
 % This identifier has spaces, even though file name has no spaces.
 \gdef\@OIidentifier{CGATS TR 001} % also called "reference name"
@@ -12,4 +20,9 @@
 \gdef\@OIinfo{U.S. Web Coated (SWOP) v2}
 \gdef\@OIregistry{http://www.color.org}
 \gdef\@OIprofile{USWebCoatedSWOP.icc}
+
+%%
+\endinput
+%%
+%% end of file `novel-CGATSTR001.clo'
 

@@ -1,14 +1,27 @@
-% Typically used in Japan. Novel file version 1.46.2
+%%
+%% This is file `novel-JC200103.clo', part of `novel' document class.
+%% The values of the arguments are public industry standards.
+\ProvidesFile{novel-JC200103.clo}%
+[2018/01/14 any version. (novel Output Intent JC200103)]
+%%
 
-% The values of the arguments are public industry standards.
+
+% Typically used in Japan.
 
 % Remember: TeX special characters must be backslashed here.
 % You may see % or # or _ in the data or file names.
 % Be sure that they are written as \% \# \_ or there will be trouble.
+
+% If any line is long, let it wrap. Do not attempt to break it onto multiple lines.
 
 \gdef\@OIidentifier{JC200103} % also called "reference name"
 \gdef\@OIcondition{Japan Color 2001 Coated: Printing process definition: ISO 12647-2:2004, sheet-fed offset printing, positive plates, paper type 3 (coated, 105 gsm), screen frequency 69/cm.}
 \gdef\@OIinfo{Japan Color 2001 Coated}
 \gdef\@OIregistry{http://www.color.org}
 \gdef\@OIprofile{JapanColor2001Coated.icc}
+
+%%
+\endinput
+%%
+%% end of file `novel-JC200103.clo'
 

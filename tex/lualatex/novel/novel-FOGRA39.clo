@@ -1,14 +1,27 @@
-% Typically used in Europe.  Novel file version 1.46.2
+%%
+%% This is file `novel-FOGRA39.clo', part of `novel' document class.
+%% The values of the arguments are public industry standards.
+\ProvidesFile{novel-FOGRA39.clo}%
+[2018/01/14 any version. (novel Output Intent FOGRA39)]
+%%
 
-% The values of the arguments are public industry standards.
+
+% Typically used in Europe.
 
 % Remember: TeX special characters must be backslashed here.
 % You may see % or # or _ in the data or file names.
 % Be sure that they are written as \% \# \_ or there will be trouble.
+
+% If any line is long, let it wrap. Do not attempt to break it onto multiple lines.
 
 \gdef\@OIidentifier{FOGRA39} % also called "reference name"
 \gdef\@OIcondition{Offset commercial and specialty printing according to ISO 12647-2:2004 / Amd 1, paper type 1 or 2 (gloss or matte coated offset, 115 g/m2), screen frequency 60/cm.}
 \gdef\@OIinfo{Coated FOGRA39 (ISO 12647-2:2004)}
 \gdef\@OIregistry{http://www.color.org}
 \gdef\@OIprofile{CoatedFOGRA39.icc}
+
+%%
+\endinput
+%%
+%% end of file `novel-FOGRA39.clo'
 

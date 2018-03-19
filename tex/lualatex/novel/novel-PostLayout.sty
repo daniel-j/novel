@@ -1,0 +1,291 @@
+%%
+%% This is file `novel-PostLayout.sty', part of `novel' document class.
+%% Copyright 2017-2018 Robert Allgeyer.
+%% 
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%%
+\ProvidesFile{novel-PostLayout.sty}%
+[2018/03/16 v1.50pre1 LaTeX file (post-layout modifications)]
+%%
+
+%%
+%% This file is loaded \AtEndPreamble, which precedes \AtBeginDocument.
+%%
+
+
+
+% \@getPageXY is used by `shademargins' and `cropmarks' options.
+% The 72.27pt compensates for built-in 1in TeX offsets.
+% Position of left edge of TrimBox, rightwards from left edge of MediaBox:
+\newlength\Trim@Left
+% Position of bottom of TrimBox, upwards from bottom of MediaBox:
+\newlength\Trim@Bottom
+\gdef\@getPageXY{%
+  \ifodd\c@page% Adjusts for left-right margin switching, verso/recto,
+    % and also for horizontal position of TrimBox within MediaBox:
+    \gsetlength\Trim@Left{\oddsidemargin-\@InnerMargin+72.27pt}%
+  \else%
+    \gsetlength\Trim@Left{\evensidemargin-\@OuterMargin+72.27pt}%
+  \fi%
+  % Adjusts for vertical position of TrimBox within MediaBox:
+  \ifthenelse{\equal{\@AlignTrim}{corner}}{%
+    \gsetlength\Trim@Bottom{\paperheight-\@TrimHeight}%
+  }{% Bottom alignment does not apply when `shademargins', so this is center:
+    \gsetlength\Trim@Bottom{0.5\paperheight-0.5\@TrimHeight+\hoffset}%
+  }%
+}%
+%% end \@getPageXY.
+
+
+%% ACTIVATE CLOSECROP CLASS OPTION
+%% ----------------------------------------------------------------------------
+% The `closecrop' class option is only effective in draft mode.
+% It preserves the text layout, but removes most of the margin white space.
+% The resulting file is more easily readable on a hand-held device.
+% However, the cropped file is not suitable for distribution as an E-book,
+%   as it is missing reflow information, marketing metadata, etc.
+\if@closecrop
+  \gsetlength\paperwidth{\textwidth+0.2in}
+  \if@HasHeader
+    \gsetlength\topmargin{-1in}
+  \else
+    \gsetlength\topmargin{-0.9in}
+  \fi
+  \if@HasFooter
+    \if@HasHeader
+     \gsetlength\paperheight{%
+      \textheight+\headsep+\headheight+\@FootJump\baselineskip+1pt%
+     }
+    \else
+     \gsetlength\paperheight{%
+      \textheight+\headsep+\headheight+\@FootJump\baselineskip+\@SetFontSize%
+     }
+    \fi
+  \else
+    \gsetlength\paperheight{\textheight+\headsep+\headheight+0.1in}
+  \fi
+\fi
+%% end closecrop
+
+
+%% ACTIVATE SHADEMARGINS CLASS OPTION (Includes Unsafe Zone)
+%% ----------------------------------------------------------------------------
+%% With class option `shademargins' (only effective in draft mode):
+% Based on code by Ulrike Fischer at tex.stackexchange.com, CC-by-sa-3.0:
+% 0.542763, 0.883215 and 0.949123 are unlikely user choices.
+% The re-defined \color command makes an exception for those values.
+\definecolor[named]{hingledingle}{gray}{1} % fake white, when white disallowed
+%
+\if@shademargins % not used when \@AlignTrim is `bottom'.
+  % Margins are visualized by filling the TrimBox background with gray.
+  % Then, the rectangle defining the Englosed area is filled with white.
+  % Then header and/or footer are filled with a lighter gray background.
+  % Then Unsafe Zone (UZ) sits atop the other background fills, as darker gray.
+  % The UZ is constructed from four strips, one at each side.
+  \AddToShipoutPictureBG{% fills trim area with medium gray
+    \@getPageXY%
+    \AtPageLowerLeft{\color[gray]{0.883215}%
+      \hspace{\Trim@Left}%
+      \rule[\Trim@Bottom]{\@TrimWidth}{\@TrimHeight}%
+    }%
+  }%
+  %
+  \AddToShipoutPictureBG{% fills enclosed area with white
+    \@getPageXY%
+    \AtPageLowerLeft{\color{hingledingle}%
+      \ifodd\c@page%
+        \hspace{\dimexpr\oddsidemargin+72.27pt}%
+      \else%
+        \hspace{\dimexpr\evensidemargin+72.27pt}%
+      \fi%
+      \rule[\dimexpr\Trim@Bottom+\@BottomMargin]%
+        {\textwidth}{\dimexpr\@TrimHeight-\@TopMargin-\@BottomMargin}
+    }%
+  }%
+  \if@HasHeader% fills header (and its jump) with light gray
+    \AddToShipoutPictureBG{%
+      \@getPageXY%
+      \AtPageLowerLeft{\color[gray]{0.949123}%
+      \ifodd\c@page%
+        \hspace{\dimexpr\oddsidemargin+72.27pt}%
+      \else%
+        \hspace{\dimexpr\evensidemargin+72.27pt}%
+      \fi%
+        \rule[\Trim@Bottom+\@TrimHeight-\@TopMargin-\@HeadJump\nbs]%
+          {\@TrimWidth-\@OuterMargin-\@InnerMargin}{\@HeadJump\nbs}%
+      }%
+    }%
+  \fi%
+  %
+  \if@HasFooter% fills footer (and its jump) with light gray
+    \AddToShipoutPictureBG{%
+      \@getPageXY%
+      \AtPageLowerLeft{\color[gray]{0.949123}%
+      \ifodd\c@page%
+        \hspace{\dimexpr\oddsidemargin+72.27pt}%
+      \else%
+        \hspace{\dimexpr\evensidemargin+72.27pt}%
+      \fi%
+        \rule[\Trim@Bottom+\@BottomMargin]%
+          {\@TrimWidth-\@OuterMargin-\@InnerMargin}{\@FootJump\nbs}%
+      }%
+    }%
+  \fi%
+  %
+  \if@UnsafeZone% fills unsafe zones with dark gray
+    \AddToShipoutPictureBG{% top unsafe zone
+      \@getPageXY%
+      \AtPageLowerLeft{\color[gray]{0.542763}%
+        \hspace{\Trim@Left}%
+        \rule[\Trim@Bottom+\@TrimHeight-\@TopUZWidth]%
+          {\@TrimWidth}{\@TopUZWidth}%
+      }%
+    }%
+    \AddToShipoutPictureBG{% outer unsafe zone
+      \@getPageXY%
+      \AtPageLowerLeft{\color[gray]{0.542763}%
+        \ifodd\c@page%
+          \hspace{\dimexpr\Trim@Left+\@TrimWidth-\@OuterUZWidth}%
+          \rule[\Trim@Bottom]{\@OuterUZWidth}{\@TrimHeight}%
+        \else%
+          \hspace{\dimexpr\Trim@Left+\@TrimWidth-\@InnerUZWidth}%
+          \rule[\Trim@Bottom]{\@InnerUZWidth}{\@TrimHeight}%
+        \fi%
+      }%
+    }%
+    \AddToShipoutPictureBG{% bottom unsafe zone
+      \@getPageXY%
+      \AtPageLowerLeft{\color[gray]{0.542763}%
+        \hspace{\Trim@Left}%
+        \rule[\Trim@Bottom]{\@TrimWidth}{\@BottomUZWidth}%
+      }%
+    }%
+    \AddToShipoutPictureBG{% inner unsafe zone
+      \@getPageXY%
+      \AtPageLowerLeft{\color[gray]{0.542763}%
+        \hspace{\Trim@Left}%
+        \ifodd\c@page%
+          \rule[\Trim@Bottom]{\@InnerUZWidth}{\@TrimHeight}%
+        \else%
+          \rule[\Trim@Bottom]{\@OuterUZWidth}{\@TrimHeight}%
+        \fi%
+      }%
+    }%
+  \fi% end \if@UnsafeZone
+  %
+\fi % end \if@shademargins
+%
+%% end shademargins and unsafe zone
+
+
+%% LABEL DRAFT OPTION
+%% ----------------------------------------------------------------------------
+% Writes DRAFT inside upper left of TrimBox, when in draft mode.
+% This macro must go here, in order, so that the label is not over-shaded.
+\ifdraftdoc
+  \AddToShipoutPictureBG{%
+  \@getPageXY%
+    \AtPageUpperLeft{%
+      \raisebox{-\@SetFontSize}{\textbf{~DRAFT}}%
+    }%
+  }%
+\fi
+%% end label draft.
+
+
+%% ACTIVATE CROPMARKS CLASS OPTION
+%% ----------------------------------------------------------------------------
+% Cropmarks (trim marks, really) are not important in this document class.
+% That's because the targeted printing services generally do not want them.
+% But a minimal capability was easy to add. The far end of each mark is
+% half an inch from the trim area. The close end is separated by a gap >= 0pt.
+% So the length of the marks is generally less than half an inch.
+% If trim is at the edge of the media box, instead of centered,
+% then only one pair of marks will be written.
+% The marks are turned on using `cropmarks' class option. The gap is set
+% in Preamble using \SetCropmarkGap{length}.
+%
+% When Media Size = Trim Size, cropmarks are disabled.
+% Too late for \@cropviewfalse; OK since CropBox already calculated properly.
+\ifthenelse{%
+  \dimtest{\@TrimWidth}{=}{\paperwidth} %
+  \AND \dimtest{\@TrimHeight}{=}{\paperheight}%
+}{\global\@cropmarksfalse}{}
+%
+\if@cropmarks%
+  \ifthenelse{\equal{\@AlignTrim}{corner}}{%
+    \ifodd\c@page
+      % H bottom right:
+      \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+      \hspace{\dimexpr\Trim@Left+\@TrimWidth+\@CropmarkGap}%
+      \rule[\Trim@Bottom-0.5pt]{0.5in-\@CropmarkGap}{0.5pt}}}
+      % V bottom right:
+      \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+      \hspace{\dimexpr\Trim@Left+\@TrimWidth}%
+      \rule[\Trim@Bottom-0.5in]{0.5pt}{0.5in-\@CropmarkGap}}}
+    \else
+      % H bottom left:
+      \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+      \hspace{\dimexpr\Trim@Left-0.5in}%
+      \rule[\Trim@Bottom-0.5pt]{0.5in-\@CropmarkGap}{0.5pt}}}
+      % V bottom left:
+      \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+      \hspace{\dimexpr\Trim@Left-0.5pt}%
+      \rule[\Trim@Bottom-0.5in]{0.5pt}{0.5in-\@CropmarkGap}}}
+    \fi
+  }{%
+    % H top left:
+    \AddToShipoutPictureBG{\@getPageXY%
+    \AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Left-0.5in}%
+    \rule[0.5\paperheight+0.5\@TrimHeight]{0.5in-\@CropmarkGap}{0.5pt}}}
+    % H bottom left:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Left-0.5in}%
+    \rule[\Trim@Bottom-0.5pt]{0.5in-\@CropmarkGap}{0.5pt}}}
+    % H top right:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Left+\@TrimWidth+\@CropmarkGap}%
+    \rule[0.5\paperheight+0.5\@TrimHeight]{0.5in-\@CropmarkGap}{0.5pt}}}
+    % H bottom right:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Left+\@TrimWidth+\@CropmarkGap}%
+    \rule[\Trim@Bottom-0.5pt]{0.5in-\@CropmarkGap}{0.5pt}}}
+    % V top left:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Left-0.5pt}%
+    \rule[0.5\paperheight+0.5\@TrimHeight+\@CropmarkGap]%
+      {0.5pt}{0.5in-\@CropmarkGap}}}
+    % V bottom left:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Left-0.5pt}%
+    \rule[\Trim@Bottom-0.5in]{0.5pt}{0.5in-\@CropmarkGap}}}
+    % V top right:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Left+\@TrimWidth}%
+    \rule[0.5\paperheight+0.5\@TrimHeight+\@CropmarkGap]%
+      {0.5pt}{0.5in-\@CropmarkGap}}}
+    % V bottom right:
+    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+    \hspace{\dimexpr\Trim@Left+\@TrimWidth}%
+    \rule[\Trim@Bottom-0.5in]{0.5pt}{0.5in-\@CropmarkGap}}}
+  }%
+\fi
+%
+%% end cropmarks
+
+
+
+%%
+\endinput
+%%
+%% End of file `novel-PostLayout.sty'.
+
+

@@ -1,44 +1,57 @@
 %%
 %% This is file `novel-pdfx.sty', part of `novel' document class.
-%% 
-%%  Copyright (c) 2017, Robert Allgeyer.
-%% 
-%%  This file may be distributed and/or modified under the conditions
-%%  of the LaTeX Project Public License, either version 1.3c of this
-%%  license or (at your option) any later version.  The latest version
-%%  of this license is in:
-%% 
+%% Copyright (c) 2017-2018 Robert Allgeyer.
+%%
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
 %%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
 %% 
-%%  and version 1.3c or later is part of all distributions of LaTeX
-%%  version 2005/12/01 or later.
-%% 
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %%
 %% File `novel-pdfx.sty' uses code, directly copied or modified,
 %%   from file `pdfx.sty', part of LaTeX package `pdfx': Copyright (c) 2015,
 %%   CV Radhakrishnan, Han The Thanh, Ross Moore, Peter Selinger.
 %%   Licensed LPPL 1.2+.
 %% 
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesFile{novel-pdfx.sty}%
-[2018/01/14 v1.46.2 LaTeX file (PDF/X support for novel class)]
+[2018/03/16 v1.50pre1 LaTeX file (PDF/X support for novel class)]
 % This package supports, and is part of, class `novel'.
 % No support for anything but LuaLaTeX.
 
+% DO NOT ATTEMPT TO USE OUTSIDE `NOVEL' DOCUMENT CLASS.
+% Reason: Other files in this class define stuff that is used here.
 
 %%
 %% This file is loaded \AtEndPreamble.
 %%
 
 
-
+%% Preliminary tests for cases forbidding PDF/X:
+\ifdraftdoc
+  \global\@pdfxISofftrue
+\fi
 %
+\AtBeginDocument{%
+  \if@pdfxSEToff\else
+    \ifdraftdoc
+      \typeout{^^JClass `novel' Alert: No PDF/X in draft mode. ^^J%
+       Your document was processed with \string\SetPDFX\{off\}. ^^J}%
+    \fi
+  \fi
+} %
+%%
+
+
 % Hyperref options for PDF/X with LuaLaTeX:
 \def\pdfx@pdfX@opts@luatex{%
-  draft,pdftex,pdfpagemode=UseNone,bookmarks=false,hyperfootnotes=false,%
+  draft,pdfpagemode=UseNone,bookmarks=false,hyperfootnotes=false,%
   hyperindex=false,implicit=false,pdfversion=1.\the\pdfminorversion,%
   pdfpagelabels=true,pageanchor=false,pdfstartview=}
 %
@@ -50,25 +63,29 @@
 \fi
 \Hy@bookmarksfalse
 %
-\newif \if@gottitle \@gottitlefalse % refers to PDF File Data
-% Was \SetTitle{} called prior to this step? If so:
-\ifthenelse{\equal{\@title}{} \OR \equal{\@title}{ }}{}{\@gottitletrue}
+\ifthenelse{\equal{\@title}{} \OR \equal{\@title}{ }}{%
+  \global\@HasTitlefalse}{\global\@HasTitletrue%
+}
+\ifthenelse{\equal{\@title}{IMPORTANT: Provide Book Title}}{%
+  \ClassWarning{novel}{^^JDid not provide title using \string\SetTitle. ^^J%
+   Default used: `IMPORTANT: Provide Book Title'. Be sure to change it! ^^J}%
+}{}%
 %
 % Sanity check: If title is missing at this step, then compliance must be off:
-\ifpdfx@isOFF\else
-  \if@gottitle\else
-    \ClassError{novel}{PDF/X requires \string\SetTitle\space first}%
+\if@pdfxISoff\else
+  \if@HasTitle\else
+    \ClassError{novel}{PDF/X requires non-empty \string\SetTitle\space}%
      {Unless \string\SetPDFX\space is off, must use \string\SetTitle\space ^^J%
-       before using \string\SetPDFX.^^J}
+      with non-empty title. Blank space counts as empty.}%
   \fi
 \fi
 %
-\if@gottitle\else
-  \ClassWarning{novel}{Your file has been compiled without standard^^J %
-    PDF internal metadata, such as the title. This is allowable, and in ^^J %
-    some cases desirable. But in most cases it is not what you intended. ^^J %
-    If you want title and other metadata to be in PDF internal metadata, ^^J %
-    then you must place them prior to the \string\SetPDFX.^^J}
+\if@HasTitle\else
+  \ClassWarning{novel}{^^JYour file has been compiled without standard ^^J%
+    PDF internal metadata, such as the title. This is allowable, and in ^^J%
+    some cases desirable. But in most cases it is not what you intended. ^^J%
+    If you want title and other metadata to be in PDF internal metadata, ^^J%
+    then you must place them prior to the \string\SetPDFX. ^^J}
 \fi
 %
 \expandafter\ifx\csname pdfresetpageorigin\endcsname\relax\else
@@ -81,7 +98,7 @@
 
 
 %% CALCULATE AND SPECIFY CROPBOX AND TRIMBOX
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %%
 % The MediaBox is automatically provided, so there is no need to write
 %   MediaBox in /pdfInfo (because it would be a duplicate).
@@ -90,54 +107,54 @@
 %   by professional PDF software. For that reason, and for proper centering
 %   of TrimBox when MediaBox is larger, CropBox is created (= MediaBox).
 %
-\newcommand\my@MWnum{\strip@pt\New@MediaWidth}
-\FPmul{\my@MWnum}{\my@MWnum}{0.99626401}
-\FPround{\my@MWnum}{\my@MWnum}{3}
-\FPclip{\my@MWnum}{\my@MWnum}
-\newcommand\my@MHnum{\strip@pt\New@MediaHeight}
-\FPmul{\my@MHnum}{\my@MHnum}{0.99626401}
-\FPround{\my@MHnum}{\my@MHnum}{3}
-\FPclip{\my@MHnum}{\my@MHnum}
-\newcommand\my@TWnum{\strip@pt\New@TrimWidth}
-\FPmul{\my@TWnum}{\my@TWnum}{0.99626401}
-\FPround{\my@TWnum}{\my@TWnum}{3}
-\newcommand\my@THnum{\strip@pt\New@TrimHeight}
-\FPmul{\my@THnum}{\my@THnum}{0.99626401}
-\FPround{\my@THnum}{\my@THnum}{3}
+\newcommand\@myMWN{\strip@pt\paperwidth}
+\FPmul{\@myMWN}{\@myMWN}{0.99626401}
+\FPround{\@myMWN}{\@myMWN}{3}
+\FPclip{\@myMWN}{\@myMWN}
+\newcommand\@myMHN{\strip@pt\paperheight}
+\FPmul{\@myMHN}{\@myMHN}{0.99626401}
+\FPround{\@myMHN}{\@myMHN}{3}
+\FPclip{\@myMHN}{\@myMHN}
+\newcommand\@myTWN{\strip@pt\@TrimWidth}
+\FPmul{\@myTWN}{\@myTWN}{0.99626401}
+\FPround{\@myTWN}{\@myTWN}{3}
+\newcommand\@myTHN{\strip@pt\@TrimHeight}
+\FPmul{\@myTHN}{\@myTHN}{0.99626401}
+\FPround{\@myTHN}{\@myTHN}{3}
 %
-\FPsub{\my@TWorigin}{\my@MWnum}{\my@TWnum}
-\FPmul{\my@TWorigin}{\my@TWorigin}{0.5}
-\FPround{\my@TWorigin}{\my@TWorigin}{3}
-\FPadd{\my@TWcorner}{\my@TWorigin}{\my@TWnum}
-\FPround{\my@TWcorner}{\my@TWcorner}{3}
-\FPsub{\my@THorigin}{\my@MHnum}{\my@THnum}
-\FPmul{\my@THorigin}{\my@THorigin}{0.5}
-\FPround{\my@THorigin}{\my@THorigin}{3}
-\FPadd{\my@THcorner}{\my@THorigin}{\my@THnum}
-\FPround{\my@THcorner}{\my@THcorner}{3}
+\FPsub{\@myTWorigin}{\@myMWN}{\@myTWN}
+\FPmul{\@myTWorigin}{\@myTWorigin}{0.5}
+\FPround{\@myTWorigin}{\@myTWorigin}{3}
+\FPadd{\@myTWcorner}{\@myTWorigin}{\@myTWN}
+\FPround{\@myTWcorner}{\@myTWcorner}{3}
+\FPsub{\@myTHorigin}{\@myMHN}{\@myTHN}
+\FPmul{\@myTHorigin}{\@myTHorigin}{0.5}
+\FPround{\@myTHorigin}{\@myTHorigin}{3}
+\FPadd{\@myTHcorner}{\@myTHorigin}{\@myTHN}
+\FPround{\@myTHcorner}{\@myTHcorner}{3}
 %
-\FPclip{\my@TWorigin}{\my@TWorigin}
-\FPclip{\my@TWcorner}{\my@TWcorner}
-\FPclip{\my@THorigin}{\my@THorigin}
-\FPclip{\my@THcorner}{\my@THcorner}
+\FPclip{\@myTWorigin}{\@myTWorigin}
+\FPclip{\@myTWcorner}{\@myTWcorner}
+\FPclip{\@myTHorigin}{\@myTHorigin}
+\FPclip{\@myTHcorner}{\@myTHcorner}
 %
 \newcommand\novel@CropBox{%
  \if@cropview%
-   /CropBox[\my@TWorigin\space\my@THorigin\space\my@TWcorner\space\my@THcorner]%
+  /CropBox[\@myTWorigin\space\@myTHorigin\space\@myTWcorner\space\@myTHcorner]%
  \else%
-   /CropBox[0\space0\space\my@MWnum\space\my@MHnum]%
+  /CropBox[0\space0\space\@myMWN\space\@myMHN]%
  \fi%
 }
 %
 \newcommand\novel@TrimBox{%
-  /TrimBox[\my@TWorigin\space\my@THorigin\space\my@TWcorner\space\my@THcorner]%
+  /TrimBox[\@myTWorigin\space\@myTHorigin\space\@myTWcorner\space\@myTHcorner]%
 }
 %
 % New in version 1.2: BleedBox, only for cover art. Same size as MediaBox.
 \newcommand\novel@BleedBox{%
   \if@coverart%
-   /BleedBox[0\space0\space\my@MWnum\space\my@MHnum]%
-  \else\fi%
+    /BleedBox[0\space0\space\@myMWN\space\@myMHN]%
+  \fi%
 }
 %
 \begingroup\edef\next{%
@@ -147,44 +164,8 @@
 
 
 
-%% DISABLE HYPERLINKS AND BOOKMARKS
-%% -----------------------------------------------------------------------------
-%
-% Files for PDF/X cannot have hyperlinks. If your document has any,
-% they will be functionally disabled. However, it is still necessary
-% to ensure that you do not specify them in the wrong color space.
-% Since `novel' class disallows any kind of color, `xcolor' is loaded with
-% `monochrome' or `gray' option, prior to loading `hyperref'.
-%
-% Your text will be K black, rather than CMYK `rich black'. This is best.
-% If you use a grayscale image anywhere, ask your print service whether it may
-% be directly placed as grayscale (and they will convert to halftone)
-% or whether you must convert it to halftone yourself, and place it that way.
-%
-% Note that LaTeX cannot detect any erroneous placement of a color image.
-%
-% The pagegrid package can only be used in draft mode, without PDF/X:
-\gdef\@reallyOFF{off}
-\@ifpackageloaded{pagegrid}{
-  \if@useDraftMode\else
-    \ClassError{novel}{\string\pagegrid\space needs `draft' mode^^J}%
-     {\string\pagegrid\space may only be used with class option `draft'^^J}%
-  \fi
-  \ifpdfx@isOFF\else
-    \pdfx@isOFFtrue % cancels pdfx when using pagegrid (in draft mode)
-    \gdef\@reallyOFF{re-set to off by pagegrid package.}
-    \ClassWarning{novel}{You requested PDF/X compliance.^^J%
-     But you also used the \string\pagegrid\space package. Cannot have both.^^J%
-     So instead, your document was processed with \string\SetPDFX\space off.^^J%
-     Reason: The grid and text are in layers. No layers allowed.^^J}%
-  \fi
-}{}
-%% End disable hyperlinks and bookmarks.
-
-
-
 %% GENERAL PDF INTERNAL METADATA PREPARATION
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %
 % Create hashes that will be used for uuid data. Does not need to be fancy:
 \edef\xmp@docid{\pdfx@mdfivesum{jobname.pdf}}
@@ -195,7 +176,7 @@
 
 
 %% PREPARATION OF XMP METADATA
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% Data prepared here, will later be inserted into the XMP packet template,
 %%   then the processed template will be incuded in the PDF.
 %% XMP metadata is in utf-8 encoding.
@@ -245,18 +226,19 @@
 %
 \def\@pdfVersion{1.\the\pdfminorversion}
 %
-\ifpdfx@isOFF
+\if@pdfxISoff
   \gdef\@verconfString{}%
 \else
   \gdef\@verconfString{
     \pad@vi<pdfx:GTS_PDFXVersion>\@PDFXversion</pdfx:GTS_PDFXVersion>^^J
-    \if@gotConformance
-      \pad@vi<pdfx:GTS_PDFXConformance>\@PDFXconformance</pdfx:GTS_PDFXConformance>^^J
+    \if@HasConformance
+      \pad@vi<pdfx:GTS_PDFXConformance>%
+        \@PDFXconformance</pdfx:GTS_PDFXConformance>^^J
     \fi
   }
 \fi
 %
-\ifpdfx@isOFF
+\if@pdfxISoff
   \gdef\@pdfidString{}%
 \else
   \gdef\@pdfidString{
@@ -267,28 +249,30 @@
 \ifthenelse{\equal{\@novelApplication}{} \OR \equal{\@novelApplication}{ }}{
   \gdef\@applicationString{}%
 }{
-  \gdef\@applicationString{\pad@vi<xmp:CreatorTool>\@novelApplication</xmp:CreatorTool>^^J}%
+  \gdef\@applicationString{\pad@vi<xmp:CreatorTool>%
+    \@novelApplication</xmp:CreatorTool>^^J}%
 }
 %
 \ifthenelse{\equal{\@novelProducer}{} \OR \equal{\@novelProducer}{ }}{
   \gdef\@producerString{}%
 }{
-  \gdef\@producerString{\pad@vi<pdf:Producer>\@novelProducer</pdf:Producer>^^J}%
+  \gdef\@producerString{\pad@vi<pdf:Producer>%
+    \@novelProducer</pdf:Producer>^^J}%
 }
 %
 % Calculation of Dates and Times, which must be in a specific format.
 % Each time you process to PDF, the current date/time is used,
 %   for all of the several metadata date/time strings.
-% The date string begins with D: then 4 digits of year, etc.
-% This definition removes the D: from front:
-\gdef\pdfx@getYear#1#2#3#4#5#6{\edef\pdfx@xYear{#3#4#5#6}\pdfx@getMonth}
+\def\xmp@cDate{\pdfx@getYear}
+{\catcode`\D=12 \catcode`\:=12
+ \gdef\pdfx@getYear D:#1#2#3#4{\edef\pdfx@xYear{#1#2#3#4}\pdfx@getMonth}
+}
 \def\pdfx@getMonth#1#2{\edef\pdfx@xMonth{#1#2}\pdfx@getDay}
 \def\pdfx@getDay#1#2{\edef\pdfx@xDay{#1#2}\pdfx@getHour}
 \def\pdfx@getHour#1#2{\edef\pdfx@xHour{#1#2}\pdfx@getMin}
 \def\pdfx@getMin#1#2{\edef\pdfx@xMin{#1#2}\pdfx@getSec}
 \def\pdfx@getSec#1#2{\edef\pdfx@xSec{#1#2}\pdfx@getTZh}
 \def\pdfx@getTZh{\futurelet\pdfx@next\pdfx@getTzh@branches}
-\def\xmp@cDate{\pdfx@getYear}
 %
 {\catcode`\@=11 \catcode`\Z=12 \catcode`\+=12 \catcode`\-=12 % ends below
 \gdef\pdfx@getTzh@branches{%
@@ -327,37 +311,44 @@
 
 
 %% WRITE THE XMP METADATA, UNLESS PDF/X IS OFF OR NO TITLE
-%%------------------------------------------------------------------------------
+%%-----------------------------------------------------------------------------
 %% Inserts the prepared XMP metadata into XMP packet template, then writes
 %% the result at the start of the PDF, right now, before the document.
 %
-\ifpdfx@isOFF\else
-  \if@gottitle
-    \begingroup
-      \makeatletter
-      \input{novel-xmppacket.sty}
-      \global\let\@xmpData\@xmpPacket % from the above file
-      \begingroup
-       \pdfcompresslevel=0
-       \immediate\pdfobj stream attr {/Type /Metadata /Subtype /XML} {\@xmpData}
-       \pdfcatalog{/Metadata \the\pdflastobj\space 0 R}
-      \endgroup
-    \endgroup
-    % Creates external xml file, if requested:
-    \if@wantXMPasXML
-      \newwrite\file
-      \immediate\openout\file=\jobname-XMPasXML.xml
-      \immediate\write\file{<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>^^J}
-      \immediate\write\file{<!-- Ignore any message about not having style information. That is normal. -->^^J}
-      \immediate\write\file{<!-- Your viewer's font must be able to display any characters used in the XMP. -->^^J}
-      \immediate\write\file{<!-- For example, if your XMP has Cyrillic, then you need a Cyrillic-capable font. -->^^J}
-      \immediate\write\file{<!-- Any decorations (such as dashes in front of lines) are added by the viewer. Not in XMP. -->^^J}
-      \immediate\write\file{<!-- Note: xpacket begin="" contains the invisible 3-byte utf-8 BOM within its quotes. -->^^J}
-      \immediate\write\file{<!-- The above xml declaration, and these comments, are not part of the XMP packet. -->^^J}
-      \immediate\write\file{\@xmpData^^J}
-      \closeout\file
-    \fi
-  \fi
+\if@pdfxISoff\else
+ \if@HasTitle
+   \begingroup
+     \makeatletter
+     \input{novel-xmppacket.sty}
+     \global\let\@xmpData\@xmpPacket % from the above file
+     \begingroup
+      \pdfcompresslevel=0
+      \immediate\pdfobj stream attr {/Type /Metadata /Subtype /XML} {\@xmpData}
+      \pdfcatalog{/Metadata \the\pdflastobj\space 0 R}
+     \endgroup
+   \endgroup
+   % Creates external xml file, if requested:
+   \if@wantXMPasXML
+     \newwrite\file
+     \immediate\openout\file=\jobname-XMPasXML.xml
+     \immediate\write\file{<?xml version="1.0" encoding="UTF-8" %
+       standalone="yes" ?>^^J}
+     \immediate\write\file{<!-- Ignore any message about not having style %
+       information. That is normal. -->^^J}
+     \immediate\write\file{<!-- Your viewer's font must be able to display %
+       any characters used in the XMP. -->^^J}
+     \immediate\write\file{<!-- For example, if your XMP has Cyrillic, %
+       then you need a Cyrillic-capable font. -->^^J}
+     \immediate\write\file{<!-- Any decorations (such as dashes in front of %
+       lines) are added by the viewer. Not in XMP. -->^^J}
+     \immediate\write\file{<!-- Note: xpacket begin="" contains the invisible %
+       3-byte utf-8 BOM within its quotes. -->^^J}
+     \immediate\write\file{<!-- The above xml declaration, and these %
+       comments, are not part of the XMP packet. -->^^J}
+     \immediate\write\file{\@xmpData^^J}
+     \closeout\file
+   \fi
+ \fi
 \fi
 %
 %
@@ -366,7 +357,7 @@
 
 
 %% PREPARE PDF /INFO METADATA
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %% PDF /Info is another form of metadata, older than XMP but still used.
 %% It is NOT in utf-8 encoding. Depending on content, one of two encodings
 %%   will be automatically used: PDFDoc encoding if metadata uses only
@@ -402,9 +393,9 @@
 
 
 %% WRITE THE OUTPUT INTENT, UNLESS PDFX IS OFF.
-%% -----------------------------------------------------------------------------
-%
-\ifpdfx@isOFF\else
+%% ----------------------------------------------------------------------------
+% Data for CGATS TR 001, FOGRA39, and JC200103 are in file novel-FileData.sty.
+\if@pdfxISoff\else
   \begingroup
     \edef\@pctchar{\expandafter\@gobble\string\%} % Escaped in TeX, not PDF.
     \edef\@bchar{\expandafter\@gobble\string\\} % For use as escape, below.
@@ -413,15 +404,16 @@
     \edef\){\string\)} % PDF Catalog requires escaped parentheses.
     \catcode`\_ 12 % The icc file name might contain underscores.
     %
-    \if@noembedicc\else
+    \if@EmbedICC
       \IfFileExists{\@OIprofile}{%
         \immediate\pdfobj stream attr{/N 4} file{\@OIprofile}%
         \edef\OBJ@OI{\the\pdflastobj\space 0 R}%
       }{%
         \ClassError{novel}{Requested icc color profile not found}%
-          {You used the starred \string\SetPDFX*\space which embeds the^^J%
-            associated icc color profile. But the file could not be located.^^J%
-            If necessary, place it in the same folder as your *.tex document.}%
+         {You used the starred \string\SetPDFX*\space which embeds the ^^J%
+          associated icc color profile. But the file could not be located. ^^J%
+          If necessary, put it in the same folder as your *.tex document. ^^J%
+          Incidentally: Do you really need to embed the profile?}%
       }
     \fi
     \ifthenelse{\equal{\@OIcondition}{}}{
@@ -452,7 +444,7 @@
       \@OIidentifierString%
       \@OIinfoString%
       \@OIregistryString%
-      \if@noembedicc\else/DestOutputProfile \OBJ@OI\fi%
+      \if@EmbedICC/DestOutputProfile \OBJ@OI\fi%
       >> ]%
     }%
   \endgroup
@@ -463,7 +455,7 @@
 
 
 %% DISABLE HYPERREF OPTIONS
-%%------------------------------------------------------------------------------
+%%-----------------------------------------------------------------------------
 %% Prevents changes that will cause an incompatibility.
 %
 \Hy@DisableOption{pdfauthor}%
@@ -480,12 +472,9 @@
 
 
 %% PREPARE PDF/Info
-%% -----------------------------------------------------------------------------
-%% The \novel@PDFinfo command is used AtBeginDocument in novel.cls.
-%
-\gdef\@novelPDFinfo{ % rather than \PDF@FinishDoc
-  \if@gottitle
-    \Hy@UseMaketitleInfos
+%% ----------------------------------------------------------------------------
+\gdef\@ActivatePDFInfo{% called by `novel.cls' \AtBeginDocument
+  \if@HasTitle
     \pdfinfo{
       \ifx\@infotitle\@empty\else /Title(\@infotitle)\fi
       \ifx\@infoauthor\@empty\else /Author(\@infoauthor)\fi
@@ -502,18 +491,20 @@
       \fi
       \ifx\@infoproducer\@empty\else /Producer(\@infoproducer)\fi%
       /Trapped/False%
-      \ifpdfx@isOFF\else
+      \if@pdfxISoff\else
         /GTS_PDFXVersion(\@PDFXversion)%
-        \if@gotConformance /GTS_PDFXConformance(\@PDFXconformance)\fi%
+        \if@HasConformance /GTS_PDFXConformance(\@PDFXconformance)\fi%
       \fi
     }
   \fi
-}
-%
-%% End prepare PDF/Info.
+}%
+%% End \@ActivatePDFInfo.
 
 
 
 %%
+\endinput
+%%
 %% End of file `novel-pdfx.sty'.
+
 

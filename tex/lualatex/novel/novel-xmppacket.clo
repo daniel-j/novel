@@ -1,6 +1,6 @@
 %%
-%% This is file `novel-xmppacket.sty', part of class `novel'.
-%% Copyright 2017 Robert Allgeyer.
+%% This is file `novel-xmppacket.clo', part of `novel' document class.
+%% Copyright 2017-2018 Robert Allgeyer.
 %%
 %% 
 %% This file may be distributed and/or modified under the
@@ -12,24 +12,24 @@
 %% version 2005/12/01 or later.
 %% 
 %%
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %%
 %% The descriptive properties of the namespaces, and the general format of XMP,
 %% are public standards released by Adobe Systems Incorporated.
 %% See http://www.adobe.com/products/xmp.html
 %%
-%% -----------------------------------------------------------------------------
+%% ----------------------------------------------------------------------------
 %%
 %%
-\ProvidesFile{novel-xmppacket.sty}%
-[2018/01/14 v1.46.2 LaTeX file (novel XMP packet template)]
+\ProvidesFile{novel-xmppacket.clo}%
+[2018/01/14 any version. (novel XMP packet template)]
 %%
 
 
 
 % This packet uses utf-8 BOM.
 % The catcodes allow # _ ~ $ % & to be used as ordinary characters.
-% The \edef and \let get rid of escape backslashes in front of those characters.
+% \edef and \let get rid of escape backslashes in front of those characters.
 % NO COMMENTS AFTER THIS! Until \endgroup.
 
 
@@ -178,6 +178,9 @@
 \endgroup
 
 
+% OK to use comments now.
 %%
-%% End of file `novel-xmppacket.sty'.
+\endinput
+%%
+%% End of file `novel-xmppacket.clo'.
 

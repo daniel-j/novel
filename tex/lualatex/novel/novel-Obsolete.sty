@@ -1,0 +1,439 @@
+%%
+%% This is file `novel-Obsolete.sty', part of `novel' document class.
+%% Copyright 2017-2018 Robert Allgeyer.
+%%
+%% 
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3c
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%%
+\ProvidesFile{novel-Obsolete.sty}%
+[2018/03/16 v1.50pre1 LaTeX file (obsolete macros)]
+%%
+
+
+%% OBSOLETE MACROS !!!
+%%
+%% Prior to version 1.50, `novel' contained some macros or features that
+%%   worked but were hard to maintain, or worked in a fashion that was
+%%   user-unfriendly, or was not as good as some better code.
+%% These macros have been gathered here. DO NOT USE THEM IN NEW DOCUMENTS.
+%% They have only been retained for backwards-compatibility.
+%% If you find a bug -- too bad! Anything here is "won't fix."
+%%
+
+
+%% OBSOLETE
+\newcommand\pushtextdown[1]{% OBSOLETE
+  \ifthenelse{\equal{#1}{} \OR \equal{#1}{ } \OR \equal{#1}{0}}{%
+    \def\@howmuchdown{0em}%
+  }{%
+    \def\@howmuchdown{#1}%
+  }%
+  ~\par\vspace*{-\nbs}\vspace*{\@howmuchdown}\par%
+}
+%%
+
+
+%% OBSOLETE
+%% \squeeze{} and \crush{} slightly shrink the horizonal dimension of the
+% enclosed text. May span paragraphs. Emergency only! No compounding.
+\long\gdef\squeeze#1{{\addfontfeature{FakeStretch=0.99}#1}}
+\long\gdef\crush#1{{\addfontfeature{FakeStretch=0.98}#1}}
+%%
+
+
+%% OBSOLETE
+\gdef\specialblankline{\null} % deprecated
+%%
+
+
+%% OBSOLETE.
+%%Replaced by better method. Will be honored, but not documented.
+\newcommand\TestCoverImage[1]{%
+  \@tempTFfalse%
+  \IfSubStr{#1}{jpg}{\@tempTFtrue}{}%
+  \IfSubStr{#1}{jpeg}{\@tempTFtrue}{}%
+  \IfSubStr{#1}{JPG}{\@tempTFtrue}{}%
+  \IfSubStr{#1}{JPEG}{\@tempTFtrue}{}%
+  \IfSubStr{#1}{png}{%
+    \@tempTFtrue
+    \if@pdfxISoff\else
+      \ifthenelse{\equal{\@PDFversion}{PDF/X-1}}{
+        \ClassError{novel}{Cannot use png cover image with PDF/X-1a}%
+         {PDF/X-1a requires CMYK image. But png format is always RGB.}%
+      }{}
+    \fi
+    \ClassWarning{novel}{^^JCover image is png file type. ^^J%
+     Format png only supports RGB, not CMYK. ^^J%
+     This might be OK if you are not using PDF/X-1a, ^^J%
+     and if your print service accepts RGB artwork. ^^J%
+     But in many cases, not OK. Did you need CMYK? ^^J}%
+  }{}%
+  \IfSubStr{#1}{PNG}{%
+    \@tempTFtrue
+    \if@pdfxISoff\else
+      \ifthenelse{\equal{\@PDFversion}{PDF/X-1}}{
+        \ClassError{novel}{Cannot use png cover image with PDF/X-1a}%
+         {PDF/X-1a requires CMYK image. But png format is always RGB.}%
+      }{}
+    \fi
+    \ClassWarning{novel}{^^JCover image is png file type. ^^J%
+     Format png only supports RGB, not CMYK. ^^J%
+     This might be OK if you are not using PDF/X-1a, ^^J%
+     and if your print service accepts RGB artwork. ^^J%
+     But in many cases, not OK. Did you need CMYK? ^^J}%
+  }{}%
+  \if@tempTF\else%
+    \ClassError{novel}{Cover image has wrong file extension}%
+    {Cover image must be jpg, JPG, jpeg, JPEG. ^^J%
+     Can also use png or PNG if CMYK not required.}%
+  \fi%
+} % end \TestCoverImage
+%%
+\newcommand\SetCoverImage[1]{%
+  \if@coverart%
+    \ClassWarning{novel}{^^J\string\SetCoverImage\space is obsolete. ^^J%
+     It will be honored, but not documented. From `novel' version 1.50 use ^^J%
+     novel-scripts, then \ScriptCoverImage\space instead. ^^J}%
+    \TestCoverImage{#1}%
+    \AddToShipoutPictureBG{%
+      \AtPageUpperLeft{%
+        \InlineImage{#1}%
+      }%
+    }%
+    \null% without this, page has no "content"
+  \else%
+    \ClassError{novel}{\string\SetCoverImage\space requires `coverart' option}%
+     {You must use the `coverart' document class option, for cover image.}%
+  \fi%
+} % end \SetCoverImage
+%%
+
+
+%% OBSOLETE
+\newif \if@FlexResolutionSet
+\gdef\@novereserror{%
+  \ClassError{novel}{\string\SetFlexResolution\space bad value}%
+  {Resolution dpi must be integer from 200 to 9600. Default 300.}%
+}
+\newcommand\SetFlexResolution[1]{
+  \IfInteger{#1}{ %
+    \FPiflt{#1}{200}\@novereserror\else\fi % not enough
+    \FPifgt{#1}{9600}\@novereserror\else\fi % too much
+    \gdef\@novimgres{#1} %
+  }{ %
+    \@novreserror %
+  } %
+  \@FlexResolutionSettrue %
+}%
+%
+\AtEndPreamble{% called by `novel.cls' \AtEndPreamble
+  \if@FlexResolutionSet %
+    \pdfimageresolution=\@novimgres % from \SetFlexResolution. Default 300.
+  \fi %
+}%
+%%
+
+
+%% BLOCK IMAGE (OBSOLETE)
+%% ----------------------------------------------------------------------------
+%% \BlockImage[alignment]{image}[text]
+%% OBSOLETE FROM VERSION 1.50. Use \FloatImage instead.
+\DeclareDocumentCommand \BlockImage { O{c} m +O{} }{%
+  \ClassWarning{novel}{^^J\string\BlockImage\space command is obsolete. ^^J%
+    It will remain in effect for existing documents that use it. ^^J%
+    New documents must use \string\FloatImage\space instead.  ^^J%
+    Purpose and syntax is slightly different. See docs.  ^^J}%
+  \iftoggle{@inheadfoot}{%
+    \ClassError{novel}{Cannot use \string\BlockImage\space in header/footer}%
+      {Header footer allow \string\InlineImage, but not \string\BlockImage.}%
+  }{}%
+  \@TestImageExtension{#2}%
+  % Allows empty or blank to be used, and still provide default values:
+  \ifthenelse{\equal{#1}{} \OR \equal{#1}{\space}}{%
+    \def\@myargs{c}}{\def\@myargs{#1}%
+  }%
+  \StrDel{\@myargs}{\space}[\@myargsns]% needs {\space} not { }
+  \StrCut{\@myargsns}{,}{\@myalign}{\@mycoord}%
+  \StrCut{\@mycoord}{,}{\@myxt}{\@myyt}%
+  \ifthenelse{\equal{\@myxt}{}\OR\equal{\@myxt}{0}}{%
+    \def\@myx{0pt}}{\def\@myx{\@myxt}%
+  }%
+  \ifthenelse{\equal{\@myyt}{}\OR\equal{\@myyt}{0}}{%
+    \def\@myy{0pt}}{\def\@myy{\@myyt}%
+  }%
+  %
+  \global\@UsingNovelCommandtrue%
+  \gdef\@mygraphic{\novel@sub@inclgr{#2}}%
+  \gdef\@mygraphicname{#2}%
+  \setlength\@imagewidth{\widthof{\@mygraphic}}%
+  \global\@imagewidth=\@imagewidth%
+  \setlength\@imageheight{\heightof{\@mygraphic}}%
+  \global\@imageheight=\@imageheight%
+  \setlength\@imagehoffset{\@myx}%
+  \IfBeginWith{\@myy}{b}{%
+    \ClassError{novel}{Cannot use voffset `b' on %
+      \string\BlockImage, page \thepage}%
+     {The `b' voffset only works with \string\InlineImage, %
+      not \string\BlockImage.}%
+  }{%
+    \setlength\@imagevoffset{-\@imageheight}%
+    \addtolength\@imagevoffset{\@myy}%
+  }%
+  %
+  \setlength\@mytotalht{0pt}%
+  \addtolength\@mytotalht{\@imageheight}%
+  \addtolength\@mytotalht{-\@myy}%
+  \addtolength\@mytotalht{1em}%
+  \def\@mytotalhtN{\strip@pt\@mytotalht}%
+  \FPdiv{\@mytotalhtN}{\@mytotalhtN}{\strip@pt\nbs}%
+  \FPadd{\@mytotalhtN}{\@mytotalhtN}{0.5}%
+  \FPround{\@mytotalhtN}{\@mytotalhtN}{0}%
+  %
+  \begin{linegap}{\@mytotalhtN}%
+  %
+  \ifthenelse{\equal{\@myalign}{c}\OR\equal{\@myalign}{}}{%
+    {\centering%
+      \makebox[0pt][l]{%
+        \hspace{\dimexpr\@myx-0.5\@imagewidth}%
+        \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}%
+      }%
+      \par%
+    }
+    \vspace*{-\nbs}%
+    {\centering #3\par}%
+  }{}%
+  \ifthenelse{\equal{\@myalign}{r}}{%
+    \noindent\makebox[0pt][l]{%
+      \hspace{\dimexpr\textwidth+\@myx-\@imagewidth}%
+      \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}%
+    }\par%
+    \vspace{-2\nbs}%
+    \begin{adjustwidth}{0pt}{\@imagewidth+\parindent}%
+      \strut\par%
+      #3\par%
+    \end{adjustwidth}%
+  }{}%
+  \ifthenelse{\equal{\@myalign}{l}}{%
+    \noindent\makebox[0pt][l]{%
+      \hspace{\@myx}%
+      \stake\smash{\raisebox{\dimexpr\@myy-\@imageheight}{\@mygraphic}}%
+    }%
+    \par%
+    \vspace{-2\nbs}%
+    \begin{adjustwidth}{\@imagewidth+\parindent}{0pt}%
+      \strut\par%
+      #3\par%
+    \end{adjustwidth}%
+  }{}%
+  \end{linegap}%
+  \global\@UsingNovelCommandfalse%
+} % end \BlockImage (OBSOLETE)
+%%
+
+
+%% REWORK IS OBSOLETE CODE. NOT DOCUMENTED.
+%% ----------------------------------------------------------------------------
+%% \ReworkTrimSize retroactively changes Trim Size after layout.
+% If you use \ReworkTrimSize, you must first use \SetTrimSize (not defaults):
+\newlength\@NewTrimWidth
+\newlength\@NewTrimHeight
+\newcommand\ReworkTrimSize[2]{% width, height
+  \if@SetTrimSize\else
+    \ClassError{novel}{Must use \string\SetTrimSize\space %
+      before \string\ReworkTrimSize}%
+     {\string\ReworkTrimSize\space cannot be applied to default Trim Size. ^^J%
+      You must manually \string\SetTrimSize\space prior to %
+       \string\ReworkTrimSize.}%
+  \fi
+  \if@coverart % New in version 1.2
+    \ClassError{novel}{\string\Rework\space commands cannot be used %
+      with `coverart' option}%
+     {Instead of \string\Rework, you must re-do the graphics artwork.}
+  \else
+    \global\@ReworkTrimSizetrue
+    \gsetlength\@NewTrimWidth{#1}
+    \gsetlength\@NewTrimHeight{#2}
+      \typeout{^^J Class `novel' Alert: %
+       Used \string\ReworkTrimSize\space command. ^^J%
+       Carefully review your PDF to ensure that line breaks, paragraphs, ^^J%
+       and page breaks are where you expect them to be. ^^J}%
+  \fi
+}% end \ReworkTrimSize
+%%
+
+
+%% REWORK IS OBSOLETE CODE. NOT DOCUMENTED.
+%% Retroactively change margins after layout. See documentation.
+% If you use \ReworkMargins, you must first use \SetMargins (not defaults):
+\newlength\@NewTopMargin
+\newlength\@NewOuterMargin
+\newlength\@NewBottomMargin
+\newlength\@NewInnerMargin
+\newcommand\ReworkMargins[4]{ % top, outer, bottom, inner
+  \if@coverart % New in version 1.2
+    \ClassError{novel}{\string\Rework\space commands cannot be used %
+      with coverart option}%
+    {Instead of \string\Rework, you must re-do the graphics artwork.}
+  \else
+    \global\@ReworkMarginstrue
+    \gsetlength\@NewTopMargin{#1}
+    \gsetlength\@NewOuterMargin{#2}
+    \gsetlength\@NewBottomMargin{#3}
+    \gsetlength\@NewInnerMargin{#4}
+    \typeout{^^JClass novel Alert: Used \string\ReworkMargins. ^^J%
+     Carefully review your PDF to ensure that line breaks, paragraphs, ^^J%
+     and page breaks are where you expect them to be. ^^J}%
+  \fi
+}% end \ReworkMargins
+\LetLtxMacro\ReworkMargin{\ReworkMargins}\relax % for those who mis-type
+%% When \Rework, should result honor new margins (if possible), or should
+%    result maintain original aspect ratio?
+\newif \if@AspectPriority
+\newcommand\ReworkPriority[1]{%
+  \@tempTFfalse
+  \ifthenelse{\equal{#1}{aspect}}{\@AspectPrioritytrue\@tempTFtrue}{}
+  \ifthenelse{\equal{#1}{margins}}{\@AspectPriorityfalse\@tempTFtrue}{}
+  \ifthenelse{\equal{#1}{margin}}{\@AspectPriorityfalse\@tempTFtrue}{}
+  \if@tempTF\else
+    \ClassError{novel}{Bad choice for \string\ReworkPriority}%
+      {Rework priority choices: aspect, margins (default margins).}%
+  \fi
+}
+\ReworkPriority{margins} % default
+%%
+
+
+%% REWORK IS OBSOLETE CODE. NOT DOCUMENTED.
+\gdef\ObsoleteRework{ %
+% A few values from the original calculation must be stored:
+\newlength\@OriginalEmSize
+  \gsetlength\@OriginalEmSize{\@SetFontSize}
+\newlength\@OriginalTextWidth % same as original available width
+  \gsetlength\@OriginalTextWidth{\textwidth}
+\newlength\@OriginalHeight % includes header/footer
+  \gsetlength\@OriginalHeight{\@AvailableHeight}
+\newlength\@OriginalBaselineSkip
+  \gsetlength\@OriginalBaselineSkip{\baselineskip}
+% Change the values of trim size and margins, as requested.
+% If not changed, same as before:
+\if@ReworkTrimSize
+  \gsetlength\@TrimWidth{\@NewTrimWidth}
+  \gsetlength\@TrimHeight{\@NewTrimHeight}
+\fi
+\if@ReworkMargins
+  \gsetlength\@TopMargin{\@NewTopMargin}
+  \gsetlength\@OuterMargin{\@NewOuterMargin}
+  \gsetlength\@BottomMargin{\@NewBottomMargin}
+  \gsetlength\@InnerMargin{\@NewInnerMargin}
+\fi
+% Re-calculate:
+\gsetlength\@AvailableWidth{\@TrimWidth-\@OuterMargin-\@InnerMargin}
+\gsetlength\@AvailableHeight{\@TrimHeight-\@TopMargin-\@BottomMargin}
+%%
+\xdef\@TWratio{\fpeval{\@AvailableWidth/\@OriginalTextWidth}}
+\xdef\@THratio{\fpeval{\@AvailableHeight/\@OriginalHeight}}
+\FPmin{\@TMratio}{\@TWratio}{\@THratio}
+%%
+\if@AspectPriority
+  \gsetlength\textwidth{\@TMratio\@OriginalTextWidth}
+  \gsetlength\@SetFontSize{\@TMratio\@OriginalEmSize}
+  \gsetlength\baselineskip{\@TMratio\@OriginalBaselineSkip}
+  % Find whether limiting factor is width or height:
+  \ifnumcomp{\@TWratio}{<}{\@THratio}{%
+    \setlength\@tempLength{\@AvailableHeight-\@AdjLPP\baselineskip}
+    \setlength\@tempLength{\@tempLength-\baselineskip+\@SetFontSize}
+    \setlength\@tempLength{0.5\@tempLength}
+    \gsetlength{\@TopMargin}{\@TopMargin+\@tempLength}
+    \gsetlength{\@BottomMargin}{\@BottomMargin+\@tempLength}
+    \FPround{\@tempN}{\strip@pt\@tempLength}{2}
+    \setlength\@tempLength{\@tempN pt}
+    \FPround{\@tempN}{\@TMratio}{4}
+    \typeout{^^JClass `novel' Info: Rework preserving aspect ratio. ^^J Each%
+      vertical margin \the\@tempLength\space over requested rework value. ^^J%
+      Scale \@tempN\space applied to text size and baselineskip. ^^J%
+    } %
+  }{%
+    \gsetlength\@OuterMargin{\@OuterMargin+0.5\@AvailableWidth-0.5\textwidth}
+    \gsetlength\@InnerMargin{\@InnerMargin+0.5\@AvailableWidth-0.5\textwidth}
+    \setlength\@tempLength{0.5\@AvailableWidth-0.5\textwidth}
+    \FPround{\@tempN}{\strip@pt\@tempLength}{2}
+    \setlength\@tempLength{\@tempN pt}
+    \FPround{\@tempN}{\@TMratio}{4}
+    \typeout{^^JClass `novel' Info: Rework preserving aspect ratio. ^^J%
+      Each side margin \the\@tempLength\space over requested rework value. ^^J%
+      Scale \@tempN\space applied to text size and baselineskip. ^^J%
+    } %
+  } % end \ifnumcomp
+\else % margins priority:
+  % Discover what happens if scaled according to text width:
+  \gsetlength\textwidth{\@AvailableWidth}
+  \gsetlength\@SetFontSize{\@TWratio\@OriginalEmSize}
+  \gsetlength\baselineskip{1.2\@SetFontSize} % test for least allowable
+  \setlength\@tempLength{\@AdjLPP\baselineskip}
+  \ifdimcomp{\@AvailableHeight-\@tempLength}{<}{0pt}{%
+    % Will not fit vertically, so will need to re-scale \@SetFontSize.
+    \gsetlength\@SetFontSize{\@OriginalEmSize}
+    \gsetlength\baselineskip{\fpeval{\@AvailableHeight/(\@AdjLPP+1.3)}pt}
+    \FPdiv\@THratio{\strip@pt\baselineskip}{\strip@pt\@OriginalBaselineSkip}
+    \gsetlength\@SetFontSize{0.8333\baselineskip} % 0.8333 = 1/1.2, tight skip
+    \FPdiv{\@tempN}{\strip@pt\@SetFontSize}{\strip@pt\@OriginalEmSize}
+    \gsetlength\textwidth{\@tempN\@OriginalTextWidth}
+    \gsetlength\@OuterMargin{%
+      0.5\@OuterMargin+0.5\@TrimWidth-0.5\@InnerMargin-0.5\textwidth%
+    }
+    \gsetlength\@InnerMargin{%
+      0.5\@InnerMargin+0.5\@TrimWidth-0.5\@OuterMargin-0.5\textwidth%
+    }
+    \FPround{\@ActualOuterN}{\strip@pt\@OuterMargin}{2}
+    \FPround{\@ActualInnerN}{\strip@pt\@InnerMargin}{2}
+    \FPmul{\@TWratio}{\@TWratio}{\@THratio}
+    \FPmul{\@THratio}{\@TWratio}{1.2}
+    \FPround{\@TWratio}{\@TWratio}{4}
+    \FPround{\@THratio}{\@THratio}{4}
+    \typeout{^^JClass `novel' Info: Reworked side margins enlarged. ^^J%
+      Actual Outer Margin is now \@ActualOuterN pt. ^^J%
+      Actual Inner Margin is now \@ActualInnerN pt. ^^J%
+      Scale \@TWratio\space applied to text, ^^J%
+      \@THratio\space applied to baselineskip. ^^J%
+    } %
+  }{% Fits vertically. Keep \@SetFontSize. Calculate \baselineskip to fit:
+    \gsetlength\baselineskip{%
+      \fpeval{(\@AvailableHeight-1.3*\@SetFontSize)/\@AdjLPP}pt%
+    } %
+    \FPdiv{\@BLratio}{\strip@pt\baselineskip}{\strip@pt\@OriginalBaselineSkip}
+    \FPround{\@BLratio}{\@BLratio}{4}
+    \FPround{\@TWratio}{\@TWratio}{4}
+    \typeout{^^JClass `novel' Info: Rework was able to fit new margins. ^^J%
+      Scale applied to font size: \@TWratio. ^^J%
+      Scale applied to baselineskip: \@BLratio. ^^J%
+    } %
+  }% end \ifdimcomp.
+\fi
+} % end ObsoleteRework.
+%%
+
+
+%%
+\AtBeginDocument{%
+  \LetLtxMacro\ReworkTrimSize\relax
+  \LetLtxMacro\ReworkMargins\relax
+  \LetLtxMacro\ReworkPriority\relax
+  \LetLtxMacro\SetFlexResolution\relax % cannot use past Preamble
+} %
+%%
+
+
+
+%%
+\endinput
+%%
+%% End of file `novel-Obsolete.sty'.
+
+

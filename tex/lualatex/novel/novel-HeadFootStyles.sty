@@ -1,6 +1,6 @@
 %%
-%% This is file `novel-HeadFootStyles.sty', part of class `novel'.
-%% Copyright 2017 Robert Allgeyer.
+%% This is file `novel-HeadFootStyles.sty', part of `novel' document class.
+%% Copyright 2017-2018 Robert Allgeyer.
 %%
 %% 
 %% This file may be distributed and/or modified under the
@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-HeadFootStyles.sty}%
-[2018/01/14 v1.46.2 LaTeX file (header and footer layouts and styles)]
+[2018/03/16 v1.50pre1 LaTeX file (header and footer layouts and styles)]
 %% 
 
 
@@ -24,122 +24,346 @@
 %% \AtEndPreamble, and only if the user did not already define the layout
 %% in the Preamble.
 
-%% Note that `style' sometimes means `layout`.
+\gdef\@HeadFootStyle{1} % default: header but not footer
+\gdef\@VersoEmblem{} % no default emblem
+\gdef\@RectoEmblem{} % no default emblem
 
+
+%% SET HEADER/FOOTER STYLE AND RESERVE SPACE FOR HEADER/FOOTER
+%% ----------------------------------------------------------------------------
+% There are several pre-configured header/footer styles, addressing every
+%   situation likely to be seen in popular fiction. The style details are
+%   coded, using `fancyhdr' syntax, in novel-HeadFootStyles.sty.
+% If you wish to create a custom head/foot style, you must first choose
+%   one of the pre-configured styles, then customize it. That way,
+%   the layout engine knows whether header or footer are present.
+\newif \if@StyledHeader % true if user-customized header using \fancyhead
+\newif \if@StyledFooter % true if user-customized footer using \fancyfoot
+%
+\gdef\SetHeadFootStyle#1{%
+  \if@coverart
+    \gdef\@HeadFootStyle{0} % required: no header/footer for coverart
+    \ifthenelse{\equal{#1}{0}}{}{%
+      \ClassWarning{novel}{^^JClass option `coverart' does not %
+        allow header/footer. Ignored. ^^J}
+    }%
+  \else
+    \@tempTFfalse
+    \ifthenelse{\equal{#1}{0}}{%
+      \global\@HasHeaderfalse\global\@HasFooterfalse\@tempTFtrue%
+    }{}
+    \ifthenelse{\equal{#1}{1}}{%
+      \global\@HasHeadertrue\global\@HasFooterfalse\@tempTFtrue%
+    }{}
+    \ifthenelse{\equal{#1}{2}}{%
+      \global\@HasHeaderfalse\global\@HasFootertrue\@tempTFtrue%
+    }{}
+    \ifthenelse{\equal{#1}{3}}{%
+      \global\@HasHeaderfalse\global\@HasFootertrue\@tempTFtrue%
+    }{}
+    \ifthenelse{\equal{#1}{4}}{%
+      \global\@HasHeadertrue\global\@HasFooterfalse\@tempTFtrue%
+    }{}
+    \ifthenelse{\equal{#1}{5}}{%
+      \global\@HasHeadertrue\global\@HasFootertrue\@tempTFtrue%
+    }{}
+    \ifthenelse{\equal{#1}{6}}{%
+      \global\@HasHeadertrue\global\@HasFootertrue\@tempTFtrue%
+    }{}
+    % Ensure that user choice was on the allowed list:
+    \if@tempTF\else
+      \ClassError{novel}{Invalid choice for \string\SetHeadFootStyle}%
+        {\string\SetHeadFootStyle\space needs choice of 0,1,2,3,4,5,6, ^^J%
+        even if you wish to customize using fancyhdr syntax.}%
+    \fi
+    \gdef\@HeadFootStyle{#1}
+  \fi
+}%
+\SetHeadFootStyle{1} % default, header only
+\let\SetHeadStyle\SetHeadFootStyle\relax % deprecated
+%
+% \HeadJump is a number from 1 to 3 (may be decimal). It measures the
+%   distance from baseline of header text, to first baseline of main text,
+%   then divides by the normal baseline.
+% So, a \HeadJump of 1 means that the header text is positioned exactly
+%   one line above main text (unlikely). A value of 2 skips a whole line.
+% The default value is 1.5, which is often used in popular fiction.
+% No matter what value is set, it will be re-set to 0 later, if the
+%   choice of head/foot style does not have a header.
+% Likewise for \FootJump, measuring from baseline of lowermost main text,
+%   to baseline of footer text.
+\gdef\SetHeadJump#1{%
+  \IfDecimal{#1}{%
+    \FPiflt{#1}{1}
+      \ClassError{novel}{\string\SetHeadJump\space must be at least 1}%
+      {\string\SetHeadJump\string from 1 to 3, may be decimal.}%
+    \fi
+    \FPifgt{#1}{3}
+      \ClassError{novel}{\string\SetHeadJump\space must not exceed 3}%
+      {\string\SetHeadJump\string from 1 to 3, may be decimal.}%
+    \fi
+    \gdef\@HeadJump{#1}
+  }{%
+    \ClassError{novel}{Unable to parse \string\SetHeadJump\space argument}%
+    {Needs integer or decimal, but not ending in decimal point or comma. ^^J%
+     Must be a number from 1 to 3, but may not be a macro.}%
+  }%
+}
+\SetHeadJump{1.5} % default
+%
+\gdef\SetFootJump#1{%
+  \IfDecimal{#1}{%
+    \FPiflt{#1}{1}
+      \ClassError{novel}{\string\SetFootJump\space must be at least 1}%
+      {\string\SetFootJump\string from 1 to 3, may be decimal.}%
+    \fi
+    \FPifgt{#1}{3}
+      \ClassError{novel}{\string\SetFootJump\space must not exceed 3}%
+      {\string\SetFootJump\string from 1 to 3, may be decimal.}%
+    \fi
+    \gdef\@FootJump{#1}
+  }{%
+    \ClassError{novel}{Unable to parse \string\SetFootJump\space argument}%
+    {Needs integer or decimal, but not ending in decimal point or comma. ^^J%
+     Must be a number from 1 to 3, but may not be a macro.}%
+  }%
+}
+\SetFootJump{1.5} % default
+%
+%% end set style and reserve space for header/footer.
+
+
+%% Used in novel-headfootstyles.sty:
+% \SetLooseHead looseness factor (fontspec LetterSpace) 0=tight, 50=default
+\gdef\SetLooseHead#1{
+  \FPdiv{\@loosehead}{#1}{10} % change method fontspec w/ microtype
+  \FPmin{\@looseheadN}{\@loosehead}{50} % don't want numbers too loose
+  \FPdiv{\@looseheadword}{\@loosehead}{30} % inter-word, new in v. 1.40.3
+  \FPadd{\@looseheadword}{\@looseheadword}{1}
+}
+\SetLooseHead{50}
+%%
+
+%
+% See docs for what these emblems do, if used:
+\newcommand\SetEmblems[2]{ % verso, recto
+  \gdef\@VersoEmblem{{\headfont #1}}
+  \gdef\@RectoEmblem{{\headfont #2}}
+}
+\let\SetEmblem\SetEmblems% for convenience
+% If you want something fancier than \thepage:
+\gdef\SetPageNumberStyle#1{% no small caps, so lowercase roman preserved
+  \gdef\pagenumberstyle{{\addfontfeature{Letters=ResetAll}#1}}
+}
+\SetPageNumberStyle{\thepage}% no small caps
+% See novel.cls for the accompanying AtBeginDocument routine.
 
 
 %% INITIALIZE FANCYHDR
-%% -----------------------------------------------------------------------------
-%% Before now now, space was reserved for header/footer.
+%% ----------------------------------------------------------------------------
+% Earlier, space was reserved for header/footer, but the content of
+%   headers and footers was not specified. Now, package `fancyhdr'
+%   will be used to create the content.
 % Start by loading package `fancyhdr' and blanking everything:
-%
-\newtoggle{@inheadfoot} % true in header or footer
-%
 \RequirePackage{fancyhdr}
   \renewcommand\headrulewidth{0pt}
   \renewcommand\footrulewidth{0pt}
   \fancyhead[LO,RE,LE,RO,CE,CO]{}
   \fancyfoot[LO,RE,LE,RO,CE,CO]{}
-% \SetLooseHead looseness factor (fontspec LetterSpace) 0=tight, 50=default
-\gdef\SetLooseHead#1{
-  \gdef\@@loosehead{#1}
-  \FPdiv{\@loosehead}{\@@loosehead}{10} % change in method of using fontspec with microtype
-  \FPmin{\@looseheadnum}{\@loosehead}{50} % Don't want numbers too loose.
-  \FPdiv{\@looseheadword}{\@loosehead}{30} % new in v. 1.40.3.
-  \FPadd{\@looseheadword}{\@looseheadword}{1}
-}
-\SetLooseHead{50}
-% Create flags to know if \fancyhead and \fancyfoot have been defined by user,
-%   somewhere in the Preamble. If not, then pre-defined layout based on trimsize
-%   will be applied \AtEndPreamble.
-\LetLtxMacro{\@tempFancyhead}{\fancyhead} % from package `letltxmacro'
+% It might be useful to know whether something is being placed in main text,
+%   or within a header/footer. A new boolean is created, which is only true
+%   when within  a header or footer. You can define macros so that they test
+%   this boolean.
+% To make this work, \fancyhead and \fancyfoot are re-defined:
+\newtoggle{@inheadfoot} % true within header or footer
+\LetLtxMacro{\@myfancyhead}{\fancyhead}
+\LetLtxMacro{\@myfancyfoot}{\fancyfoot}
 \renewcommand\fancyhead[2][]{%
-  \@styledHeadertrue%
-  \@tempFancyhead[#1]{\toggletrue{@inheadfoot}{\normalsize#2}}%
+  \global\@StyledHeadertrue%
+  \@myfancyhead[#1]{\toggletrue{@inheadfoot}{\normalsize #2}}% not global
 }
-%
-\LetLtxMacro{\@tempFancyfoot}{\fancyfoot}
 \renewcommand\fancyfoot[2][]{%
-  \@styledFootertrue%
-  \FPsub{\@footraise}{\@footjump}{1}%
-  \FPmul{\@footraise}{-\@footraise}{\Current@BaselineSkipNum}%
-  \@tempFancyfoot[#1]{%
-    \toggletrue{@inheadfoot}%
-    \stake\smash{\raisebox{\@footraise pt}{{\normalsize#2}}}%
+  \global\@StyledFootertrue%
+  \FPsub{\@footraise}{\@FootJump}{1}%
+  \FPmul{\@footraise}{-\@footraise}{\strip@pt\nbs}%
+  \@myfancyfoot[#1]{%
+    \toggletrue{@inheadfoot}% not global
+    \stake\smash{\raisebox{\@footraise pt}{\normalsize #2}}%
   }%
 }
-%
-\LetLtxMacro{\@myTempTPS}{\thispagestyle}
+%% end initialize fancyhdr.
+
+
+%% THISPAGESTYLE COMMANDS
+%% ----------------------------------------------------------------------------
 % Re-define \thispagestyle based on layout. When it requests only the page
 % number, decide what to do based on this command and whether footer is used:
-\newif \if@thispagestyleset \@thispagestylesetfalse
-%
-%% See AtBeginShipout routine in novel.cls.
+\newif \if@ThisPageStyle % true if \thispagestyle declared for current page
+\newif \if@DeleteCSline % true when using @dropfolioinside
+\AtBeginShipout{% re-sets when page done
+  \global\@DeleteCSlinefalse%
+  \global\@ThisPageStylefalse%
+}
+\LetLtxMacro{\@myTempTPS}{\thispagestyle}
 %
 \gdef\thispagestyle#1{%
-  \global\@thispagestylesettrue%
-  \gdef\@pagestyleOK{false}%
+  \global\@ThisPageStyletrue%
+  \@tempTFfalse%
+  % Style `fancy' is same as normal style:
   \ifthenelse{\equal{#1}{fancy}}{%
-    \gdef\@pagestyleOK{true}%
+    \@tempTFtrue%
     \@myTempTPS{fancy}%
   }{}%
+  % Style `empty' has no visible content in header or footer.
+  % This style is pre-defined, so no need to re-define it here.
   \ifthenelse{\equal{#1}{empty}}{%
-    \gdef\@pagestyleOK{true}%
+    \@tempTFtrue%
     \@myTempTPS{empty}%
   }{}%
-  \ifthenelse{\equal{#1}{plain}\OR\equal{#1}{fancyplain}\OR\equal{#1}{footer}}{%
-    \gdef\@pagestyleOK{true}%
-    \if@gotFooter \@myTempTPS{fancyplain}%
-    \else \@myTempTPS{empty}%
+  % Style `footer' has no visible content in header.
+  % If the normal style has a footer, it will be used as-is. However, if the
+  %   normal style does not have a footer, then (unlike the above style)
+  %   the page number will not be placed at bottom; as with style `empty'.
+  \ifthenelse{\equal{#1}{footer}}{%
+    \@tempTFtrue%
+    \if@HasFooter\@myTempTPS{@footer}%
+    \else\@myTempTPS{empty}%
     \fi%
   }{}%
+  % Style `forcenumber' is rarely used. If the normal style has a footer,
+  %   it will be used as-is (presumably contains the page number), and there
+  %   will be no visible content in the header.
+  % But if there is no normal footer, then the outside portion of the header
+  %   is printed. No other portion of the header. Presumably the page number
+  %   is located at the outside of the header.
   \ifthenelse{\equal{#1}{forcenumber}}{%
-    \gdef\@pagestyleOK{true}%
-    \if@gotFooter \@myTempTPS{fancyplain}%
-    \else \@myTempTPS{fancynumber}%
+    \@tempTFtrue%
+    \if@HasFooter\@myTempTPS{@footer}%
+    \else\@myTempTPS{@forcenumber}%
     \fi%
   }{}%
-  %
-  \ifthenelse{\equal{#1}{dropfolioinside}% after \clearpage
-    \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{% compatibility
-    \gdef\@pagestyleOK{true}%
-    \if@gotFooter%
-      \@myTempTPS{fancyplain}%
+  % Style `dropfoliobeneath': There will be no visible content in header.
+  % If the normal style has a footer, it will be used as-is. This assumes
+  %   that the page number is contained in the footer, the usual case.
+  % If the normal style has no footer, then the page number will be centered
+  %   within the lower margin, at the position where an exta line would be.
+  %   Thus, pagination of the main text is unaffected.
+  % Since the number is closer than usual to the page bottom edge, you must
+  %   ensure that it does not intrude into the unsafe zone (where printers
+  %   prohibit any printable matter). TeX cannot check this for you. However,
+  %   you can define an Unsafe Zone, and inspect placement of the number
+  %   in draft mode.
+  % Styles `plain*' and `fancyplain*' (with asterisk) are aliases.
+  \ifthenelse{\equal{#1}{dropfoliobeneath}%
+    \OR \equal{#1}{plain*} \OR \equal{#1}{fancyplain*}}{%
+    \@tempTFtrue%
+    \if@HasFooter\@myTempTPS{@footer}%
     \else%
-      \global\@addCTlinefalse%
-      \@myTempTPS{empty}%
-      \@dropfolioinside
+      \@myTempTPS{@dropfoliobeneath}%
+      \typeout{^^JClass `novel' Alert: Page no. \thepage\space in margin. ^^J%
+        Review layout to ensure that this is within the Safe Area. ^^J%
+      }%
     \fi%
   }{}%
-  % With `dropfoliobeneath` only a footer is used, if present. If no footer,
-  %  then the styled page number is centered at one baselineskip beneath the
-  %  ordinary bottom of the textblock. Thus, the number intrudes into the
-  %  bottom margin. This is OK if the bottom margin is wider than minimum.
-  %  Whether the margin is wide enough, is for the user to determine, because
-  %  the document class does not know the printer's limitations.
-  \ifthenelse{\equal{#1}{dropfoliobeneath}}{% after \clearpage
-    \gdef\@pagestyleOK{true}%
-    \if@gotFooter%
-      \@myTempTPS{fancyplain}%
+  % Style `dropfolioinside': There will be no visible content in header.
+  % If the normal style has a footer, it will be used as-is. This assumes
+  %   that the page number is contained in the footer, the usual case.
+  % If the normal style has not footer, then the page number will be centered
+  %   where the last line of main text would ordinarily be. No extra gap.
+  %   That may cause the (former) last line of main text to flow to the top of
+  %   the next page, and so forth. However, if this page style is used on
+  %   a page with ChapterStart, then the height of ChapterStart will be
+  %   automatically reduced by one line, so that there is no repagination.
+  % Styles `plain', `fancyplain', `dropfolio', and `dropfoliolater' are aliases
+  %   for `dropfolioinside'. I couldn't make up my mind regarding the
+  %   command name. For compatibility, all these do the same thing.
+  \ifthenelse{\equal{#1}{dropfolioinside}%
+  \OR \equal{#1}{plain} \OR \equal{#1}{fancyplain}%
+  \OR \equal{#1}{dropfolio} \OR \equal{#1}{dropfoliolater}}{%
+    \@tempTFtrue%
+    \if@HasFooter\@myTempTPS{@footer}%
     \else%
-      \@myTempTPS{empty}%
-      \@dropfoliobeneath
+      \global\@DeleteCSlinetrue%
+      \enlargethispage{-\nbs}%
+      \@myTempTPS{@dropfolioinside}%
     \fi%
   }{}%
-  %%
-  \ifthenelse{\equal{\@pagestyleOK}{true}}{}{%
-    \ClassWarning{novel}{^^JPage \pagenumberstyle\space has %
-    \string\thispagestyle{}^^J%
-    but its argument is not defined. Default substituted. Better fix that.^^J}%
-  }%
-}
+  % Verify that an allowable choice was made:
+  \if@tempTF\else%
+    \ClassError{novel}{^^JPage \thepage\space has \string\thispagestyle ^^J%
+     but its argument is not on the list of choices. See docs. ^^J}%
+  \fi%
+} % end \thispagestyle.
 %
-%% End initialize fancyhdr.
+\let\dropfolionow\relax % compatibility with earlier version.
+%
+% Here are the thispagestyle definitions:
+\fancypagestyle{@footer}{ % blanks header, but leaves footer as-is
+  \renewcommand\headrulewidth{0pt}
+  \renewcommand\footrulewidth{0pt}
+  \fancyhead[LO,RE,LE,RO,CE,CO]{}
+}
+\fancypagestyle{@dropfolioinside}{ % page number where last line would be
+  \renewcommand\headrulewidth{0pt}
+  \renewcommand\footrulewidth{0pt}
+  \fancyhead[LO,RE,LE,RO,CE,CO]{}
+  \fancyfoot[LO,RE,LE,RO]{}
+  \fancyfoot[CO,CE]{%
+    \raisebox{\dimexpr\@FootJump\nbs}{\@lspagenum\pagenumberstyle}%
+  }
+}
+\fancypagestyle{@dropfoliobeneath}{ % page number in margin below text
+  \renewcommand\headrulewidth{0pt}
+  \renewcommand\footrulewidth{0pt}
+  \fancyhead[LO,RE,LE,RO,CE,CO]{}
+  \fancyfoot[LO,RE,LE,RO]{}
+  \fancyfoot[CO,CE]{%
+    \raisebox{\dimexpr\@FootJump\nbs-\nbs}{\@lspagenum\pagenumberstyle}%
+  }
+}
+\fancypagestyle{@forcenumber}{ % if has header but not footer
+  \renewcommand\headrulewidth{0pt}
+  \renewcommand\footrulewidth{0pt}
+  \fancyhead[LO,RE,LE,RO,CE,CO]{}
+  \fancyhead[LE]{%
+    \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
+    \@VersoEmblem%
+  }
+  \fancyhead[RO]{%
+    \@RectoEmblem%
+    \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
+  }
+  \fancyfoot[LO,RE,LE,RO,CE,CO]{}
+}
+%% end \thispagestyle commands.
+
+
+%%
+\gdef\@lshftext{\headfont\addfontfeature{LetterSpace=\@loosehead}}
+\gdef\@lspagenum{\headfont\addfontfeature{LetterSpace=\@looseheadN}}
+%%
+
+% Content of header text (if present) can be changed at any time within
+%   the body, using the following commands. If not used, then
+%   Verso is initialized to \theauthor and Recto is initialized to \thetitle
+%   AtBeginDocument, with adjustments to interword spacing.
+% If you wish, you may write the commands with empty arguments, in which case
+%   the header still appears with page number (if present), but no text.
+%
+\gdef\NewVersoHeadText#1{\gdef\versoheadtext{#1}}
+\let\SetVersoHeadText\NewVersoHeadText\relax % for convenience
+\let\RenewVersoHeadText\NewVersoHeadText\relax % for convenience
+%
+\gdef\NewRectoHeadText#1{\gdef\rectoheadtext{#1}}
+\LetLtxMacro\SetRectoHeadText\NewRectoHeadText\relax % for convenience
+\LetLtxMacro\RenewRectoHeadText\NewRectoHeadText\relax % for convenience
+%
+%%
 
 
 %% See AtBeginDocument routine in novel.cls:
-%% -----------------------------------------------------------------------------
-\gdef\@activateHeadFootStyles{ % called AtBeginDocument by novel.cls
+%% ----------------------------------------------------------------------------
+\gdef\@ActivateHeadFootStyles{ % called AtBeginDocument by novel.cls
   % Pre-configured header/footer styles, unless user over-rode them:
   % \versoheadtext is initialized to \theauthor
   % \rectoheadtext is initialized to \thetitle
@@ -150,208 +374,126 @@
     \NewRectoHeadText{\thetitle} % revised in v. 1.40.3
   }{}
   %
-  % ----------------------------------------------------------------------------
+  % ---------------------------------------------------------------------------
   % IF YOU ARE WRITING YOUR OWN HEADER/FOOTER LAYOUT:
   % Look here for the pre-defined layouts, for use as models.
   % Note that if you write \fancyhead or \fancyfoot in the Preamble,
-  % that sets the \@styledHeader flag, so these codes do not over-ride yours.
-  \ifthenelse{\equal{\my@HeadFootStyle}{1}}{ % default
-    \if@styledHeader\else
-      \fancyhead[LE]{\makebox[2.5em][l]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\my@VersoEmblem%
+  %   that sets the \@StyledHeader flag, so these codes do not over-ride yours.
+  % \@lshftext loosens text tracking.
+  % \@lspagenum loosens page number tracking, like \@lshftext but capped
+  %   at a maximum looseness.
+  \ifthenelse{\equal{\@HeadFootStyle}{1}}{ % default
+    \if@StyledHeader\else
+      \fancyhead[LE]{%
+        \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
+        \@VersoEmblem%
       }
-      \fancyhead[RO]{\my@RectoEmblem\makebox[2.5em][r]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
+      \fancyhead[RO]{%
+        \@RectoEmblem%
+        \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
       }
-      \fancyhead[CE]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}}
-      \fancyhead[CO]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\rectoheadtext}}}
+      \fancyhead[CE]{\@lshftext\versoheadtext}
+      \fancyhead[CO]{\@lshftext\rectoheadtext}
     \fi
   }{}
   %
-  \ifthenelse{\equal{\my@HeadFootStyle}{2}}{
-    \if@styledFooter\else
-      \fancyfoot[LE]{\makebox[2.5em][l]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\my@VersoEmblem%
+  \ifthenelse{\equal{\@HeadFootStyle}{2}}{
+    \global\@StyledHeaderfalse
+    \if@StyledFooter\else
+      \fancyfoot[LE]{%
+        \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
+        \@VersoEmblem%
       }
-      \fancyfoot[RO]{\my@RectoEmblem\makebox[2.5em][r]{%
-        {\headfont{\addfontfeature{LetterSpace=\@loosehead}\pagenumberstyle}}}%
+      \fancyfoot[RO]{%
+        \@RectoEmblem%
+        \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
       }
     \fi
   }{}
   %
-  \ifthenelse{\equal{\my@HeadFootStyle}{3}}{
-    \if@styledFooter\else
+  \ifthenelse{\equal{\@HeadFootStyle}{3}}{
+    \if@StyledFooter\else
+      \fancyfoot[CO,CE]{\@lspagenum\pagenumberstyle}
+    \fi
+  }{}
+  %
+  \ifthenelse{\equal{\@HeadFootStyle}{4}}{
+    \if@StyledHeader\else
+      \fancyhead[LE]{%
+        \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
+        \@VersoEmblem%
+        \hspace{1em}%
+        {\@lshftext\versoheadtext}%
+      }
+      \fancyhead[RO]{%
+        {\@lshftext\rectoheadtext}%
+        \hspace{1em}%
+        \@RectoEmblem%
+        \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
+      }
+    \fi
+  }{}
+  %
+  \ifthenelse{\equal{\@HeadFootStyle}{5}}{
+    \if@StyledHeader\else
+        \fancyhead[CE]{\@lshftext\versoheadtext}
+        \fancyhead[CO]{\@lshftext\rectoheadtext}
+    \fi
+    \if@StyledFooter\else
       \fancyfoot[CO,CE]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}%
+        {\@lspagenum\pagenumberstyle}%
       }
     \fi
   }{}
   %
-  \ifthenelse{\equal{\my@HeadFootStyle}{4}}{
-    \if@styledHeader\else
-      \fancyhead[LE]{\makebox[2.5em][l]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
-        \my@VersoEmblem\hspace{1em}%
-        {\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}%
+  \ifthenelse{\equal{\@HeadFootStyle}{6}}{
+    \if@StyledHeader\else
+      \fancyhead[LE]{%
+        \makebox[2.5em][l]{\@lspagenum\pagenumberstyle}%
+        \@VersoEmblem%
       }
-      \fancyhead[RO]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\rectoheadtext}}%
-        \hspace{1em}\my@RectoEmblem\makebox[2.5em][r]{{%
-          \headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
+      \fancyhead[RO]{%
+        \@RectoEmblem%
+        \makebox[2.5em][r]{\@lspagenum\pagenumberstyle}%
       }
+      \fancyhead[RE]{\@lshftext\versoheadtext}
+      \fancyhead[LO]{\@lshftext\rectoheadtext}
     \fi
   }{}
-  %
-  \ifthenelse{\equal{\my@HeadFootStyle}{5}}{
-    \if@styledHeader\else
-        \fancyhead[CE]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}}
-        \fancyhead[CO]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\rectoheadtext}}}
-    \fi
-    \if@styledFooter\else
-      \fancyfoot[CO,CE]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}%
-      }
-    \fi
-  }{}
-  %
-  \ifthenelse{\equal{\my@HeadFootStyle}{6}}{
-    \if@styledHeader\else
-      \fancyhead[LE]{\makebox[2.5em][l]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\my@VersoEmblem%
-      }
-      \fancyhead[RO]{\my@RectoEmblem\makebox[2.5em][r]{%
-        {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
-      }
-      \fancyhead[RE]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\versoheadtext}}}
-      \fancyhead[LO]{{\headfont{\addfontfeature{LetterSpace=\@loosehead}\rectoheadtext}}}
-    \fi
-  }{}
-  %
+  % END MODELS FOR WRITING YOUR OWN.
   %
   % END PRE-DEFINED LAYOUTS AND STYLES.
-  % ----------------------------------------------------------------------------
+  % ---------------------------------------------------------------------------
   %
-  % Substitute for \thispagestyle{plain}
-  \fancypagestyle{fancyplain}{ % if has footer
-    \renewcommand\headrulewidth{0pt}
-    \renewcommand\footrulewidth{0pt}
-    \fancyhead[LO,RE,LE,RO,CE,CO]{}
-    \fancyfoot[LO,RE,LE,RO,CE,CO]{}
-    \fancyfoot[CO,CE]{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}
-  }
-  % Not a user command, use plain or fancyplain:
-  \fancypagestyle{fancynumber}{ % if has header but not footer
-    \renewcommand\headrulewidth{0pt}
-    \renewcommand\footrulewidth{0pt}
-    \fancyhead[LO,RE,LE,RO,CE,CO]{}
-    \fancyhead[LE]{\makebox[2.5em][l]{%
-      {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}\my@VersoEmblem%
-    }
-    \fancyhead[RO]{\my@RectoEmblem\makebox[2.5em][r]{%
-      {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
-    }
-    \fancyfoot[LO,RE,LE,RO,CE,CO]{}
-  }
+%%%%%
   % Now put `fancyhdr' to work:
   \pagestyle{fancy} % default unless over-ridden by \thispagestyle{}
   %
-} % end \@activateHeadFootStyles
-%
-%% end initialize fancyhdr
-
-
-%% DROPFOLIO
-%% -----------------------------------------------------------------------------
-\newlength\temp@pgnumwidth
-\newlength\temp@pgnumraise
-%
-% \@dropfolioinside reduces the textblock height by one lineskip. At the bottom,
-%   where the last line would have been, the styled page number is centered.
-\newcommand\@dropfolioinside{%
-  \enlargethispage{-\nbs}%
-  \setlength\temp@pgnumwidth{%
-    \widthof{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}%
-  \if@offcenterTrim%
-    \setlength\temp@pgnumraise{%
-      \dimexpr\New@BottomMargin+\New@MediaHeight-\New@TrimHeight}%
-    \global\temp@pgnumraise=\temp@pgnumraise%
-  \else%
-    \setlength\temp@pgnumraise{%
-      \dimexpr\New@BottomMargin+0.5\New@MediaHeight-0.5\New@TrimHeight}%
-    \global\temp@pgnumraise=\temp@pgnumraise%
-  \fi%
-  %%%%%
-  \ifodd\c@page%
-    \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
-     \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%
-      \charscale[1,0.5\textwidth,\temp@pgnumraise]{%
-       {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
-  \else%
-    \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
-     \hspace{\dimexpr\Trim@Lx+\New@OutsideMargin+0.5\textwidth-0.5\temp@pgnumwidth}\raisebox{%
-      \temp@pgnumraise}{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}}%
-  \fi%
-} % end \@dropfolioinside
-%
-\let\dropfolionow\relax % compatibility with earlier version.
-%
-
-% \@dropfoliobeneath does not change the textblock height. The styled page
-%   number is centered where an extra line would be, within the bottom margin.
-\newcommand\@dropfoliobeneath{%
-  \setlength\temp@pgnumwidth{%
-    \widthof{{\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}}%
-  \if@offcenterTrim%
-    \setlength\temp@pgnumraise{%
-      \New@BottomMargin-\nbs+\New@MediaHeight-\New@TrimHeight}%
-  \else%
-    \setlength\temp@pgnumraise{%
-      \New@BottomMargin-\nbs+0.5\New@MediaHeight-0.5\New@TrimHeight}%
-  \fi%
-  \AddToShipoutPicture*{\@getPageXY\AtPageLowerLeft{%
-    \ifodd\c@page%
-      \hspace{\dimexpr\Trim@Lx+\New@InsideMargin-0.5\temp@pgnumwidth}%
-    \else%
-      \hspace{\dimexpr\Trim@Lx+\New@OutsideMargin-0.5\temp@pgnumwidth}%
-    \fi%
-    \charscale[1,0.5\textwidth,\temp@pgnumraise]{%
-      {\headfont{\addfontfeature{LetterSpace=\@looseheadnum}\pagenumberstyle}}}%
-    }%
-  }%
-} % end \@dropfoliobeneath
-%%
-%
-
-
-% Content of header text (if present) can be changed at any time within
-%   the body, using the following commands. If not used, then
-%   Verso is initialized to \theauthor and Recto is initialized to \thetitle
-%   AtBeginDocument, with adjustments to interword spacing.
-% If you wish, you may write the commands with empty arguments, in which case
-%   the header still appears with page number (if present), but no text.
-%
-\newlength\@mykem
-%
-\gdef\NewVersoHeadText#1{
-  \FPdiv{\@myk}{\@loosehead}{500}
-  \setlength\@mykem{\@myk em}
-  \gdef\versoheadtext{#1}
-}
-\let\SetVersoHeadText\NewVersoHeadText\relax % for convenience
-\let\RenewVersoHeadText\NewVersoHeadText\relax % for convenience
-%
-\gdef\NewRectoHeadText#1{
-  \FPdiv{\@myk}{\@loosehead}{500}
-  \setlength\@mykem{\@myk em}
-  \gdef\rectoheadtext{#1}
-}
-\let\SetRectoHeadText\NewRectoHeadText\relax % for convenience
-\let\RenewRectoHeadText\NewRectoHeadText\relax % for convenience
+} % end \@ActivateHeadFootStyles
 %
 %%
 
 
+%% Neutralize settings that cannot be used after Preamble:
+\gdef\@DisableHeadFootSettings{% called by `novel.cls' \AtBeginDocument
+  \LetLtxMacro\SetHeadFootStyle\relax
+  \LetLtxMacro\SetHeadStyle\relax
+  \LetLtxMacro\SetHeadJump\relax
+  \LetLtxMacro\SetFootJump\relax
+  \LetLtxMacro\SetLooseHead\relax
+}% end \@DisableHeadFootSettings
+%%
 
-%
+% The following settings can continue to be re-issued after \begin{document}:
+% \SetEmblems  also \SetEmblem
+% \SetPageNumberStyle
+% \SetVersoHeadText  also \New and \Renew
+% \SetRectoHeadText  also \New and \Renew
+
+
+%%
+\endinput
+%%
 %% End of file `novel-HeadFootStyles.sty'
 
 

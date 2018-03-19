@@ -169,7 +169,6 @@ function closeall() {
           <li><a href="#h1.1.2">1.1.2 Licensing</a></li>
           <li><a href="#h1.1.3">1.1.3 Credits</a></li>
           <li><a href="#h1.1.4">1.1.4 Success Story</a></li>
-          <li><a href="#h1.1.5">1.1.5 Help Wanted</a></li>
         </ul>
       </li><!-- end 1.1 -->
       <li id="l1.2"><span class="n"></span><a href="#h1.2">1.2 Important Behavior</a>
@@ -415,7 +414,6 @@ function closeall() {
         <ul id="u7.2">
           <li><a href="#h7.2.1">7.2.1 Line Art in GIMP</a></li>
           <li><a href="#h7.2.2">7.2.2 Grayscale in GIMP</a></li>
-          <li><a href="#h7.2.3">7.2.3 Scaling After \Rework</a></li>
         </ul>
       </li><!-- end 7.2 -->
       <li id="l7.3"><span class="n"></span><a href="#h7.3">7.3 Placing Images</a>
@@ -505,14 +503,7 @@ function closeall() {
 
   <li><i>Appendices:</i></li>
 
-  <li id="lA"><span class="n"></span><a href="#hA"><b>A. Emergency Rework</b></a>
-    <ul id="uA">
-      <li><a href="#hA.1">A.1 \ReworkTrimSize</a></li>
-      <li><a href="#hA.2">A.2 \ReworkMargins</a></li>
-      <li><a href="#hA.3">A.3 Example of Rework</a></li>
-      <li><a href="#hA.4">A.4 Limitations of Rework</a></li>
-      <li><a href="#hA.5">A.5 Scaling Images</a></li>
-    </ul>
+  <li id="lA"><span class="n" style="visibility:hidden"></span><a href="#hA"><b>A. Sample Document</b></a>
   </li><!-- end A -->
 
   <li id="lB"><span class="n"></span><a href="#hB"><b>B. Six-Page Front Matter</b></a>
@@ -556,10 +547,6 @@ function closeall() {
     </ul>
   </li><!-- end E -->
 
-  <li id="lF"><span class="n" style="visibility:hidden"></span><a href="#hF"><b>F. Sample Document</b></a>
-  </li><!-- end F -->
-
-  <li id="lG"><span class="n" style="visibility:hidden"></span><a href="#hG"><b>G. Known Issues</b></a></li><!-- end G -->
 
 </ul><!-- end master toc ul -->
 
@@ -574,13 +561,11 @@ function closeall() {
 <!-- **************************************************************************************** -->
 
 <h1 id="h0">Document class <i>novel</i> - documentation</h1>
-<p class="noindent">Version: 1.46.1, 2017/11/29. <span id="screennoscript" class="screennoscript"><b>For enchanced navigation of this file, turn on JavaScript.</b></span></p>
+<p class="noindent">Version: 1.46.2, 2018/01/14. <span id="screennoscript" class="screennoscript"><b>For enhanced navigation of this file, turn on JavaScript.</b></span></p>
 <div><script type="text/javascript">if(document.getElementById("screennoscript")){document.getElementById("screennoscript").style.display="none";}</script></div>
-<p class="noindent" style="position:relative"><span style="position:absolute; top:-.1em; font-size:150%; color:#008000">&#9786;</span>&nbsp; &nbsp; &nbsp; An example novel, text and cover, can be found at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/">GitHub project page, https://github.com/RobtAll/novel/</a>, in the "other" folder. You will find its TeX source and the resulting PDF. The PDF text and cover meet submission standards for major American print-on-demand services.</p>
-<p>A smaller example document is <i>novel-example.tex</i>, which can be found in the <i>extras</i> folder within this documentation.</p>
+<p>An example document is <i>novel-example.tex</i>, which can be found in the <i>extras</i> folder within this documentation.</p>
 <p class="notprinted"><b>Printing this file:</b> A printed version (PDF or paper) has condensed Table of Contents, and inactive hyperlinks. If your user agent has trouble printing, do this: In a UNIX-compatible plain text editor, edit this file. About 83 lines from the top you will see a block of style that is commented out. Remove the comments so that the block is effective. Load the edited HTML file with JavaScript turned off.</p>
 <p class="notprinted">Some user agents have difficulty previewing this HTML file for print, or printing it. If you wish to print (to PDF or paper) then try this: Copy the HTML file, and name the copy <i style="white-space:nowrap">novel-documentation-print.html</i>. That might (or might not) help. In any case, the printable format of this file has an abbreviated list of contents at the top, not as a sidebar.</p>
-<p><b>Attention:</b> Changed behavior of <code>\BlockImage</code> in v. 1.46. See <a href="#hG">issue G.3</a></p>
 <p>&nbsp;</p>
 
 
@@ -612,7 +597,7 @@ function closeall() {
 
 <h4 id="h1.1.2">1.1.2. Licensing</h4>
 <div class="d4" id="d1.1.2">
-<p class="noindent">The <i>novel</i> document class, including software, examples, documentation and supporting images, is distributed under the terms of the LaTeX Project Publc License, either version 1.3c of this license or (at your option) any later version. The exception is the included font NovelDeco.otf, which is distributed under terms of the SIL Open Font License, v.1.1.</p>
+<p class="noindent">The <i>novel</i> document class, including software, examples, documentation and supporting images, is distributed under the terms of the LaTeX Project Public License, either version 1.3c of this license or (at your option) any later version. The exception is the included font NovelDeco.otf, which is distributed under terms of the SIL Open Font License, v.1.1.</p>
 <p>To ensure that your book may be sold commercially, be careful to use only fonts that allow commercial usage. That may exclude some of the fonts in the LaTeX font catalog. See this documentation regarding fonts.</p>
 </div><!-- end 1.1.2 -->
 
@@ -628,15 +613,9 @@ function closeall() {
 <h4 id="h1.1.4">1.1.4. Success Story</h4>
 <div class="d4" id="d1.1.4">
 <p class="noindent">In August 2017, an original novel using this document class was published. The text block used nearly all the default settings, and was electronically submitted as PDF/X-1a:2001.</p>
-<p>The color cover image was designed in RGB using <a class="external" rel="external" target="new" href="https://inkscape.org">Inkscape</a> and <a class="external" rel="external" target="new" href="https://www.gimp.org">GIMP</a>, coverted to CMYK at 240% ink limit using <a class="external" rel="external" target="new" href="http://www.graphicsmagick.org">GraphicsMagick</a> and the methods described in this documentation, then finally converted to PDF/X-1a:2001 using this document class.</p>
+<p>The color cover image was designed in RGB using <a class="external" rel="external" target="new" href="https://inkscape.org">Inkscape</a> and <a class="external" rel="external" target="new" href="https://www.gimp.org">GIMP</a>, converted to CMYK at 240% ink limit using <a class="external" rel="external" target="new" href="http://www.graphicsmagick.org">GraphicsMagick</a> and the methods described in this documentation, then finally converted to PDF/X-1a:2001 using this document class.</p>
 <p>Both files were automatically reviewed and accepted <i>on first attempt</i>, with the actual printed books for sale within a few days of file submission.</p>
 </div><!-- end 1.1.4 -->
-
-<h4 id="h1.1.5">1.1.5. Help Wanted</h4>
-<div class="d4" id="d1.1.5">
-<p class="noindent">Although this package works for me, and there are no <i>known</i> issues, bugs are always possible. You may file an issue at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel">GitHub project page</a>, or contact me by e-mail if you do not have a GitHub account. My e-mail address is towards the top of the <i>novel.cls</i> file.</p>
-<p>I, the original author of this package, am a retiree who prefers to move on to other things. If you are of a mind to take up long-term maintenance, then contact me by e-mail. If you already are a package developer with a <a class="external" rel="external" target="new" href="https://ctan.org/contact">CTAN</a> login, also contact them. You will need to understand elementary LuaLaTeX, fontspec, Unicode, Open Type fonts, PDF/X, and the general needs of fiction writers in the printed (not e-book) market. However, Lua, XeTeX, TiKz, math, and physics are not required (possibly counterproductive).</p>
-</div><!-- end 1.1.5 -->
 </div><!-- end 1.1 -->
 
 <h3 id="h1.2">1.2. Important Behavior</h3>
@@ -957,7 +936,7 @@ function closeall() {
 
 <h4 id="h3.4.4">
 3.4.4. Other Output Intents</h4><div class="d4" id="d3.4.4">
-<p class="noindent">If you are required to use an Output Intent that is not one of the above three, then you have to code it yourself. Have a look at the three pre-configured Output Intents (files <span style="white-space:nowrap"><i>novel-CGATSTR001.clo</i></span>, <span style="white-space:nowrap"><i>novel-FOGRA39.clo</i></span>, and <span style="white-space:nowrap"><i>novel-JC200103.clo</i>).</span> Instructions are inside the files. There are several places where you can find the necessary data; the most comprehensive is at the <a class="external" rel="external" target="new" href="http://www.color.org/index.xalter">Inernational Color Consortium</a>.</p>
+<p class="noindent">If you are required to use an Output Intent that is not one of the above three, then you have to code it yourself. Have a look at the three pre-configured Output Intents (files <span style="white-space:nowrap"><i>novel-CGATSTR001.clo</i></span>, <span style="white-space:nowrap"><i>novel-FOGRA39.clo</i></span>, and <span style="white-space:nowrap"><i>novel-JC200103.clo</i>).</span> Instructions are inside the files. There are several places where you can find the necessary data; the most comprehensive is at the <a class="external" rel="external" target="new" href="http://www.color.org/index.xalter">International Color Consortium</a>.</p>
 <p>In essence: If you create a custom Output Intent file named <span style="white-space:nowrap"><em>novel-MyFunkyPrinter.clo</em></span>, then you request <i>MyFunkyPrinter</i> (without the preceding <i>novel-</i> or the <i>.clo</i> extension) as Output Intent, and that file will be loaded.</p>
 </div><!-- end 3.4.4 -->
 
@@ -1008,7 +987,6 @@ OSX: <code>/Library/Colorsync/Profiles/</code> or hidden <code>(username)/Librar
 <p class="code"><code>\SetTrimSize{<em>width</em>}{<em>height</em>}</code></p>
 <p>The width and height must have dimensions, such as <i>in</i> or <i>cm</i>.</p>
 <p>If you do not specify the Trim Size, the default is <i>5.5in</i> wide, <i>8.5in</i> high. This is a widely-used "trade" size for softcover print-on-demand fiction in the U.S.A. If in doubt, leave the default.</p>
-<p>If you ever need to <i>retroactively</i> change Trim Size, see <a href="#hA">Appendix A</a>.</p>
 <p>Do not request a <em>mass-market paperback</em> Trim Size unless you really, truly, know what you are doing. Since you are not a major writer for a major publishing house, you don't know; so, don't do it.</p>
 </div><!-- end 4.1.1 -->
 
@@ -1068,7 +1046,6 @@ AnotherFeature=Setting,%<br/>
 <p>The minimum normal font size is <i>8pt</i>, and the maximum is <i>18bp</i>. On a local basis, text may be larger or smaller than this.</p>
 <p>If you do not use this command, the default font size will be set to <i>11.4pt</i> more or less. That is, the size is calculated from other layout settings. When there is less available text area, the default size is <i>11pt</i>. For larger books, the default is <i>12pt</i>.</p>
 <p>Once you have set the Trim Size, margins, and parent font, set the font size for readability. Depending on whom you ask, each line of free-running text should average 60 to 66 characters (including spaces). If you use all of the <i>novel</i> default settings, including <i>Libertinus Serif</i> parent font, that's what you will get. But if you change anything, then do a test document to see what font size works best.</p>
-<p>If you use the <code>\Rework</code> commands (<a href="#hA">Appendix A</a>), then the font size will be tweaked, whether you use the default size or set it yourself.</p>
 </div><!-- end 4.2.1.2 -->
 </div><!-- end 4.2.1 -->
 
@@ -1091,7 +1068,7 @@ AnotherFeature=Setting,%<br/>
 <h4 id="h4.2.3">4.2.3. Advanced: The Deco Font</h4>
 <div class="d4" id="d4.2.3">
 <p class="noindent">Open Type font <i>NovelDeco.otf</i> is packaged with the <i>novel</i> class. It is a special-purpose font that provides characters for the <i>\decoglyph</i> and <i>\acronym</i> commands.</p>
-<p>Normally, you do not need to configure this font, as it is automatic. The only reason for changng it is if you are an advanced user, who wishes to use a substitute font with different decorations. However, you may <i>not</i> specify just any font! The substitute must be an edited version of <i>NovelDeco.otf</i>, with a different font name. If you don't know what that means, then don't do it.</p>
+<p>Normally, you do not need to configure this font, as it is automatic. The only reason for changing it is if you are an advanced user, who wishes to use a substitute font with different decorations. However, you may <i>not</i> specify just any font! The substitute must be an edited version of <i>NovelDeco.otf</i>, with a different font name. If you don't know what that means, then don't do it.</p>
 <p class="code">
 <code>\SetDecoFont[<em>features</em>]{<em>fontname</em>}</code> &nbsp; % <em>see section <a href="#h5.1.3.3">5.1.3.3</a></em>
 </p>
@@ -1166,8 +1143,7 @@ Nonexistent Publications • Portland, Oregon\par<br/>
 <p>Mnemonic for order of margins: "TOBI, or not TOBI, that is the question."</p>
 <p>Each of the settings must have dimension, such as <i>in</i> or <i>mm</i>.</p>
 <p>If you do not use this command, then margins are pre-configured. The minimum pre-configured margins are 0.5in at top, outside, and bootm, and 0.75in at inside. This meets the requirements of nearly any printing technology, unless your book is extremely thick. If your Trim Size is among the larger ones, then the pre-configured margins are larger than these minimums.</p>
-<p>If your pages have header/footer, they sit inside the rectnagle bounded by the four margins. That is, they do <i>not</i> sit inside the marginal areas.</p>
-<p>If you ever need to <i>retroactively</i> change margins, see <a href="#hA">Appendix A</a>.</p>
+<p>If your pages have header/footer, they sit inside the rectangle bounded by the four margins. That is, they do <i>not</i> sit inside the marginal areas.</p>
 
 <h5 id="h4.3.1.1">4.3.1.1. Gutter? Which Gutter?</h5>
 <div class="d5" id="d4.3.1.1">
@@ -1180,7 +1156,7 @@ Nonexistent Publications • Portland, Oregon\par<br/>
 <h4 id="h4.3.2">4.3.2. Lines Per Page</h4>
 <div class="d4" id="d4.3.2">
 <p class="noindent">Lines per page refers only to the textblock, and does <em>not</em> include header/footer. Lines are not stretched to fill short pages.</p>
-<p>By default, a suitable number of lines per page are set, based on other dimemsions. You can change the default with this command, in Preamble:</p>
+<p>By default, a suitable number of lines per page are set, based on other dimensions. You can change the default with this command, in Preamble:</p>
 <p class="code"><code>\SetLinesPerPage{<em>integer</em>}</code></p>
 <p> Any non-integer will be rounded. There is no direct command to set the <em>leading</em>, also known as line-to-line spacing or <em>baselineskip</em>. Instead, it is calculated from the textblock height and number of lines.</p>
 <p>If the calculated leading is less than <i>1.2x</i> the font size, an error will result. It is difficult for TeX to honor all layout settings with such a small leading, which would normally be unacceptable for fiction in any case. If the calculated leading is at least <i>1.2x</i> the font size, but less than <i>1.25x</i> the font size, then the log file will have an Alert message, suggesting that you should consider using fewer lines per page. If the leading exceeds <i>1.4x</i> the font size, then the log will have an Alert, suggesting more lines per page. The Alert messages are friendly; you do not necessarily have to do anything.</p>
@@ -1620,13 +1596,6 @@ Unfortunately, novelists of that era had so little to write about, or they would
 <p>That will print Chapter 1, Chapter 2, and so forth. Of course, only do this for real, numbered chapters, not for "chapter-like" sections. If your book has several parts, and each part re-sets its own chapter count, use \setcounter{novelcn}{1} prior to the first chapter in each part.</p>
 <p>If you would like the number to be spelled out, as in Chapter One, Chapter Two, and so forth, then try the <i>fmtcount</i> package. It can also do ordinals such as First Chapter, Second Chapter. See the <i>fmtcount</i> package documentation for details.</p>
 <p>If your document's language is other than English, use <code>\setdefaultlanguage</code> <i>before</i> you load the <i>fmtcount</i> package. If you do it later, then positioning will be incorrect.</p>
-<p><b>Caution:</b> At the time I write this, <i>fmtcount</i> does not detect <i>luatex</i>. Without some hacking, it incorrectly positions its text, when used with <i>novel</i>. The maintainer has been informed. Until such time as <i>fmtcount</i> is fixed, here is the hack. In Preamble:</p>
-<p class="code"><code>
-% if necessary, use \setdefaultlanguage first.<br/>
-\xetextrue % remove this command when <i>fmtcount</i> is fixed<br/>
-\RequirePackage{fmtcount}<br/>
-\xetexfalse % remove this command when <i>fmtcount</i> is fixed
-</code></p>
 <p>Example usage in chapter titles:</p>
 <p class="code"><code>
 \ChapterTitle{\Ordinalstring{novelcn}\stepcounter{novelcn} Robbery} %1<br/>
@@ -1994,14 +1963,12 @@ This text is in lightgray, until the group ends.<br/>
 
 <h3 id="h7.1">7.1. Raster Images Only</h3>
 <div class="d3" id="d7.1">
-<p class="noindent">You may place only raster images in your document. No vector artwork. No included <i>eps</i> or <i>pdf</i>. Forget about <i>pgf</i> and <i>TikZ</i>. Although you can "cheat" the <i>novel</i> commands, and circumvent these restrictions, <em>don't do it</em>. These restrictions are intentional.</p>
+<p class="noindent">You may place only raster images in your document. No <i>pdf</i>, <i>eps</i> or <i>svg</i>. Although you can "cheat" the <i>novel</i> commands, and circumvent these restrictions, <em>don't do it</em>. These restrictions are intentional.</p>
 <p>You may think that the above paragraph is a mistake. Haven't you been told that vector artwork is always preferable to rasterized artwork, because vector artwork is scalable? The part about being scalable is true. But if you do not need scalability, vector artwork is worse.</p>
 <p>How so? A PDF file can incorporate vector artwork, and if properly done it will meet commercial printing standards. <em>Sadly, it is often not properly done.</em> When vector artwork has technical errors, as it often does, then the appearance will depend on which software is used to view the image. The fact that it is within a PDF does not always help.</p>
-<p>Also, commercial standards don't like vector artwork where bleed is emulated using control points beyond the MediaBox. You don't know what that statement means, do you? That's another reason to avoid vector artwork.</p>
 <p>When you design a vector image, or perhaps acquire one, you approve its appearance based on what you see on your computer. The odds are good that a friend or editor, on a different computer, will be using the same software and thus see the same result. However, that is not true of the software built into commercial printing machines. That software may interpret erroneous or ambiguous vector instructions in a different way than you expected.</p>
-<p>A good example is on pages 232-234 of the <i>Adobe PDF 1.7 Reference</i>. That's an enormous file, full of technical information. You don't need to read it. But Adobe provides an example of a vector drawing in the form of a five-pointed star, made with one continuous line that crosses itself. There are two possible rules for deciding whether the central pentagon should be filled or not. They produce different results. Adobe chooses a particular rule, and so should all compliant software. But is all software compliant? Without reading the Adobe spec, there is no particular reason to prefer one rule over the other. And, that's a simple example. Many vector drawings are very convoluted, in ways that make the artist's intent difficult to interpret.</p>
 <p>You normally do not need to scale images. Your finished work will be viewed at fixed size on the printed page, not at variable size in a PDF reader. So, <em>scalability is not an advantage</em>. Your image is placed on paper at its exact size and resolution. You are in complete control. If it is purely black/white line art, its detail will be about the same whether it was placed as vector or raster. If it is grayscale, it is subject to halftoning, which reduces the resolution in any case.</p>
-<p>&bull; Do not attempt to place an image by including a PDF within your TeX file. The reason is that the included PDF may carry its own File Data, which will differ from the File Data of the main PDF. There's nothing you can do about that, and commercial printers don't like it. So, don't do it. Indeed, <i>novel</i> may ban it!</p>
+<p>&bull; Do not attempt to place an image by including a PDF within your TeX file.</p>
 
 <h4 id="h7.1.1">7.1.1. Use Flattened <i>png</i> or <i>jpg</i> Image Format</h4>
 <div class="d4" id="d7.1.1">
@@ -2088,12 +2055,7 @@ This text is in lightgray, until the group ends.<br/>
 <p class="code">For jpg images: &nbsp; <i>JPEG-Colorspace: 1</i> and <i>JPEG-Colorspace-Name: GRAYSCALE</i></p>
 <p>The above codes are the only ones that matter. Even if other information claims that the image is grayscale, or lists the colors and they are all shades of gray, <em>that is not good enough</em>. When automated software reviews your PDF for compliance, it will look at the png <i>IHDR.color_type</i>, which must be 0, or the <i>JPEG-Colorspace</i>, which must be 1. Anything else fails. If the information is different, it means that you forget to change the mode from RGB to grayscale before you exported the image.</p>
 <p>You may ask: If the image was not really grayscale, can it be converted to grayscale using a simple command line, with ImageMagick or GraphicsMagick? The answer is yes, but don't do it that way. The reason is that there are many ways to map colors (even "gray colors") to true grayscale, and an automated conversion may produce unexpectedly light or dark results. It is better to do the conversion in a graphics program, where you can see what you are doing.</p>
-</div><!-- end 7.3.2 -->
-
-<h4 id="h7.2.3">7.2.3. Scaling Images after <code>\Rework</code>.</h4>
-<div class="d4" id="d7.2.3">
-<p class="noindent">When you use one or both of the <code>\Rework</code> commands (<a href="#hA">Appendix A</a>), the font size and/or the baselineskip will change. However, it does not scale images. In many cases, there is no problem. But in some cases, an un-scaled image will disrupt the previous flow of text or pagination. The same Appendix shows you how to scale images when you use <code>\Rework</code>.</p>
-</div><!-- end 7.2.3 -->
+</div><!-- end 7.2.2 -->
 </div><!-- end 7.2 -->
 
 <h3 id="h7.3">7.3. Placing Images In Your Document</h3>
@@ -2114,7 +2076,7 @@ This text is in lightgray, until the group ends.<br/>
 <h4 id="h7.3.2">7.3.2 <code>\InlineImage[<em>hoffset,voffset</em>]{<em>imageFile.png or .jpg</em>}</code> and starred version</h4>
 <div class="d4" id="d7.3.2">
 <p class="noindent">This command places the image as an inline element, at 100% scale. The use of <i>png</i> or <i>jpg</i> images, with file extension, is required.<p>
-<p>You may offset the image horizontally or vertically. Positive direction is to the right and up. If you use one offset, then you must use both (if necessary, <i>0em</i>). Any units of length may be used, but the preferred units are <i>em</i> or <code>\textwidth</code> for horizontal, and <i>em</i> or <code>\nbs</code> for vertical, because these are most compatible with the <code><a href="#hA">\Rework</a></code> commands.</p>
+<p>You may offset the image horizontally or vertically. Positive direction is to the right and up. If you use one offset, then you must use both (if necessary, <i>0em</i>). Any units of length may be used, but the preferred units are <i>em</i> or <code>\textwidth</code> for horizontal, and <i>em</i> or <code>\nbs</code> for vertical.</p>
 <p>By default, the <em>top</em> of the image is at the text baseline. If you prefer that the <em>bottom</em> of the image be at the text baseline, use voffset <i>b</i>. Example:</p>
 <p class="code"><code>\InlineImage[0em,b]{imageFile.png}</code></p>
 <p>Thanks to the included <i>calc</i> package, offsets may use <code>\widthof{<em>text</em>}</code>, <code>\heightof{<em>text</em>}</code>, or <code>\depthof{<em>text</em>}</code>  as lengths. The most useful of these is when you wish to align the top of an image at the X-height of surrounding text:</p>
@@ -2165,7 +2127,7 @@ He would have taken the car, had it not been stolen. But that was why he was her
 
 <h4 id="h7.3.5">7.3.5. <code>\BlockImage</code> with Accompanying Text</h4>
 <div class="d4" id="d7.3.5">
-<p><b>Attention:</b> Changed behavior of <code>\BlockImage</code> in v. 1.46. See <a href="#hG">issue G.3</a></p>
+<p><b>Attention:</b> Changed behavior of <code>\BlockImage</code> in v. 1.46.</p>
 <p class="noindent">The second optional argument of <code>\BlockImage</code>, following the image filename, may contain text that will accompany the image in the same block of space. The text may be more than one paragraph.</p>
 <p>If the image is aligned at left or right, then the accompanying text block will be separated from the image by the length of the normal paragraph indent. Within this block, the text will be justified. The usual indentation rules apply.</p>
 <p>If the image is aligned at center, then the accompanying text will also be centered (and usually will overlie the image). If you wish to confine the width of this text block to less than the full page text width, then wrap the accompanying text (inside the brackets) in an <i>adjustwidth</i> environment.</p>
@@ -2184,7 +2146,6 @@ Lord Withens shrugged, and rode on. There was nothing to do but remain silent, t
 <h3 id="h7.4">7.4. Color Cover Artwork</h3>
 <div class="d3" id="d7.4">
 <p class="noindent">This portion serves a limited purpose. It is for the benefit of those who need to submit color print cover artwork in the form of a PDF/X-1a:2001 file, with the artwork as CMYK and 240% ink limit. This is the format required by some American print-on-demand services. It is also generally acceptable to others, whose requirements are less restrictive.</p>
-<p>Example cover artwork can be found at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel/">GitHub project page</a>, in the "other" folder.</p>
 <p><b>Before you begin:</b> Do you really need to do this? Many print-on-demand services are perfectly happy to accept something such as an ordinary RGB jpeg image, as long as it has the correct size (with bleed area). They can easily process it for print production in a few moments, using professional software. If they do it, then whether or not you are surprised by the resulting colors, will depend on whether or not your original image is within the printer gamut. In other cases, the print service prefers (or insists) that you do the image print production processing yourself. Then, you get to see an emulation of the print colors <em>before</em> you submit the file, and can change your artwork if the resulting colors are disappointing.</p>
 <p>The <em>novel</em> document class does not provide any support for creating the original artwork, either image or text. In fact, TeX is not the best way to do that. Use a graphics program (such as the free GIMP) to do your artwork, including text. In the end, your text will be rasterized, just like any background image. For this reason, avoid using small text, or consider using a sans-serif typeface on the cover (even though there is no sans-serif in the book itself).</p>
 <p>DO NOT PLACE A BARCODE. If your print service requests a white rectangle where the barcode will go, then include it in your image. Almost every print service is willing to create the barcode from your ISBN, and place the barcode image into your PDF during post-processing. Most of them even demand that they do it themselves. Do-it-yourself barcodes are incompatible with the following instructions.</p>
@@ -2339,7 +2300,7 @@ Lord Withens shrugged, and rode on. There was nothing to do but remain silent, t
 <p><img class="floatright" src="html-resources/smythsewn.png" width="177" height="141" alt="perfect binding"/> The best hardcovers, suitable for library use, are made using the <b>Smyth Sewing</b> process. A Smyth Sewn book has signatures of (typically) 12 or 16 folios. But instead of removing the creases after folding, each signature is sewn through its crease using strong thread, onto a durable spine material. The pages will remain attached, even with hard usage. If the spine material is sufficiently flexible, then the book will lie flat when opened.</p>
 <p>Be sure to ask about spine flexibility. The most flexible methods have a soft, curved spine, and are best suited to thick novels. There is also a variety that has a square (flat) spine, which will not quite lie flat when opened. Square-spine Smyth Sewn books seem to be the fashion for documenting intellectual property.</p>
 <p>If a major publisher is producing a book that is sure to be ordered by many libraries, due to its author's popularity or maybe a movie tie-in, then it is likely to be released as a Smyth Sewn hardcover. That's because the production method is affordable in quantity. But on a P.O.D. basis, it is a significant expense.</p>
-<p>Different bindings must have different ISBNs, because they are different products. If you need to change the dimensions of Trim Size or Margins, the <code><a href="#hA">\Rework</a></code> commands are your friends.</p>
+<p>Different bindings must have different ISBNs, because they are different products.</p>
 </div><!-- end 8.2.2 -->
 
 <h4 id="h8.2.3">8.2.3 Other Bindings</h4>
@@ -2758,74 +2719,93 @@ Dirk Hardcase is a former... etc.\par<br/>
 <div id="pageA" class="page">
 
 
-<h2 id="hA">Appendix A. <img src="html-resources/amb.png" width="30" height="22" alt="emergency icon"/> Emergency Clinic: Rework Layout</h2>
+<h2 id="hA">Appendix A. Sample Document</h2>
 <div class="d2" id="dA">
-<div style="padding: 6px 0px 6px 0px; margin:0px 32px 6px 16px; background:#ffe7e7 none">
-<p class="noindent">Situation: Your book is designed for Trim Size 5.25x8, one of several widely-used American sizes. You have put many hours of work into getting just the right line breaks within paragraphs, and just the right pagination. It looks beautiful. But then you get an e-mail from a British distributor. Could you change to British size B novel format, essentially 5.06x7.81 Trim Size?</p>
-<p>Sure, you say. Just needs a little math. Knock 0.095" off each margin. What could be easier? So you try that, but the printer rejects your file. It seems that your original margins were as narrow as they could be, per the printer's specifications. You cannot make them any narrower.</p>
-<p>But if you re-size the book and don't knock the margins down, then the text width and height won't be the same. Your text doesn't fit the way it used to. All your lines re-flow, the page breaks are different, and all that work you put into getting just the right appearance must be re-done.</p>
-<p><em>Oh, nooooo ...</em></p>
-</div>
-<p>Relax. Here is all you need to do: add <code>\ReworkTrimSize{5.06in}{7.81in}</code>. That's it. Your existing margins will be preserved. The font size, and line skip, will be cleverly re-scaled to fit the new dimensions. Paragraphs and pagination are the same as before.</p>
-<p>There are two Rework commands available. One changes the Trim Size without changing the margins. The other changes the margins without changing the Trim Size. If you wish to change both Trim Size and margins, you may use both commands.</p>
-
-<h3 id="hA.1">A.1. <code>\ReworkTrimSize{<em>width</em>}{<em>height</em>}</code></h3>
-<div class="d3" id="dA.1">
-<p>This command changes the <em>existing</em> Trim Size. If you do not use the <code>\SetTrimSize</code> command, then the existing Trim Size is the default. But if you do use <code>\SetTrimSize</code>, then you must leave that command as-is, and place <code>\ReworkTrimSize</code> later in the Preamble.</p>
-<p>If you used <code>\SetMediaSize</code>, you may leave that command as-is, or change it if you wish; the Trim Size does not care.</p>
-</div><!-- A.1 -->
-
-<h3 id="hA.2">A.2. <code>\ReworkMargins{<em>top</em>}{<em>outside</em>}{<em>bottom</em>}{<em>inside</em>}</code></h3>
-<div class="d3" id="AF.2">
-<p>This command changes the <em>existing</em> margins. If you do not use the <code>\SetMargins</code> command, then the existing margins are the defaults. But if you do use <code>\SetMargins</code>, then you must leave that command as-is, and place <code>\ReworkMargins</code> later in the Preamble.</p>
-</div><!-- end A.2 -->
-
-<h3 id="hA.3">A.3. Example of Rework</h3>
-<div class="d3" id="dA.3">
-<p>Here is an example of the Rework commands in use. When the layout is reworked, the font size and (if necessary) baseline skip is scaled to fit the new dimensions, in a way that preserves the original paragraphs and pagination. This is done in a single pass: The method simultaneously works and re-works the layout.</p>
-<p>In the following example, the original font size is 11pt, and the baselineskip (calculated based on other factors) is 14.377pt. After rework, the font size is automatically re-calculated to 10.468pt, with lineskip 13.883pt.</p>
-<p class="code">
-<code>\documentclass{novel}<br/>
-\SetTrimSize{5.25in}{8in} % Original. American.<br/>
-\SetMargins{0.36in}{0.4in}{0.38in}{0.65in} % Original. American<br/>
-\ReworkTrimSize{5.06in}{7.81in} % New. Equivalent to British 129mmW x 198mmH.<br/>
-\ReworkMargins{12mm}{12mm}{12mm}{15mm} % New. British.
-</code></p>
-<p>Result with original layout (above Rework commands commented out):</p>
-<p class="centerimg"><img src="html-resources/originalspread.png" width="726" height="544" alt="original spread, before rework"/></p>
-<p>Result after Rework:</p>
-<p class="centerimg"><img src="html-resources/reworkedspread.png" width="700" height="531" alt="spread after rework"/></p>
-</div><!-- end A.3 -->
-
-<h3 id="hA.4">A.4. Limitations of Rework</h3>
-<div class="d3" id="dA.4">
-<p>&bull; The technique has been tested, but it might not always work. Be sure to inspect the result carefully.</p>
-<p>&bull; If you use Rework to make a radical size change, then the resulting font size or line skip might be unattractive.</p>
-<p>&bull; If the reworked pages have one less line than expected (or one more), this is due to roundoff in the calculations. It can usually be fixed by adding or subtracting as little as <code>0.001\nbs</code> from the top or bottom rework margin.</p>
-<p>&bull; The biggest obstacle occurs when you specify some internal length in terms of absolute units (such as pt). It is always best to use relative units (such as <i>em</i>, or sometimes <code>\nbs</code>), so that they can be scaled along with the text:</p>
-<p class="code">
-Bad: <code>\hspace{6pt}</code> &nbsp; Good: <code>\hspace{0.5em}</code><br/>
-Bad: <code>\kern1pt</code> &nbsp; Good: <code>\kern.08em</code><br/>
-Bad: <code>\vspace{0.5in}</code> &nbsp; Good: <code>\vspace{2.4\nbs}</code>
+<p class="noindent">If you click on a command, you will be taken to its documentation.
+There are many other commands available, but they are not specific to novel class.</p>
+<div class="sampledoc">
+<p>Non-empty default values are <em>shown like this</em>.<br/>
+&nbsp;</p>
+<p style="text-indent:0">
+<a href="#h1.2.3">% !TeX TS-program = LuaLaTeX</a><br/>
+<a href="#h1.2.1">% !TeX encoding = UTF-8</a><br/>
+<a href="#h2">\documentclass{novel}</a> % See list of class options; usually none needed.<br/>
+%%% METADATA (FILE DATA):<br/>
+<a href="#h3.3.1">\SetTitle{}</a> % Default: empty. Required for PDF/X.<br/>
+<a href="#h3.3.3">\SetSubtitle{}</a> % Default: empty.<br/>
+<a href="#h3.3.2">\SetAuthor{}</a> % Default: empty.<br/>
+<a href="#h3.3.4">\SetApplication{<em>LuaLaTeX with novel and microtype</em>}</a><br/>
+<a href="#h3.3.4">\SetProducer{<em>LuaLaTeX with novel-pdfx and hyperref</em>}</a><br/>
+<a href="#h3.4">\SetPDFX{<em>off</em>}</a><br/>
+%%% DIMENSIONS:<br/>
+<a href="#h4.1.1">\SetTrimSize{<em>5.5in</em>}{<em>8.5in</em>}</a> % Sets width, height of your book.<br/>
+% Default Media Size equals Trim Size.<br/>
+% Rarely-used over-ride:<br/>
+% <a href="#h4.1.2">\SetMediaSize[<em>alignment</em>]{<em>width</em>}{<em>height</em>}</a><br/>
+% Cropmark gap is ignored unless document class option cropmarks:<br/>
+<a href="#h4.1.3">\SetCropmarkGap{<em>0.125in</em>}</a><br/>
+% Default margins vary with Trim Size. Defaults for {5.5in}{8.5in}:<br/>
+<a href="#h4.3.1">\SetMargins{<em>0.5in</em>}{<em>0.5in</em>}{<em>0.5in</em>}{<em>0.75in</em>}</a><br/>
+%%% GENERAL FONTS:<br/>
+% Percent at end of line is necessary, when writing font settings multi-line:<br/>
+<a href="#h4.2.1.1">\SetParentFont[%<br/>
+<em>SmallCapsFeatures={Renderer=Basic},</em></a>% Effective when small caps requested locally.<br/>
+<a href="#h4.2.1.1"><em>Kerning=On,</em> %<br/>
+<em>Ligatures=TeX,</em> %<br/>
+]{<em>Libertinus&nbsp;Serif</em>}</a><br/>
+% Main text font automatically adds <em>Numbers=OldStyle,Ligatures=Common</em>.<br/>
+% Default main font size is based on other layout settings.<br/>
+% Varies from 11pt to 12pt. With all default layouts, value is 11.4pt.<br/>
+% You may manually choose a different main font size:<br/>
+% <a href="#h4.2.1.2">\SetFontSize{<em>length</em>}</a><br/>
+% Default lines per page (main textblock) is calculated from other layout settings.<br/>
+% When using all defaults, the calculated value is 35.<br/>
+% If used, \SetLinesPerPage manually chooses the value:<br/>
+% <a href="#h4.3.2">\SetLinesPerPage{<em>integer</em>}</a><br/>
+<a href="#h4.2.3">\SetDecoFont{<em>NovelDeco.otf</em>}</a><br/>
+<a href="#h4.2.4">\setsansfont{<em>Libertinus Sans</em>}</a><br/>
+<a href="#h4.2.4">\setmonofont{<em>Libertinus Mono</em>}</a><br/>
+<a href="#h4.2.4">\setmathfont{<em>Libertinus Math</em>}</a> % unicode-math<br/>
+%%% HEADERS/FOOTERS:<br/>
+<a href="#h4.3.3">\SetHeadFootStyle{<em>1</em>}</a> % This style has headers only.<br/>
+<a href="#h4.3.4.1">\SetHeadJump{<em>1.5</em>}</a><br/>
+<a href="#h4.3.4.1">\SetFootJump{<em>1.5</em>}</a><br/>
+<a href="#h4.3.4.3">\SetLooseHead{<em>50</em>}</a><br/>
+<a href="#h4.3.4.5">\SetEmblems{}{}</a> % Default blanks.<br/>
+<a href="#h4.3.4.2">\SetHeadFont[<em>\parentfontfeatures,Letters=SmallCaps,Scale=0.92</em>]{<em>\parentfontname</em>}</a><br/>
+<a href="#h4.3.4.4">\SetPageNumberStyle{<em>\thepage</em>}</a><br/>
+<a href="#h4.3.4.6">\SetVersoHeadText{<em>\theAuthor</em>}</a><br/>
+<a href="#h4.3.4.6">\SetRectoHeadText{<em>\theTitle</em>}</a><br/>
+%%% CHAPTERS:<br/>
+<a href="#h5.1.2.1">\SetChapterStartStyle{<em>footer</em>}</a> % Equivalent to empty, when style has no footer.<br/>
+<a href="#h5.1.2.2">\SetChapterStartHeight{<em>10</em>}</a><br/>
+<a href="#h5.1.3.1">\SetChapterFont[<em>Numbers=Lining,Scale=1.6</em>]{<em>\parentfontname</em>}</a><br/>
+<a href="#h5.1.3.1">\SetSubchFont[<em>Numbers=Lining,Scale=1.2</em>]{<em>\parentfontname</em>}</a><br/>
+<a href="#h5.3.1">\SetScenebreakIndent{<em>false</em>}</a><br/>
+%%% CUSTOM FONTS:<br/>
+% <a href="#h4.2.5">\NewFontFamily[]{}</a> % Optional command.<br/>
+% <a href="#h4.2.5">\NewFontFace[]{}</a> % Optional command.<br/>
+% <a href="#hE.2.3">\CreateFontFeature{}{}</a> % Optional command.<br/>
+%%% OTHER:<br/>
+<a href="#h1.2.1.1">\setdefaultlanguage[<em>variant=american</em>]{<em>english</em>}</a> % polyglossia<br/>
+<a href="#h6">\microtypesetup{<em>config=novel-microtype,stretch=20,shrink=20,final</em>}</a> % microtype<br/>
+%%% BEGIN DOCUMENT:<br/>
+\begin{document}<br/>
+<a href="#h8.3.2">\frontmatter</a> % Required.<br/>
+% Typically <a href="#hB">six pages</a> of front matter, but <a href="#h8.3.2">could be more</a>.<br/>
+<a href="#h8.3.3">\mainmatter</a> % Required<br/>
+% <a href="#h5">Chapters</a> go here. SAMPLE Chapter structure:<br/>
+<a href="#h5.1.1">\clearpage</a> % or <a href="#h5.1.1">\cleartorecto</a><br/>
+<a href="#h5.1.2.3">\begin{ChapterStart}</a><br/>
+\vspace*{2\nbs} % Space above chapter title. \nbs = normal baseline skip.<br/>
+<a href="#h5.1.3">\ChapterTitle{</a>— 1 —<a href="#h5.1.3">}</a> % Perhaps also <a href="#h5.1.3">ChapterSubtitle</a>, <a href="#h5.1.3">ChapterDeco</a>.<br/>
+<a href="#h5.1.2.3">\end{ChapterStart}</a><br/>
+It was a dark and stormy night, etc.<br/>
+<a href="#h5.1.1">\clearpage</a> % or <a href="#h5.1.1">\cleartorecto</a><br/>
+<a href="#h8.3.4">\cleartoend</a><br/>
+\end{document}
 </p>
-<p>&bull; When you use Rework, images are <em>not</em> scaled. Thus, they will have a different relationship to the surrounding text than they did before. In many cases, this is not a problem. However, an un-scaled image may disrupt the flow of text, or the number of lines in a page, or overlap text that was previously cleared. Look in the log file for an Alert message, which suggests an appropriate image scale, depending on how an image was placed. Problem areas can often be fixed be scaling the related image(s) in an external graphics program (see below, and also <a href="#h7">section 7</a>) then re-compiling with the scaled image(s).</p>
-<p>&bull; Note that you may see the Alert whether or not there are problem images, so scaling images will not make the Alert go away. It is a friendly message.</p>
-<div style="clear:both"></div>
-</div><!-- end A.4 -->
-
-<h3 id="hA.5">A.5. Scaling Images after <code>\Rework</code>.</h3>
-<div class="d3" id="dA.5">
-<p>When you use one or both of the Rework commands, the font size and/or the baselineskip will change. However, it does not scale images. In many cases, there is no problem. But in some cases, an un-scaled image will disrupt the previous flow of text or pagination. If you look in the log file, you will see an Alert message, which suggests (only suggests) appropriate values for scaling problem images, depending on whether they are placed inline or block. Then, you should re-work the image in an external image editor. When you scale the image, be sure that the revised version is at the correct resolution of 300dpi or 600dpi, or whatever is necessary.</p>
-<p>It is best to go back to your copy of the original artwork, before you exported it to <i>png</i> or <i>jpg</i>. But what if you do not have anything but the 1-bit or grayscale images that you created earlier? Then do this (in GIMP):</p>
-<p>(1) If the image is 1-bit, change to Color&gt;Mode grayscale.</p>
-<p>(2) Use Image&gt;Scale Image to get new dimensions, at 600 or 300 pixels per inch. Careful: Sometimes when you change size, it auto-changes resolution, or vice-versa. Click back and forth in the dialog box, to ensure that both the dimensions and resolution are correct. Use Cubic interpolation or better.</p>
-<p>(3) Change View to something that puts the image at its approximate print size.</p>
-<p>(4) If desired, play with Filters&gt;Enhance&gt;Sharpen.</p>
-<p>(5) Image&gt;Flatten.</p>
-<p>(6) If the image is to be 1-bit line art, then use GraphicsMagick or ImageMagick as described in <a href="#h7.2.1">section 7.2.1</a>.</p>
-<p>(7) If the image is to be grayscale, export as png, then use GraphicsMagick or Image Magick as described in <a href="#h7.2.2">section 7.2.2</a>.</p>
-<p>The above does not take too much time, and will provide superior results. Note that when an image is placed within text, the calculation for text positioning is different than the calculation for image positioning. It is possible (although unlikely) that a <code>\Rework</code> situation will cause an unexpected page break, due to roundoff error in the placement of the final line on a page. This can be fixed by subtracting (or, in some cases, adding) as little as <code>\vspace{-0.001\nbs}</code> before or after the re-scaled image.</p>
-</div><!-- end A.5 -->
+</div>
 
 
 </div><!-- end A -->
@@ -3140,138 +3120,6 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 
 </div><!-- end E -->
 </div><!-- end Appendix E -->
-<!-- ************************************************************ -->
-<div id="pageF" class="page">
-
-
-<h2 id="hF">Appendix F. Sample Document</h2>
-<div class="d2" id="dF">
-<p class="noindent">If you click on a command, you will be taken to its documentation.
-There are many other commands available, but they are not specific to novel class.</p>
-<div class="sampledoc">
-<p>Non-empty default values are <em>shown like this</em>.<br/>
-&nbsp;</p>
-<p style="text-indent:0">
-<a href="#h1.2.3">% !TeX TS-program = LuaLaTeX</a><br/>
-<a href="#h1.2.1">% !TeX encoding = UTF-8</a><br/>
-<a href="#h2">\documentclass{novel}</a> % See list of class options; usually none needed.<br/>
-%%% METADATA (FILE DATA):<br/>
-<a href="#h3.3.1">\SetTitle{}</a> % Default: empty. Required for PDF/X.<br/>
-<a href="#h3.3.3">\SetSubtitle{}</a> % Default: empty.<br/>
-<a href="#h3.3.2">\SetAuthor{}</a> % Default: empty.<br/>
-<a href="#h3.3.4">\SetApplication{<em>LuaLaTeX with novel and microtype</em>}</a><br/>
-<a href="#h3.3.4">\SetProducer{<em>LuaLaTeX with novel-pdfx and hyperref</em>}</a><br/>
-<a href="#h3.4">\SetPDFX{<em>off</em>}</a><br/>
-%%% DIMENSIONS:<br/>
-<a href="#h4.1.1">\SetTrimSize{<em>5.5in</em>}{<em>8.5in</em>}</a> % Sets width, height of your book.<br/>
-% Default Media Size equals Trim Size (possibly after \Rework).<br/>
-% Rarely-used over-ride:<br/>
-% <a href="#h4.1.2">\SetMediaSize[<em>alignment</em>]{<em>width</em>}{<em>height</em>}</a><br/>
-% Cropmark gap is ignored unless document class option cropmarks:<br/>
-<a href="#h4.1.3">\SetCropmarkGap{<em>0.125in</em>}</a><br/>
-% Default margins vary with Trim Size. Defaults for {5.5in}{8.5in}:<br/>
-<a href="#h4.3.1">\SetMargins{<em>0.5in</em>}{<em>0.5in</em>}{<em>0.5in</em>}{<em>0.75in</em>}</a><br/>
-%%% GENERAL FONTS:<br/>
-% Percent at end of line is necessary, when writing font settings multi-line:<br/>
-<a href="#h4.2.1.1">\SetParentFont[%<br/>
-<em>SmallCapsFeatures={Renderer=Basic},</em></a>% Effective when small caps requested locally.<br/>
-<a href="#h4.2.1.1"><em>Kerning=On,</em> %<br/>
-<em>Ligatures=TeX,</em> %<br/>
-]{<em>Libertinus&nbsp;Serif</em>}</a><br/>
-% Main text font automatically adds <em>Numbers=OldStyle,Ligatures=Common</em>.<br/>
-% Default main font size is based on other layout settings.<br/>
-% Varies from 11pt to 12pt. With all default layouts, value is 11.4pt.<br/>
-% You may manually choose a different main font size:<br/>
-% <a href="#h4.2.1.2">\SetFontSize{<em>length</em>}</a><br/>
-% Default lines per page (main textblock) is calculated from other layout settings.<br/>
-% When using all defaults, the calculated value is 35.<br/>
-% If used, \SetLinesPerPage manually chooses the value:<br/>
-% <a href="#h4.3.2">\SetLinesPerPage{<em>integer</em>}</a><br/>
-<a href="#h4.2.3">\SetDecoFont{<em>NovelDeco.otf</em>}</a><br/>
-<a href="#h4.2.4">\setsansfont{<em>Libertinus Sans</em>}</a><br/>
-<a href="#h4.2.4">\setmonofont{<em>Libertinus Mono</em>}</a><br/>
-<a href="#h4.2.4">\setmathfont{<em>Libertinus Math</em>}</a> % unicode-math<br/>
-%%% HEADERS/FOOTERS:<br/>
-<a href="#h4.3.3">\SetHeadFootStyle{<em>1</em>}</a> % This style has headers only.<br/>
-<a href="#h4.3.4.1">\SetHeadJump{<em>1.5</em>}</a><br/>
-<a href="#h4.3.4.1">\SetFootJump{<em>1.5</em>}</a><br/>
-<a href="#h4.3.4.3">\SetLooseHead{<em>50</em>}</a><br/>
-<a href="#h4.3.4.5">\SetEmblems{}{}</a> % Default blanks.<br/>
-<a href="#h4.3.4.2">\SetHeadFont[<em>\parentfontfeatures,Letters=SmallCaps,Scale=0.92</em>]{<em>\parentfontname</em>}</a><br/>
-<a href="#h4.3.4.4">\SetPageNumberStyle{<em>\thepage</em>}</a><br/>
-<a href="#h4.3.4.6">\SetVersoHeadText{<em>\theAuthor</em>}</a><br/>
-<a href="#h4.3.4.6">\SetRectoHeadText{<em>\theTitle</em>}</a><br/>
-%%% CHAPTERS:<br/>
-<a href="#h5.1.2.1">\SetChapterStartStyle{<em>footer</em>}</a> % Equivalent to empty, when style has no footer.<br/>
-<a href="#h5.1.2.2">\SetChapterStartHeight{<em>10</em>}</a><br/>
-<a href="#h5.1.3.1">\SetChapterFont[<em>Numbers=Lining,Scale=1.6</em>]{<em>\parentfontname</em>}</a><br/>
-<a href="#h5.1.3.1">\SetSubchFont[<em>Numbers=Lining,Scale=1.2</em>]{<em>\parentfontname</em>}</a><br/>
-<a href="#h5.3.1">\SetScenebreakIndent{<em>false</em>}</a><br/>
-%%% CUSTOM FONTS:<br/>
-% <a href="#h4.2.5">\NewFontFamily[]{}</a> % Optional command.<br/>
-% <a href="#h4.2.5">\NewFontFace[]{}</a> % Optional command.<br/>
-% <a href="#hE.2.3">\CreateFontFeature{}{}</a> % Optional command.<br/>
-%%% OTHER:<br/>
-<a href="#h1.2.1.1">\setdefaultlanguage[<em>variant=american</em>]{<em>english</em>}</a> % polyglossia<br/>
-<a href="#h6">\microtypesetup{<em>config=novel-microtype,stretch=20,shrink=20,final</em>}</a> % microtype<br/>
-%%% EMERGENCY USE:<br/>
-% <a href="#hA.1">\ReworkTrimSize{}{}</a> % Optional command.<br/>
-% <a href="#hA.2">\ReworkMargins{}{}{}{}</a> % Optional command.<br/>
-%%% BEGIN DOCUMENT:<br/>
-\begin{document}<br/>
-<a href="#h8.3.2">\frontmatter</a> % Required.<br/>
-% Typically <a href="#hB">six pages</a> of front matter, but <a href="#h8.3.2">could be more</a>.<br/>
-<a href="#h8.3.3">\mainmatter</a> % Required<br/>
-% <a href="#h5">Chapters</a> go here. SAMPLE Chapter structure:<br/>
-<a href="#h5.1.1">\clearpage</a> % or <a href="#h5.1.1">\cleartorecto</a><br/>
-<a href="#h5.1.2.3">\begin{ChapterStart}</a><br/>
-\vspace*{2\nbs} % Space above chapter title. \nbs = normal baseline skip.<br/>
-<a href="#h5.1.3">\ChapterTitle{</a>— 1 —<a href="#h5.1.3">}</a> % Perhaps also <a href="#h5.1.3">ChapterSubtitle</a>, <a href="#h5.1.3">ChapterDeco</a>.<br/>
-<a href="#h5.1.2.3">\end{ChapterStart}</a><br/>
-It was a dark and stormy night, etc.<br/>
-<a href="#h5.1.1">\clearpage</a> % or <a href="#h5.1.1">\cleartorecto</a><br/>
-<a href="#h8.3.4">\cleartoend</a><br/>
-\end{document}
-</p>
-</div>
-
-
-</div><!-- end F -->
-</div><!-- end Appendix F -->
-<!-- ************************************************************ -->
-<div id="pageG" class="page">
-
-
-<h2 id="hG">Appendix G. Known Issues</h2>
-<div class="d2" id="dG">
-<p class="noindent">Here is a list of known issues (and solutions, if known). Remember that "only compile with lualatex" is not an issue; it is a feature! Also remember that academic-like commands and modes are often disabled in this document class. That is a feature, not an issue.</p>
-<p>Issues may be reported at the <a class="external" rel="external" target="new" href="https://github.com/RobtAll/novel">GitHub project page</a> or by e-mail if you don't have a GitHub account. The e-mail address is near the top of the <i>novel.cls</i> file. These may change at some future time.</p>
-<p>Before reporting an issue, attempt to compile the file <i>novel-testsuite.tex</i>. Make a copy of that file, and also copy the required image <i>novel-testimage.png</i>. Place the copies in your home directory, or some other location where you have read/write privilege. If compile fails, see if your TeX distribution is incomplete or out-of-date.</p>
-<p>You may ask for new features, but don't expect any. The <i>novel</i> class is focused on doing one thing well, not several things poorly. That's why several standard LaTeX features are disabled.</p>
-
-
-<h3 id="hG.1"><span class="n"></span>G.1. (Solved) Incorrect string placement with package <i>fmtcount</i></h3>
-<div class="d3" id="uG.1">
-<p class="noindent">Solved. See <a href="#h5.4">section 5.4</a>.</p>
-</div><!-- end G.1 -->
-
-<h3 id="hG.2"><span class="n"></span>G.2. (Solved) Compile fails after changing default language</h3>
-<div class="d3" id="uG.2">
-<p class="noindent">Solved. If you compile a document sucessfully, then re-compile with a different <code>\setdefaultlanguage</code> setting, then compile may fail the second time. It may stop with error message "You can't use \relax after \the."<p>
-<p>This depends on which languages are involved. The solution is simple: Discard the <i>*.aux</i> and <i>*.synctex.gz</i> files generated by previous compilation. Then try again.</p>
-</div><!-- end G.2 -->
-
-<h3 id="hG.3"><span class="n"></span>G.3. (Solved) Changed Behavior of \BlockImage</h3>
-<div class="d3" id="uG.3">
-<p class="noindent">Prior to version 1.46, the <code>\BlockImage</code> command attempted to measure the height of the image, measure the height of its acommpanying text block (if any), and automatically clear the maximum of the two.</p>
-<p>However, the calculation could be disrupted by a variety of text effects. Since it was unreliable, the behavior of <code>\BlockImage</code> has been re-defined, beginning with version 1.46.</p>
-<p>Now, the image (and its vertical offset) will be measured. But the height of any accompanying text will <i>not</i> be measured. After the image (and any accompanying text) have been placed, the following text will be on-grid, positioned so as to comfortably clear the image. However, if there is too much accompanying text, that text will overflow down into the following text.</p>
-<p>Very few users, if any, will be affected. But if you started a document using <i>novel</i> prior to v. 1.46, and you use <code>\BlockImage</code>, then be sure to review the results.</p>
-</div><!-- end G.3 -->
-
-
-</div><!-- end G -->
-</div><!-- end Appendix G -->
 <!-- ************************************************************ -->
 
 

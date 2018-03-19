@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2017/11/29 v1.46.1 LaTeX file (layout settings)]
+[2018/01/14 v1.46.2 LaTeX file (layout settings)]
 %%
 
 
@@ -100,9 +100,8 @@
   \fi
 }
 %
-% Retroactively change Trim Size after layout. See documentation:
-\newcommand\ReworkTrimSize[2]{%
-  \if@coverart % New in version 1.2
+\newcommand\ReworkTrimSize[2]{% DEPRECATED. Works, but removed from docs.
+  \if@coverart %
   \ClassError{novel}{Rework command cannot be used with coverart option}%
   {Instead of reworking document size, you must re-do the artwork.}
   \else
@@ -137,8 +136,7 @@
   \setlength\Old@InsideMargin{#4}
   \setlength\New@InsideMargin{#4}
 }
-% Retroactively change margins after layout. See documentation:
-\newcommand\ReworkMargins[4]{
+\newcommand\ReworkMargins[4]{ % DEPRECATED. Works, but removed from docs.
   \if@coverart % New in version 1.2
   \ClassError{novel}{Rework command cannot be used with coverart option}%
   {Instead of reworking document size, you must re-do the artwork.}

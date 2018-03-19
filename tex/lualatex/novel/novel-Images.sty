@@ -13,13 +13,13 @@
 %% 
 %%
 \ProvidesFile{novel-Images.sty}%
-[2017/11/29 v1.46.1 LaTeX file (image placement)]
+[2018/01/14 v1.46.2 LaTeX file (image placement)]
 %%
 
 
 %%
 %% Be sure to read the separate documentation about how to prepare images.
-%% In general: (1) png or jpg only. (2) Flattened, no transparency.
+%% In general: (1) png, jpg only. (2) Flattened, no transparency.
 %% (3) 300dpi (grayscale) or 600dpi (black/white) are industry norms.
 %% (4) Image file must contain its resolution. (5) Exact size, without scaling.
 %% (6) No private metadata. (7) Be sure grayscale is 1-channel, not rgb gray.
@@ -112,8 +112,8 @@
   \if@imgExtOK\else%
     \ClassError{novel}{^^JImage~`#3'~format~not~allowed}%
     {^^JImage~`#3'~has~file~type~not~allowed~in~`novel'~class.^^J%
-     Must~have~file~extension~png,~jpg,~jpeg~(or~capitalized).^^J%
-     Others~such~as~pdf~bmp,~tiff,~eps,~pdf,~svg~are~not~allowed.^^J}%
+     Must~have~file~extension~png,~jpg,~jpeg,~(or~capitalized).^^J%
+     Others~such~as~bmp,~tiff,~pdf,~eps,~svg~are~not~allowed.^^J}%
   \fi%
   \StrDel{#2}{\space}[\@myila]%
   \StrCut{\@myila}{,}{\@myilxa}{\@myilya}%
@@ -133,8 +133,6 @@
   \iftoggle{@inheadfoot}{}{%
     \setlength\imageheight{\@imageheight}%
     \global\imageheight=\imageheight%
-    \typeout{^^JClass~`novel'~Info:~An~image~was~placed~on~page~\thepage.^^J%
-      Review~layout~to~ensure~that~it~does~not~overflow~into~margins.^^J}%
   }%
   %
   \setlength\@imagehoffset{\@myilx}%
@@ -207,8 +205,8 @@
   \if@imgExtOK\else%
     \ClassError{novel}{^^JImage~`#2'~format~not~allowed,~page~\thepage}%
     {^^JImage~`#2'~has~file~type~not~allowed~in~`novel'~class.^^J%
-     Must~have~file~extension~png,~jpg,~jpeg~(or~capitalized).^^J%
-     Others~such~as~pdf~bmp,~tiff,~eps,~pdf,~svg~are~not~allowed.^^J}%
+     Must~have~file~extension~png,~jpg,~jpeg,~(or~capitalized).^^J%
+     Others~such~as~bmp,~tiff,~pdf,~eps,~svg~are~not~allowed.^^J}%
   \fi%
   % Allows empty or blank to be used, and still provide default values:
   \ifthenelse{\equal{#1}{} \OR \equal{#1}{\space}}{%

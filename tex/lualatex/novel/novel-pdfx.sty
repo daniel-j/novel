@@ -24,7 +24,7 @@
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesFile{novel-pdfx.sty}%
-[2017/11/29 v1.46.1 LaTeX file (PDF/X support for novel class)]
+[2018/01/14 v1.46.2 LaTeX file (PDF/X support for novel class)]
 % This package supports, and is part of, class `novel'.
 % No support for anything but LuaLaTeX.
 
@@ -279,16 +279,16 @@
 % Calculation of Dates and Times, which must be in a specific format.
 % Each time you process to PDF, the current date/time is used,
 %   for all of the several metadata date/time strings.
-\def\xmp@cDate{\pdfx@getYear}
-{\catcode`\D=12 \catcode`\:=12
- \gdef\pdfx@getYear D:#1#2#3#4{\edef\pdfx@xYear{#1#2#3#4}\pdfx@getMonth}
-}
+% The date string begins with D: then 4 digits of year, etc.
+% This definition removes the D: from front:
+\gdef\pdfx@getYear#1#2#3#4#5#6{\edef\pdfx@xYear{#3#4#5#6}\pdfx@getMonth}
 \def\pdfx@getMonth#1#2{\edef\pdfx@xMonth{#1#2}\pdfx@getDay}
 \def\pdfx@getDay#1#2{\edef\pdfx@xDay{#1#2}\pdfx@getHour}
 \def\pdfx@getHour#1#2{\edef\pdfx@xHour{#1#2}\pdfx@getMin}
 \def\pdfx@getMin#1#2{\edef\pdfx@xMin{#1#2}\pdfx@getSec}
 \def\pdfx@getSec#1#2{\edef\pdfx@xSec{#1#2}\pdfx@getTZh}
 \def\pdfx@getTZh{\futurelet\pdfx@next\pdfx@getTzh@branches}
+\def\xmp@cDate{\pdfx@getYear}
 %
 {\catcode`\@=11 \catcode`\Z=12 \catcode`\+=12 \catcode`\-=12 % ends below
 \gdef\pdfx@getTzh@branches{%
@@ -396,12 +396,6 @@
 \@infotopdfstring{\@infoauthor}{\@author}
 \@infotopdfstring{\@infoapplication}{\@novelApplication}
 \@infotopdfstring{\@infoproducer}{\@novelProducer}
-%
-% Ensure Unicode glyph names:
-\input{glyphtounicode.tex} % located in tex/generic/
-\input{novel-glyphtounicode.tex} % additional ligatures
-\pdfgentounicode=1
-% End ensure Unicode glyph names.
 %
 %% End prepare PDF /Info.
 

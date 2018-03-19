@@ -26,4 +26,6 @@ Of particular interest are the image processing scripts, in the "extras" folder.
 
 ### What's Here
 
+Folders *doc*, *tex*, and *fonts* contain development versions of code that may subsequently be available in an updated version of the package.
+
 The *other* folder contains material that is not part of the TeX package, but might be useful. In particular, it contains a complete novel, with cover artwork, as source and PDF.

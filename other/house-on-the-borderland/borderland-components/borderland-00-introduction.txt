@@ -8,6 +8,8 @@
 
 \cleartorecto % this must begin recto
 
+\label{ch:intro}
+
 \begin{ChapterStart}
 \null
 \ChapterTitle{Introduction}

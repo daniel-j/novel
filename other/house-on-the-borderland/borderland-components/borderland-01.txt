@@ -4,6 +4,7 @@
 % In the original, this was Chapter II.
 
 \cleartorecto % this must begin recto
+\label{ch:01}
 
 \begin{ChapterStart}
 \null\null

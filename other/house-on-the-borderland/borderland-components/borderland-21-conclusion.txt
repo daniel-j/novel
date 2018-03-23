@@ -5,6 +5,7 @@
 % This was Chapter XXVII in the original.
 
 \cleartorecto % this must begin recto
+\label{ch:conclusion}
 
 \begin{ChapterStart}
 \null\null

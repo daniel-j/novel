@@ -3,6 +3,7 @@
 % In the original, this was Chapter XVII.
 
 \clearpage
+\label{ch:11}
 
 \begin{ChapterStart}
 \null\null

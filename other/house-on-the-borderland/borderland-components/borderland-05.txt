@@ -4,6 +4,7 @@
 % Intervening adventure with swine-creatures omitted.
 
 \clearpage
+\label{ch:05}
 
 \begin{ChapterStart}
 \null\null

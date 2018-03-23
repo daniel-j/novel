@@ -4,6 +4,7 @@
 % Heavily edited here.
 
 \clearpage
+\label{ch:06}
 
 \begin{ChapterStart}
 \null\null

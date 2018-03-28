@@ -1,5 +1,6 @@
 
 .PHONO := default archive archive-tds testsuite borderland
+SHELL := /bin/bash -O extglob
 
 default: archive archive-tds
 
@@ -8,7 +9,8 @@ archive:
 	rm -rf novel
 	mkdir -p novel
 	cp -r {tex/.,doc,fonts,README.md,LICENSE} novel/
-	cp -r scripts novel/doc/extras/novel-scripts
+	mkdir -p novel/doc/extras/novel-scripts/input
+	cp -r scripts/!(output|input|temp) novel/doc/extras/novel-scripts/
 	rm -f novel.zip
 	cd novel && zip -9 -r ../novel.zip . -x *.DS_Store* -x *.gitkeep*
 	rm -rf novel
@@ -18,7 +20,8 @@ archive-tds:
 	rm -rf novel.tds
 	mkdir -p novel.tds/{doc/lualatex,fonts/opentype,tex/lualatex}/novel
 	cp -r doc/. novel.tds/doc/lualatex/novel/
-	cp -r scripts novel.tds/doc/lualatex/novel/extras/novel-scripts
+	mkdir -p novel.tds/doc/lualatex/novel/extras/novel-scripts/input
+	cp -r scripts/!(output|input|temp) novel.tds/doc/lualatex/novel/extras/novel-scripts/
 	cp -r fonts/. novel.tds/fonts/opentype/novel/
 	cp -r tex/. novel.tds/tex/lualatex/novel/
 	cp README.md LICENSE novel.tds/tex/lualatex/novel/

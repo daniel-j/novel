@@ -1,31 +1,20 @@
-# novel
-LuaLaTeX document class for fiction, such as popular fiction and short story collections. Not for academic works, graphic novels, or the like.
+# THE NOVEL DOCUMENT CLASS
 
-This document class is optimized for ease of configuration and use, with documents that consist primarily of flowing text. It has been successfully used for multiple print-on-demand books.
+The *novel* LuaLaTeX document class is specifically written to meet the needs of original fiction writers, who are typesetting their own novels for non-color print-on-demand technology. If that does not describe your objective, then this is the wrong document class for you. There is no support for E-books. The needs of academic writers and picture-book layout are largely unmet.
 
-The *novel* class requires TeXLive 2016 or later, or recent MiKTeX.
+If your book is a detective novel, science fiction, romance, or collection of short stories, then you are in the right place. This document class has been used for creating several actual printed novels, both text interior and color cover. Internal code can create PDF/X files for the interior and cover. Furthermore, a color cover image can be separated to CMYK at 240% ink limit, as required by some print-on-demand services.
 
+This class requires TeXLive 2016 or later, or recent MiKTeX. Distributions based on TeXLive 2015 or earlier will fail.
 
-## Version
+Extensive documentation is in HTML format. The "novel.pdf" file is merely a place-holder.
 
-The current stable version is 1.46.2, 2018/01/14. There are no known outstanding issues.
+## News:
 
-If you already have a document using prior code, then review your document for use of the \BlockImage command. The functionality of this command is changed in v. 1.46. See The documentation.
+Version 1.50, March 28, 2018: New features pertaining to image placement. Scripts for pre-processing images. Sandbox mode. Internal drop cap capability. Reference to obsolete macros removed from documentation. General cleanup of documentation and internal code.
 
+Version 1.46.2, January 14, 2018: Now called the "old" version. Internal code cleanup, docs cleanup. No known bugs.
 
-## News
+## License:
 
-March 16, 2018: Version 1.50pre2 for testing
+The LaTeX code and documentation are licensed under the LaTeX Project Public License, v.1.3c. The included fonts NovelDeco.otf and CPmodified.otf are licensed under the SIL Open Font License, v.1.1.
 
-Please test and report, in March 2018. I aim to have the tested version uploaded to CTAN before the end of the month.
-
-The main documentation HTML page has "Appendix Z" describing the most significant changes.
-
-Of particular interest are the image processing scripts, in the "extras" folder.
-
-
-### What's Here
-
-Folders *doc*, *tex*, and *fonts* contain development versions of code that may subsequently be available in an updated version of the package.
-
-The *other* folder contains material that is not part of the TeX package, but might be useful. In particular, it contains a complete novel, with cover artwork, as source and PDF.

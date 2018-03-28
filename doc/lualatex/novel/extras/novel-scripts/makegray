@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# DEFRES is default resolution, when input does not have its own.
+# If input is PDF, then DEFRES is always applied.
+# MINRES and MAXRES set warning messages for images under/over usual limits.
+# If you did not export values for these, the following are used:
+if [ "$DEFRES" == "" ]; then DEFRES="300"; fi
+if [ "$MINRES" == "" ]; then MINRES="150"; fi
+if [ "$MAXRES" == "" ]; then MAXRES="600"; fi
+
 # makegray
 # This is a Linux BASH command script. May also work with OSX.
 # Tested with BASH 3.2.57 and 4.4.12.
@@ -17,7 +25,7 @@
 # https://ctan.org/pkg/novel  [get the one zip archive]
 # But you do not need a TeX installation to use this script.
 
-VERMSG="makegray version 0.9.7."
+VERMSG="makegray version 0.9.8."
 USAGEMSG="Usage: ./makegray [-digit] filename.ext"
 HELPMSG="Help:  ./makegray -h"
 DEMOMSG="Demo:  ./makegray [-digit] demo"
@@ -48,7 +56,7 @@ then
   echo "  High number increases contrast in lighter areas, at expense of darker."
   echo "  Middle number increases midrange contrast, at expense of both extremes."
   echo 
-  echo "You need ImageMagick."
+  echo "Requires ImageMagick. Also Ghostscript, if pdf input."
   echo 
   echo "Place input image in input folder."
   echo "  Input image may be Color or Grayscale. No spaces in filename."
@@ -81,7 +89,7 @@ then
     OPTARG=$((0 - $1))
   else
     echo "ERROR."
-    echo "Bad optional argument. Use -1 to -9. Do not omit hyphen."
+    echo "Bad optional argument. May use -1 to -9. Do not omit hyphen."
     echo "$USAGEMSG"
     echo "$HELPMSG"
     echo 
@@ -91,9 +99,6 @@ fi
 NEEDSGS=
 DEMOMODE=
 FN=
-TARGRES="300"
-MINRES="150"
-MAXRES="600"
 if [ -f "resource/internal/commonscript" ]
 then
   source resource/internal/commonscript
@@ -108,7 +113,7 @@ fi
 # Now do conversion:
 echo 
 echo "Converting..."
-convert $FN -strip -flatten -density $IR -units PixelsPerInch temp/temp-$CN.tif
+convert -density $IR -units PixelsPerInch $FN -strip -flatten temp/temp-$CN.tif
 convert temp/temp-$CN.tif -fx "luminance" -colorspace Gray -density $IR -units PixelsPerInch temp/temp-$CN-GRAY.tif
 if [ ! "$OPTARG" == "0" ]
 then # apply contrast adjustment
@@ -160,7 +165,8 @@ if [ -f "temp/temp-identify.txt" ]; then rm temp/temp-identify.txt; fi
 echo 
 echo "Done."
 echo "You may now close this window."
-echo 
+echo
+exit 0 
 # end of file
 
 

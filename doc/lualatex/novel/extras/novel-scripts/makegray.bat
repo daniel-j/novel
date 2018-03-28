@@ -1,6 +1,14 @@
 @echo off
 setlocal EnableDelayedExpansion
 
+REM DEFRES is default resolution, when input does not have its own.
+REM If input is PDF, then DEFRES is always applied.
+REM MINRES and MAXRES set warning messages for images under/over usual limits.
+REM If you did not export values for these, the following are used:
+if "%DEFRES%"=="" ( set DEFRES=300)
+if "%MINRES%"=="" ( set MINRES=150)
+if "%MAXRES%"=="" ( set MAXRES=600)
+
 REM makegray.bat
 REM This is a Windows batch command script.
 REM Tested with Windows 10. Should work with Windows 7 or later.
@@ -18,7 +26,7 @@ REM This file is distributed with the "novel" LuaLaTeX document class.
 REM https://ctan.org/pkg/novel  [get the one zip archive]
 REM But you do not need a TeX installation to use this script.
 
-set VERMSG=makegray.bat version 0.9.7.
+set VERMSG=makegray.bat version 0.9.8.
 set USAGEMSG=Usage: makegray [-digit] filename.ext
 set HELPMSG=Help:  makegray -h
 set DEMOMSG=Demo:  makegray [-digit] demo
@@ -75,7 +83,7 @@ if "%GETH%"=="yes" (
   echo   High number increases contrast in lighter areas, at expense of darker.
   echo   Middle number increases midrange contrast, at expense of both extremes.
   echo.
-  echo You need ImageMagick. On Windows, it may be portable.
+  echo Requires ImageMagick. Also Ghostscript, if pdf input.
   echo.
   echo Place input image in input folder.
   echo   Input image may be Color or Grayscale. No spaces in filename.
@@ -121,9 +129,6 @@ set FN=
 set MAGICKPATH=
 set MYGSPATH=
 set MYGSVER=
-set TARGRES=300
-set MINRES=150
-set MAXRES=600
 if exist "resource\internal\commonscript.bat" (
   set BADCOMMON=
   call resource\internal\commonscript.bat %1 %2
@@ -144,7 +149,7 @@ set DR=-density %IR%
 set QN=-quality 95
 set CG=-colorspace Gray
 set HC=-sigmoidal-contrast 4,!IL!0%% -colorspace Gray
-%MAGICKPATH%magick.exe convert %FN% -strip -flatten %DR% %PU% temp\temp-%CN%.tif
+%MAGICKPATH%magick.exe convert %DR% %PU% %FN% -strip -flatten temp\temp-%CN%.tif
 %MAGICKPATH%magick.exe convert temp\temp-%CN%.tif -colorspace Gray %HG% %DR% %PU% temp\temp-%CN%-GRAY.tif
 if "!IL!"=="0" (
   %MAGICKPATH%magick.exe convert temp\temp-%CN%-GRAY.tif %CG% %DR% %PU% %QN% output\%CN%-0-GRAY.jpg

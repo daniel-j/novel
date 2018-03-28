@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2018/03/16 v1.50pre2 LaTeX file (text macros usable within document body)]
+[2018/03/28 v1.50 LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -131,44 +131,23 @@
 \renewcommand\FirstLineFont{\smcp}
 %%
 
-%% The `novel' class normally allows only black text on white paper.
+%% `novel' class normally allows only black or grayscale text on white paper.
 %% In draft mode, option `shademargins` provides light gray margins,
 %%   but still black text on white paper.
-%% However, with option `graytext' (in any mode) then grayscale text
-%%   is allowed. Images are always allowed grayscale.
 %% Just in case `xcolor' re-defines its internals, to prevent code bomb:
 \ProvideDocumentCommand\@declaredcolor { m } {}
 \ProvideDocumentCommand\@undeclaredcolor { o m } {}
 % For convenience:
-\if@graytext % and the usual colors, including black and white.
-  \definecolor[named]{gray1}{gray}{0.15} % ten percent gray, etc.
-  \definecolor[named]{gray2}{gray}{0.25}
-  \definecolor[named]{gray3}{gray}{0.33}
-  \definecolor[named]{gray4}{gray}{0.4}
-  \definecolor[named]{gray5}{gray}{0.5}
-  \definecolor[named]{gray6}{gray}{0.6}
-  \definecolor[named]{gray7}{gray}{0.68}
-  \definecolor[named]{gray8}{gray}{0.75}
-  \definecolor[named]{gray9}{gray}{0.87}
-\else
-  \LetLtxMacro\@mycolor\color\relax
-  \LetLtxMacro\color\relax
-  \DeclareDocumentCommand \color { o m } {%
-    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.542763}}{%
-      \@undeclaredcolor[gray]{0.542763}%
-    }{}% shademargins (unsafe zone)
-    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.883215}}{%
-      \@undeclaredcolor[gray]{0.883215}%
-    }{}% shademargins (margins)
-    \ifthenelse{\equal{#1}{gray} \AND \equal{#2}{0.949123}}{%
-      \@undeclaredcolor[gray]{0.949123}%
-    }{}% shademargins (head/foot)
-    % hingledingle is an alias for white, when "white" cannot be used:
-    \ifthenelse{\equal{#2}{hingledingle}}{\@declaredcolor{white}}{}%
-  }%
-\fi
+\definecolor[named]{gray1}{gray}{0.15} % ten percent gray, etc.
+\definecolor[named]{gray2}{gray}{0.25}
+\definecolor[named]{gray3}{gray}{0.33}
+\definecolor[named]{gray4}{gray}{0.4}
+\definecolor[named]{gray5}{gray}{0.5}
+\definecolor[named]{gray6}{gray}{0.6}
+\definecolor[named]{gray7}{gray}{0.68}
+\definecolor[named]{gray8}{gray}{0.75}
+\definecolor[named]{gray9}{gray}{0.87}
 %%
-
 % This code is slightly modified from package `etextools' by Florent Chervet.
 % Its license: "This work may be distributed and/or modified under the 
 %   conditions of the LaTeX Project Public License, either version 1.3 of this 
@@ -356,7 +335,8 @@
     }%
   }%
   #2\,%
-  \dotfill%
+  %%%%%\dotfill%
+  \leaders\hbox to 0.3em{\hfil.\hfil}\hfill% Thanks to user daniel-j via GitHub.
   \,#3\par\vspace{\@tocskip}%
 }%
 %

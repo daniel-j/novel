@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# DEFRES is default resolution, when input does not have its own.
+# If input is PDF, then DEFRES is always applied.
+# MINRES and MAXRES set warning messages for images under/over usual limits.
+# If you did not export values for these, the following are used:
+if [ "$DEFRES" == "" ]; then DEFRES="800"; fi
+if [ "$MINRES" == "" ]; then MINRES="300"; fi
+if [ "$MAXRES" == "" ]; then MAXRES="1200"; fi
+
+
 # makebw
 # This is a Linux BASH command script. May also work with OSX.
 # Tested with BASH 3.2.57 and 4.4.12.
@@ -17,7 +26,7 @@
 # https://ctan.org/pkg/novel  [get the one zip archive]
 # But you do not need a TeX installation to use this script.
 
-VERMSG="makebw version 0.9.7."
+VERMSG="makebw version 0.9.8."
 USAGEMSG="Usage: ./makebw [-threshold] filename.ext"
 HELPMSG="Help:  ./makebw -h"
 DEMOMSG="Demo:  ./makebw [-threshold] demo"
@@ -47,7 +56,7 @@ then
   echo "  Low number makes more white. High number makes more black."
   echo "  Useful for tweaking widths of lines in line art."
   echo 
-  echo "You need ImageMagick. On Windows, it may be portable."
+  echo "This script requires ImageMagick. Also Ghostscript, if pdf input."
   echo 
   echo "Place input image in input folder."
   echo "  Input image may be Color or Grayscale. No spaces in filename."
@@ -78,7 +87,7 @@ then
     THRESH=$((0 - $1))
   else
     echo "ERROR."
-    echo "Bad optional argument. Use -1 to -99. Do not omit hyphen."
+    echo "Bad optional argument. May use -1 to -99. Do not omit hyphen."
     echo "$USAGEMSG"
     echo "$HELPMSG"
     echo 
@@ -88,9 +97,6 @@ fi
 NEEDSGS=
 DEMOMODE=
 FN=
-TARGRES="600"
-MINRES="300"
-MAXRES="1200"
 if [ -f "resource/internal/commonscript" ]
 then
   source resource/internal/commonscript
@@ -104,13 +110,13 @@ fi
 # Now do conversion:
 echo 
 echo "Converting..."
-convert $FN -strip -flatten -density $IR -units PixelsPerInch -colorspace Gray -threshold $THRESH% output/$CN-$THRESH-BW.png
+convert -density $IR -units PixelsPerInch $FN -strip -flatten -threshold $THRESH% -colorspace Gray output/$CN-$THRESH-BW.png
 # end conversion routine
 
 # Done:
 echo "Verifying..."
 echo 
-echo "The Monochrome image is output/$CN-$THRESH-BW.png."
+echo "The Monochrome black-white image is output/$CN-$THRESH-BW.png."
 echo "Metadata has been stripped."
 echo "Used threshold $THRESH percent."
 identify -verbose output/$CN-$THRESH-BW.png >temp/temp-identify.txt
@@ -136,10 +142,7 @@ else
   echo "    - Measured in Pixels Per Centimeter. [png format reports metric]"
   echo "    - Multiply by 2.54 to get Pixels Per Inch."
 fi
-if [ "$WM1" != "" ]
-then
-  echo "$WM1"
-fi
+echo "$WM1"
 if [ "$WM2" != "" ]
 then
   echo "$WM2"
@@ -153,6 +156,7 @@ echo
 echo "Done."
 echo "You may now close this window."
 echo 
+exit 0
 # end of file
 
 

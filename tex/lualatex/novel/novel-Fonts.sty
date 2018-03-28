@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Fonts.sty}%
-[2018/03/16 v1.50pre1 v1.50 LaTeX file (font settings and defaults)]
+[2018/03/28 v1.50 LaTeX file (font settings and defaults)]
 %%
 
 
@@ -188,12 +188,7 @@
 %   [colormodel]{value} OR {colorname}
 \newif \if@HasDropCapColor
 \DeclareDocumentCommand \SetDropCapColor { O{} m } {%
-  \if@graytext%
-    \@setdropcapcolor[#1]{#2}%
-  \else%
-    \ClassWarning{novel}{^^J\string\SetDropCapColor~ignored~unless~ ^^J%
-      `graytext'~class~option. ^^J}%
-  \fi%
+  \@setdropcapcolor[#1]{#2}%
 }% end \SetDropCapColor
 \DeclareDocumentCommand \@setdropcapcolor { O{} m } {%
   \global\@HasDropCapColortrue%

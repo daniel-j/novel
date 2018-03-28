@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-PostLayout.sty}%
-[2018/03/16 v1.50pre1 LaTeX file (post-layout modifications)]
+[2018/03/28 v1.50 LaTeX file (post-layout modifications)]
 %%
 
 %%
@@ -35,11 +35,9 @@
     \gsetlength\Trim@Left{\evensidemargin-\@OuterMargin+72.27pt}%
   \fi%
   % Adjusts for vertical position of TrimBox within MediaBox:
-  \ifthenelse{\equal{\@AlignTrim}{corner}}{%
-    \gsetlength\Trim@Bottom{\paperheight-\@TrimHeight}%
-  }{% Bottom alignment does not apply when `shademargins', so this is center:
+
     \gsetlength\Trim@Bottom{0.5\paperheight-0.5\@TrimHeight+\hoffset}%
-  }%
+
 }%
 %% end \@getPageXY.
 
@@ -83,7 +81,7 @@
 % The re-defined \color command makes an exception for those values.
 \definecolor[named]{hingledingle}{gray}{1} % fake white, when white disallowed
 %
-\if@shademargins % not used when \@AlignTrim is `bottom'.
+\if@shademargins
   % Margins are visualized by filling the TrimBox background with gray.
   % Then, the rectangle defining the Englosed area is filled with white.
   % Then header and/or footer are filled with a lighter gray background.
@@ -205,13 +203,9 @@
 % Cropmarks (trim marks, really) are not important in this document class.
 % That's because the targeted printing services generally do not want them.
 % But a minimal capability was easy to add. The far end of each mark is
-% half an inch from the trim area. The close end is separated by a gap >= 0pt.
-% So the length of the marks is generally less than half an inch.
-% If trim is at the edge of the media box, instead of centered,
-% then only one pair of marks will be written.
-% The marks are turned on using `cropmarks' class option. The gap is set
-% in Preamble using \SetCropmarkGap{length}.
-%
+% 0.25in from the trim area. The close end is separated by 0.125in.
+% So the length of the marks essentially 1/8in. Width 0.25bp.
+% The marks are turned on using `cropmarks' class option.
 % When Media Size = Trim Size, cropmarks are disabled.
 % Too late for \@cropviewfalse; OK since CropBox already calculated properly.
 \ifthenelse{%
@@ -219,64 +213,42 @@
   \AND \dimtest{\@TrimHeight}{=}{\paperheight}%
 }{\global\@cropmarksfalse}{}
 %
-\if@cropmarks%
-  \ifthenelse{\equal{\@AlignTrim}{corner}}{%
-    \ifodd\c@page
-      % H bottom right:
-      \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-      \hspace{\dimexpr\Trim@Left+\@TrimWidth+\@CropmarkGap}%
-      \rule[\Trim@Bottom-0.5pt]{0.5in-\@CropmarkGap}{0.5pt}}}
-      % V bottom right:
-      \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-      \hspace{\dimexpr\Trim@Left+\@TrimWidth}%
-      \rule[\Trim@Bottom-0.5in]{0.5pt}{0.5in-\@CropmarkGap}}}
-    \else
-      % H bottom left:
-      \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-      \hspace{\dimexpr\Trim@Left-0.5in}%
-      \rule[\Trim@Bottom-0.5pt]{0.5in-\@CropmarkGap}{0.5pt}}}
-      % V bottom left:
-      \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-      \hspace{\dimexpr\Trim@Left-0.5pt}%
-      \rule[\Trim@Bottom-0.5in]{0.5pt}{0.5in-\@CropmarkGap}}}
-    \fi
-  }{%
-    % H top left:
-    \AddToShipoutPictureBG{\@getPageXY%
-    \AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Left-0.5in}%
-    \rule[0.5\paperheight+0.5\@TrimHeight]{0.5in-\@CropmarkGap}{0.5pt}}}
-    % H bottom left:
-    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Left-0.5in}%
-    \rule[\Trim@Bottom-0.5pt]{0.5in-\@CropmarkGap}{0.5pt}}}
-    % H top right:
-    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Left+\@TrimWidth+\@CropmarkGap}%
-    \rule[0.5\paperheight+0.5\@TrimHeight]{0.5in-\@CropmarkGap}{0.5pt}}}
-    % H bottom right:
-    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Left+\@TrimWidth+\@CropmarkGap}%
-    \rule[\Trim@Bottom-0.5pt]{0.5in-\@CropmarkGap}{0.5pt}}}
-    % V top left:
-    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Left-0.5pt}%
-    \rule[0.5\paperheight+0.5\@TrimHeight+\@CropmarkGap]%
-      {0.5pt}{0.5in-\@CropmarkGap}}}
-    % V bottom left:
-    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Left-0.5pt}%
-    \rule[\Trim@Bottom-0.5in]{0.5pt}{0.5in-\@CropmarkGap}}}
-    % V top right:
-    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Left+\@TrimWidth}%
-    \rule[0.5\paperheight+0.5\@TrimHeight+\@CropmarkGap]%
-      {0.5pt}{0.5in-\@CropmarkGap}}}
-    % V bottom right:
-    \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
-    \hspace{\dimexpr\Trim@Left+\@TrimWidth}%
-    \rule[\Trim@Bottom-0.5in]{0.5pt}{0.5in-\@CropmarkGap}}}
-  }%
+\if@cropmarks% Cropmark begins 0.125in from TrimBox, ends 0.25in from TrimBox.
+  % H top left:
+  \AddToShipoutPictureBG{\@getPageXY%
+  \AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Left-0.25in}%
+  \rule[0.5\paperheight+0.5\@TrimHeight]{0.25in-0.125in}{0.25bp}}}
+  % H bottom left:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Left-0.25in}%
+  \rule[\Trim@Bottom-0.5pt]{0.25in-0.125in}{0.25bp}}}
+  % H top right:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Left+\@TrimWidth+0.125in}%
+  \rule[0.5\paperheight+0.5\@TrimHeight]{0.25in-0.125in}{0.25bp}}}
+  % H bottom right:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Left+\@TrimWidth+0.125in}%
+  \rule[\Trim@Bottom-0.25bp]{0.25in-0.125in}{0.25bp}}}
+  % V top left:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Left-0.25bp}%
+  \rule[0.5\paperheight+0.5\@TrimHeight+0.125in]%
+    {0.25bp}{0.25in-0.125in}}}
+  % V bottom left:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Left-0.25bp}%
+  \rule[\Trim@Bottom-0.25in]{0.25bp}{0.25in-0.125in}}}
+  % V top right:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Left+\@TrimWidth}%
+  \rule[0.5\paperheight+0.5\@TrimHeight+0.125in]%
+    {0.25bp}{0.25in-0.125in}}}
+  % V bottom right:
+  \AddToShipoutPictureBG{\@getPageXY\AtPageLowerLeft{%
+  \hspace{\dimexpr\Trim@Left+\@TrimWidth}%
+  \rule[\Trim@Bottom-0.25in]{0.25bp}{0.25in-0.125in}}}
 \fi
 %
 %% end cropmarks

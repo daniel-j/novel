@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-CalculateLayout.sty}%
-[2018/03/16 v1.50pre1 LaTeX file (layout calculations)]
+[2018/03/28 v1.50 LaTeX file (layout calculations)]
 %%
 
 %%
@@ -194,13 +194,11 @@
 }{} %
 % Default Media Size is same as Trim Size, unless \SetMediaSize used:
 \if@MediaSize\else
-    \gdef\@AlignTrim{center}
     \gsetlength\paperwidth{\@TrimWidth}
     \gsetlength\paperheight{\@TrimHeight}
 \fi
 % Sanity check for cover art, which needs bleed:
 \if@coverart
-  \gdef\@AlignTrim{center} % regardless of setting
   \setlength\@tempLength{\paperwidth-\@TrimWidth}
   \ifthenelse{\dimtest{\@tempLength}{<}{6mm}}{%
     \ClassWarning{novel}{^^JBIG BAD WARNING! Insufficient bleed width ?^^J%
@@ -255,22 +253,18 @@
 \fi
 % \oddsidemargin is at the left (inner, spine edge) of recto pages.
 % Measured 1in (72.27pt) inside MediaBox, to the textblock. May be negative.
-\ifthenelse{\equal{\@AlignTrim}{corner}}{%
-  \gsetlength\oddsidemargin{\@InnerMargin-72.27pt}
-}{%
+
   \gsetlength\oddsidemargin{%
     \@InnerMargin+0.5\paperwidth-0.5\@TrimWidth-72.27pt%
   }
-}%
+
 %
 % \evensidemargin is at the left (outer edge) of verso pages.
-\ifthenelse{\equal{\@AlignTrim}{corner}}{%
-  \gsetlength\evensidemargin{\@OuterMargin-72.27pt}
-}{%
+
   \gsetlength\evensidemargin{%
     \@OuterMargin+0.5\paperwidth-0.5\@TrimWidth-72.27pt%
   }
-}%
+
 %
 \if@closecrop
   \gsetlength\oddsidemargin{-0.9in}
@@ -281,17 +275,12 @@
 %   to the top of whatever comes first (header or textblock). May be negative.
 % For consistency, the topmost baseline (header or main text) will be
 %   positioned at 1em below the margin.
-\ifthenelse{\equal{\@AlignTrim}{corner}}{%
-  \gsetlength\topmargin{\@TopMargin-72.27pt}
-  \if@HasHeader\else
-    \gsetlength\topmargin{\topmargin-\baselineskip+\@SetFontSize}
-  \fi
-}{%
+
   \gsetlength\topmargin{\@TopMargin+0.5\paperheight-0.5\@TrimHeight-72.27pt}
   \if@HasHeader\else
     \gsetlength\topmargin{\topmargin-\baselineskip+\@SetFontSize}
   \fi
-}%
+
 % novel.cls sets a tentative em size (probably 10pt) so that packages requiring
 %   an integer point size of 10, 11, or 12 will load without complaint.
 % Then, the real point size is established here, when it is too late for

@@ -13,9 +13,10 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2018/03/16 v1.50pre2 LaTeX document class]
+\ProvidesClass{novel}[2018/03/28 v1.50 LaTeX document class]
 %%
-%% Version 1.46: Possibly final version.
+%% Version 1.50: Improved image handled, sandbox, scripts.
+%% Version 1.46.2: Now called "novel-old" version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
 %% Version 1.42: Greatly improved HTML documentation.
 %% Version 1.41: Improved HTML documentation.
@@ -135,8 +136,8 @@
 %% Process document class options.
 %% ----------------------------------------------------------------------------
 % Allowed option list:
-%   draft xml shademargins graytext greytext cropmarks cropview closecrop
-%   coverart unblock mtoff polyoff test
+%   draft xml shademargins cropmarks cropview closecrop
+%   coverart sandbox unblock mtoff polyoff test
 % Yes, I realize that this could have been done another way, but I want
 %   to issue error messages from `novel' rather than (say) `keyval':
 \gdef\@mycol{\@classoptionslist}
@@ -145,8 +146,8 @@
 \StrDel{\@mycol}{draft}[\@mycol]
 \StrDel{\@mycol}{xml}[\@mycol]
 \StrDel{\@mycol}{shademargins}[\@mycol]
-\StrDel{\@mycol}{graytext}[\@mycol]
-\StrDel{\@mycol}{greytext}[\@mycol]
+\StrDel{\@mycol}{graytext}[\@mycol] % Obsolete. Now always allows graytext.
+\StrDel{\@mycol}{greytext}[\@mycol] % See above.
 \StrDel{\@mycol}{cropmarks}[\@mycol]
 \StrDel{\@mycol}{cropview}[\@mycol]
 \StrDel{\@mycol}{closecrop}[\@mycol]
@@ -155,6 +156,7 @@
 \StrDel{\@mycol}{mtoff}[\@mycol]
 \StrDel{\@mycol}{polyoff}[\@mycol]
 \StrDel{\@mycol}{test}[\@mycol]
+\StrDel{\@mycol}{sandbox}[\@mycol]
 %
 \ifthenelse{\equal{\@mycol}{}}{}{
   \ClassWarning{novel}{^^JUnrecognized class option: \@mycol. ^^J%
@@ -185,17 +187,13 @@
    {There is no class option named `xmp'. It is `xml'.}
 }
 % Option `shademargins' does just that. Ignored unless in draft mode.
-% Does not matter if `graytext' option in use.
 \newif \if@shademargins
 \DeclareOption{shademargins}{\@shademarginstrue}
-% Option `graytext' allows text in grayscale. Images unaffected.
-% If this option is not used, all text will be K black.
-\newif \if@graytext
-\DeclareOption{graytext}{\@graytexttrue}
-% For the Brits:
-\DeclareOption{greytext}{\@graytexttrue}
+%
+\newif \if@graytext % remains here for backwards compatibility
+\@graytexttrue % from v.1.50 always true, no longer an option.
+%
 % Usually you do NOT want crop (trim) marks!
-% Configurable by \SetCropMarks[]{}.
 \newif \if@cropmarks
 \DeclareOption{cropmarks}{\@cropmarkstrue}
 % PDF viewers display CropBox, which normally is identical to MediaBox.
@@ -238,6 +236,10 @@
 \newif \if@testsuite
 \DeclareOption{test}{\@testsuitetrue}
 %
+% New in version 1.50: sandbox option, for artwork and tables. Max 4 pages.
+\newif \if@sandbox
+\DeclareOption{sandbox}{\@sandbox}
+%
 %% Note that document size and normal font size are not class options.
 %% They are set by commands in the Preamble, and have default values.
 %
@@ -264,7 +266,28 @@
   \global\@shademarginsfalse
   \global\@cropviewfalse
   \global\@closecropfalse
-  \global\@graytextfalse
+  \global\@sandboxfalse
+\fi
+%
+\if@sandbox
+  % Thanks to user Compholio at stackexchange.com:
+  \newcounter{sandboxcount}
+  \ifx\latex@outputpage\@undefined\relax%
+      \global\let\latex@outputpage\@outputpage%
+  \fi%
+  \gdef\@outputpage{%
+    \addtocounter{sandboxcount}{1}%
+    \ifnum\value{sandboxcount}>4\relax% no output after 4 pages
+    \else%
+      \latex@outputpage%
+    \fi%
+  }%
+  \AtEndPreamble{%
+    \gdef\@title{untitled interior artwork}%
+  }%
+  \AfterEndPreamble{%
+    \ifdraftdoc\else\thispagestyle{empty}\fi%
+  }%
 \fi
 %% end class options
 
@@ -277,25 +300,14 @@
 
 %% Activate xcolor, adjustbox, and eso-pic:
 %% ----------------------------------------------------------------------------
-% The final book must be monochrome (black and white only) for all text,
-%   unless option `graytext' is used. Then, grayscale text is permitted.
-% Interior images must be raster monochrome or grayscale, whether or not
-%   the `graytext' option is used. See documentation.
+% The final book must be black/white and gray only, for all text.
+% Interior images must be raster black/white or grayscale. See documentation.
 %   Vector graphics are strongly discouraged, in any case.
 % In draft mode only, the `shademargins' option requires `grayscale',
 %   which will be temporarily enabled, even if not specifically requested.
-\newif \if@grayenabled
-\ifdraftdoc
-  \RequirePackage[gray,hyperref]{xcolor} % allows some layout checks
-  \global\@grayenabledtrue
-\else
-  \if@graytext
-    \RequirePackage[gray,hyperref]{xcolor} % black/white book block
-    \global\@grayenabledtrue
-  \else
-    \RequirePackage[monochrome,hyperref]{xcolor} % black/white book block
-  \fi
-\fi
+%
+\RequirePackage[gray,hyperref]{xcolor}
+%
 % adjustbox and eso-pic cannot precede xcolor.
 \RequirePackage{adjustbox} % for scaling and moving
 \RequirePackage{eso-pic} % background effects in draft mode
@@ -338,7 +350,8 @@
 \RequirePackage{novel-LayoutSettings}
 
 
-%% polyglossia
+%% Polyglossia.
+%% ----------------------------------------------------------------------------
 % Language-specific settings:
 \if@polyoff % polyoff is new in v 1.44.
   \ClassWarning{novel}{^^JYou chose the `polyoff' class option. ^^J%
@@ -351,9 +364,6 @@
   \setdefaultlanguage[variant=american]{english} % may be changed by user
 \fi
 %% end polyglossia
-
-
-%%
 
 
 %% Additional Macros, Loaded in Preamble.
@@ -375,9 +385,49 @@
 % Footnotes and endnotes:
 \RequirePackage{novel-Footnotes}
 % Obsolete code. Do not use in new documents:
-\newif \if@ReworkTrimSize \newif \if@ReworkMargins
 \RequirePackage{novel-Obsolete}
 %%
+
+
+%% For convenience, from `article' class.
+%% ----------------------------------------------------------------------------
+\newenvironment{verse}{% Not very useful.
+  \let\\\@centercr
+  \list{}{%
+    \itemsep\z@
+    \itemindent -\parindent%
+    \listparindent\itemindent
+    \rightmargin \leftmargin
+    \advance\leftmargin \parindent%
+  }%
+  \item\relax%
+}{%
+  \endlist%
+}
+%%
+\newenvironment{quotation}{% Not very useful.
+  \list{}{%
+    \listparindent \parindent%
+    \itemindent \listparindent
+    \rightmargin \leftmargin
+    \parsep \z@%
+  }%
+  \item\relax%
+}{%
+  \endlist%
+}
+%%
+\newenvironment{quote}{% Not very useful.
+  \list{}{%
+    \rightmargin\leftmargin%
+  }%
+  \item\relax%
+}{%
+  \endlist%
+}
+%
+%% end convenience.
+
 
 
 %% Special features of test suite (for developers and error reporting)
@@ -411,17 +461,76 @@
   \RequirePackage{novel-pdfx}% also provides an \AtBeginDocument macro
   \AtEndDocument{%
     \if@coverart\else%
-      \cleartoend% adds 1 or 2 blanks, for final verso blank
+      \if@sandbox\else%
+        \cleartoend% adds 1 or 2 blanks, for final verso blank
+      \fi%
     \fi%
   }
 }%
 %% end AtEndPreamble
 
 
+%% Messages that may be issued by \AtBeginDocument routines:
+%% ----------------------------------------------------------------------------
+%
+%% Dealing with known incompatible packages:
+\gdef\really@no#1#2#3{ % cannot be used, even with unblock or sandbox
+  \@ifpackageloaded{#1}{%
+   \ClassError{novel}{Sorry, package `#1' cannot be used in `novel' class}%
+    {No exceptions. You are out of luck. ^^J%
+     Reason: `novel' has #2 ^^J%
+     See `novel' HTML documentation, section #3. ^^J%
+     Note: The offending package may have been loaded by another package.}%
+  }{}%
+} %
+%
+%% Command or environment native to LuaLaTeX, but banned except in sandbox:
+\gdef\@OnlySandbox#1{%
+  \ClassError{novel}{Use of `#1' page \thepage\space requires sandbox}%
+   {`novel' class prohibits command or environment `#1' ^^J%
+    unless you use class option `sandbox'. See documentation.}%
+}
+%
+%% Package can be used, but Alert:
+\gdef\alert@nodisp#1{%
+  \@ifpackageloaded{#1}{%
+  \typeout{^^JClass `novel' Alert: Beware of package #1. ^^J%
+   Commands from this package may cause mis-positioning in main text. ^^J%
+   Maybe, maybe not. Best if usage is confined to display pages. ^^J}%
+  }%
+}
+%
+%% Dealing with blocked packages, allowed with `unblock':
+\if@novelunblock
+  \gdef\sorry@no#1{} % no package-specific errors, when unblock
+  \ClassWarning{novel}{Using `unblock' class option, at your own risk. ^^J%
+    The `unblock' option is for developer use, not production documents. ^^J%
+    If the unblocked packages and commands cause problems, ^^J%
+    they are not bugs. Do not report them. You have been warned. ^^J%
+    Perhaps your document will compile without error, and perhaps the ^^J%
+    results are OK. But in other cases, unexpected typesetting results. ^^J}%
+\else % package-specific errors, when no unblock
+  \gdef\sorry@no#1{
+    \@ifpackageloaded{#1}{%
+     \ClassError{novel}{Sorry, package `#1' cannot be used in `novel' class}%
+      {See `novel' HTML documentation, regarding `sandbox' option. ^^J%
+       Note: The offending package may have been loaded by another package.}%
+    }{}%
+  } %
+\fi
+%% end messages.
+
+
 %% \AtBeginDocument finishes the setup
 %% ----------------------------------------------------------------------------
+%
+\gdef\@needsandboxmsg{%
+  \ClassError{novel}{Need `sandbox' for picture, figure, table environments}%
+   {You cannot use picture, figure, or table environments in `novel' unless ^^J%
+    you use the `sandbox' document class option. See docs.}%
+}
 \AtBeginDocument{ %
-  % Mostly involve settings defaults:
+  %% Mostly involve settings defaults:
   \@ActivateTextLengths % in `novel-TextMacros.sty'
   \@ActivateDropCaps % in `novel-DropCaps.sty'
   \@ActivateChapterScene % in `novel-ChapterScene.sty'
@@ -434,17 +543,7 @@
   \@DisableFileDataSettings % in file `novel-FileData.sty'
   \@DisableChapterSceneSettings % in file `novel-ChapterScene.sty'
   \@DisableHeadFootSettings % in file `novel-HeadFootStyles.sty'
-  % Dealing with known incompatible packages:
-  \gdef\really@no#1#2#3{ % cannot be used, even with unblock
-    \@ifpackageloaded{#1}{%
-     \ClassError{novel}{Sorry, package `#1' cannot be used in `novel' class}%
-      {No exceptions. You are out of luck. ^^J%
-       Reason: `novel' has #2 ^^J%
-       See `novel' HTML documentation, section #3. ^^J%
-       Note: The offending package may have been loaded by another package.}%
-    }{}%
-  } %
-  % List of always blocked packages (not exhaustive, since TeX has so many):
+  %% List of always-blocked packages (not exhaustive, since TeX has so many):
   \really@no{geometry}{its own layout commands.}{4}
   \really@no{pdfx}{built-in PDF/X capability.}{3.4}
   \really@no{xmpincl}{built-in PDF/X capability.}{3.4}
@@ -458,72 +557,86 @@
   \really@no{pax}{no capability for this, due to printer specs.}{3.4}
   \really@no{bookmark}{focus on paper books, not e-books.}{(top of file)}
   \really@no{endnotes}{limited, built-in endnote methods.}{6.5}
-  \really@no{acronym}{its own acronym style.}{6.2.4}
-  % Dealing with packages that might cause problems, but not always:
-  \if@novelunblock
-    \gdef\sorry@no#1#2#3{} % no package-specific errors, when unblock
-    \ClassWarning{novel}{Using `unblock' class option, at your own risk. ^^J%
-      If the unblocked packages and commands cause problems, ^^J%
-      they are not bugs. Do not report them. You have been warned. ^^J%
-      Perhaps your document will compile without error, and perhaps the ^^J%
-      results are OK. But in other cases, unexpected typesetting results. ^^J}%
-  \else % package-specific errors, when no unblock
-    \gdef\sorry@no#1#2#3{
-      \@ifpackageloaded{#1}{%
-       \ClassError{novel}{Sorry, package `#1' cannot be used in `novel' class}%
-        {Reason: `novel' has #2 ^^J%
-         See `novel' HTML documentation, section #3. ^^J%
-         Note: The offending package may have been loaded by another package.}%
-      }{}%
-    } %
+  \really@no{acronym}{focus on paper books, not e-books.}{(top of file)}
+  \really@no{embedfile}{incompatible print requirements.}{(top of file)}
+  %
+  \if@sandbox%
+    \RequirePackage{novel-Sandbox}%
+  \fi%
+  %
+  %% Potential problem packages, allowed in sandbox or with unblock:
+  \if@sandbox\else
+    % Related to floats:
+    \sorry@no{floatflt}
+    \sorry@no{floatfig}
+    \sorry@no{flafter}
+    \sorry@no{float}
+    \sorry@no{morefloats}
+    \sorry@no{endfloat}
+    \sorry@no{placeins}
+    % Related to footnotes and endnotes:
+    \sorry@no{footmisc}
+    \sorry@no{footnote}
+    \sorry@no{manyfoot}
+    % Related to tables:
+    \sorry@no{multirow}
+    \sorry@no{tabu}
+    \sorry@no{tabularx}
+    \sorry@no{tabulary}
+    \sorry@no{longtable}
+    % Related to lists:
+    \sorry@no{array}
+    \sorry@no{easylist}
+    \sorry@no{listings}
+    \sorry@no{numitem}
+    \sorry@no{tasks}
+    % Related to graphics or layout:
+    \sorry@no{pagegrid}
+    \sorry@no{subfig}
+    \sorry@no{lpic}
+    \sorry@no{pinlabel}
+    \sorry@no{overpic}
+    \sorry@no{caption}
+    \sorry@no{sidecap}
+    \sorry@no{subcaption}
+    \sorry@no{paracol}
+    \sorry@no{scrextend}
+    \sorry@no{exsheets}
+    \sorry@no{eqparbox}
+    \sorry@no{colortbl}
+    \sorry@no{tikz}
+    \sorry@no{pstricks}
+    \sorry@no{xypic}
+    \sorry@no{xfig}
+    \sorry@no{pgfcalendar}
+    \sorry@no{pgfpages}
+    \sorry@no{pst-pdf}
+    \sorry@no{auto-pst-pdf}
+    \sorry@no{epstopdf}
+    \sorry@no{pdftricks}
+    \sorry@no{pdftricks2}
+    \sorry@no{mpgraphics}
+    \sorry@no{pict2e}
+    \sorry@no{picman}
+    \sorry@no{scalerel}
+    \sorry@no{pmgraph}
+    \sorry@no{reflectgraphics}
+  \fi % end if sandbox.
+  %
+  %% Commands and environments, only allowed in sandbox:
+  \if@sandbox\else
+    \gdef\mplibcode{\@OnlySandbox{mplibcode}}
   \fi
-  % Potential problem packages, blocked by default, but can be unblocked:
-  \sorry@no{floatflt}{its own \string\WrapImage\space command.}{7.3.7}
-  \really@no{floatfig}{its own \string\WrapImage\space command.}{7.3.7}
-  \sorry@no{float}{its own \string\FloatImage\space command.}{7.3.6}
-  \sorry@no{subfig}{its own \string\FloatImage\space command.}{7.3.6}
-  \sorry@no{lpic}{its own \string\FloatImage\space command.}{7.3.6}
-  \sorry@no{pinlabel}{its own \string\FloatImage\space command.}{7.3.6}
-  \sorry@no{overpic}{its own \string\FloatImage\space command.}{7.3.6}
-  \sorry@no{morefloats}{its own \string\FloatImage\space command.}{7.3.6}
-  \sorry@no{placeins}{its own \string\FloatImage\space command.}{7.3.6}
-  \really@no{flafter}{its own \string\FloatImage\space command.}{7.3.6}
-  \sorry@no{endfloat}{its own \string\FloatImage\space command.}{7.3.6}
-  \sorry@no{footmisc}{limited built-in footnote methods.}{6.5}
-  \sorry@no{footnote}{limited built-in footnote methods.}{6.5}
-  \sorry@no{manyfoot}{limited built-in footnote methods.}{6.5}
-  \sorry@no{caption}{its own \string\FloatImage\space command.}{7.3.6}
-  \sorry@no{sidecap}{its own \string\FloatImage\space command.}{7.3.6}
-  \sorry@no{subcaption}{its own \string\FloatImage\space command.}{7.3.6}
-  \sorry@no{multirow}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
-  \sorry@no{tabu}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
-  \sorry@no{tabularx}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
-  \sorry@no{tabulary}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
-  \sorry@no{longtable}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
-  \sorry@no{paracol}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
-  \sorry@no{array}{limited, built-in TOC capability.}{1.2.5, 8.3.2.7}
-  \sorry@no{easylist}{conflicting layout requirements.}{1.2.5}
-  \sorry@no{scrextend}{conflicting layout requirements.}{1.2.5}
-  \sorry@no{listings}{conflicting layout requirements.}{1.2.5}
-  \sorry@no{numitem}{conflicting layout requirements.}{1.2.5}
-  \sorry@no{tasks}{conflicting layout requirements.}{1.2.5}
-  \sorry@no{exsheets}{conflicting layout requirements.}{1.2.5}
-  \sorry@no{eqparbox}{conflicting layout requirements.}{6.3.1}
-  % Can be used without unblock, but Alert:
-  \gdef\alert@nodisp#1{%
-    \@ifpackageloaded{#1}{%
-      \typeout{^^JClass `novel' Alert: Beware of package #1. ^^J%
-        Commands from this package may cause mis-positioning in main text. ^^J%
-        Maybe, maybe not. Best if usage is confined to display pages. ^^J}%
-    }%
-  } %
-  % List of Alert packages:
+  %
+  %% Alert packages, might cause minor layout problems, not enough to block:
   \alert@nodisp{nth}
   \alert@nodisp{engord}
   \alert@nodisp{ulem}
   \alert@nodisp{soul}
-  % end list of potential problem packages.
-  \@ifpackageloaded{pagegrid}{
+  % end list of Alert packages.
+  %
+  %% Package `pagegrid' interacts with `shademargins' and `draft' options:
+  \@ifpackageloaded{pagegrid}{ % that is, if permitted by sandbox or unblock
     \ifdraftdoc
       \if@shademargins
         \ClassWarning{novel}{^^JGrid from `pagegrid' is concealed. ^^J%
@@ -534,7 +647,7 @@
       \ClassError{novel}{Package `pagegrid' needs `draft' mode}%
        {Package `pagegrid' only with document class option `draft'.}%
     \fi
-  }{} % end pagegrid
+  }{} % end if pagegrid
 }% end \AtBeginDocument
 %%
 

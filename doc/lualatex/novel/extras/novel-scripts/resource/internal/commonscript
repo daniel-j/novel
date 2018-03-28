@@ -2,8 +2,8 @@
 # This file has common functions for novel-script Linux scripts.
 # It is read by another script, using the source command. Do not use directly.
 # $HELPMSG and $USAGEMSG are messages set by calling script.
-# $TARGRES is the target resolution. 600 for b/w, 300 for other.
-# Over or under TARGRES generates an Alert or a Warning, depending on how much.
+# $DEFRES is the default resolution. Set by calling script or set/export.
+# Over or under DEFRES generates an Alert or a Warning, depending on how much.
 # $MINRES is low-resolution warning point, 300 for b/w, 150 for other.
 # $MAXRES is the excess-resolution warning point, 1200 for b/w, 600 for other.
 # $1 and $2 are arguments passed from calling script.
@@ -136,43 +136,43 @@ then
   fi
 fi
 IR=$TEMPRESX
-# If input is pdf, always set resolution to 300:
-if [ "%CE%" == "pdf" ]; then IR=$TARGRES; fi
+# If input is pdf, always set resolution to $DEFRES:
+if [ "$CE" == "pdf" ] || [ "$CE" == "PDF" ]; then IR=$DEFRES; fi
 
 # Prepare messages:
-WM1="Image resolution $TARGRES pixels per inch. Good."
+WM1="Output image resolution $DEFRES pixels per inch."
 WM2=""
 WM3=""
 if [ "$GOTRES" == "no" ]
 then
   WM1="WARNING: Image resolution was not included in file, or was unreadable."
-  WM2="Processed with resolution set to $TARGRES pixels per inch."
-  WM3="This is a good default value, but be sure to check image dimensions."
-  IR=$TARGRES
+  WM2="Processed with resolution set to $DEFRES pixels per inch."
+  WM3="Be sure to check image dimensions."
+  IR=$DEFRES
 fi
 if [ $IR -lt $MINRES ]
 then
   WM1="WARNING: Image resolution $IR is less than $MINRES pixels per inch."
   WM2="This is likely to be rejected by the print service."
-  WM3="Some print services allow as low as $MINRES, but most require $TARGRES."
+  WM3="Some print services allow as low as $MINRES, but most require $DEFRES."
 else
-  if [ $IR -lt $TARGRES ]
+  if [ $IR -lt $DEFRES ]
   then
-    WM1="ALERT: Image resolution $IR is less than $TARGRES pixels per inch."
-    WM2="Some print services allow as low as $MINRES, but most require $TARGRES."
+    WM1="ALERT: Image resolution $IR is less than $DEFRES pixels per inch."
+    WM2="Some print services allow as low as $MINRES, but most require $DEFRES."
     WM3=""
   fi
-  if [ $IR -gt $TARGRES ]
+  if [ $IR -gt $DEFRES ]
   then
     if [ $IR -le $MAXRES ]
     then
-      WM1="ALERT: Image resolution $IR is over $TARGRES pixels per inch."
-      WM2="Some print services allow as high as $MAXRES, but most require $TARGRES."
+      WM1="ALERT: Image resolution $IR is over $DEFRES pixels per inch."
+      WM2="Some print services allow as high as $MAXRES, but most require $DEFRES."
       WM3=""
     else
       WM1="WARNING: Image resolution $IR is over $MAXRES pixels per inch."
       WM2="This is likely to be rejected by the print service."
-      WM3="Some print services allow as high as $MAXRES, but most require $TARGRES."
+      WM3="Some print services allow as high as $MAXRES, but most require $DEFRES."
     fi
   fi
 fi

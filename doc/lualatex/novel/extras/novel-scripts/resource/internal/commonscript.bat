@@ -2,8 +2,8 @@ REM commonscript.bat
 REM This file has common functions for novel-script Windows scripts.
 REM It is read by another script, using the call command. Do not use directly.
 REM %HELPMSG% and %USAGEMSG% are messages set by calling script.
-REM %TARGRES% is the target resolution. 600 for b/w, 300 for other.
-REM Over or under %TARGRES% generates an Alert or a Warning, depending on how much.
+REM %DEFRES% is the default resolution. Set by calling script, or set/export.
+REM Over or under %DEFRES% generates an Alert or a Warning, depending on how much.
 REM %MINRES is low-resolution warning point, 300 for b/w, 150 for other.
 REM %MAXRES% is the excess-resolution warning point, 1200 for b/w, 600 for other.
 REM %1 and %2 are arguments passed from calling script.
@@ -185,39 +185,39 @@ if %TEMPRESX% EQU 0 ( set GOTRES=no)
 if %TEMPRESY% EQU 0 ( set GOTRES=no)
 set /a IR=TEMPRESX*1
 set IR=%IR%
-REM If input is pdf, always set resolution to 300:
-if /I "%CE%"==".pdf" ( set IR=%TARGRES%)
+REM If input is pdf, always set resolution to %DEFRES%:
+if /I "%CE%"==".pdf" ( set IR=%DEFRES%)
 
 
 REM Prepare messages:
-set WM1=Image resolution %TARGRES% pixels per inch. Good.
+set WM1=Image resolution %DEFRES% pixels per inch.
 set WM2=
 set WM3=
 if "%GOTRES%"=="no" (
   set WM1=WARNING: Image resolution was not included in file, or was unreadable.
-  set WM2=Processed with resolution set to %TARGRES% pixels per inch.
-  set WM3=This is a good default value, but be sure to check image dimensions.
-  set IR=%TARGRES%
+  set WM2=Processed with resolution set to %DEFRES% pixels per inch.
+  set WM3=Be sure to check image dimensions.
+  set IR=%DEFRES%
 )
 if %IR% LSS %MINRES% (
   set WM1=WARNING: Image resolution %IR% is less than %MINRES% pixels per inch.
   set WM2=This is likely to be rejected by the print service.
-  set WM3=Some print services allow as low as %MINRES%, but most require %TARGRES%.
+  set WM3=Some print services allow as low as %MINRES%, but most require %DEFRES%.
 ) else (
-  if %IR% LSS %TARGRES% (
-    set WM1=ALERT: Image resolution %IR% is less than %TARGRES% pixels per inch.
-    set WM2=Some print services allow as low as %MINRES%, but most require %TARGRES%.
+  if %IR% LSS %DEFRES% (
+    set WM1=ALERT: Image resolution %IR% is less than %DEFRES% pixels per inch.
+    set WM2=Some print services allow as low as %MINRES%, but most require %DEFRES%.
     set WM3=
   )
-  if %IR% GTR %TARGRES% (
+  if %IR% GTR %DEFRES% (
     if %IR% LEQ %MAXRES% (
-      set WM1=ALERT: Image resolution %IR% is over %TARGRES% pixels per inch.
-      set WM2=Some print services allow as high as %MAXRES%, but most require %TARGRES%.
+      set WM1=ALERT: Image resolution %IR% is over %DEFRES% pixels per inch.
+      set WM2=Some print services allow as high as %MAXRES%, but most require %DEFRES%.
       set WM3=
     ) else (
       set WM1=WARNING: Image resolution %IR% is over %MAXRES% pixels per inch.
       set WM2=This is likely to be rejected by the print service.
-      set WM3=Some print services allow as high as %MAXRES%, but most require %TARGRES%.
+      set WM3=Some print services allow as high as %MAXRES%, but most require %DEFRES%.
     )
   )
 )

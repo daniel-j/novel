@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2018/03/16 v1.50pre1 LaTeX file (layout settings)]
+[2018/03/28 v1.50 LaTeX file (layout settings)]
 %%
 
 
@@ -60,7 +60,7 @@
 %   very wide, because the word processor margins include both
 %   the finished book margins, and the discarded scrap paper.
 % In certain circumstances, text or images may intrude into the margin area.
-%   This is not an error, because it may be intentional.
+%   This is not always an error, because it may be intentional.
 % Margins at top and bottom are relative to:
 %   top of header, or top of textblock if no header;
 %   bottom of footer, or bottom of textblock if no footer.
@@ -136,8 +136,8 @@
 %   onto a larger sheet of paper is done automatically at the print service,
 %   a procedure known as "imposition." Several small Trim Sizes may be
 %   printed onto a single sheet, in order to waste less paper in trimming.
-% In some cases, the print service will ask you to provide a PDF that has
-%   the Trim Size placed (usually centered H/V) onto a larger Media Size.
+% In a few cases, the print service will ask you to provide a PDF that has
+%   the Trim Size centered H/V within a larger Media Size.
 %   Sometimes (especially for cover artwork), that's because you are
 %   doing the imposition yourself. In other cases (especially for interiors)
 %   it is because most of the files seen at the print service came from
@@ -151,26 +151,13 @@
 % Class options `cropview' and `closecrop' (only in draft mode)
 %   affect Media Size. See their descriptions below.
 %
-% \SetMediaSize[alignment]{width}{height} usage:
-% Optional alignment: center, corner. Obsolete edge (alias for corner).
-%   center (default): Trim is horizontally and vertically centered in media.
-%     Preferred by most commercial printers, often home and office as well.
-%   corner: Verso Trim at upper left of Media; recto Trim at upper right.
-%     Might be useful for making a mock-up copy at home.
-%   With coverart option, must be center.
+% \SetMediaSize[<obsolete option>]{width}{height} usage:
+% The optional argument is obsolete. Anything there will be ignored.
 \newif \if@MediaSize % true if \SetMediaSize rather than default = Trim Size.
-\gdef\@AlignTrim{center} % default
-\newcommand\SetMediaSize[3][center]{ % [alignment] width, height
-  \ifthenelse{\equal{#1}{center} \OR \equal{#1}{corner} %
-  \OR \equal{#1}{edge}}{
-    \global\@MediaSizetrue
-    \gdef\@AlignTrim{#1}
-    \gsetlength\paperwidth{#2}
-    \gsetlength\paperheight{#3}
-  }{
-    \ClassError{novel}{Bad optional argument for \string\SetMediaSize}%
-    {\string\SetMediaSize\space optional argument: center, corner.}%
-  }
+\DeclareDocumentCommand\SetMediaSize { O{} m m } {% width, height
+  \@MediaSizetrue
+  \gsetlength\paperwidth{#2}
+  \gsetlength\paperheight{#3}
 }% end \SetMediaSize
 %%
 
@@ -210,21 +197,6 @@
   \gsetlength\@SetFontSize{#1}
 }% end set font size
 %%
-
-
-%% Sets the gap between cropmarks and trim area:
-\newlength\@CropmarkGap
-\def\SetCropmarkGap#1{
-  \ifthenelse{\lengthtest{#1 < 0pt}}{
-    \gsetlength\@CropmarkGap{0pt}
-  }{
-  \gsetlength\@CropmarkGap{#1}
-  }
-}
-\SetCropmarkGap{0.125in} % default
-%%
-
-
 
 
 %% MISCELLANOUS SETTINGS. Mostly remove "glue". Best to leave as-is.
@@ -395,10 +367,12 @@
 \long\gdef\subsubsection#1{#1}
 \long\gdef\paragraph#1{#1}
 \long\gdef\subparagraph#1{#1}
+\long\gdef\appendix#1{#1}
 % In some situations, the use will be interrupted:
-\gdef\@nodocommand#1{
-  \ClassError{novel}{No command `\string\#1' in this class}%
-    {The `\string\#1' command is not implemented in `novel' class.}%
+\DeclareDocumentCommand\@nodocommand { O{} +m } {%
+  \ClassError{novel}{No command or environment `#1' in this class}%
+   {Many academic layout commands or environments are disabled in `novel'. ^^J%
+    #2.}%
 }
 % Here is the interruption list:
 \long\gdef\maketitle\@nodocommand{maketitle}
@@ -406,6 +380,14 @@
 \long\gdef\tableofcontents\@nodocommand{tableofcontents}
 \long\gdef\listoftables\@nodocommand{listoftables}
 \long\gdef\listoffigures\@nodocommand{listoffigures}
+\long\gdef\thebibliography\@nodocommand{thebibliography}
+\long\gdef\theindex\@nodocommand{theindex}
+\long\gdef\titlepage\@nodocommand{titlepage}
+\long\gdef\description\@nodocommand{description}
+\long\gdef\caption\@nodocommand{caption}
+\long\gdef\abstract\@nodocommand{abstract}
+\long\gdef\table\@nodocommand[Use `sandbox' mode to create an image]{table}
+\long\gdef\figure\@nodocommand[Use `sandbox' mode to create an image]{figure}
 %
 %% end disable or neutralize.
 
@@ -417,7 +399,6 @@
   \LetLtxMacro\SetMargins\relax
   \LetLtxMacro\SetLinesPerPage\relax
   \LetLtxMacro\SetFontSize\relax
-  \LetLtxMacro\SetCropmarkGap\relax
   \LetLtxMacro\SetUnsafeZone\relax
 }% end \@DisableLayoutSettings
 %%

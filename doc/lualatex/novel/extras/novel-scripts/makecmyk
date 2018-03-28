@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# DEFRES is default resolution, when input does not have its own.
+# If input is PDF, then DEFRES is always applied.
+# MINRES and MAXRES set warning messages for images under/over usual limits.
+# If you did not export values for these, the following are used:
+if [ "$DEFRES" == "" ]; then DEFRES="300"; fi
+if [ "$MINRES" == "" ]; then MINRES="150"; fi
+if [ "$MAXRES" == "" ]; then MAXRES="600"; fi
+
 # makecmyk
 # This is a Linux BASH command script. Might work with OSX (not tested).
 # Tested with bash 3.2.57 and bash 4.
@@ -13,7 +21,7 @@
 # and version 1.3c or later is part of all distributions of LaTeX
 # version 2005/12/01 or later.
 
-VERMSG="makecmyk version 0.9.7."
+VERMSG="makecmyk version 0.9.8."
 USAGEMSG="Usage:./makecmyk [-a] filename.ext"
 HELPMSG="Help:  ./makecmyk -h"
 DEMOMSG="Demo:  ./makecmyk [-a] demo"
@@ -42,7 +50,7 @@ then
   echo "  or compatible color space, but the color profile was not embedded."
   echo "  You will almost never use this option."
   echo 
-  echo "You need ImageMagick and Ghostscript. On Windows, they may be portable."
+  echo "Requires ImageMagick and Ghostscript."
   echo 
   echo "Place input image in input folder."
   echo "  Input image may be RGB or CMYK. No spaces in filename."
@@ -116,7 +124,7 @@ then
     ICN="a"
   else
     echo "ERROR."
-    echo "Bad optional argument. Use -a. Do not omit hyphen."
+    echo "Bad optional argument. May use -a. Do not omit hyphen."
     echo "$USAGEMSG"
     echo "$HELPMSG"
     echo 
@@ -126,9 +134,6 @@ fi
 NEEDSGS="yes"
 DEMOMODE=""
 FN=""
-TARGRES="300"
-MINRES="150"
-MAXRES="600"
 if [ -f "resource/internal/commonscript" ]
 then
   source resource/internal/commonscript

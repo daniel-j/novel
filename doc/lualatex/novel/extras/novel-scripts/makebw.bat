@@ -1,6 +1,14 @@
 @echo off
 setlocal EnableDelayedExpansion
 
+REM DEFRES is default resolution, when input does not have its own.
+REM If input is PDF, then DEFRES is always applied.
+REM MINRES and MAXRES set warning messages for images under/over usual limits.
+REM If you did not export values for these, the following are used:
+if "%DEFRES%"=="" ( set DEFRES=800)
+if "%MINRES%"=="" ( set MINRES=300)
+if "%MAXRES%"=="" ( set MAXRES=1200)
+
 REM makebw.bat
 REM This is a Windows batch command script.
 REM Tested with Windows 10. Should work with Windows 7 or later.
@@ -18,7 +26,7 @@ REM This file is distributed with the "novel" LuaLaTeX document class.
 REM https://ctan.org/pkg/novel  [get the one zip archive]
 REM But you do not need a TeX installation to use this script.
 
-set VERMSG=makebw.bat version 0.9.7.
+set VERMSG=makebw.bat version 0.9.8.
 set USAGEMSG=Usage: makebw [-threshold] filename.ext
 set HELPMSG=Help:  makebw -h
 set DEMOMSG=Demo:  makebw [-threshold] demo
@@ -72,7 +80,7 @@ if "%GETH%"=="yes" (
   echo   Low number makes more white. High number makes more black.
   echo   Useful for tweaking widths of lines in line art.
   echo.
-  echo You need ImageMagick. On Windows, it may be portable.
+  echo This script requires ImageMagick. Also Ghostscript, if pdf input.
   echo.
   echo Place input image in input folder.
   echo   Input image may be RGB or Grayscale. No spaces in filename.
@@ -120,9 +128,6 @@ set FN=
 set MAGICKPATH=
 set MYGSPATH=
 set MYGSVER=
-set TARGRES=600
-set MINRES=300
-set MAXRES=1200
 if exist "resource\internal\commonscript.bat" (
   set BADCOMMON=
   call resource\internal\commonscript.bat %1 %2
@@ -139,7 +144,7 @@ REM Now do conversion:
 echo.
 echo Converting...
 set CS=%% -colorspace Gray
-magick convert %FN% -density %IR% -units PixelsPerInch -threshold !THRESH!%CS% output\%CN%-!THRESH!-BW.png
+magick convert -density %IR% -units PixelsPerInch %FN% -strip -flatten -threshold !THRESH!%CS% output\%CN%-!THRESH!-BW.png
 
 REM Verify and show info on Terminal:
 echo Verifying...

@@ -13,17 +13,8 @@
 %% 
 %%
 \ProvidesFile{novel-ChapterScene.sty}%
-[2018/03/16 v1.50pre1 LaTeX file (chapter and scene macros)]
+[2018/03/28 v1.50 LaTeX file (chapter and scene macros)]
 %%
-
-
-% Class `novel' does not use \maketitle.
-\gdef\maketitle{%
-  \ClassError{novel}{\string\maketitle does not exist in this class}%
-   {Sorry, but there is no \string\maketitle command in `novel' class. ^^J%
-    You must make your own title pages! See documentation.}%
-}
-%
 
 
 % Each new chapter generally has its own header/footer style. This allows a
@@ -150,16 +141,16 @@
 \newcounter{@linequarter}
 
 %
-% The argument is the number of normal baselineskips high,
-%   (integer GTE 3, or GTE 4 when dropfolioinside).
-\ExplSyntaxOn
+% The argument is the number of normal baselineskips high.
+\newif\if@WithinChapterStart
 \DeclareDocumentEnvironment {ChapterStart} %
 { O{\@setchapterstartheight} O{\@setchapterstart} }{%
   \if@ThisPageStyle\else%
     \gdef\@thiscsstyle{#2}%
     \thispagestyle{\@thiscsstyle}%
   \fi%
-  \suppressfloats[t] % ensures that a floated image does not go on top
+  \global\@WithinChapterStarttrue%
+  \suppressfloats[t]% ensures that a floated image does not go on top
   \gsetlength\parindent{0pt}% within environment
   \ResetFootnoteSymbol% resets symbolic markers, but not numerical markers
   \IfStrEq{#1}{*}{%
@@ -172,17 +163,16 @@
   \FPround{\@thiscsheight}{\@thiscsheight}{0}%
   \FPiflt{\@thiscsheight}{4}%
     \def\@smcserr{%
-      \ClassError{novel}{ChapterStart~height~insufficient~for~thispagestyle}%
-       {With~your~choice~for~thispagestyle,~the~height~must~be~at~least~4.}%
+      \ClassError{novel}{ChapterStart height insufficient for thispagestyle}%
+       {With your choice for thispagestyle, the height must be at least 4.}%
     }%
-    \IfStrEq{\@thiscsstyle}{dropfolioinside}{\@smcserr}{}%
-    \IfStrEq{\@thiscsstyle}{dropfoliolater}{\@smcserr}{}%
+    \IfStrEq{\@thiscsstyle}{dropfolioinside}{\@smcserr}{}%j
     \IfStrEq{\@thiscsstyle}{plain}{\@smcserr}{}%
     \IfStrEq{\@thiscsstyle}{fancyplain}{\@smcserr}{}%
   \else\fi%
   \FPiflt{\@thiscsheight}{3}%
-    \ClassError{novel}{ChapterStart~height~must~be~at~least~3}%
-      {If~you~need~height~less~than~3,~consider~\string\QuickChapter.}%
+    \ClassError{novel}{ChapterStart height must be at least 3}%
+      {If you need height less than 3, consider \string\QuickChapter.}%
   \else\fi%
   \null% always a line above the first thing to appear within the environment
   \setcounter{@linequarter}{0}%
@@ -202,12 +192,13 @@
   }{\vspace{0.25\nbs}}{}%
   \end{textblock*}%
   \vspace{\@fixlines\nbs}%
-  \if@DeleteCSline\else\null\fi%
+  \if@DeleteCSline\else\null\fi% adjusts when dropfolioinside
+  \global\@WithinChapterStartfalse%
   \vspace{\@NovelCaulk}%
   \gsetlength\parindent{\normalparindent}% restored
   \nov@AfterGroup\NoIndentAfterThis% etextools and noindentafter
 }
-\ExplSyntaxOff % end ChapterStart environment
+% end ChapterStart environment
 
 
 %%
@@ -325,16 +316,20 @@
     \clearpage
   \fi
 }
+\newif \if@cleartoend
 \gdef\cleartoend{
-  \clearpage
-  \ifodd\c@page
+  \if@cleartoend\else
+    \clearpage
+    \ifodd\c@page
+      \thispagestyle{empty}
+      \null
+      \clearpage
+    \fi
     \thispagestyle{empty}
     \null
     \clearpage
   \fi
-  \thispagestyle{empty}
-  \null
-  \clearpage
+  \global\@cleartoendtrue
 }
 %
 

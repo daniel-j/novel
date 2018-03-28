@@ -1,6 +1,14 @@
 @echo off
 setlocal EnableDelayedExpansion
 
+REM DEFRES is default resolution, when input does not have its own.
+REM If input is PDF, then DEFRES is always applied.
+REM MINRES and MAXRES set warning messages for images under/over usual limits.
+REM If you did not export values for these, the following are used:
+if "%DEFRES%"=="" ( set DEFRES=300)
+if "%MINRES%"=="" ( set MINRES=150)
+if "%MAXRES%"=="" ( set MAXRES=600)
+
 REM makecmyk.bat
 REM This is a Windows batch command script.
 REM Tested with Windows 10. Should work with Windows 7 or later.
@@ -14,7 +22,7 @@ REM    http://www.latex-project.org/lppl.txt
 REM and version 1.3c or later is part of all distributions of LaTeX
 REM version 2005/12/01 or later.
 
-set VERMSG=makecmyk.bat version 0.9.7.
+set VERMSG=makecmyk.bat version 0.9.8.
 set USAGEMSG=Usage: makecmyk [-a] filename.ext
 set HELPMSG=Help:  makecmyk -h
 set DEMOMSG=Demo:  makecmyk [-a] demo
@@ -69,7 +77,7 @@ if "%GETH%"=="yes" (
   echo   or compatible color space, but the color profile was not embedded.
   echo   You will almost never use this option.
   echo.
-  echo You need ImageMagick and Ghostscript. On Windows, they may be portable.
+  echo Requires ImageMagick and Ghostscript.
   echo.
   echo Place input image in input folder.
   echo   Input image may be RGB or CMYK. No spaces in filename.
@@ -158,9 +166,6 @@ set FN=
 set MAGICKPATH=
 set MYGSPATH=
 set MYGSVER=
-set TARGRES=300
-set MINRES=150
-set MAXRES=600
 if exist "resource\internal\commonscript.bat" (
   set BADCOMMON=
   call resource\internal\commonscript.bat %1 %2
@@ -217,8 +222,6 @@ echo Converting image. This takes time...
 REM Strip and flatten image:
 %MAGICKPATH%magick convert -units PixelsPerInch -density %IR% %FN% -strip -flatten temp\temp-%CN%-stripped.tif
 echo    ...Completed step 1 of 6.
-
-pause
 
 REM Convert to CMYK:
 if "!ISCMYK!"=="yes" (

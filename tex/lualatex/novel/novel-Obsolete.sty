@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Obsolete.sty}%
-[2018/03/16 v1.50pre2 LaTeX file (obsolete macros)]
+[2018/03/28 v1.50 LaTeX file (obsolete macros)]
 %%
 
 
@@ -25,6 +25,11 @@
 %% These macros have been gathered here. DO NOT USE THEM IN NEW DOCUMENTS.
 %% They have only been retained for backwards-compatibility.
 %% If you find a bug -- too bad! Anything here is "won't fix."
+%%
+
+
+%% OBSOLETE
+\gdef\SetCropmarkGap#1{} % simply ignored
 %%
 
 
@@ -147,9 +152,9 @@
 %% OBSOLETE FROM VERSION 1.50. Use \FloatImage instead.
 \DeclareDocumentCommand \BlockImage { O{c} m +O{} }{%
   \ClassWarning{novel}{^^J\string\BlockImage\space command is obsolete. ^^J%
-    It will remain in effect for existing documents that use it. ^^J%
-    New documents must use \string\FloatImage\space instead.  ^^J%
-    Purpose and syntax is slightly different. See docs.  ^^J}%
+    It will remain in effect for existing documents that have it. ^^J%
+    New documents: Use \string\FloatImage, or \string\WrapImage, instead. ^^J%
+    Purpose and syntax is slightly different. See docs. ^^J}%
   \iftoggle{@inheadfoot}{%
     \ClassError{novel}{Cannot use \string\BlockImage\space in header/footer}%
       {Header footer allow \string\InlineImage, but not \string\BlockImage.}%
@@ -244,7 +249,11 @@
 % If you use \ReworkTrimSize, you must first use \SetTrimSize (not defaults):
 \newlength\@NewTrimWidth
 \newlength\@NewTrimHeight
+\newif \if@ReworkTrimSize
 \newcommand\ReworkTrimSize[2]{% width, height
+  \ClassWarning{novel}{\string\Rework\space commands are obsolete. ^^J%
+   The \string\Rework\space commands are still effective for old documents, ^^J%
+   but should not be used for new documents, due to potential layout issues.}%
   \if@SetTrimSize\else
     \ClassError{novel}{Must use \string\SetTrimSize\space %
       before \string\ReworkTrimSize}%
@@ -276,7 +285,11 @@
 \newlength\@NewOuterMargin
 \newlength\@NewBottomMargin
 \newlength\@NewInnerMargin
+\newif \if@ReworkMargins
 \newcommand\ReworkMargins[4]{ % top, outer, bottom, inner
+  \ClassWarning{novel}{\string\Rework\space commands are obsolete. ^^J%
+   The \string\Rework\space commands are still effective for old documents, ^^J%
+   but should not be used for new documents, due to potential layout issues.}%
   \if@coverart % New in version 1.2
     \ClassError{novel}{\string\Rework\space commands cannot be used %
       with coverart option}%

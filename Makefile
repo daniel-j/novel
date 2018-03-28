@@ -3,8 +3,7 @@
 
 zip:
 	rm -f novel.zip
-	zip -9 novel.zip LICENSE README.md
-	cd novel && zip -9 -r ../novel.zip *
+	cd novel && zip -9 -r ../novel.zip .
 
 clean:
 	rm -rf novel.zip build

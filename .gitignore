@@ -1,3 +1,7 @@
 build/
 novel.zip
 novel.tds.zip
+scripts/resource/output/
+scripts/resource/temp/
+scripts/resource/input/
+!scripts/resource/input/.gitkeep

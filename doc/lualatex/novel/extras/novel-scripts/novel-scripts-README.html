@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<title>Novel Scripts</title>
+
+<style type="text/css">
+body {font-family:sans-serif; line-height:150%; font-size:14pt; color:#203310; background:#cccccc none;}
+p {font-family:sans-serif,sans-serif; font-size:1em; margin:0px 16px 0px 16px; text-indent:16px;}
+ol, ul {list-style-type:none; margin:0px; padding:0px;}
+li {margin:3px 8px 3px 16px; padding:0px;}
+li p {margin: 0px 8px 0px 44px; text-indent:-44px;}
+a {text-decoration:none; color:#990000}
+h1 {font-size:1.33em; margin:16px 16px 0px 8px; font-weight:bold; clear:both; padding-top:8px;}
+h2 {font-size:1.25em; margin:8px 16px 0px 8px; font-weight:bold; clear:both; padding-top:8px;}
+h3 {font-size:1.15em; margin:8px 16px 0px 8px; font-weight:bold; clear:both; padding-top:8px;}
+h4 {font-size:1em; margin:8px 16px 0px 8px; font-weight:bold; clear:both; padding-top:8px;}
+h5 {font-size:1em; margin:8px 16px 0px 8px; clear:both; padding-top:8px;}
+h6 {font-size:1em; margin:8px 16px 0px 8px; clear:both; padding-top:8px;}
+em {font-weight:normal}
+img {max-width:100%;}
+img.nodisplaynav {display:none; height:1em;}
+img.openclose {display:none; height:1em;}
+*.noimg {padding-left:1.5em;}
+div.d1 {margin:0px 16px 16px 16px;}
+div.d2 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
+div.d3 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
+div.d4 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
+div.d5 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
+div.d6 {margin:0px 0px 16px 16px; padding-bottom:0.5em; border-top:0; border-right: 0px; border-bottom:1px dotted #666666; border-left:1px dotted #666666;}
+div.page {padding:16px 0px 16px 0px; border-top:4px solid #505050;}
+div.codeblock {overflow:auto; margin:16px; padding: 8px; border: 1px solid #000000;}
+code {font-family:monospace,monospace; color:#200050; background:transparent none; padding:0px 3px 0px 3px;}
+*.smaller {font-weight:normal; font-size:88%;}
+*.noindent {text-indent:0px;}
+*.noindent1 {text-indent:0px; margin-top:8px;}
+*.noindent2 {text-indent:0px; margin-bottom:8px;}
+*.noindentcmd {text-indent:0px; margin-top:16px;}
+*.isolate {padding-left:10px;margin-top:10px; margin-bottom:10px; text-indent:0px;}
+*.dbloc {padding-left:1.8em; visibility:hidden}
+table.preconf {margin-left:auto; margin-right:auto; margin-top:20px; margin-bottom:20px; border:1px solid #000000}
+table.preconf caption {font-weight:bold;}
+table.preconf th {text-align:left; padding:6px; font-weight:normal; border-bottom:1px solid #000000;}
+table.preconf td {text-align:left; padding:6px;}
+table.preconf tfoot td {border-top:1px solid #000000;}
+table.preconf p {text-indent:0px; margin:6px;}
+*.onedown {font-size:smaller}
+*.menuitem {text-indent:-8px; margin-left:24px; margin-top:0px; margin-bottom:0px;}
+small {line-height:50%;}
+span.ap {color: #996633;} /* percent comment in code */
+*.floatright {float:right; margin-left:1em; margin-right:16px;}
+*.n {display:none; border:1px solid #990000; font-family:monospace,monospace; font-size:0.92em; font-weight:bold; padding: 0 0.3em 0 0.3em; color:#990000; background: #ffdddd none; margin-right:0.5em;}
+p.centerimg {text-indent:0px; text-align:center; margin-top:0.5em; margin-bottom:0.5em;}
+p.code {text-indent:0px; margin: 4px 16px 4px 16px; padding-left:32px;}
+p.item {text-indent:0px; padding-top:8px;}
+b em {font-weight:normal;}
+hr.newpage {margin-top:2em; margin-bottom:2em; height:4px; color:#505050; background:#505050;}
+p.overhang {margin-left:32px; text-indent:-16px;}
+*.sampledoc {margin:1em}
+*.sampledoc em {font-size:92%; color:#666666}
+#master {position:relative;}
+#finish {clear:both;}
+#toc {display:block; font-size:14pt; width:30%; background:#ffffff none; position:fixed; overflow:scroll; height:98%;}
+#toc li ul li {display:block;}
+#main {float:right; background:#ffffff none; width:68%; padding-bottom:40px;}
+*.noshowprint {display:none;}
+div.codeblock p {text-indent:0px; white-space:nowrap;}
+</style>
+
+</head>
+
+<body>
+<div id="master">
+
+
+<div id="toc" class="toc">
+
+<h3><a href="#main">Novel Scripts</a></h3>
+
+<ul><!-- master toc ul -->
+
+  <li id="l1"><span class="n"></span><a href="#h1"><b>1. Introduction</b></a></li>
+
+  <li id="l2"><span class="n"></span><a href="#h2"><b>2. Software</b></a>
+    <ul id="u2">
+      <li id="l2.1"><span class="n"></span><a href="#h2.1">2.1 Image Magick</a></li>
+      <li id="l2.2"><span class="n"></span><a href="#h2.2">2.2 Ghostscript</a></li>
+      <li id="l2.3"><span class="n"></span><a href="#h2.3">2.3 Portable Install (Windows)</a></li>
+      <li id="l2.4"><span class="n"></span><a href="#h2.4">2.4 LuaLaTeX (Color Cover PDF/X)</a></li>
+    </ul>
+  </li>
+
+  <li id="l3"><span class="n"></span><a href="#h3"><b>3. Book Interior Images</b></a>
+    <ul id="u3">
+      <li id="l3.1"><span class="n"></span><a href="#h3.1">3.1 Black/White Line Art</a></li>
+      <li id="l3.2"><span class="n"></span><a href="#h3.2">3.2 Grayscale Image</a></li>
+    </ul>
+  </li>
+
+  <li id="l4"><span class="n"></span><a href="#h4"><b>4. Color Cover</b></a>
+    <ul id="u4">
+      <li id="l4.1"><span class="n"></span><a href="#h4.1">4.1 Pre-Process Using Script</a></li>
+      <li id="l4.2"><span class="n"></span><a href="#h4.2">4.2 Post-Process Using LuaLaTeX</a></li>
+      <li id="l4.3"><span class="n"></span><a href="#h4.3">4.3 Viewing the Converted Image</a></li>
+    </ul>
+  </li>
+
+</ul>
+<hr/>
+<ul>
+
+  <li id="lA"><span class="n"></span><a href="#hA"><b>Appendix: RGB/CMYK Color Shift</b></a>
+    <ul id="uA">
+      <li id="lA.1"><span class="n"></span><a href="#hA.1">A.1 Max Colors</a></li>
+      <li id="lA.2"><span class="n"></span><a href="#hA.2">A.2 Natural Light</a></li>
+      <li id="lA.3"><span class="n"></span><a href="#hA.3">A.3 Bright Colors</a></li>
+      <li id="lA.4"><span class="n"></span><a href="#hA.4">A.4 Common Gamut</a></li>
+    </ul>
+  </li>
+
+
+</ul><!-- end master toc ul -->
+
+<div style="height:1em"></div>
+
+</div><!-- end toc -->
+
+
+<!-- **************************************************************************************** -->
+
+<div id="main">
+
+
+<h1 id="h0">Novel Scripts</h1>
+<p class="noindent">Part of LuaLaTeX <i>novel</i> document class. Version: 1.50, 2018/03/12.</p>
+<p>DISCLAIMER: ALL OF THIS IS WITHOUT WARRANTY EXPRESS OR IMPLIED. USE ONLY AT YOUR OWN RISK.</p>
+
+
+<h3 id="h1">1. Introduction</h3>
+<div class="d3" id="d1">
+<p class="noindent">The <i>novel</i> class assumes that your book is intended for print-on-demand (P.O.D.). Some of the widely-used P.O.D. services, especially in the U.S.A., have particular requirements for images embedded in PDF documents:</p>
+<p class="item">A. Image must be at exact size and resolution. You are not asking the processor to resize, resample, crop, or otherwise transform the image.</p>
+<p class="item">B. Image must be in proper format. Grayscale must be single channel DeviceGray. Black/White must be 1-bit. Often, color must be DeviceCMYK, and conform to an ink limit. No exotic compression.</p>
+<p class="item">C. Image must not have private metadata, such as EXIF or embedded color profile.</p>
+<p class="item"><b>The purpose of these scripts</b> is to bring images into compliance with B and C.</p>
+<p>The scripts will report resolution, so you can decide whether or not images meet A.</p>
+<p class="item"><b>If converting <i>from</i> pdf:</b> These scripts accept png, jpg, tif, or pdf input. If you <i>input</i> pdf and don't like what you see, then convert from pdf to one of the other image formats using a graphics program, and use these scripts to finish. If you <i>input</i> pdf and do like what you see, then don't worry about it. The pdf <i>output</i> from script <code>makecmyk</code> is not an issue.</p>
+</div><!-- end d1 -->
+
+
+<h3 id="h2">2. Software</h3>
+<div class="d3" id="d2">
+<p class="noindent">The scripts do not require TeX, but post-processing CMYK requires LuaLaTeX.</p>
+
+<h4 id="h2.1">2.1 Image Magick</h4>
+<div class="d4" id="d2.1">
+<p class="noindent">On Linux, Image Magick is available through your Linux package manager. There is a good chance that it is already installed in your system.</p>
+<p>On Windows or OSX, get it from <a href="http://imagemagick.org/script/download.php" class="external" rel="external" target="new">imagemagick.org</a>. Scroll down the page to find the version best suited to your needs, but be sure it is Q16. On Windows, you may use either the system-installed or portable version (more info <a href="#h3.3">below</a>).</p>
+</div><!-- end d2.1 -->
+
+<h4 id="h2.2">2.2 Ghostscript</h4>
+<div class="d4" id="d2.2">
+<p class="noindent">On Linux, Ghostscript is available through your Linux package manager. There is a good chance that it is already installed in your system.</p>
+<p>On Windows or OSX, get the latest AGPL-licensed version from <a href="https://www.ghostscript.com/download/gsdnld.html" class="external" rel="external" target="new">ghostscript.com</a>. On Windows, you may use either the system-installed or <a href="https://portableapps.com/apps/utilities/ghostscript_portable" class="external" rel="external" target="new">portable</a> version (more info <a href="#h3.3">below</a>).</p>
+</div><!-- end d2.2 -->
+
+<h4 id="h2.3">2.3 Portable Install (Windows Only)</h4>
+<div class="d4" id="d2.3">
+<p class="noindent">If you use portable ImageMagick and/or Ghostscript, they must be found in a specific location. The scripts cannot locate portable files anywhere else.</p>
+<p class="item"><b>Portable ImageMagick:</b><br/>
+ Place a copy of this file in folder resource\portable\bin:</p>
+<p><code>magick.exe</code></p>
+<p class="item"><b>Portable Ghostscript:</b><br/>
+Place a copy of these files in folder resource\portable\bin:</p>
+<p><code>gswin32c.exe, gsdll32.dll</code> (or the 64-bit versions of both)</p>
+<p class="item">At the time I write this, the above file from ImageMagick and two files from Ghostscript are the only ones needed for these scripts. It does not hurt to include more files.</p>
+<p>You also need support from Visual C++ Runtime files, which are normally part of any well-maintained Windows system. However, you might wish to find them in C:\Windows\System32, and copy them into resource\portable\bin, just in case you move to a less well-kept system. I believe these are the ones needed:</p>
+<p><code>mfc120u.dll, msvcp120.dll, msvcr120.dll, vcomp120.dll</code></p>
+<p class="item">When you run the scripts, they will first look in the resource\portable\bin directory. If ImageMagick and/or Ghostscript is not there, then a system-wide installation will be used (if found).</p>
+</div><!-- end d2.3 -->
+
+<h4 id="h2.4">2.4 LuaLaTeX</h4>
+<div class="d4" id="d2.4">
+<p class="noindent">The PDF produced by <code>makecmyk</code> is not PDF/X. To convert that PDF to PDF/X, you will need LuaLaTeX, the <i>novel</i> document class, and a variety of TeX support packages. You may use TeXLive (2016 or later), MikTeX, or comparable distribution.</p>
+<p>LuaLaTeX does not need the scripts, so you may also use an online service that provides TeX. Upload the NOTpdfx file, its accompanying <i>tex</i> template (edited), and compile with <code>lualatex</code>. Caution: Be sure that your files cannot be seen or downloaded by the public.</p>
+</div><!-- end d2.4 -->
+</div><!-- end d2 -->
+
+
+<h3 id="h3">3. Book Interior Images</h3>
+<div class="d3" id="d3">
+<p class="noindent">The <i>novel</i> class is not intended for color interiors. This is because a correctly-designed color interior requires good knowledge of graphic arts and printing technology. If you have that knowledge, then you probably have the professional software.</p>
+
+<h4 id="h3.1">3.1 Black and White Line Art</h4>
+<div class="d4" id="d3.1">
+<p class="noindent">Script <b>makebw</b> (Linux) or <b>makebw.bat</b> (Windows) converts an image to 1-bit, single channel, black and white. It has one optional argument, which may be used to adjust the threshold (cutoff between black and white).</p>
+<p>Generally, a 1-bit black/white image uses double the resolution (pixels per inch) of grayscale images. Whether or not the result is sharper in grayscale or black/white depends on content, and on the printing technology. Do not attempt to emulate grayscale by dithering 1-bit.</p>
+<div class="floatright" style="width:300px"><img src="resource/html-images/moon.png" width="300" height="300" alt="original image" title="original image"/><br/><img src="resource/html-images/moon-30-BW.png" width="300" height="300" alt="black and white image" title="black and white image"/></div>
+<p>Place the original image in the <i>input</i> folder. It may be color or grayscale. The altered image will appear in the <i>output</i> folder.</p>
+<p class="item"><b>Windows:</b> Launch makebw.bat (double click). Then enter:</p>
+<p><code>makebw [-number] filename.ext</code></p>
+<p class="item"><b>Linux:</b> Open a command Terminal in the novel-scripts folder. Then enter:</p>
+<p><code>./makebw [-number] filename.ext</code></p>
+<p class="item"><b>Option:</b> The optional number may be from 1 to 99. This is the threshold percent. Write the hyphen, but do not write the brackets. If no number is provided, value 50 is default. A low threshold produces more white. A high threshold produces more black. This is a useful way to adjust line thickness.</p>
+<p>If your input image is already black and white, then the script will not change the threshold (it can't), but it will perform some useful housekeeping.</p>
+<p>The output file is named <i>filename-t-BW.png</i>, where t is the threshold (default 50).</p>
+<p>Example shown here (original image above b/w result), using Windows:&nbsp; <code style="white-space:nowrap">makebw -30 moon.png</code></p>
+</div><!-- end d3.1 -->
+
+<h4 id="h3.2">3.2 Grayscale Images</h4>
+<div class="d4" id="d3.2">
+<div class="floatright" style="width:369px"><img src="resource/html-images/bixby.png" width="350" height="337" alt="original image" title="original image"/><br/><img src="resource/html-images/bixby-2-GRAY.jpg" width="350" height="337" alt="grayscale image" title="grayscale image"/></div>
+<p>Script <b>makegray</b> (Linux) or <b>makegray.bat</b> (Windows) converts an image to single-channel Grayscale. It has one optional argument, which may be used for a sophisticated contrast adjustment.</p>
+<p class="item"><b>Windows:</b> Launch makegray.bat (double click). Then enter:</p>
+<p><code>makegray [-number] filename.ext</code></p>
+<p class="item"><b>Linux:</b> Open a command Terminal in the novel-scripts folder. Then enter:</p>
+<p><code>./makegray [-number] filename.ext</code></p>
+<p class="item"><b>Option:</b> The optional number may be from 1 to 9. This adjusts contrast in selective fashion. A low number boosts contrast in dark areas, at the expense of light. A high number boosts contrast in light areas, at the expense of dark. A middle number boosts midrange contrast, at the expense of both extremes. Default is no number, which does not change contrast.</p>
+<p>If your input image is already Grayscale, then the script will perform some useful housekeeping.</p>
+<p>The output file is named <i>filename-c-GRAY.png</i>, where c is the contrast adjustment (default 0, meaning no adjustment).</p>
+<p>Example: The Bixby Creek photo was taken on an overcast day. The sky is light gray with little detail of interest. The ground cover is dark. This image was processed to grayscale using <code>-2</code> option, which increases contrast in the dark areas (thus provideing an overall lightening), at the expense of making the sky even less detailed.</p>
+<p>Windows command:&nbsp; <code>makegray -2 bixby.png</code></p>
+</div><!-- end d3.2 -->
+</div><!-- end d3 -->
+
+
+<h3 id="h4">4. Color Cover Image</h3>
+<div class="d3" id="d4">
+<p class="noindent">Once you have a cover image at correct size (including bleed) and resolution, you may use the <code>makecmyk</code> script to obtain a PDF file that meets these standards:</p>
+<p class="item">1. It is separated to DeviceCMYK.</p>
+<p class="item">2. Its ink limit is under 240% (possibly except for speckles).</p>
+<p class="item">3. It is stripped of private metadata and color profile.</p>
+<p class="item">The resulting file is valid PDF, but not PDF/X-compliant. Your print service may want a PDF/X file. To get it, you post-process using LuaLaTeX.</p>
+
+<p class="centerimg"><img src="resource/html-images/cover-html.jpg" width="593" height="443" alt="demo cover" title="demo cover"/></p>
+
+
+<h4 id="h4.1">4.1. Script Conversion to PDF CMYK, 240% Ink Limit</h4>
+<div class="d4" id="d4.1">
+<p class="noindent">Preliminary processing via script. Output is not PDF/X:</p>
+<p class="code"><code>makecmyk [-a] yourimagefile.ext</code></p>
+<p class="item">In the above, the image file extension may be the usual png, jpg, jpeg, tif, tiff, or pdf.</p>
+<p>Option <code>-a</code> is rarely used. Normally, if an RGB input image does not have a color profile embedded, it is assumed to be sRGB. Option <code>-a</code> sets the default compatible with AdobeRGB1998.</p>
+<p>The output image is <i>yourimagefile-NOTpdfx.pdf</i>. It will be accompanied by a <i>tex</i> template.</p>
+</div><!-- end d4.1 -->
+
+<h4 id="h4.2">4.2. LuaLaTeX Conversion to PDF/X</h4>
+<div class="d4" id="d4.2">
+<p class="noindent">Post-Processing using LuaLaTeX. Output is PDF/X:</p>
+<p>Edit the <i>tex</i> template provided in the above step. Be sure that you have the correct dimensions and image file name. The title may be almost anything, but it won't be exactly the title of your book (because this image is not your book). You cannot leave the title empty.</p>
+<p>The template is pre-set to PDF/X-1a:2001, with Output Intent CGATS TR 001 (known as US Web Coated SWOP v2). The color profile will not be embedded. These are the most common requirements for print-on-demand in the U.S.A. You may change these if necessary: See the instructions for the <code>\SetPDFX</code> command, in the main <i>novel</i> documentation.</p>
+<p>Place the edited <i>tex</i> file in the same folder as the script-processed PDF image. Then compile the <i>tex</i> file using <code>lualatex</code>.</p>
+<p>If successful, the output file meets whichever PDF/X standard you set within the <i>tex</i> file. It will be named <i>yourtexfile-PDFX.pdf</i>.</p>
+<p>If unsuccessful, look at the TeX log in the <i>temp</i> folder. More likely than not, you are missing some required package.</p>
+<p>
+</div><!-- end d4.2 -->
+
+<h4 id="h4.3">4.3 Viewing the Converted Image</h4>
+<div class="d4" id="d4.3">
+<p class="noindent">Since your computer screen only shows RGB, you can only view the CMYK image using software that internally coverts CMYK to RGB. Most image viewers and PDF readers do that automatically. However, they do not account for the specific CMYK color profile. Instead they use a quick algorithm that is far from accurate. If you view the CMYK file, you might think that something went wrong, because the color rendition is so poor. But in most cases, that's the fault of the viewer.</p>
+<p>For your convenience, the <code>makecmyk</code> scripts also provide an output RGB softproof image. Then, you can fairly compare the softproof to the original input, and see where colors have changed, without the need of CMYK to RGB conversion.</p>
+<p>Adobe Reader (and a few other programs) intelligently convert CMYK to RGB display, based on a likely printer profile. The worst results typically come from general-purpose viewers, and from JavaScript-based PDF viewers.</p>
+</div><!-- end d4.3 -->
+</div><!-- end d4 -->
+
+
+<div style="margin:32px; height:4px; background:#505050 none"></div>
+
+
+<h3 id="hA">Appendix: RGB/CMYK Color Shift</h3>
+<div class="d3" id="dA">
+<p class="noindent">You do not need to know this, just to use the scripts and prepare your document. But here is some information regarding how colors may change, when converting from RGB to CMYK at ink limit.</p>
+<p><b>Gamut</b> is the physically possible range of colors a device can show. Your computer screen and the printer have different gamuts. They are not nested. So, there are colors you can see on screen that cannot be printed with the technologies available to you. And, unless you have an expensive wide-gamut monitor designed for the purpose, there are colors that can be printed but not seen on your screen. Of course, there are many other colors that cannot be seen on your screen or printed.</p>
+<p>You can read about color spaces elsewhere. Most professionals recommend that when an RGB image is prepared for print, it should be in the AdobeRGB color space, rather than sRGB, because more printable colors can be accessed that way. Yes, but those are colors your screen cannot display well, so there's not much advantage. If you had the equipment to properly handle the AdobeRGB color space, you'd be using professional software instead of these scripts. So, don't hesitate to use sRGB if it is more convenient.</p>
+<p>If you submit your color image in CMYK, which is the point here, then the original RGB color space is lost during the conversion process. Instead, the printer is given direct instructions: This much Cyan, this much Megenta, this much Yellow, and this much Black.</p>
+<p>The following examples show you that the color change from screen to print may be a lot, or a little, depending on circumstances. Original RGB images are compared to their softproof RGB images.</p>
+
+<h4 id="hA.1">A.1 Example: Max Colors Change</h4>
+<div class="d4" id="dA.1">
+<div style="position:relative; float:right; margin-left:10px; margin-right:32px; height:278px">
+<img id="maxs" style="position:relative; top:8px; left:16px" src="resource/html-images/colormax-softproof.png" width="251" height="260" title="max colors" alt="max colors"/>
+<img id="maxo" style="z-index:2; position:absolute; top:8px; left:16px" src="resource/html-images/colormax.png" width="251" height="260" title="max colors" alt="max colors"/>
+<script type="text/javascript">
+xs = document.getElementById("maxs");
+xo = document.getElementById("maxo");
+var xx = 1;
+function changemax(){
+  if(xx==1){xo.style.visibility="hidden";}
+  if(xx==0){xo.style.visibility="visible";}
+  flipx();
+}
+function flipx(){xx=1-xx;}
+</script>
+</div>
+<p>The image at right uses maximum RGB values, such as (255,0,0) for red, plus a number of maximum shades, tints, and blends.</p>
+<p><a href="javascript:changemax();"><b>CLICK HERE</b></a> to toggle views of the original RGB image, and its softprooofed CMYK version (converted back to RGB, of course).</p>
+<p>Notice the color changes. Cyan and blue are prominently changed. Green is changed a little, but yellow and red not so much. The most prominent changes are where the gamut of screen and printer are very different. Neither screen nor printer can provide a very vivid red, but the deficiencies are similar, so the change is small.</p>
+<p><b>Don't panic.</b> This is less of a tragedy than you might imagine. The reason is that regardless of whether they can be printed accurately, most of these colors are outside the gamut of inexpensive LCD computer screens. Whatever you see isn't the real sRGB color anyway. The conversion from RGB to CMYK merely converts faked colors into other faked colors.</p>
+<p>Moral: Don't design your cover with such extreme colors, if you care about accuracy.</p>
+<p>Note that the ink limit has little do do with this. Very vivid colors don't use a lot of ink.</p>
+</div><!-- end dA.1 -->
+
+<h4 id="hA.2">A.2 Example: Natural Light Maintained</h4>
+<div class="d4" id="dA.2">
+<div style="position:relative; float:right; margin-left:10px; margin-right:32px; height:351px">
+<img id="bixbys" style="position:relative; top:8px; left:16px" src="resource/html-images/bixby-softproof.png" width="350" height="337" title="Bixby Creek, California" alt="Bixby Creek, California"/>
+<img id="bixbyo" style="z-index:2; position:absolute; top:8px; left:16px" src="resource/html-images/bixby.png" width="350" height="337" title="Bixby Creek, California" alt="Bixby Creek, California"/>
+<script type="text/javascript">
+bs = document.getElementById("bixbys");
+bo = document.getElementById("bixbyo");
+var bx = 1;
+function changeb(){
+  if(bx==1){bo.style.visibility="hidden";}
+  if(bx==0){bo.style.visibility="visible";}
+  flipb();
+}
+function flipb(){bx=1-bx;}
+</script>
+</div>
+<p>This photo was taken on an overcast day along the California coast.</p>
+<p><a href="javascript:changeb();"><b>CLICK HERE</b></a> to toggle views of the original RGB image, and its softproofed version. The softproof is the CMYK file converted back to RGB, so you can make a fair comparison of images in the same color space. However, returning to RGB does not restore colors that were lost or changed in the RGB to CMYK conversion.</p>
+<p>The two images are nearly identical. That's because except for some tiny places that are hard to notice, the colors of this image are within the mutual gamuts of my screen and the printer. Both screen and printer are capable of those colors.</p>
+<p>If you look carefully, you will see that the ground cover is slightly lighter in the softproof. This is because the low foliage has many small, dark areas that cannot be reached by the ink limit. Those dark areas are printed slightly grayer and lighter, making the overall ground cover look lighter.</p>
+<p>You will also notice that the gray sky has a slightly different hue. Possibly this is due to imprecision and rounding in the conversion math.</p>
+</div><!-- end d6.2 -->
+
+<h4 id="hA.3">A.3 Example: Moderately Bright Colors Maintained</h4>
+<div class="d4" id="dA.3">
+<div style="position:relative; float:right; margin-left:10px; margin-right:32px; height:330px">
+<img id="raffaelinos" style="position:relative; top:8px; left:16px" src="resource/html-images/raffaelino-softproof.png" width="353" height="315" title="Raffaelino del Garbo, Madonna, 1502" alt="Raffaelino del Garbo, Madonna, 1502"/>
+<img id="raffaelinoo" style="z-index:2; position:absolute; top:8px; left:16px" src="resource/html-images/raffaelino-original.png" width="353" height="315" title="Raffaelino del Garbo, Madonna, 1502" alt="Raffaelino del Garbo, Madonna, 1502"/>
+<script type="text/javascript">
+rs = document.getElementById("raffaelinos");
+ro = document.getElementById("raffaelinoo");
+var rx = 1;
+function changer(){
+  if(rx==1){ro.style.visibility="hidden";}
+  if(rx==0){ro.style.visibility="visible";}
+  flipr();
+}
+function flipr(){rx=1-rx;}
+</script>
+</div>
+<p>Here is a painting from the early Renaissance era. The red, green, and blue were state of the art, back then. Most of the color is common to both screen and printer, so the image converts well from sRGB to CMYK.</p>
+<p><a href="javascript:changer();"><b>CLICK HERE</b></a> to toggle views of the original RGB image, and its softprooofed CMYK version (converted back to RGB, of course).</p>
+<p>If you look very carefully, you will see that some of the reds, geens, and blues are slightly shifted, and the shadows are slightly different. To some extent, this is due to the ink limit, which makes it difficult to get dark colors. In the softproof image, some areas that should have been dark brown were converted to a more neutral dark or black color, due to ink limit. And, in order to "make room" for dark color shifts, some of the mid-range colors were slightly shifted.</p>
+</div><!-- end dA.3 -->
+
+<h4 id="hA.4">A.4 Common Gamut</h4>
+<div class="d4" id="dA.4">
+<div style="position:relative; float:right; margin-left:10px; margin-right:32px; height:340px">
+<img id="colors" style="position:relative; top:8px; left:16px" src="resource/html-images/colorsampler-softproof.png" width="299" height="330" title="color chart" alt="color chart"/>
+<img id="coloro" style="z-index:2; position:absolute; top:8px; left:16px" src="resource/html-images/colorsampler-original.png" width="299" height="330" title="color chart, softproof" alt="color chart, softproof"/>
+<img id="colorp" style="visibility:hidden; z-index:3; position:absolute; top:8px; left:16px" src="resource/html-images/printgamut.png" width="299" height="330" title="color chart, print gamut" alt="color chart, print gamut"/>
+<img id="colorm" style="visibility: hidden; z-index:4; position:absolute; top:8px; left:16px" src="resource/html-images/monitorgamut.png" width="299" height="330" title="color chart, monitor gamut" alt="color chart, monitor gamut"/>
+<script type="text/javascript">
+cs = document.getElementById("colors");
+co = document.getElementById("coloro");
+cp = document.getElementById("colorp");
+cm = document.getElementById("colorm");
+var cx = 1;
+function changec(){
+  if(cx==1){co.style.visibility="hidden";}
+  if(cx==0){co.style.visibility="visible";}
+  flipc();
+}
+function flipc(){cx=1-cx;}
+var px = 0;
+function changep(){
+  if(px==1){cp.style.visibility="hidden";}
+  if(px==0){cp.style.visibility="visible";}
+  flipp();
+}
+function flipp(){px=1-px;}
+var mx = 0;
+function changem(){
+  if(mx==1){cm.style.visibility="hidden";}
+  if(mx==0){cm.style.visibility="visible";}
+  flipm();
+}
+function flipm(){mx=1-mx;}
+</script>
+</div>
+<p>Here is an image composed of hues at ten degree intervals around the sRGB color circle. In each square, the most vivid color is at upper right. Along the right edge, the color fades to white at bottom right. Along the bottom, the value darkens to black at the lower left corner.</p>
+<p><a href="javascript:changec();"><b>CLICK HERE</b></a> to toggle between original and softproof. You will notice that colors in the upper right of each square, and along the top, change the most. There are changes along the left edge of each square, but those are hard to notice due to the darkness there.</p>
+<p>Now turn on the <a href="javascript:changem();"><b>MONITOR GAMUT MASK</b></a>, which blacks out colors that your screen probably cannot show accurately (based on my own screen). Also turn on the <a href="javascript:changep();"><b>PRINTER GAMUT MASK</b></a> which black out colors that cannot be printed.</p>
+<p>With the masks enabled, toggle between original and softproof colors. Behold! There is very little change. If a color is within the gamut of both screen and printer, then it is possible to get printed color that looks like what you saw on your computer.</p>
+<p>If accurate color is important to you, then you can design your artwork so that it uses only the colors in mutual gamut. But don't get too excited about that. Remember that your computer screen probably isn't calibrated, the commercial printer (for P.O.D.) does not offer printer standards, and readers won't be viewing your book under standard lighting conditions.</p>
+</div><!-- end dA.4 -->
+</div><!-- end dA -->
+
+
+</div><!-- end main -->
+<div id="finish"></div>
+</div><!-- end master -->
+</body>
+</html>
+
+
+
+
+
+
+

@@ -1,0 +1,274 @@
+#!/bin/bash
+
+# makecmyk
+# This is a Linux BASH command script. Might work with OSX (not tested).
+# Tested with bash 3.2.57 and bash 4.
+# FREE SOFTWARE, WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK.
+# Copyright 2018 Robert Allgeyer.
+# This file may be distributed and/or modified under the
+# conditions of the LaTeX Project Public License, either version 1.3c
+# of this license or [at your option] any later version.
+# The latest version of this license is in
+#    http://www.latex-project.org/lppl.txt
+# and version 1.3c or later is part of all distributions of LaTeX
+# version 2005/12/01 or later.
+
+VERMSG="makecmyk version 0.9.7."
+USAGEMSG="Usage:./makecmyk [-a] filename.ext"
+HELPMSG="Help:  ./makecmyk -h"
+DEMOMSG="Demo:  ./makecmyk [-a] demo"
+
+# Provides version, using -v or --v or equivalent:
+if [ "$1" == "" ] || [[ "$1" =~ ^-v.* ]] || [[ "$1" =~ ^--v.* ]] || [[ "$1" =~ ^-V.* ]] || [[ "$1" =~ ^--V.* ]]
+then
+  echo makecmyk v0.9.6.
+  echo 
+  exit 0
+fi
+
+# Provides help, using -h or --h or equivalent:
+if [[ "$1" =~ ^-h.* ]] || [[ "$1" =~ ^--h.* ]] || [[ "$1" =~ ^-H.* ]] || [[ "$1" =~ ^--H.* ]]
+then
+  echo 
+  echo "$VERMSG"
+  echo "WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK."
+  echo "Converts image to CMYK PDF at 240pct ink limit."
+  echo 
+  echo "$USAGEMSG"
+  echo "  Where .ext may be .png, .jpg, .jpeg, .tif, .tiff, pdf [also capitalized]."
+  echo "$DEMOMSG"
+  echo 
+  echo "Option -a is only used when input image is known to be in AdobeRGB1998"
+  echo "  or compatible color space, but the color profile was not embedded."
+  echo "  You will almost never use this option."
+  echo 
+  echo "You need ImageMagick and Ghostscript. On Windows, they may be portable."
+  echo 
+  echo "Place input image in input folder."
+  echo "  Input image may be RGB or CMYK. No spaces in filename."
+  echo "  May or may not have its own color profile embedded."
+  echo "  Must be exact size [including bleed] and resolution [typ 300 pixels/inch]."
+  echo "  If input is PDF it will be forced to 300 pixels/inch."
+  echo 
+  echo "Output will appear in output folder."
+  echo "  Output PDF has CMYK image at 240pct ink limit. NOT PDF/X."
+  echo "  Color profile not embedded. Image metadata stripped."
+  echo "  Resolution will be reported, but not resized, resampled, or cropped."
+  echo "  Do not panic if output file appears to have incorrect color."
+  echo "  You can get a better idea by viewing the output softproof tif image."
+  echo 
+  echo "To obtain PDF/X, you must post-process the output PDF using lualatex."
+  echo "  A template will be placed in the output folder. Edit it, then compile."
+  echo 
+  echo "See novel-scripts-README.html for more information."
+  echo 
+  exit 0
+fi
+
+# Welcome message:
+echo "This script converts an image to CMYK PDF at ink limit 240pct."
+echo "WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK."
+echo 
+
+
+# Check structure of folders and required files:
+printf "Checking for presence of required files... "
+if [ ! -d "temp" ]; then mkdir temp; fi
+if [ ! -d "output" ]; then mkdir output; fi
+GOTFILES=""
+if [ ! -f "resource/icc/argb.icc" ]; then GOTFILES="no"; fi
+if [ ! -f "resource/icc/srgb.icc" ]; then GOTFILES="no"; fi
+if [ ! -f "resource/icc/inklimit.icc" ]; then GOTFILES="no"; fi
+if [ ! -f "resource/icc/press.icc" ]; then GOTFILES="no"; fi
+if [ "$GOTFILES" == "no" ]
+then
+  echo "ERROR."
+  echo 
+  echo "Error. Did not find all color profiles in resource/icc folder."
+  echo "Needs these: argb.icc, srgb.icc, inklimit.icc, press.icc."
+  echo 
+  exit 1
+fi
+GOTFILES=""
+if [ ! -f "resource/internal/template.tex" ]; then GOTFILES="no"; fi
+if [ ! -f "resource/internal/pdfmarks" ]; then GOTFILES="no"; fi
+if [ ! -f "resource/internal/novelscriptsdemo.jpg" ]; then GOTFILES="no"; fi
+if [ "$GOTFILES" == "no" ]
+then
+  echo "ERROR."
+  echo 
+  echo "Error. Did not find all files in resource/internal folder."
+  echo "Needs: novelscriptsdemo.jpg, template.tex, pdfmarks."
+  echo 
+  exit 1
+fi
+echo "OK."
+
+# Checks for input arguments:
+printf "Parsing arguments... "
+INCOLOR="resource/icc/srgb.icc"
+ICN="s"
+if [ ! "$2" == "" ]
+then
+  if [[ "$1" == "-a" ]] || [[ "$1" == "-A" ]]
+  then
+    INCOLOR="resource/icc/argb.icc"
+    ICN="a"
+  else
+    echo "ERROR."
+    echo "Bad optional argument. Use -a. Do not omit hyphen."
+    echo "$USAGEMSG"
+    echo "$HELPMSG"
+    echo 
+    exit 1
+  fi
+fi
+NEEDSGS="yes"
+DEMOMODE=""
+FN=""
+TARGRES="300"
+MINRES="150"
+MAXRES="600"
+if [ -f "resource/internal/commonscript" ]
+then
+  source resource/internal/commonscript
+else
+  echo "ERROR."
+  echo "File resource/internal/commonscript is missing. Needed to proceed."
+  echo 
+  exit 1
+fi
+
+# Check input colorspace and possible embedded profile::
+printf "Inspecting the input image... "
+ISCMYK=""
+identify -verbose $FN >temp/temp-identify.txt
+echo  >>temp/temp-identify.txt
+grep "Colorspace: CMYK" temp/temp-identify.txt 1>/dev/null 2>/dev/null
+if [ $? -eq 0 ]
+then
+  ISCMYK=yes
+  echo "CMYK."
+  convert $FN temp/temp-embedded.icc 1>/dev/null 2>/dev/null
+  if [ $? -eq 0 ]
+  then
+    INCOLOR="temp/temp-embedded.icc"
+    ICN="e"
+    echo "   ...Has embedded color profile."
+  else
+    INCOLOR="resource/icc/press.icc"
+    ICN="p"
+    echo "   ...Without embedded color profile. Will use resource\icc\press.icc."
+  fi
+else
+  echo "RGB."
+  convert $FN temp/temp-embedded.icc 1>/dev/null 2>/dev/null
+  if [ $? -eq 0 ]
+  then
+    INCOLOR="temp/temp-embedded.icc"
+    ICN="e"
+    echo "   ...Has embedded color profile."
+  else
+    if [ "$ICN" == "a" ]
+    then
+      echo "   ...Using input color profile Compatible with AdobeRGB1998, per option."
+    else
+      echo "   ...Using default input color profile Compatible with sRGB."
+    fi
+  fi
+fi
+echo "   ...Resolution $IR pixels per inch."
+OUTCOLOR="resource/icc/inklimit.icc"
+OCN="inklimit"
+
+
+# Information:
+echo "Converting image. This takes time..."
+
+# Strip and flatten image:
+convert -units PixelsPerInch -density $IR $FN -strip -flatten temp/temp-$CN-stripped.tif
+echo "   ...Completed step 1 of 6."
+
+# Convert to CMYK:
+if [ "$ISCMYK" == "yes" ]
+then
+  convert temp/temp-$CN-stripped.tif -units PixelsPerInch -density $IR -intent relative -depth 8 -profile $INCOLOR -profile $OUTCOLOR temp/temp-$CN-cmyk.tif
+else
+  # Convert from RGB to CMYK image:
+  convert temp/temp-$CN-stripped.tif -units PixelsPerInch -density $IR -intent relative -depth 8 -black-point-compensation -profile $INCOLOR -profile $OUTCOLOR temp/temp-$CN-cmyk.tif
+fi
+echo "   ...Completed step 2 of 6."
+
+# Create softproof RGB image:
+convert temp/temp-$CN-cmyk.tif -units PixelsPerInch -density $IR -intent relative -depth 8 -black-point-compensation -profile resource/icc/press.icc -profile $INCOLOR -compress zip output/$CN-softproof.tif
+echo "   ...Completed step 3 of 6."
+
+# This next strip step is important! Without it, the PDF color gets re-profiled:
+mogrify -strip temp/temp-$CN-cmyk.tif
+echo "   ...Completed step 4 of 6."
+
+# The intermediate tif file will become a PDF Xobject with FlateDecode:
+convert temp/temp-$CN-cmyk.tif -units PixelsPerInch -density $IR -compress zip temp/temp-$CN-NOTpdfx.pdf
+echo "   ...Completed step 5 of 6."
+
+# Add an identifier in the PDF info dictionary:
+cp resource/internal/pdfmarks temp/pdfmarks 1>/dev/null
+gs -q -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -dAutoFilterColorImages=false -dAutoFilterGrayImages=false -dColorImageFilter=/FlateEncode -dGrayImageFilter=/FlateEncode -dPDFSETTINGS=/prepress -dCompatibilityLevel=1.3 -sOutputFile=temp/$CN-NOTpdfx.pdf temp/temp-$CN-NOTpdfx.pdf temp/pdfmarks
+
+if [ -f "temp/pdfmarks" ]; then rm temp/pdfmarks; fi
+if [ -f "temp/temp-$CN-NOTpdfx.pdf" ]; then rm temp/temp-$CN-NOTpdfx.pdf; fi
+mv "temp/$CN-NOTpdfx.pdf" "output/$CN-NOTpdfx.pdf" 1>/dev/null
+echo "   ...Completed step 6 of 6."
+
+# Verify and show info on Terminal:
+echo "Verifying..."
+echo 
+identify -verbose temp/temp-$CN-cmyk.tif >temp/temp-identify.txt
+echo   >>temp/temp-identify.txt
+echo "The CMYK is output/$CN-NOTpdfx.pdf. It is not PDF/X."
+echo "If you need PDF/X, then you must post-process using lualatex:"
+if [ "$DEMOMODE" == "yes" ]
+then
+  echo "  Use accompanying output/makecmyk-demo.tex file."
+  echo "% Compile only with lualatex." >output/makecmyk-demo.tex
+  echo "\documentclass[coverart]{novel}" >>output/makecmyk-demo.tex
+  echo "\title{demo of makecmyk script}" >>output/makecmyk-demo.tex
+  echo "\SetMediaSize{3.95in}{2.95in} % includes bleed" >>output/makecmyk-demo.tex
+  echo "\SetTrimSize{3.7in}{2.7in} % finished size, without bleed" >>output/makecmyk-demo.tex
+  echo "\SetPDFX[CGATSTR001]{X-1a:2001}" >>output/makecmyk-demo.tex
+  echo "% NO COMMENTS AFTER THIS." >>output/makecmyk-demo.tex
+  echo "\begin{document}" >>output/makecmyk-demo.tex
+  echo "\ScriptCoverImage{novelscriptsdemo-NOTpdfx.pdf}" >>output/makecmyk-demo.tex
+  echo "\end{document}" >>output/makecmyk-demo.tex
+  echo  >>output/makecmyk-demo.tex
+else
+  cp "resource/internal/template.tex" "output/EDIT-THEN-COMPILE.tex" 1>/dev/null
+  echo "  Use accompanying template output/EDIT-THEN-COMPILE.tex."
+fi
+echo 
+grep "Colorspace" temp/temp-identify.txt 2>/dev/null
+grep "Total ink" temp/temp-identify.txt 2>/dev/null
+echo "    - Anything over 240 percent, probably isolated speckles."
+grep "Print size" temp/temp-identify.txt 2>/dev/null
+echo "    - WxH, inches. Includes bleed area, so is larger than trim size."
+if [ "$DEMOMODE" == "yes" ]
+then
+  echo "  Note that this demo image is much smaller than a real cover image."
+fi
+echo 
+echo $WM1
+if [ ! "$WM" == "" ]; then echo $WM2; fi
+if [ ! "$WM3" == "" ]; then echo $WM3; fi
+
+# Cleanup:
+if [ -f "temp/temp-$CN-stripped.tif" ]; then rm temp/temp-$CN-stripped.tif; fi
+if [ -f "temp/temp-$CN-cmyk.tif" ]; then rm temp/temp-$CN-cmyk.tif; fi
+if [ -f "temp/temp-identify.txt" ]; then rm temp/temp-identify.txt; fi
+if [ -f "temp/temp-embedded.icc" ]; then rm temp/temp-embedded.icc; fi
+echo 
+echo "Done."
+echo "You may now close this window."
+echo 
+exit 0
+# end of file
+

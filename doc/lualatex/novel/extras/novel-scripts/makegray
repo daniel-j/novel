@@ -1,0 +1,166 @@
+#!/bin/bash
+
+# makegray
+# This is a Linux BASH command script. May also work with OSX.
+# Tested with BASH 3.2.57 and 4.4.12.
+# FREE SOFTWARE, WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK.
+# Copyright 2018 Robert Allgeyer.
+# This file may be distributed and/or modified under the
+# conditions of the LaTeX Project Public License, either version 1.3c
+# of this license or [at your option] any later version.
+# The latest version of this license is in
+#    http://www.latex-project.org/lppl.txt
+# and version 1.3c or later is part of all distributions of LaTeX
+# version 2005/12/01 or later.
+#
+# This file is distributed with the "novel" LuaLaTeX document class.
+# https://ctan.org/pkg/novel  [get the one zip archive]
+# But you do not need a TeX installation to use this script.
+
+VERMSG="makegray version 0.9.7."
+USAGEMSG="Usage: ./makegray [-digit] filename.ext"
+HELPMSG="Help:  ./makegray -h"
+DEMOMSG="Demo:  ./makegray [-digit] demo"
+
+# Provides version, using -v or --v or equivalent:
+if [ "$1" == "" ] || [[ "$1" =~ ^-v.* ]] || [[ "$1" =~ ^--v.* ]] || [[ "$1" =~ ^-V.* ]] || [[ "$1" =~ ^--V.* ]]
+then
+  echo "$VERMSG"
+  echo 
+  exit 0
+fi
+
+# Provides help, using -h or --h or equivalent:
+if [[ "$1" =~ ^-h.* ]] || [[ "$1" =~ ^--h.* ]] || [[ "$1" =~ ^-H.* ]] || [[ "$1" =~ ^--H.* ]]
+then
+  echo 
+  echo "$VERMSG"
+  echo "WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK."
+  echo "Converts Color or Grayscale to single-channel Grayscale jpg."
+  echo 
+  echo "$USAGEMSG"
+  echo "  Where .ext may be .png, .jpg, .jpeg, .tif, .tiff, .pdf [also capitalized]."
+  echo "$DEMOMSG"
+  echo 
+  echo "Option is an integer 1 to 9, preceded by hyphen."
+  echo "  Performs sigmoidal contrast adjustment. No adjustment if no option."
+  echo "  Low number increases contrast in darker areas, at expense of lighter."
+  echo "  High number increases contrast in lighter areas, at expense of darker."
+  echo "  Middle number increases midrange contrast, at expense of both extremes."
+  echo 
+  echo "You need ImageMagick."
+  echo 
+  echo "Place input image in input folder."
+  echo "  Input image may be Color or Grayscale. No spaces in filename."
+  echo "  Must be exact size and resolution [typ 300 pixels/inch]."
+  echo "  If input is PDF it will be forced to 300 pixels/inch."
+  echo 
+  echo "Output will appear in output folder, named filename-P-GRAY.jpg."
+  echo "  P=0: contrast unchanged."
+  echo "  P=1 through 9: number provided as optional argument."
+  echo "  It will be single-channel 8-bit Grayscale. Image metadata stripped."
+  echo "  Color inputs are weighted, typical of photos."
+  echo "  Resolution will be reported, but not resized, resampled, or cropped."
+  echo 
+  echo "See novel-scripts-README.html for more information."
+  echo 
+  exit 0
+fi
+
+# Welcome message:
+echo "Converts color or grayscale image to single-channel grayscale jpg."
+echo "WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK."
+
+# Checks for input arguments:
+printf "Parsing arguments... "
+OPTARG="0"
+if [ ! "$2" == "" ]
+then
+  if [[ $1 =~ ^-[1-9]$ ]]
+  then
+    OPTARG=$((0 - $1))
+  else
+    echo "ERROR."
+    echo "Bad optional argument. Use -1 to -9. Do not omit hyphen."
+    echo "$USAGEMSG"
+    echo "$HELPMSG"
+    echo 
+    exit 1
+  fi
+fi
+NEEDSGS=
+DEMOMODE=
+FN=
+TARGRES="300"
+MINRES="150"
+MAXRES="600"
+if [ -f "resource/internal/commonscript" ]
+then
+  source resource/internal/commonscript
+else
+  echo "ERROR."
+  echo "File resource/internal/commonscript is missing. Needed to proceed."
+  echo 
+  exit 1
+fi
+
+
+# Now do conversion:
+echo 
+echo "Converting..."
+convert $FN -strip -flatten -density $IR -units PixelsPerInch temp/temp-$CN.tif
+convert temp/temp-$CN.tif -fx "luminance" -colorspace Gray -density $IR -units PixelsPerInch temp/temp-$CN-GRAY.tif
+if [ ! "$OPTARG" == "0" ]
+then # apply contrast adjustment
+  ILTEN="$((10 * $OPTARG))"
+  convert temp/temp-$CN-GRAY.tif -sigmoidal-contrast 4,$ILTEN% -colorspace Gray -density $IR -units PixelsPerInch -quality 95 output/$CN-$OPTARG-GRAY.jpg
+else # no contrast adjustment
+  convert temp/temp-$CN-GRAY.tif -colorspace Gray -density $IR -units PixelsPerInch -quality 95 output/$CN-0-GRAY.jpg
+fi
+
+# Remove temporary files:
+if [ -f "temp/temp-$CN.tif" ]; then rm temp/temp-$CN.tif; fi
+if [ -f "temp/temp-$CN-GRAY.tif" ]; then rm temp/temp-$CN-GRAY.tif; fi
+
+# Done:
+echo "Verifying..."
+echo 
+echo "The Grayscale image is output/$CN-$OPTARG-GRAY.jpg."
+echo "Metadata and color profile have been stripped."
+if [ "$OPTARG" == "0" ]
+then
+  echo "No contrast adjustment applied."
+else
+  echo "Contrast adjustment value $OPTARG applied."
+fi
+identify -verbose output/$CN-$OPTARG-GRAY.jpg >temp/temp-identify.txt
+grep "Colorspace" temp/temp-identify.txt 2>/dev/null
+grep "Print size" temp/temp-identify.txt 2>/dev/null
+grep "PixelsPerInch" temp/temp-identify.txt 1>/dev/null 2>/dev/null
+if [ $? -eq 0 ]
+then
+  echo "    - Measured in Inches."
+else
+  echo "    - Measured in Centimeters."
+  echo "    - Divide by 2.54 to get Inches."
+fi
+grep "Resolution" temp/temp-identify.txt 2>/dev/null
+grep "PixelsPerInch" temp/temp-identify.txt 1>/dev/null 2>/dev/null
+if [ $? -eq 0 ]
+then
+  echo "    - Measured in Pixels Per Inch."
+else
+  echo "    - Measured in Pixels Per Centimeter."
+  echo "    - Multiply by 2.54 to get Pixels Per Inch."
+fi
+if [ ! "$WM1" == "" ]; then echo "$WM1"; fi
+if [ ! "$WM2" == "" ]; then echo "$WM2"; fi
+if [ ! "$WM3" == "" ]; then echo "$WM3"; fi
+if [ -f "temp/temp-identify.txt" ]; then rm temp/temp-identify.txt; fi
+echo 
+echo "Done."
+echo "You may now close this window."
+echo 
+# end of file
+
+

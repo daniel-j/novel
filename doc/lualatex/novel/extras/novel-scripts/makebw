@@ -1,0 +1,158 @@
+#!/bin/bash
+
+# makebw
+# This is a Linux BASH command script. May also work with OSX.
+# Tested with BASH 3.2.57 and 4.4.12.
+# FREE SOFTWARE, WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK.
+# Copyright 2018 Robert Allgeyer.
+# This file may be distributed and/or modified under the
+# conditions of the LaTeX Project Public License, either version 1.3c
+# of this license or [at your option] any later version.
+# The latest version of this license is in
+#    http://www.latex-project.org/lppl.txt
+# and version 1.3c or later is part of all distributions of LaTeX
+# version 2005/12/01 or later.
+#
+# This file is distributed with the "novel" LuaLaTeX document class.
+# https://ctan.org/pkg/novel  [get the one zip archive]
+# But you do not need a TeX installation to use this script.
+
+VERMSG="makebw version 0.9.7."
+USAGEMSG="Usage: ./makebw [-threshold] filename.ext"
+HELPMSG="Help:  ./makebw -h"
+DEMOMSG="Demo:  ./makebw [-threshold] demo"
+
+# Provides version, using -v or --v or equivalent:
+if [ "$1" == "" ] || [[ "$1" =~ ^-v.* ]] || [[ "$1" =~ ^--v.* ]] || [[ "$1" =~ ^-V.* ]] || [[ "$1" =~ ^--V.* ]]
+then
+  echo "$VERMSG"
+  echo 
+  exit 0
+fi
+
+# Provides help, using -h or --h or equivalent:
+if [[ "$1" =~ ^-h.* ]] || [[ "$1" =~ ^--h.* ]] || [[ "$1" =~ ^-H.* ]] || [[ "$1" =~ ^--H.* ]]
+then
+  echo 
+  echo "$VERMSG"
+  echo "WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK."
+  echo "Converts Color or Grayscale to 1-bit black/white png."
+  echo 
+  echo "$USAGEMSG"
+  echo "  Where .ext may be .png, .jpg, .jpeg, .tif, .tiff, pdf [also capitalized]."
+  echo "$DEMOMSG"
+  echo 
+  echo "Option is an integer 1 to 99, preceded by hyphen."
+  echo "  Set threshold. Default 50 sets threshold at mid-gray."
+  echo "  Low number makes more white. High number makes more black."
+  echo "  Useful for tweaking widths of lines in line art."
+  echo 
+  echo "You need ImageMagick. On Windows, it may be portable."
+  echo 
+  echo "Place input image in input folder."
+  echo "  Input image may be Color or Grayscale. No spaces in filename."
+  echo "  Must be exact size and resolution [typ 600 pixels/inch for line art]."
+  echo "  If input is PDF it will be forced to 600 pixels/inch."
+  echo 
+  echo "Output will appear in output folder, named filename-t-BW.png."
+  echo "  t=threshold. If option not used, =50."
+  echo "  It will be single-channel 1-bit black/white. Image metadata stripped."
+  echo "  Resolution will be reported, but not resized, resampled, or cropped."
+  echo 
+  echo "See novel-scripts-README.html for more information."
+  echo 
+  exit 0
+fi
+
+# Welcome message:
+echo "This script converts color or grayscale image to 1-bit monochrome black/white."
+echo "WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK."
+
+# Checks for input arguments:
+printf "Parsing arguments... "
+THRESH="50"
+if [ ! "$2" == "" ]
+then
+  if [[ $1 =~ ^-[1-9][0-9]?$ ]]
+  then
+    THRESH=$((0 - $1))
+  else
+    echo "ERROR."
+    echo "Bad optional argument. Use -1 to -99. Do not omit hyphen."
+    echo "$USAGEMSG"
+    echo "$HELPMSG"
+    echo 
+    exit 1
+  fi
+fi
+NEEDSGS=
+DEMOMODE=
+FN=
+TARGRES="600"
+MINRES="300"
+MAXRES="1200"
+if [ -f "resource/internal/commonscript" ]
+then
+  source resource/internal/commonscript
+else
+  echo "ERROR."
+  echo "File resource/internal/commonscript is missing. Needed to proceed."
+  echo 
+  exit 1
+fi
+
+# Now do conversion:
+echo 
+echo "Converting..."
+convert $FN -strip -flatten -density $IR -units PixelsPerInch -colorspace Gray -threshold $THRESH% output/$CN-$THRESH-BW.png
+# end conversion routine
+
+# Done:
+echo "Verifying..."
+echo 
+echo "The Monochrome image is output/$CN-$THRESH-BW.png."
+echo "Metadata has been stripped."
+echo "Used threshold $THRESH percent."
+identify -verbose output/$CN-$THRESH-BW.png >temp/temp-identify.txt
+grep "Colorspace" temp/temp-identify.txt 2>/dev/null
+grep "Channel depth" temp/temp-identify.txt 2>/dev/null
+grep "Gray: 1-bit" temp/temp-identify.txt 2>/dev/null
+grep "gray: 1-bit" temp/temp-identify.txt 2>/dev/null
+grep "Print size" temp/temp-identify.txt 2>/dev/null
+grep "PixelsPerInch" temp/temp-identify.txt 1>/dev/null 2>/dev/null
+if [ $? -eq 0 ]
+then
+  echo "    - Measured in Inches"
+else
+  echo "    - Measured in Centimeters. [png format reports metric]"
+  echo "    - Divide by 2.54 to get Inches."
+fi
+grep "Resolution" temp/temp-identify.txt 2>/dev/null
+grep "PixelsPerInch" temp/temp-identify.txt 1>/dev/null 2>/dev/null
+if [ $? -eq 0 ]
+then
+  echo "    - Measured in Pixels Per Inch."
+else
+  echo "    - Measured in Pixels Per Centimeter. [png format reports metric]"
+  echo "    - Multiply by 2.54 to get Pixels Per Inch."
+fi
+if [ "$WM1" != "" ]
+then
+  echo "$WM1"
+fi
+if [ "$WM2" != "" ]
+then
+  echo "$WM2"
+fi
+if [ "$WM3" != "" ]
+then
+  echo "$WM3"
+fi
+if [ -f "temp/temp-identify.txt" ]; then rm temp/temp-identify.txt; fi
+echo 
+echo "Done."
+echo "You may now close this window."
+echo 
+# end of file
+
+

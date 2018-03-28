@@ -12,7 +12,7 @@ archive:
 	mkdir -p novel/doc/extras/novel-scripts/input
 	cp -r scripts/!(output|input|temp) novel/doc/extras/novel-scripts/
 	rm -f novel.zip
-	cd novel && zip -9 -r ../novel.zip . -x *.DS_Store* -x *.gitkeep*
+	zip -9 -r novel.zip novel -x *.DS_Store* -x *.gitkeep*
 	rm -rf novel
 
 archive-tds:

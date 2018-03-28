@@ -134,12 +134,12 @@ fi
 NEEDSGS="yes"
 DEMOMODE=""
 FN=""
-if [ -f "resource/internal/commonscript" ]
+if [ -f "resource/internal/commonscript.sh" ]
 then
-  source resource/internal/commonscript
+  source resource/internal/commonscript.sh
 else
   echo "ERROR."
-  echo "File resource/internal/commonscript is missing. Needed to proceed."
+  echo "File resource/internal/commonscript.sh is missing. Needed to proceed."
   echo 
   exit 1
 fi

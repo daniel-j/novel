@@ -115,7 +115,7 @@ fi
 # Now do conversion:
 echo 
 echo "Converting..."
-convert -density $IR -units PixelsPerInch $FN -strip -flatten -threshold $THRESH% -colorspace Gray output/$CN-$THRESH-BW.png
+convert -density $IR -units PixelsPerInch $FN -strip -flatten -threshold $THRESH% -colorspace Gray -alpha off output/$CN-$THRESH-BW.png
 # end conversion routine
 
 # Done:

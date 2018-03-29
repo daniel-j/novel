@@ -44,7 +44,7 @@ then
   echo 
   echo "$VERMSG"
   echo "WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK."
-  echo "Converts Color or Grayscale to single-channel Grayscale jpg."
+  echo "Converts Color or Grayscale to single-channel Grayscale png."
   echo 
   echo "$USAGEMSG"
   echo "  Where .ext may be .png, .jpg, .jpeg, .tif, .tiff, .pdf [also capitalized]."
@@ -63,7 +63,7 @@ then
   echo "  Must be exact size and resolution [typ 300 pixels/inch]."
   echo "  If input is PDF it will be forced to 300 pixels/inch."
   echo 
-  echo "Output will appear in output folder, named filename-P-GRAY.jpg."
+  echo "Output will appear in output folder, named filename-P-GRAY.png."
   echo "  P=0: contrast unchanged."
   echo "  P=1 through 9: number provided as optional argument."
   echo "  It will be single-channel 8-bit Grayscale. Image metadata stripped."
@@ -76,7 +76,7 @@ then
 fi
 
 # Welcome message:
-echo "Converts color or grayscale image to single-channel grayscale jpg."
+echo "Converts color or grayscale image to single-channel grayscale png."
 echo "WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK."
 
 # Check structure of folders and required files:
@@ -123,9 +123,9 @@ convert temp/temp-$CN.tif -fx "luminance" -colorspace Gray -density $IR -units P
 if [ ! "$OPTARG" == "0" ]
 then # apply contrast adjustment
   ILTEN="$((10 * $OPTARG))"
-  convert temp/temp-$CN-GRAY.tif -sigmoidal-contrast 4,$ILTEN% -colorspace Gray -density $IR -units PixelsPerInch -quality 95 output/$CN-$OPTARG-GRAY.jpg
+  convert temp/temp-$CN-GRAY.tif -sigmoidal-contrast 4,$ILTEN% -colorspace Gray -alpha off -density $IR -units PixelsPerInch output/$CN-$OPTARG-GRAY.png
 else # no contrast adjustment
-  convert temp/temp-$CN-GRAY.tif -colorspace Gray -density $IR -units PixelsPerInch -quality 95 output/$CN-0-GRAY.jpg
+  convert temp/temp-$CN-GRAY.tif -colorspace Gray -alpha off -density $IR -units PixelsPerInch output/$CN-0-GRAY.png
 fi
 
 # Remove temporary files:
@@ -135,7 +135,7 @@ if [ -f "temp/temp-$CN-GRAY.tif" ]; then rm temp/temp-$CN-GRAY.tif; fi
 # Done:
 echo "Verifying..."
 echo 
-echo "The Grayscale image is output/$CN-$OPTARG-GRAY.jpg."
+echo "The Grayscale image is output/$CN-$OPTARG-GRAY.png."
 echo "Metadata and color profile have been stripped."
 if [ "$OPTARG" == "0" ]
 then
@@ -143,7 +143,7 @@ then
 else
   echo "Contrast adjustment value $OPTARG applied."
 fi
-identify -verbose output/$CN-$OPTARG-GRAY.jpg >temp/temp-identify.txt
+identify -verbose output/$CN-$OPTARG-GRAY.png >temp/temp-identify.txt
 grep "Colorspace" temp/temp-identify.txt 2>/dev/null
 grep "Print size" temp/temp-identify.txt 2>/dev/null
 grep "PixelsPerInch" temp/temp-identify.txt 1>/dev/null 2>/dev/null

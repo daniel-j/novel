@@ -157,7 +157,7 @@ then
   echo "$WM3"
 fi
 if [ -f "temp/temp-identify.txt" ]; then rm temp/temp-identify.txt; fi
-if [ -d "temp" ]; then rmdir --ignore-fail-on-non-empty temp; fi
+if [ -d "temp" ]; then rmdir temp; fi
 echo 
 echo "Done."
 echo "You may now close this window."

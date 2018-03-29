@@ -10,7 +10,7 @@ Extensive documentation is in HTML format. The "novel.pdf" file is merely a plac
 
 ## News:
 
-Version 1.50, March 28, 2018: New features pertaining to image placement. Scripts for pre-processing images. Sandbox mode. Internal drop cap capability. Reference to obsolete macros removed from documentation. General cleanup of documentation and internal code.
+Version 1.50.1, March 29, 2018: New features pertaining to image placement. Scripts for pre-processing images. Sandbox mode. Internal drop cap capability. Reference to obsolete macros removed from documentation. General cleanup of documentation and internal code.
 
 Version 1.46.2, January 14, 2018: Now called the "old" version. Internal code cleanup, docs cleanup. No known bugs.
 

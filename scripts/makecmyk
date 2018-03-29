@@ -270,6 +270,7 @@ if [ -f "temp/temp-$CN-stripped.tif" ]; then rm temp/temp-$CN-stripped.tif; fi
 if [ -f "temp/temp-$CN-cmyk.tif" ]; then rm temp/temp-$CN-cmyk.tif; fi
 if [ -f "temp/temp-identify.txt" ]; then rm temp/temp-identify.txt; fi
 if [ -f "temp/temp-embedded.icc" ]; then rm temp/temp-embedded.icc; fi
+if [ -d "temp" ]; then rmdir --ignore-fail-on-non-empty temp; fi
 echo 
 echo "Done."
 echo "You may now close this window."

@@ -77,6 +77,11 @@ fi
 echo "This script converts color or grayscale image to 1-bit monochrome black/white."
 echo "WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK."
 
+# Check structure of folders and required files:
+printf "Checking for presence of required files... "
+if [ ! -d "temp" ]; then mkdir temp; fi
+if [ ! -d "output" ]; then mkdir output; fi
+
 # Checks for input arguments:
 printf "Parsing arguments... "
 THRESH="50"
@@ -152,6 +157,7 @@ then
   echo "$WM3"
 fi
 if [ -f "temp/temp-identify.txt" ]; then rm temp/temp-identify.txt; fi
+if [ -d "temp" ]; then rmdir --ignore-fail-on-non-empty temp; fi
 echo 
 echo "Done."
 echo "You may now close this window."

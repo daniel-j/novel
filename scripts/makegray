@@ -9,7 +9,7 @@ if [ "$MINRES" == "" ]; then MINRES="150"; fi
 if [ "$MAXRES" == "" ]; then MAXRES="600"; fi
 
 # makegray
-# This is a Linux BASH command script. May also work with OSX.
+# This is a Linux/macOS BASH command script.
 # Tested with BASH 3.2.57 and 4.4.12.
 # FREE SOFTWARE, WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK.
 # Copyright 2018 Robert Allgeyer.

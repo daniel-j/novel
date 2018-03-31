@@ -118,19 +118,13 @@ fi
 # Now do conversion:
 echo 
 echo "Converting..."
-convert -density $IR -units PixelsPerInch $FN -strip -flatten temp/temp-$CN.tif
-convert temp/temp-$CN.tif -fx "luminance" -colorspace Gray -density $IR -units PixelsPerInch temp/temp-$CN-GRAY.tif
 if [ ! "$OPTARG" == "0" ]
 then # apply contrast adjustment
   ILTEN="$((10 * $OPTARG))"
-  convert temp/temp-$CN-GRAY.tif -sigmoidal-contrast 4,$ILTEN% -colorspace Gray -alpha off -density $IR -units PixelsPerInch output/$CN-$OPTARG-GRAY.png
+  convert -density $IR -units PixelsPerInch $FN -strip -flatten -fx "luminance" -colorspace Gray -sigmoidal-contrast 4,$ILTEN% -colorspace Gray -alpha off -density $IR -units PixelsPerInch output/$CN-$OPTARG-GRAY.png
 else # no contrast adjustment
-  convert temp/temp-$CN-GRAY.tif -colorspace Gray -alpha off -density $IR -units PixelsPerInch output/$CN-0-GRAY.png
+  convert -density $IR -units PixelsPerInch $FN -strip -flatten -fx "luminance" -colorspace Gray -alpha off -density $IR -units PixelsPerInch output/$CN-0-GRAY.png
 fi
-
-# Remove temporary files:
-if [ -f "temp/temp-$CN.tif" ]; then rm temp/temp-$CN.tif; fi
-if [ -f "temp/temp-$CN-GRAY.tif" ]; then rm temp/temp-$CN-GRAY.tif; fi
 
 # Done:
 echo "Verifying..."

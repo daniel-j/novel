@@ -26,7 +26,7 @@ if [ "$MAXRES" == "" ]; then MAXRES="1200"; fi
 # https://ctan.org/pkg/novel  [get the one zip archive]
 # But you do not need a TeX installation to use this script.
 
-VERMSG="makebw version 0.9.8."
+VERMSG="makebw version 1.0."
 USAGEMSG="Usage: ./makebw [-threshold] filename.ext"
 HELPMSG="Help:  ./makebw -h"
 DEMOMSG="Demo:  ./makebw [-threshold] demo"
@@ -99,6 +99,7 @@ then
     exit 1
   fi
 fi
+echo "OK"
 NEEDSGS=
 DEMOMODE=
 FN=
@@ -115,7 +116,10 @@ fi
 # Now do conversion:
 echo 
 echo "Converting..."
-convert -density $IR -units PixelsPerInch $FN -strip -flatten -threshold $THRESH% -colorspace Gray -alpha off output/$CN-$THRESH-BW.png
+DR="-density $IR -units PixelsPerInch"
+BK="-strip -background White -flatten -alpha off"
+TH="-threshold $THRESH% -colorspace Gray -type Bilevel"
+convert $DR $FN $BK $TH output/$CN-$THRESH-BW.png
 # end conversion routine
 
 # Done:

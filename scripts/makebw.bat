@@ -26,7 +26,7 @@ REM This file is distributed with the "novel" LuaLaTeX document class.
 REM https://ctan.org/pkg/novel  [get the one zip archive]
 REM But you do not need a TeX installation to use this script.
 
-set VERMSG=makebw.bat version 0.9.8.
+set VERMSG=makebw.bat version 1.0.
 set USAGEMSG=Usage: makebw [-threshold] filename.ext
 set HELPMSG=Help:  makebw -h
 set DEMOMSG=Demo:  makebw [-threshold] demo
@@ -40,6 +40,9 @@ if %0 == "%~0" (
   echo %USAGEMSG%
   echo %HELPMSG%
   echo %DEMOMSG%
+  set MINRES=
+  set DEFRES=
+  set MAXRES=
   echo.
   cmd /k
   exit /B 0
@@ -143,15 +146,17 @@ if exist "resource\internal\commonscript.bat" (
 REM Now do conversion:
 echo.
 echo Converting...
-set CS=%% -colorspace Gray
-magick convert -density %IR% -units PixelsPerInch %FN% -strip -flatten -threshold !THRESH!%CS% output\%CN%-!THRESH!-BW.png
+set DR=-density %IR% -units PixelsPerInch
+set BK=-strip -background White -flatten -alpha off
+set TH=-threshold !THRESH!%% -colorspace Gray -type Bilevel
+%MAGICKPATH%magick.exe convert %DR% %FN% %BK% %TH% output\%CN%-!THRESH!-BW.png
 
 REM Verify and show info on Terminal:
 echo Verifying...
 echo.
 echo The monochrome black-white image is output\%CN%-!THRESH!-BW.png.
 echo Metadata has been stripped.
-magick identify -verbose output\%CN%-!THRESH!-BW.png >temp\temp-identify.txt
+%MAGICKPATH%magick.exe identify -verbose output\%CN%-!THRESH!-BW.png >temp\temp-identify.txt
 echo. >>temp\temp-identify.txt
 echo Threshold !THRESH! percent.
 findstr /C:"Channel depth" temp\temp-identify.txt 2>nul
@@ -164,8 +169,8 @@ if "!errorlevel!"=="0" (
   echo     - measured in Centimeters. [png format reports metric]
   echo     - Divide by 2.54 to get Inches.
 )
-findstr /I "Resolution" temp-identify.txt 2>nul
-findstr /I "PixelsPerInch" temp-identify.txt 1>nul 2>nul
+findstr /I "Resolution" temp\temp-identify.txt 2>nul
+findstr /I "PixelsPerInch" temp\temp-identify.txt 1>nul 2>nul
 if "!errorlevel!"=="0" (
   echo     - measured in Pixels Per Inch.
 ) else (

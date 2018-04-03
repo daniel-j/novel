@@ -7,6 +7,11 @@
 if [ "$DEFRES" == "" ]; then DEFRES="300"; fi
 if [ "$MINRES" == "" ]; then MINRES="150"; fi
 if [ "$MAXRES" == "" ]; then MAXRES="600"; fi
+# The default image output is png format. Best to leave it that way.
+# However, if you have a lot of images, and the resulting pdf is too large,
+#   you can use jpg instead. This saves bytes without much loss (95% quality).
+# To permanently change to jpg output, change this from no to yes:
+if [ "$JPG" == "" ]; then JPG="no"; fi
 
 # makegray
 # This is a Linux/macOS BASH command script.
@@ -25,7 +30,7 @@ if [ "$MAXRES" == "" ]; then MAXRES="600"; fi
 # https://ctan.org/pkg/novel  [get the one zip archive]
 # But you do not need a TeX installation to use this script.
 
-VERMSG="makegray version 0.9.8."
+VERMSG="makegray version 1.0."
 USAGEMSG="Usage: ./makegray [-digit] filename.ext"
 HELPMSG="Help:  ./makegray -h"
 DEMOMSG="Demo:  ./makegray [-digit] demo"
@@ -44,7 +49,7 @@ then
   echo 
   echo "$VERMSG"
   echo "WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK."
-  echo "Converts Color or Grayscale to single-channel Grayscale png."
+  echo "Converts Color or Grayscale to single-channel Grayscale png or jpg."
   echo 
   echo "$USAGEMSG"
   echo "  Where .ext may be .png, .jpg, .jpeg, .tif, .tiff, .pdf [also capitalized]."
@@ -76,7 +81,7 @@ then
 fi
 
 # Welcome message:
-echo "Converts color or grayscale image to single-channel grayscale png."
+echo "Converts color or grayscale image to single-channel grayscale png or jpg."
 echo "WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK."
 
 # Check structure of folders and required files:
@@ -86,12 +91,12 @@ if [ ! -d "output" ]; then mkdir output; fi
 
 # Checks for input arguments:
 printf "Parsing arguments... "
-OPTARG="0"
+IL="0"
 if [ ! "$2" == "" ]
 then
   if [[ $1 =~ ^-[1-9]$ ]]
   then
-    OPTARG=$((0 - $1))
+    IL=$((0 - $1))
   else
     echo "ERROR."
     echo "Bad optional argument. May use -1 to -9. Do not omit hyphen."
@@ -101,6 +106,8 @@ then
     exit 1
   fi
 fi
+echo "OK"
+IL="$((10 * $IL))"
 NEEDSGS=
 DEMOMODE=
 FN=
@@ -113,31 +120,42 @@ else
   echo 
   exit 1
 fi
+IE="png"
+# For png, quality 90 in ImageMagick is compression 9.
+# However, within the final PDF, the image will not be compressed.
+IQ="-quality 90"
+if [ "$JPG" == "yes" ] || [ "$JPG" == "YES" ]
+then
+  IE="jpg"
+  # For jpg, quality 95 is high-quality prepress.
+  # Within the PDF, the image will also be compressed as jpeg.
+  IQ="-quality 95"
+fi
 
 
 # Now do conversion:
+# Some improved code suggested by user daniel-j at GitHub.
 echo 
 echo "Converting..."
-if [ ! "$OPTARG" == "0" ]
-then # apply contrast adjustment
-  ILTEN="$((10 * $OPTARG))"
-  convert -density $IR -units PixelsPerInch $FN -strip -flatten -fx "luminance" -colorspace Gray -sigmoidal-contrast 4,$ILTEN% -colorspace Gray -alpha off -density $IR -units PixelsPerInch output/$CN-$OPTARG-GRAY.png
-else # no contrast adjustment
-  convert -density $IR -units PixelsPerInch $FN -strip -flatten -fx "luminance" -colorspace Gray -alpha off -density $IR -units PixelsPerInch output/$CN-0-GRAY.png
-fi
+DR="-density $IR -units PixelsPerInch"
+BK="-strip -flatten -background White -alpha off"
+HG="-fx ""luminance"" -colorspace Gray"
+if [ ! "$IL" == "0" ]; then SC="-sigmoidal-contrast 4,$IL%"; fi
+convert $DR $FN $BK $HG $SC $IQ output/$CN-$IL-GRAY.$IE
+
 
 # Done:
 echo "Verifying..."
 echo 
-echo "The Grayscale image is output/$CN-$OPTARG-GRAY.png."
+echo "The Grayscale image is output/$CN-$IL-GRAY.$IE."
 echo "Metadata and color profile have been stripped."
-if [ "$OPTARG" == "0" ]
+if [ "$IL" == "0" ]
 then
   echo "No contrast adjustment applied."
 else
-  echo "Contrast adjustment value $OPTARG applied."
+  echo "Contrast adjustment value $IL applied."
 fi
-identify -verbose output/$CN-$OPTARG-GRAY.png >temp/temp-identify.txt
+identify -verbose output/$CN-$IL-GRAY.$IE >temp/temp-identify.txt
 grep "Colorspace" temp/temp-identify.txt 2>/dev/null
 grep "Print size" temp/temp-identify.txt 2>/dev/null
 grep "PixelsPerInch" temp/temp-identify.txt 1>/dev/null 2>/dev/null

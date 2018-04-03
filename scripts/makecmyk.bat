@@ -22,7 +22,7 @@ REM    http://www.latex-project.org/lppl.txt
 REM and version 1.3c or later is part of all distributions of LaTeX
 REM version 2005/12/01 or later.
 
-set VERMSG=makecmyk.bat version 0.9.8.
+set VERMSG=makecmyk.bat version 1.0.
 set USAGEMSG=Usage: makecmyk [-a] filename.ext
 set HELPMSG=Help:  makecmyk -h
 set DEMOMSG=Demo:  makecmyk [-a] demo
@@ -36,6 +36,9 @@ if %0 == "%~0" (
   echo %USAGEMSG%
   echo %HELPMSG%
   echo %DEMOMSG%
+  set MINRES=
+  set DEFRES=
+  set MAXRES=
   echo.
   cmd /k
   exit /B 0
@@ -220,7 +223,7 @@ REM Information:
 echo Converting image. This takes time...
 
 REM Strip and flatten image:
-%MAGICKPATH%magick convert -units PixelsPerInch -density %IR% %FN% -strip -flatten temp\temp-%CN%-stripped.tif
+%MAGICKPATH%magick convert -units PixelsPerInch -density %IR% %FN% -strip -flatten -background White -alpha Background -alpha off temp\temp-%CN%-stripped.tif
 echo    ...Completed step 1 of 6.
 
 REM Convert to CMYK:

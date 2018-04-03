@@ -8,6 +8,11 @@ REM If you did not export values for these, the following are used:
 if "%DEFRES%"=="" ( set DEFRES=300)
 if "%MINRES%"=="" ( set MINRES=150)
 if "%MAXRES%"=="" ( set MAXRES=600)
+REM The default image output is png format. Best to leave it that way.
+REM However, if you have a lot of images, and the resulting pdf is too large,
+REM   you can use jpg instead. This saves bytes without much loss (95% quality).
+REM To permanently change to jpg output, change this from no to yes:
+if "%JPG%"=="" ( set JPG=no)
 
 REM makegray.bat
 REM This is a Windows batch command script.
@@ -26,7 +31,7 @@ REM This file is distributed with the "novel" LuaLaTeX document class.
 REM https://ctan.org/pkg/novel  [get the one zip archive]
 REM But you do not need a TeX installation to use this script.
 
-set VERMSG=makegray.bat version 0.9.8.
+set VERMSG=makegray.bat version 1.0.
 set USAGEMSG=Usage: makegray [-digit] filename.ext
 set HELPMSG=Help:  makegray -h
 set DEMOMSG=Demo:  makegray [-digit] demo
@@ -40,6 +45,9 @@ if %0 == "%~0" (
   echo %USAGEMSG%
   echo %HELPMSG%
   echo %DEMOMSG%
+  set MINRES=
+  set DEFRES=
+  set MAXRES=
   echo.
   cmd /k
   exit /B 0
@@ -139,37 +147,39 @@ if exist "resource\internal\commonscript.bat" (
   echo.
   exit /B 1
 )
+set IE=png
+REM For png, quality 90 in ImageMagick is compression 9.
+REM However, within the final PDF, the image will not be compressed.
+set IQ=-quality 90
+if /I "%JPG%"=="yes" (
+  set IE=jpg
+  REM For jpg, quality 95 is prepress.
+  REM Within the PDF, the image will also be compressed as jpeg.
+  set IQ=-quality 95
+)
 
 
 REM Now do conversion:
+REM Improved code suggested by user daniel-j at GitHub.
 echo Converting, this takes awhile...
-set HG=-fx "luminance"
-set PU=-units PixelsPerInch
-set DR=-density %IR%
-set QN=-quality 95
-set CG=-colorspace Gray
-set HC=-sigmoidal-contrast 4,!IL!0%% -colorspace Gray
-%MAGICKPATH%magick.exe convert %DR% %PU% %FN% -strip -flatten temp\temp-%CN%.tif
-%MAGICKPATH%magick.exe convert temp\temp-%CN%.tif -colorspace Gray %HG% %DR% %PU% temp\temp-%CN%-GRAY.tif
-if "!IL!"=="0" (
-  %MAGICKPATH%magick.exe convert temp\temp-%CN%-GRAY.tif %CG% %DR% %PU% %QN% output\%CN%-0-GRAY.jpg
-) else (
-  %MAGICKPATH%magick.exe convert temp\temp-%CN%-GRAY.tif %HC% %DR% %PU% %QN% output\%CN%-!IL!-GRAY.jpg
-)
-if exist "temp\temp-%CN%.tif" ( del temp\temp-%CN%.tif)
-if exist "temp\temp-%CN%-GRAY.tif" ( del temp\temp-%CN%-GRAY.tif)
+set DR=-density %IR% -units PixelsPerInch
+set BK=-strip -background White -flatten -alpha off
+set HG=-fx "luminance" -colorspace Gray
+if not "!IL!"=="0" ( set SC=-sigmoidal-contrast 4,!IL!0%%)
+%MAGICKPATH%magick.exe convert %DR% %FN% %BK% %HG% %SC% %IQ% output\%CN%-!IL!-GRAY.%IE%
+
 
 REM Done:
 echo Verifying...
 echo.
-echo The Grayscale image is output\%CN%-!IL!-GRAY.jpg.
+echo The Grayscale image is output\%CN%-!IL!-GRAY.%IE%.
 echo Metadata has been stripped.
 if "!IL!"=="0" (
   echo No contrast adjustment applied.
 ) else (
   echo Contrast adjustment value !IL! applied.
 )
-%MAGICKPATH%magick.exe identify -verbose output\%CN%-!IL!-GRAY.jpg >temp\temp-identify.txt
+%MAGICKPATH%magick.exe identify -verbose output\%CN%-!IL!-GRAY.%IE% >temp\temp-identify.txt
 findstr "Colorspace" temp\temp-identify.txt 2>nul
 findstr /C:"Print size" temp\temp-identify.txt 2>nul
 findstr "PixelsPerInch" temp\temp-identify.txt 1>nul 2>nul

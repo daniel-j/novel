@@ -21,7 +21,7 @@ if [ "$MAXRES" == "" ]; then MAXRES="600"; fi
 # and version 1.3c or later is part of all distributions of LaTeX
 # version 2005/12/01 or later.
 
-VERMSG="makecmyk version 0.9.8."
+VERMSG="makecmyk version 1.0."
 USAGEMSG="Usage:./makecmyk [-a] filename.ext"
 HELPMSG="Help:  ./makecmyk -h"
 DEMOMSG="Demo:  ./makecmyk [-a] demo"
@@ -131,6 +131,7 @@ then
     exit 1
   fi
 fi
+echo "OK"
 NEEDSGS="yes"
 DEMOMODE=""
 FN=""
@@ -191,7 +192,7 @@ OCN="inklimit"
 echo "Converting image. This takes time..."
 
 # Strip and flatten image:
-convert -units PixelsPerInch -density $IR $FN -strip -flatten temp/temp-$CN-stripped.tif
+convert -units PixelsPerInch -density $IR $FN -strip -flatten -background White -alpha Background -alpha off temp/temp-$CN-stripped.tif
 echo "   ...Completed step 1 of 6."
 
 # Convert to CMYK:

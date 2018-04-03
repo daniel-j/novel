@@ -116,6 +116,13 @@ div.codeblock p {text-indent:0px; white-space:nowrap;}
     </ul>
   </li>
 
+  <li id="l6"><span class="n"></span><a href="#h6"><b>6. Default makegray Format</b></a>
+    <ul id="u6">
+      <li id="l6.1"><span class="n"></span><a href="#h6.1">6.1 Windows</a></li>
+      <li id="l6.2"><span class="n"></span><a href="#h6.2">6.2 Linux</a></li>
+    </ul>
+  </li>
+
 </ul>
 <hr/>
 <ul>
@@ -142,16 +149,14 @@ div.codeblock p {text-indent:0px; white-space:nowrap;}
 <div id="main">
 
 
-<h1 id="h0">Novel Scripts</h1>
-<p class="noindent">Part of LuaLaTeX <i>novel</i> document class. Version: 1.50, 2018/03/28.</p>
+<h1 id="h0">Novel Scripts (Linux, Windows, Mac OSX)</h1>
+<p class="noindent">Part of LuaLaTeX <i>novel</i> document class. Version: 1.51.2, 2018/04/02.</p>
 <p>DISCLAIMER: ALL OF THIS IS WITHOUT WARRANTY EXPRESS OR IMPLIED. USE ONLY AT YOUR OWN RISK.</p>
-
-<p class="item">LINUX/MAC USERS: Be sure that the scripts <code>makebw</code>, <code>makegray</code>, and <code>makecmyk</code> have executable permissions.</p>
-
 
 <h3 id="h1">1. Introduction</h3>
 <div class="d3" id="d1">
-<p class="noindent">The <i>novel</i> class assumes that your book is intended for print-on-demand (P.O.D.). Some of the widely-used P.O.D. services, especially in the U.S.A., have particular requirements for images embedded in PDF documents:</p>
+<p class="noindent">These scripts have been tested on Linux, Windows, and Mac. If you use the Linux/Mac scripts, be sure that they have executable permission.</p>
+<p>The <i>novel</i> class assumes that your book is intended for print-on-demand (P.O.D.). Some of the widely-used P.O.D. services, especially in the U.S.A., have particular requirements for images embedded in PDF documents:</p>
 <div style="padding-left:32px">
 <p class="item">1) Images must be at exact size (inches) and resolution (pixels per inch). The PDF does not resize, resample, crop, or otherwise transform any images.</p>
 <p class="item">2) Grayscale images must be single channel DeviceGray (8 bits per pixel). Black/White line art must be 1 bit per pixel.</p>
@@ -174,13 +179,18 @@ div.codeblock p {text-indent:0px; white-space:nowrap;}
 <h4 id="h2.1">2.1. Image Magick</h4>
 <div class="d4" id="d2.1">
 <p class="noindent">On Linux, Image Magick is available through your Linux package manager. There is a good chance that it is already installed in your system.</p>
-<p>On Windows or macOS, get it from <a href="http://imagemagick.org/script/download.php" class="external" rel="external" target="new">imagemagick.org</a>. Scroll down the page to find the version best suited to your needs, but be sure it is Q16. On Windows, you may use either the system-installed or portable version (more info <a href="#h2.3">below</a>).</p>
+<p>On Windows, get it from <a href="http://imagemagick.org/script/download.php" class="external" rel="external" target="new">imagemagick.org</a>. Scroll down the page to find the version best suited to your needs, but be sure it is Q16. You may use either the system-installed or portable version (more info <a href="#h2.3">below</a>).</p>
+<p>User <i>daniel-j</i> reports that the scripts work on Mac OSX, and the necessary components can be installed via <a class="external" rel="external" target="new" href="https://brew.sh">Homebrew</a>:</p>
+<p class="code"><code>brew install imagemagick --with-little-cms --with-little-cms2</code></p>
+
 </div><!-- end d2.1 -->
 
 <h4 id="h2.2">2.2. Ghostscript</h4>
 <div class="d4" id="d2.2">
 <p class="noindent">On Linux, Ghostscript is available through your Linux package manager. There is a good chance that it is already installed in your system.</p>
-<p>On Windows or macOS, get the latest AGPL-licensed version from <a href="https://www.ghostscript.com/download/gsdnld.html" class="external" rel="external" target="new">ghostscript.com</a>. On Windows, you may use either the system-installed or <a href="https://portableapps.com/apps/utilities/ghostscript_portable" class="external" rel="external" target="new">portable</a> version (more info <a href="#h2.3">below</a>).</p>
+<p>On Windows, get the latest AGPL-licensed version from <a href="https://www.ghostscript.com/download/gsdnld.html" class="external" rel="external" target="new">ghostscript.com</a>. You may use either the system-installed or <a href="https://portableapps.com/apps/utilities/ghostscript_portable" class="external" rel="external" target="new">portable</a> version (more info <a href="#h2.3">below</a>).</p>
+<p>For Mac OSX, <a class="external" rel="external" target="new" href="https://brew.sh">Homebrew</a> can provide:</p>
+<p class="code"><code>brew install ghostscript</code></p>
 </div><!-- end d2.2 -->
 
 <h4 id="h2.3">2.3. Portable Install (Windows Only)</h4>
@@ -234,7 +244,7 @@ Place a copy of these files in folder <i style="white-space:nowrap">novel-script
 <h4 id="h3.2">3.2. Grayscale Images</h4>
 <div class="d4" id="d3.2">
 <p class="noindent">With grayscale images, the most common mistake is using RGB (three channels) rather than true grayscale (single channel). Even if an RGB image uses only shades of gray, it is still RGB as far as the printer is concerned, and that's a problem.</p>
-<p>For best results, ensure that the original image does not have "important" areas are <span style="white-space:nowrap">nearly-white</span> or <span style="white-space:nowrap">nearly-black</span>. Depending on technology, printers do best with pure white, pure black, or grays 10%-90%. Shades that are nearly white or black are more likely to shift.</p>
+<p>For best results, ensure that the original image does not have "important" areas that are <span style="white-space:nowrap">nearly-white</span> or <span style="white-space:nowrap">nearly-black</span>. Depending on technology, printers do best with pure white, pure black, or grays 10%-90%. Shades that are nearly white or black are more likely to shift.</p>
 <p>Most print services recommend grayscale image resolution of 300 pixels/inch. If your input image does not state its resolution, or if it is PDF, then 300 will be used as default. You may change this, as described <a href="#h5">below</a>.
 <div class="floatright" style="width:369px"><img src="resource/html-images/bixby.png" width="350" height="337" alt="original image" title="original image"/><br/><img src="resource/html-images/bixby-2-GRAY.jpg" width="350" height="337" alt="grayscale image" title="grayscale image"/></div>
 <p>Script <b>makegray</b> (Linux/macOS) or <b>makegray.bat</b> (Windows) converts an image to single-channel Grayscale. It has one optional argument, which may be used for a sophisticated contrast adjustment.</p>
@@ -244,7 +254,7 @@ Place a copy of these files in folder <i style="white-space:nowrap">novel-script
 <p><code>./makegray [-number] filename.ext</code></p>
 <p class="item"><b>Option:</b> The optional number may be from 1 to 9. This adjusts contrast in selective fashion. A low number boosts contrast in dark areas, at the expense of light. A high number boosts contrast in light areas, at the expense of dark. A middle number boosts midrange contrast, at the expense of both extremes. Default is no number, which does not change contrast.</p>
 <p>If your input image is already Grayscale, then the script will perform some useful housekeeping.</p>
-<p>The output file is named <i>filename-c-GRAY.png</i>, where <i>c</i> is the contrast adjustment (default 0, meaning no adjustment).</p>
+<p>The output file is named <i>filename-c-GRAY.png</i>, where <i>c</i> is the contrast adjustment (default 0, meaning no adjustment). This <code>png</code> output is lossless, but it may not be the smallest file size if your image is a large photograph. If you have a lot of big images and need smaller files, you may change the output to <code>jpg</code>, which will be at prepress quality 95, with very little loss due to compression. To do that, see <a href="#h6">section 6</a>.</p>
 <p>Example: The Bixby Creek photo was taken on an overcast day. The sky is light gray with little detail of interest. The ground cover is dark. This image was processed to grayscale using <code>-2</code> option, which increases contrast in the dark areas (thus providing an overall lightening), at the expense of making the sky even less detailed.</p>
 <p>Windows command:&nbsp; <code>makegray -2 bixby.png</code></p>
 <p>The grayscale image contains some areas that are nearly white (sky, and sea foam), or nearly black (a few shadows). Depending on the printer, these may be pushed toward or away from the extremes, creating an overall impression of less or more contrast in print. However, these areas do not contain any important details, so the information is retained.</p>
@@ -306,7 +316,7 @@ Place a copy of these files in folder <i style="white-space:nowrap">novel-script
 <p>Sometimes, the input image does not state its resolution. In this case, the scripts will assign a default resolution. Then, the print size will be calculated based on this default. For <code>makebw</code>, the default is 800; for <code>makegray</code> and <code>makecmyk</code> it is 300. These are widely-used values among commercial printers. However, they may or may not be the values preferred by <i>your</i> print service.</p>
 <p>If the input is PDF, it will certainly state its print size (inches). But PDF is allowed to contain objects with different resolutions, as well as vector objects with no specific resolution. As a result, "the resolution of a PDF" is not really meaningful. Many programs assume a value of 72 pixels/inch, which dates back to antiquity and is inapplicable here.</p>
 <p>So, when the input is PDF, the script applies its own default resolution. Then, the number of pixels is calculated from the print size (inches) and the resolution (pixels/inch). And, in the case of <code>makecmyk</code>, the calculation applies to the raster image, contained within the output file.</p>
-<p class="item">If you need default resolutions other than 800 or 300, you can change them. This can be done temporarily or permanently. The method depends on whether your platform is Windows or Linux/macOS.</p>
+<p class="item">If you need default resolutions other than 800 or 300, you can change them. This can be done temporarily or permanently. The method depends on whether your platform is Windows or Linux (the Linux method works with OSX).</p>
 <p>Do not change the default resolution "just because you can." In most circumstances, the sharpness of print is limited by factors other than image resolution. Excessive resolution merely makes your files larger, and the print service might object.</p>
 <p>If you need to change the resolution of a raster image that <i>does</i> have its resolution specified, then you must use a graphics program. The scripts do not resample.</p>
 
@@ -316,7 +326,7 @@ Place a copy of these files in folder <i style="white-space:nowrap">novel-script
 <p class="code"><code>set DEFRES=NNN</code></p>
 <p>where NNN is the desired default resolution. Be sure <i>not</i> to type a space after the number. Return to the next command line, and proceed by calling the script, in usual fashion. The setting remains in effect as long as that same prompt window is used, even if you change the script.</p>
 <p>To permanently change the default resolution of a particular script: Open the script file in a plain text editor. A few lines from the top, you will see:</p>
-<p class="code"><code>if "%DEFRES%"="" ( set DEFRES=XXX)</code></p>
+<p class="code"><code>if "%DEFRES%"=="" ( set DEFRES=XXX)</code></p>
 <p>where XXX is 300 or 800. Change the number to what you need. Be sure that you do <i>not</i> insert a space between the number and the closing parenthesis.</p>
 <p>A temporary setting always overrides the setting written within the script.</p>
 </div><!-- end d5.1 -->
@@ -332,6 +342,36 @@ Place a copy of these files in folder <i style="white-space:nowrap">novel-script
 <p>A temporary setting always overrides the setting written within the script.</p>
 </div><!-- end d5.2 -->
 </div><!-- end d5 -->
+
+<h3 id="h6">6. Changing the makegray Output Format</h3>
+<div class="d3" id="d6">
+<p class="noindent">The <code>makegray</code> scripts normally provide an output image in lossless <code>png</code> format. This is best for most purposes.</p>
+<p>If your grayscale image is photographic, rather than solid-color artwork with sharp lines, the lossy <code>jpg</code> format will result in a smaller file size. At prepress quality 95, the loss of detail is very small, but the savings in file size is large. So, if your document has a lot of grayscale images, and you have a problem with limited total file size, then changing the grayscale images to <code>jpg</code> will help.</p>
+<p>This applies only to the <code>makegray</code> and <code>makegray.bat</code> scripts. The others always use a lossless format.</p>
+
+<h4 id="h6.1">6.1. Changing makegray.bat Output Format on Windows</h4>
+<div class="d4" id="d6.1">
+<p class="noindent">For a temporary change to <code>jpg</code> output format, open a Command Prompt window in the scripts folder. Type:</p>
+<p class="code"><code>set JPG=yes</code></p>
+<p>Be sure <i>not</i> to type a space after the word <code>yes</code>. Return to the next command line, and proceed by calling the script, in usual fashion. The setting remains in effect as long as that same prompt window is used. It has no effect on other scripts.</p>
+<p>To permanently change the output format: Open the script file in a plain text editor. A few lines from the top, you will see:</p>
+<p class="code"><code>if "%JPG%"=="" ( set JPG=no)</code></p>
+<p>Change <code>no</code> to <code>yes</code>. Be sure that you do <i>not</i> insert a space between the <code>yes</code> and the closing parenthesis.</p>
+<p>A temporary setting always overrides the setting written within the script.</p>
+</div><!-- end d6.1 -->
+
+<h4 id="h6.2">6.2. Changing makegray Output Format on Linux</h4>
+<div class="d4" id="d6.2">
+<p class="noindent">For a temporary change to <code>jpg</code> output format, open a Terminal in the scripts folder. Type:
+<p class="code"><code>export JPG="yes"</code></p>
+<p>Don't forget the quotes. Return to the next command line, and proceed by calling the script, in usual fashion. The setting remains in effect as long as that same Terminal is used. It has no effect on other scripts.</p>
+<p>To permanently change the output format: Open the script file in a plain text editor. A few lines from the top, you will see:</p>
+<p class="code"><code>if [ "$JPG" == "" ]; then JPG="no"; fi</code></p>
+<p>Change <code>no</code> to <code>yes</code>. Don't forget the quotes.</p>
+<p>A temporary setting always overrides the setting written within the script.</p>
+</div><!-- end d6.2 -->
+</div><!-- end d6 -->
+
 
 <div style="margin:32px; height:4px; background:#505050 none"></div>
 

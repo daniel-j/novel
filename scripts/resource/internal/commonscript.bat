@@ -101,7 +101,6 @@ if "!errorlevel!"=="0" (
   exit /B 1
 )
 
-
 REM Locate Ghostscript, if requested by main script:
 if "%NEEDSGS%"=="yes" (
   <nul set /p=Checking for Ghostscript... 
@@ -195,33 +194,34 @@ set WM2=
 set WM3=
 if "%GOTRES%"=="no" (
   set WM1=WARNING: Image resolution was not included in file, or was unreadable.
-  set WM2=Processed with resolution set to %DEFRES% pixels per inch.
+  set WM2=Processed with resolution set to target %DEFRES% pixels per inch.
   set WM3=Be sure to check image dimensions.
   set IR=%DEFRES%
 )
 if %IR% LSS %MINRES% (
   set WM1=WARNING: Image resolution %IR% is less than %MINRES% pixels per inch.
   set WM2=This is likely to be rejected by the print service.
-  set WM3=Some print services allow as low as %MINRES%, but most require %DEFRES%.
+  set WM3=Some print services allow as low as %MINRES%, but your target is %DEFRES%.
 ) else (
   if %IR% LSS %DEFRES% (
-    set WM1=ALERT: Image resolution %IR% is less than %DEFRES% pixels per inch.
-    set WM2=Some print services allow as low as %MINRES%, but most require %DEFRES%.
+    set WM1=ALERT: Image resolution %IR% is less than target %DEFRES% pixels per inch.
+    set WM2=Some print services allow as low as %MINRES%, but your target is %DEFRES%.
     set WM3=
   )
   if %IR% GTR %DEFRES% (
     if %IR% LEQ %MAXRES% (
-      set WM1=ALERT: Image resolution %IR% is over %DEFRES% pixels per inch.
-      set WM2=Some print services allow as high as %MAXRES%, but most require %DEFRES%.
+      set WM1=ALERT: Image resolution %IR% is over target %DEFRES% pixels per inch.
+      set WM2=Some print services allow as high as %MAXRES%, but your target is %DEFRES%.
       set WM3=
     ) else (
       set WM1=WARNING: Image resolution %IR% is over %MAXRES% pixels per inch.
       set WM2=This is likely to be rejected by the print service.
-      set WM3=Some print services allow as high as %MAXRES%, but most require %DEFRES%.
+      set WM3=Some print services allow as high as %MAXRES%, but your target is %DEFRES%.
     )
   )
 )
 
 set BADCOMMON=no
+
 
 REM end of file

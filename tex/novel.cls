@@ -13,7 +13,7 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2018/03/28 v1.50 LaTeX document class]
+\ProvidesClass{novel}[2018/04/03 v1.50.2 LaTeX document class]
 %%
 %% Version 1.50: Improved image handled, sandbox, scripts.
 %% Version 1.46.2: Now called "novel-old" version.

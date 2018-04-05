@@ -27,9 +27,11 @@
 
 <p>According to one widely-used American P.O.D. service, 0.0025" spine width is required per book page, using creme paper. With 124 pages (62 leaves) and 0.0025" per page (0.005" per leaf), the spine must be 0.31" wide. The same service requires bleed of 0.125" at all four edges.</p>
 
-<p>The resulting cover image must be 11.56" wide, 8.75" high. At 300pdi, it is 3468 x 2625 pixels.</p>
+<p>The resulting cover image must be 11.56" wide, 8.75" high. At 300dpi, it is 3468 x 2625 pixels.</p>
 
-<p>The RGB png image can be converted to CMYK jpg, using SWOP color profile at 240% ink limit, according to the instructions in the <i>novel</i> class documentation. You will need the <i>srgb.icc</i> and <i>240.icc</i> color profiles. Then the converted image can be converted to PDF/X-1a:2001 with the US Web Coated SWOP v2 profile (not embedded), using <i>borderland-cover.tex</i>. The result is file borderland-cover.pdf.</p>
+<p>The RGB png image can be converted to CMYK at 240% ink limit, as PDF/X-1a:2001 with correct bleed and trim boxes, and without embedded color profile. This requires two steps. Complete instructions are in the <i>novel-scripts.zip</i> file, which is in the <i>extras</i> subfolder of the <i>novel</i> documentation (version 1.50.2 or later). The methods work on Windows, Linux, and Mac OSX.</p>
+
+<p>The result of the two-step conversion is provided here, as <i>borderland-cover.pdf.</i>
 
 <h3>DISCLAIMER</h3>
 

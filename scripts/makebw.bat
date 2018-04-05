@@ -26,7 +26,7 @@ REM This file is distributed with the "novel" LuaLaTeX document class.
 REM https://ctan.org/pkg/novel  [get the one zip archive]
 REM But you do not need a TeX installation to use this script.
 
-set VERMSG=makebw.bat version 1.0.
+set VERMSG=makebw.bat version 1.2.
 set USAGEMSG=Usage: makebw [-threshold] filename.ext
 set HELPMSG=Help:  makebw -h
 set DEMOMSG=Demo:  makebw [-threshold] demo
@@ -87,12 +87,14 @@ if "%GETH%"=="yes" (
   echo.
   echo Place input image in input folder.
   echo   Input image may be RGB or Grayscale. No spaces in filename.
-  echo   Must be exact size and resolution [typ 600 pixels/inch for line art].
-  echo   If input is PDF it will be forced to 600 pixels/inch.
+  echo   Must be exact size and resolution [typ 800 pixels/inch for line art].
+  echo   If input is PDF it will be forced to 800 pixels/inch,
+  echo     or your alternative default resolution. See the README file.
+  echo   If input is PDF, only its first page will be processed.
   echo.
   echo Output will appear in output folder, named filename-t-BW.png.
   echo   t=threshold. If option not used, =50.
-  echo   It will be single-channel 1-bit black/white. Image metadata stripped.
+  echo   It will be single-channel 1-bit black/white.
   echo   Resolution will be reported, but not resized, resampled, or cropped.
   echo.
   echo See novel-scripts-README.html for more information.
@@ -103,6 +105,9 @@ if "%GETH%"=="yes" (
 REM Welcome message:
 echo This script converts Color or Gray image to 1-bit monochrome black/white.
 echo WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK.
+
+if not exist "temp\" ( mkdir temp)
+if not exist "output\" ( mkdir output)
 
 REM Checks for input arguments:
 <nul set /p=Parsing arguments... 
@@ -145,19 +150,32 @@ if exist "resource\internal\commonscript.bat" (
 
 REM Now do conversion:
 echo.
-echo Converting...
+echo Converting, this take awhile...
 set DR=-density %IR% -units PixelsPerInch
-set BK=-strip -background White -flatten -alpha off
+set BK=-strip -background White -flatten -alpha off !TI!
 set TH=-threshold !THRESH!%% -colorspace Gray -type Bilevel
-%MAGICKPATH%magick.exe convert %DR% %FN% %BK% %TH% output\%CN%-!THRESH!-BW.png
+set CO=-comment "novelmakebw"
+%MAGICKPATH%magick.exe convert %DR% input\%FN%!PDFZ! %BK% %TH% output\%CN%-!THRESH!-BW.png 2>temp\temp-identify.txt
+echo. >>temp\temp-identify.txt
+findstr /C:"geometry does not contain image" temp\temp-identify.txt 1>nul 2>nul
+if "!errorlevel!"=="0" (
+  echo.
+  echo The page your requested is a blank page. No output produced.
+  echo Try again with a different page number.
+  if exist "output\%CN%-!THRESH!-BW.png" ( del output\%CN%-!THRESH!-BW.png)
+  echo.
+  if exist "temp\temp-identify.txt" ( del temp\temp-identify.txt)
+  exit /B 1
+)
+REM Adding comment requires a second step:
+%MAGICKPATH%magick.exe mogrify %CO% output\%CN%-!THRESH!-BW.png
 
 REM Verify and show info on Terminal:
-echo Verifying...
+echo Verifying, this takes awhile...
 echo.
-echo The monochrome black-white image is output\%CN%-!THRESH!-BW.png.
-echo Metadata has been stripped.
 %MAGICKPATH%magick.exe identify -verbose output\%CN%-!THRESH!-BW.png >temp\temp-identify.txt
 echo. >>temp\temp-identify.txt
+echo The monochrome black-white image is output\%CN%-!THRESH!-BW.png.
 echo Threshold !THRESH! percent.
 findstr /C:"Channel depth" temp\temp-identify.txt 2>nul
 findstr /C:"Gray: 1-bit" temp\temp-identify.txt 2>nul

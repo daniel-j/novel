@@ -1,4 +1,5 @@
 REM commonscript.bat
+REM Supports scripts version 1.2.
 REM This file has common functions for novel-script Windows scripts.
 REM It is read by another script, using the call command. Do not use directly.
 REM %HELPMSG% and %USAGEMSG% are messages set by calling script.
@@ -15,7 +16,7 @@ if /I "%2"=="demo" ( set DEMOMODE=yes)
 if "%DEMOMODE%"=="yes" (
   if exist "resource\internal\novelscriptsdemo.jpg" (
     copy "resource\internal\novelscriptsdemo.jpg" "input\novelscriptsdemo.jpg" 1>nul
-    set FN=input\novelscriptsdemo.jpg
+    set FN=novelscriptsdemo.jpg
   ) else (
     echo ERROR.
     echo File resource\internal\novelscriptsdemo.jpg not found. Needed for demo.
@@ -26,7 +27,7 @@ if "%DEMOMODE%"=="yes" (
 ) else (
   if "%2"=="" (
     if exist "input\%1" (
-      set FN=input\%1
+      set FN=%1
     ) else (
       echo ERROR.
       echo Did not find file %1 in input folder.
@@ -38,7 +39,7 @@ if "%DEMOMODE%"=="yes" (
     )
   ) else (
     if exist "input\%2" (
-      set FN=input\%2
+      set FN=%2
     ) else (
       echo ERROR.
       echo Did not find file %2 in input folder.
@@ -52,7 +53,7 @@ if "%DEMOMODE%"=="yes" (
 )
 
 REM Check input filename extension:
-for %%i in (%FN%) do (
+for %%i in (input\%FN%) do (
   set CN=%%~ni
   set CE=%%~xi
 )
@@ -62,7 +63,10 @@ if /I "%CE%"==".jpg" ( set EXTOK=yes)
 if /I "%CE%"==".jpeg" ( set EXTOK=yes)
 if /I "%CE%"==".tif" ( set EXTOK=yes)
 if /I "%CE%"==".tiff" ( set EXTOK=yes)
-if /I "%CE%"==".pdf" ( set EXTOK=yes)
+if /I "%CE%"==".pdf" (
+  set EXTOK=yes
+  set NEEDSGS=yes
+)
 if "%EXTOK%"=="" (
   echo ERROR.
   echo Input file does not have allowable file extension.
@@ -147,11 +151,24 @@ REM Get image resolution:
 set TEMPRESX=0
 set TEMPRESY=0
 set TEMPRESD=0
-%MAGICKPATH%magick.exe identify -format "%%x" -units PixelsPerInch !FN! > temp\temp-res.txt
+set TI=
+REM If input is pdf, always set resolution to %DEFRES%, and trim image:
+if /I "%CE%"==".pdf" (
+  set IR=%DEFRES%
+  set TI=-trim
+  set PDFZ=[0]
+  goto skipres
+)
+REM I really dislike using goto, but the alternative involves complicated
+REM parsing of delayed expansion percent and exclamation. Ugh. Better just goto.
+
+REM If not pdf, get resolution from the image. This is skipped by goto, if pdf:
+set PDFZ=
+%MAGICKPATH%magick.exe identify -format "%%x" -units PixelsPerInch input\!FN! > temp\temp-res.txt
 echo. >>temp\temp-res.txt
 set /p TEMPRESX=<temp\temp-res.txt
 set TEMPRESX=%TEMPRESX: =%.0
-%MAGICKPATH%magick.exe identify -format "%%y" -units PixelsPerInch !FN! > temp\temp-res.txt
+%MAGICKPATH%magick.exe identify -format "%%y" -units PixelsPerInch input\!FN! > temp\temp-res.txt
 echo. >>temp\temp-res.txt
 set /p TEMPRESY=<temp\temp-res.txt
 set TEMPRESY=%TEMPRESY: =%.0
@@ -184,9 +201,9 @@ if %TEMPRESX% EQU 0 ( set GOTRES=no)
 if %TEMPRESY% EQU 0 ( set GOTRES=no)
 set /a IR=TEMPRESX*1
 set IR=%IR%
-REM If input is pdf, always set resolution to %DEFRES%:
-if /I "%CE%"==".pdf" ( set IR=%DEFRES%)
 
+REM Resume from skipped resolution calculation.
+:skipres
 
 REM Prepare messages:
 set WM1=Image resolution %DEFRES% pixels per inch.

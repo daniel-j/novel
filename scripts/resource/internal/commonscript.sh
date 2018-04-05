@@ -1,4 +1,5 @@
-# commonscript.sh
+# commonscript
+# Supports scripts version 1.2.
 # This file has common functions for novel-script Linux scripts.
 # It is read by another script, using the source command. Do not use directly.
 # $HELPMSG and $USAGEMSG are messages set by calling script.
@@ -19,7 +20,7 @@ then
   if [ -f "resource/internal/novelscriptsdemo.jpg" ]
   then
     cp "resource/internal/novelscriptsdemo.jpg" "input/novelscriptsdemo.jpg" 1>/dev/null
-    FN="input/novelscriptsdemo.jpg"
+    FN="novelscriptsdemo.jpg"
   else
     echo "ERROR."
     echo "File resource/internal/novelscriptsdemo.jpg not found. Needed for demo."
@@ -32,7 +33,7 @@ else
   then
     if [ -f "input/$1" ]
     then
-      FN="input/$1"
+      FN="$1"
     else
       echo "ERROR."
       echo "Did not find file $1 in input folder."
@@ -45,7 +46,7 @@ else
   else
     if [ -f "input/$2" ]
     then
-      FN="input/$2"
+      FN="$2"
     else
       echo "ERROR."
       echo "Did not find file $2 in input folder."
@@ -59,10 +60,10 @@ else
 fi
 
 # Check filename extension:
-CN=$(basename "$FN")
+CN=$(basename "input/$FN")
 CE="${CN##*.}"
 CN="${CN%.*}"
-if [ "$CE" == "png" ] || [ "$CE" == "jpg" ] || [ "$CE" == "jpeg" ] || [ "$CE" == "tif" ] || [ "$CE" == "tiff" ] || [ "$CE" == "PNG" ] || [ "$CE" == "JPG" ] || [ "$CE" == "JPEG" ] || [ "$CE" == "TIF" ] || [ "$CE" == "TIFF" ] || [ "$CE" == "pdf" ] || [ "$CE" == "pdf" ]
+if [ "$CE" == "png" ] || [ "$CE" == "jpg" ] || [ "$CE" == "jpeg" ] || [ "$CE" == "tif" ] || [ "$CE" == "tiff" ] || [ "$CE" == "PNG" ] || [ "$CE" == "JPG" ] || [ "$CE" == "JPEG" ] || [ "$CE" == "TIF" ] || [ "$CE" == "TIFF" ] || [ "$CE" == "pdf" ] || [ "$CE" == "PDF" ]
 then
   :
 else
@@ -73,6 +74,7 @@ else
   echo 
   exit 1
 fi
+if [ "$CE" == "pdf" ] || [ "$CE" == "PDF" ]; then NEEDSGS="yes"; fi
 
 
 # Check for ImageMagick:
@@ -115,29 +117,38 @@ fi
 TEMPRESX="0"
 TEMPRESY="0"
 TEMPRESD="0"
-identify -format "%x" -units PixelsPerInch $FN > temp/temp-res.txt
-TEMPRESX=$(cat temp/temp-res.txt)
-identify -format "%y" -units PixelsPerInch $FN > temp/temp-res.txt
-TEMPRESY=$(cat temp/temp-res.txt)
-if [ -f "temp/temp-res.txt" ]; then rm temp/temp-res.txt; fi
-printf -v TEMPRESX %.0f $TEMPRESX
-printf -v TEMPRESY %.0f $TEMPRESY
-# Ensure that X and Y resolutions are identical:
-GOTRES="no"
-if [ $TEMPRESX -eq $TEMPRESX ]
+TI=""
+# If input is pdf, always set resolution to $DEFRES, and trim image:
+if [ "$CE" == "pdf" ] || [ "$CE" == "PDF" ]
 then
-  if [ $TEMPRESY -eq $TEMPRESY ]
+  IR=$DEFRES
+  TI="-trim"
+  PDFZ="[0]"
+else
+# If not pdf, read resolution from image:
+  PDFZ=""
+  identify -format "%x" -units PixelsPerInch input/$FN > temp/temp-res.txt
+  TEMPRESX=$(cat temp/temp-res.txt)
+  identify -format "%y" -units PixelsPerInch input/$FN > temp/temp-res.txt
+  TEMPRESY=$(cat temp/temp-res.txt)
+  if [ -f "temp/temp-res.txt" ]; then rm temp/temp-res.txt; fi
+  printf -v TEMPRESX %.0f $TEMPRESX
+  printf -v TEMPRESY %.0f $TEMPRESY
+  # Ensure that X and Y resolutions are identical:
+  GOTRES="no"
+  if [ $TEMPRESX -eq $TEMPRESX ]
   then
-    let "TEMPRESD = $TEMPRESX - $TEMPRESY"
-    if [ $TEMPRESD -eq 0 ]
+    if [ $TEMPRESY -eq $TEMPRESY ]
     then
-      GOTRES="yes"
+      let "TEMPRESD = $TEMPRESX - $TEMPRESY"
+      if [ $TEMPRESD -eq 0 ]
+      then
+        GOTRES="yes"
+      fi
     fi
   fi
+  IR=$TEMPRESX
 fi
-IR=$TEMPRESX
-# If input is pdf, always set resolution to $DEFRES:
-if [ "$CE" == "pdf" ] || [ "$CE" == "PDF" ]; then IR=$DEFRES; fi
 
 # Prepare messages:
 WM1="Output image resolution $DEFRES pixels per inch."

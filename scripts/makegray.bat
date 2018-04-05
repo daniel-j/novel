@@ -31,7 +31,7 @@ REM This file is distributed with the "novel" LuaLaTeX document class.
 REM https://ctan.org/pkg/novel  [get the one zip archive]
 REM But you do not need a TeX installation to use this script.
 
-set VERMSG=makegray.bat version 1.0.
+set VERMSG=makegray.bat version 1.2.
 set USAGEMSG=Usage: makegray [-digit] filename.ext
 set HELPMSG=Help:  makegray -h
 set DEMOMSG=Demo:  makegray [-digit] demo
@@ -96,12 +96,14 @@ if "%GETH%"=="yes" (
   echo Place input image in input folder.
   echo   Input image may be Color or Grayscale. No spaces in filename.
   echo   Must be exact size and resolution [typ 300 pixels/inch].
-  echo   If input is PDF it will be forced to 300 pixels/inch.
+  echo   If input is PDF it will be forced to 300 pixels/inch,
+  echo     or your alternative default resolution. See the README file.
+  echo   If input is PDF, only its first page will be processed.
   echo.
   echo Output will appear in output folder, named filename-P-GRAY.jpg.
   echo   P=0: contrast unchanged.
   echo   P=1 through 9: number provided as optional argument.
-  echo   It will be single-channel 8-bit Grayscale. Image metadata stripped.
+  echo   It will be single-channel 8-bit Grayscale.
   echo   Color inputs are weighted, typical of photos.
   echo   Resolution will be reported, but not resized, resampled, or cropped.
   echo.
@@ -113,6 +115,9 @@ if "%GETH%"=="yes" (
 REM Welcome message:
 echo This script converts RGB color/grayscale image to single-channel grayscale.
 echo WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK.
+
+if not exist "temp\" ( mkdir temp)
+if not exist "output\" ( mkdir output)
 
 REM Checks for input arguments:
 <nul set /p=Parsing arguments... 
@@ -162,24 +167,38 @@ if /I "%JPG%"=="yes" (
 REM Now do conversion:
 REM Improved code suggested by user daniel-j at GitHub.
 echo Converting, this takes awhile...
-set DR=-density %IR% -units PixelsPerInch
-set BK=-strip -background White -flatten -alpha off
+set DR=-density %IR% -units PixelsPerInch -depth 8
+set BK=-strip -background White -flatten -alpha off !TI!
 set HG=-fx "luminance" -colorspace Gray
+set CO=-comment "novelmakegray"
 if not "!IL!"=="0" ( set SC=-sigmoidal-contrast 4,!IL!0%%)
-%MAGICKPATH%magick.exe convert %DR% %FN% %BK% %HG% %SC% %IQ% output\%CN%-!IL!-GRAY.%IE%
-
+%MAGICKPATH%magick.exe convert %DR% input\%FN%!PDFZ! %BK% %HG% %SC% temp\%CN%-!IL!-GRAY.tif 2>temp\temp-identify.txt
+echo. >>temp\temp-identify.txt
+findstr /C:"geometry does not contain image" temp\temp-identify.txt 1>nul 2>nul
+if "!errorlevel!"=="0" (
+  echo.
+  echo The page your requested is a blank page. No output produced.
+  echo Try again with a different page number.
+  if exist "temp\%CN%-!IL!-GRAY.tif" ( del temp\%CN%-!IL!-GRAY.tif)
+  echo.
+  if exist "temp\temp-identify.txt" ( del temp\temp-identify.txt)
+  exit /B 1
+)
+REM Adding comment requires a second step:
+%MAGICKPATH%magick.exe convert %CO% %IQ% %DR% temp\%CN%-!IL!-GRAY.tif output\%CN%-!IL!-GRAY.%IE%
+if exist "temp\%CN%-!IL!-GRAY.tif" ( del temp\%CN%-!IL!-GRAY.tif)
 
 REM Done:
-echo Verifying...
+echo Verifying, this takes awhile...
 echo.
-echo The Grayscale image is output\%CN%-!IL!-GRAY.%IE%.
-echo Metadata has been stripped.
 if "!IL!"=="0" (
   echo No contrast adjustment applied.
 ) else (
   echo Contrast adjustment value !IL! applied.
 )
 %MAGICKPATH%magick.exe identify -verbose output\%CN%-!IL!-GRAY.%IE% >temp\temp-identify.txt
+echo. >>temp\temp-identify.txt
+echo The Grayscale image is output\%CN%-!IL!-GRAY.%IE%.
 findstr "Colorspace" temp\temp-identify.txt 2>nul
 findstr /C:"Print size" temp\temp-identify.txt 2>nul
 findstr "PixelsPerInch" temp\temp-identify.txt 1>nul 2>nul

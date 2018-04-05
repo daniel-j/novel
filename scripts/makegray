@@ -14,7 +14,7 @@ if [ "$MAXRES" == "" ]; then MAXRES="600"; fi
 if [ "$JPG" == "" ]; then JPG="no"; fi
 
 # makegray
-# This is a Linux/macOS BASH command script.
+# This is a Linux/MacOS BASH command script.
 # Tested with BASH 3.2.57 and 4.4.12.
 # FREE SOFTWARE, WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK.
 # Copyright 2018 Robert Allgeyer.
@@ -30,7 +30,7 @@ if [ "$JPG" == "" ]; then JPG="no"; fi
 # https://ctan.org/pkg/novel  [get the one zip archive]
 # But you do not need a TeX installation to use this script.
 
-VERMSG="makegray version 1.0."
+VERMSG="makegray version 1.2."
 USAGEMSG="Usage: ./makegray [-digit] filename.ext"
 HELPMSG="Help:  ./makegray -h"
 DEMOMSG="Demo:  ./makegray [-digit] demo"
@@ -66,12 +66,14 @@ then
   echo "Place input image in input folder."
   echo "  Input image may be Color or Grayscale. No spaces in filename."
   echo "  Must be exact size and resolution [typ 300 pixels/inch]."
-  echo "  If input is PDF it will be forced to 300 pixels/inch."
+  echo "  If input is PDF it will be forced to 300 pixels/inch,"
+  echo "    or your alternative default resolution. See the README file."
+  echo "  If input is PDF, only its first page will be processed."
   echo 
-  echo "Output will appear in output folder, named filename-P-GRAY.png."
+  echo "Output will appear in output folder, named filename-P-GRAY.png [or jpg]."
   echo "  P=0: contrast unchanged."
   echo "  P=1 through 9: number provided as optional argument."
-  echo "  It will be single-channel 8-bit Grayscale. Image metadata stripped."
+  echo "  It will be single-channel 8-bit Grayscale."
   echo "  Color inputs are weighted, typical of photos."
   echo "  Resolution will be reported, but not resized, resampled, or cropped."
   echo 
@@ -84,8 +86,6 @@ fi
 echo "Converts color or grayscale image to single-channel grayscale png or jpg."
 echo "WITHOUT WARRANTY EXPRESS OR IMPLIED. USE AT OWN RISK."
 
-# Check structure of folders and required files:
-printf "Checking for presence of required files... "
 if [ ! -d "temp" ]; then mkdir temp; fi
 if [ ! -d "output" ]; then mkdir output; fi
 
@@ -108,9 +108,9 @@ then
 fi
 echo "OK"
 IL="$((10 * $IL))"
-NEEDSGS=
-DEMOMODE=
-FN=
+NEEDSGS=""
+DEMOMODE=""
+FN=""
 if [ -f "resource/internal/commonscript.sh" ]
 then
   source resource/internal/commonscript.sh
@@ -137,18 +137,32 @@ fi
 # Some improved code suggested by user daniel-j at GitHub.
 echo 
 echo "Converting..."
-DR="-density $IR -units PixelsPerInch"
-BK="-strip -flatten -background White -alpha off"
+DR="-density $IR -units PixelsPerInch -depth 8"
+BK="-strip -flatten -background White -alpha off $TI"
 HG="-fx ""luminance"" -colorspace Gray"
+CO="-comment ""novelmakegray"" "
 if [ ! "$IL" == "0" ]; then SC="-sigmoidal-contrast 4,$IL%"; fi
-convert $DR $FN $BK $HG $SC $IQ output/$CN-$IL-GRAY.$IE
-
+convert $DR input/$FN$PDFZ $BK $HG $SC $IQ temp/$CN-$IL-GRAY.tif 2>temp/temp-identify.txt
+echo  >>temp/temp-identify.txt
+grep "geometry does not contain image" temp/temp-identify.txt 1>/dev/null 2>/dev/null
+if [ $? -eq 0 ]
+then
+  echo 
+  echo "The page your requested is a blank page. No output produced."
+  echo "Try again with a different page number."
+  if [ -f "temp/$CN-$IL-GRAY.tif" ]; then rm temp/$CN-$IL-GRAY.tif; fi
+  echo 
+  if [ -f "temp/temp-identify.txt" ]; then rm temp/temp-identify.txt; fi
+  exit 1
+fi
+# Second step is needed for comment:
+convert $CO $IQ $DR temp/$CN-$IL-GRAY.tif output/$CN-$IL-GRAY.$IE
+if [ -f "temp/$CN-$IL-GRAY.tif" ]; then rm temp/$CN-$IL-GRAY.tif; fi
 
 # Done:
 echo "Verifying..."
 echo 
 echo "The Grayscale image is output/$CN-$IL-GRAY.$IE."
-echo "Metadata and color profile have been stripped."
 if [ "$IL" == "0" ]
 then
   echo "No contrast adjustment applied."

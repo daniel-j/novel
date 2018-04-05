@@ -22,7 +22,7 @@ REM    http://www.latex-project.org/lppl.txt
 REM and version 1.3c or later is part of all distributions of LaTeX
 REM version 2005/12/01 or later.
 
-set VERMSG=makecmyk.bat version 1.0.
+set VERMSG=makecmyk.bat version 1.2.
 set USAGEMSG=Usage: makecmyk [-a] filename.ext
 set HELPMSG=Help:  makecmyk -h
 set DEMOMSG=Demo:  makecmyk [-a] demo
@@ -86,7 +86,9 @@ if "%GETH%"=="yes" (
   echo   Input image may be RGB or CMYK. No spaces in filename.
   echo   May or may not have its own color profile embedded.
   echo   Must be exact size [including bleed] and resolution [typ 300 pixels/inch].
-  echo   If input is PDF it will be forced to 300 pixels/inch.
+  echo   If input is PDF it will be forced to 300 pixels/inch,
+  echo     or your alternative default resolution. See the README file.
+  echo   If input is PDF, only its first page will be processed.
   echo.
   echo Output will appear in output folder, named filename-NOTpdfx.pdf.
   echo   Output PDF has CMYK image at 240pct ink limit.
@@ -184,13 +186,13 @@ if exist "resource\internal\commonscript.bat" (
 REM Check input colorspace and possible embedded profile::
 <nul set /p=Inspecting the input image... 
 set ISCMYK=
-%MAGICKPATH%magick identify -verbose !FN! >temp\temp-identify.txt
+%MAGICKPATH%magick identify -verbose input\%FN%!PDFZ! >temp\temp-identify.txt
 echo. >>temp\temp-identify.txt
 findstr /C:"Colorspace: CMYK" temp\temp-identify.txt 1>nul 2>nul
 if "!errorlevel!"=="0" (
   set ISCMYK=yes
   echo CMYK.
-  %MAGICKPATH%magick convert %FN% temp\temp-embedded.icc 1>nul 2>nul
+  %MAGICKPATH%magick convert input\%FN%!PDFZ! temp\temp-embedded.icc 1>nul 2>nul
   if "!errorlevel!"=="0" (
     set INCOLOR=temp\temp-embedded.icc
     set ICN=e
@@ -202,7 +204,7 @@ if "!errorlevel!"=="0" (
   )
 ) else (
   echo RGB.
-  %MAGICKPATH%magick convert %FN% temp\temp-embedded.icc 1>nul 2>nul
+  %MAGICKPATH%magick convert input\%FN%!PDFZ! temp\temp-embedded.icc 1>nul 2>nul
   if "!errorlevel!"=="0" (
     set INCOLOR=temp\temp-embedded.icc
     set ICN=e
@@ -223,7 +225,22 @@ REM Information:
 echo Converting image. This takes time...
 
 REM Strip and flatten image:
-%MAGICKPATH%magick convert -units PixelsPerInch -density %IR% %FN% -strip -flatten -background White -alpha Background -alpha off temp\temp-%CN%-stripped.tif
+%MAGICKPATH%magick convert -strip -units PixelsPerInch -density %IR% input\%FN%!PDFZ! -flatten -background White -alpha Background -alpha off temp\temp-%CN%-stripped.tif 2>temp\temp-identify.txt
+echo. >>temp\temp-identify.txt
+findstr /C:"geometry does not contain image" temp\temp-identify.txt 1>nul 2>nul
+if "!errorlevel!"=="0" (
+  echo.
+  echo The page your requested is a blank page. No output produced.
+  echo Try again with a different page number.
+  if exist "temp\temp-%CN%-stripped.tif" ( del temp\temp-%CN%-stripped.tif)
+  echo.
+  if exist "temp\temp-embedded.icc" ( del temp\temp-embedded.icc)
+  if exist "temp\temp-identify.txt" ( del temp\temp-identify.txt)
+  exit /B 1
+)
+
+
+
 echo    ...Completed step 1 of 6.
 
 REM Convert to CMYK:
@@ -260,10 +277,10 @@ move "temp\%CN%-NOTpdfx.pdf" "output\%CN%-NOTpdfx.pdf" 1>nul
 echo    ...Completed step 6 of 6.
 
 REM Verify and show info on Terminal:
-echo Verifying...
+echo Verifying, this takes awhile...
 echo.
 %MAGICKPATH%magick identify -verbose temp\temp-%CN%-cmyk.tif >temp\temp-identify.txt
-echo.  >>temp\temp-identify.txt
+echo. >>temp\temp-identify.txt
 echo The CMYK is output\%CN%-NOTpdfx.pdf. It is not PDF/X.
 echo If you need PDF/X, then you must post-process using lualatex:
 if "%DEMOMODE%"=="yes" (

@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Obsolete.sty}%
-[2018/04/03 v1.50.2 LaTeX file (obsolete macros)]
+[2018/04/26 v1.52 LaTeX file (obsolete macros)]
 %%
 
 
@@ -240,6 +240,38 @@
   \end{linegap}%
   \global\@UsingNovelCommandfalse%
 } % end \BlockImage (OBSOLETE)
+%%
+
+
+%% LINEGAP IS OBSOLETE CODE. NOT DOCUMENTED.
+%% ----------------------------------------------------------------------------
+% Allows text to be placed (potentially) off-grid, with grid resuming after.
+\newif \if@WithinLinegap % true within linegap environment
+\newcounter{currentlinegap} % 0 when not within linegap, >0 otherwise.
+\DeclareDocumentEnvironment {linegap} { m } {%
+  \FPifint{#1}\else%
+    \ClassError{novel}{Non-integer linegap on page \thepage}%
+     {Only integer >= 1 allowed for linegap.}%
+  \fi%
+  \FPiflt{#1}{1}%
+    \ClassError{novel}{Insufficient linegap on page \thepage}%
+     {Only integer >= 1 allowed for linegap.}%
+  \fi%
+  \par%
+  \null%
+  \vspace*{-\nbs}%
+  \global\@WithinLinegaptrue%
+  \begin{textblock*}{\textwidth}[0,0](0pt,0pt)%
+  \setcounter{currentlinegap}{#1}
+  \strut\par%
+  \vspace*{-\nbs}%
+}{% close the environment:
+  \end{textblock*}%
+  \global\@WithinLinegapfalse%
+  \par%
+  \vspace*{#1\nbs}%
+  \setcounter{currentlinegap}{0}%
+} % end linegap (obsolete)
 %%
 
 

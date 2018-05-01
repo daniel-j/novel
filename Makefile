@@ -35,16 +35,18 @@ clean:
 
 testsuite:
 	mkdir -p build
-	OPENTYPEFONTS=./fonts/:$(shell kpsewhich -var-value OPENTYPEFONTS) \
-	TEXINPUTS=./doc/extras/:./tex/:$(shell kpsewhich -var-value TEXINPUTS) \
-	lualatex --output-directory=./build ./doc/extras/novel-testsuite.tex
+	cd doc/extras/ && \
+	OPENTYPEFONTS=../../fonts/:$(shell kpsewhich -var-value OPENTYPEFONTS) \
+	TEXINPUTS=../../tex/:$(shell kpsewhich -var-value TEXINPUTS) \
+	lualatex --output-directory=../../build ./novel-testsuite.tex
 
 borderland:
 	mkdir -p build
 	@# The loop makes sure that page numbers gets correct values in toc
 	@# It has to compile twice
 	for n in {1..2}; do \
-		OPENTYPEFONTS=./fonts/:$(shell kpsewhich -var-value OPENTYPEFONTS) \
-		TEXINPUTS=./other/house-on-the-borderland/:./tex/:$(shell kpsewhich -var-value TEXINPUTS) \
-		lualatex --output-directory=./build ./other/house-on-the-borderland/borderland.tex; \
+		cd other/house-on-the-borderland/ && \
+		OPENTYPEFONTS=../../fonts/:$(shell kpsewhich -var-value OPENTYPEFONTS) \
+		TEXINPUTS=../../tex/:$(shell kpsewhich -var-value TEXINPUTS) \
+		lualatex --output-directory=../../build ./borderland.tex; \
 	done

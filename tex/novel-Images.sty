@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Images.sty}%
-[2018/04/03 v1.50.2 LaTeX file (image placement)]
+[2018/04/26 v1.52 LaTeX file (image placement)]
 %%
 
 
@@ -215,7 +215,15 @@ end
 % With the starred command, the image occupies zero cursor width, so that
 %   anything following will overlie it.
 \DeclareDocumentCommand \InlineImage { s O{0pt} m }{%
-  \@TestImageExtension{#3}% 
+  \@TestImageExtension{#3}%
+  \@tempTFfalse%
+  \if@pdfxSEToff%
+    \@tempTFtrue%
+  \else%
+    \IfSubStr*{\@UnknownImages}{#3}{\@tempTFtrue}{}%
+    \IfSubStr*{\@AllGoodImages}{#3}{\@tempTFtrue}{}%
+  \fi%
+  \if@tempTF\else\@NovelInspectImage{#3}\fi%
   \StrDel{#2}{\space}[\@myila]%
   \StrCut{\@myila}{,}{\@myilxa}{\@myilya}%
   \ifthenelse{\equal{\@myilxa}{} \OR \equal{\@myilxa}{0}}{%
@@ -297,6 +305,14 @@ end
       {Header footer allow \string\InlineImage, but not \string\FloatImage.}%
   }{}%
   \@TestImageExtension{#3}%
+  \@tempTFfalse%
+  \if@pdfxSEToff%
+    \@tempTFtrue%
+  \else%
+    \IfSubStr*{\@UnknownImages}{#3}{\@tempTFtrue}{}%
+    \IfSubStr*{\@AllGoodImages}{#3}{\@tempTFtrue}{}%
+  \fi%
+  \if@tempTF\else\@NovelInspectImage{#3}\fi%
   % Sadly, parsing with `xstring' involves roundabout code:
   \StrDel{#2}{\space}[\@tempArgs]%
   \StrCut{\@tempArgs}{,}{\@tempArgA}{\@tempArgX}%
@@ -333,10 +349,28 @@ end
   \end@float\par%
   \floatlocation{figure}{!ht}% restore default float method
   \null%
-  \vspace{-\nbs}%
-  \vspace{\@NovelCaulk}%
+  \vspace{0.01pt plus 0pt minus 0.02pt} % caulk
 } %
 %
+
+%% Environment @floatimagegap. Only used by \@FloatImage command.
+% Creates a gap at fixed height, regardless of content.
+% Needs to compensate for prior line depth.
+\newcounter{@gaplines} % passes the argument down to environment end
+\DeclareDocumentEnvironment {@floatimagegap} { m } {%
+  \par%
+  \null%
+  \vspace*{-\nbs}%
+  \begin{textblock*}{\textwidth}[0,0](0pt,0pt)%
+  \setcounter{@gaplines}{#1}%
+  \strut\par%
+  \vspace*{-\nbs}%
+}{% close the environment:
+  \end{textblock*}%
+  \par%
+  \vspace*{#1\nbs}%
+} %
+%%
 \DeclareDocumentCommand \@FloatImage { m m m }{% DO NOT CALL DIRECTLY
   \global\@UsingNovelCommandtrue%
   \gdef\@mygraphic{\novel@sub@inclgr[scale=\@TMratio]{#3}}%
@@ -353,13 +387,13 @@ end
   % If a full-page image is too tall for a page, standard TeX float will
   %   delay it until the time that floats are cleared, typically by \clearpage.
   %   That would probably be at the end of a chapter.
-  % In `novel' this behaivor is hacked. Regardless of the image's actual
+  % In `novel' this behavior is hacked. Regardless of the image's actual
   %   height, it is treated as if its height does not exceed whatever will
   %   fit on a single page. Then, a full-page float will appear at the first
   %   opportunity, rather than being delayed. As a consquence, an oversized
   %   full-page float may overflow into the footer or bottom margin.
   %   To fix that (if it matters), you need to edit the image in graphics.
-  \begin{linegap}{\@allowmyoverflow}%
+  \begin{@floatimagegap}{\@allowmyoverflow}%
     \vspace*{-\nfs}%
     \null%
     {\centering%
@@ -369,7 +403,7 @@ end
       }%
       \par%
     }%
-  \end{linegap}%
+  \end{@floatimagegap}%
   \global\@UsingNovelCommandfalse%
 } % 
 % end Float Image
@@ -401,8 +435,128 @@ end
 %%
 
 
+%% New in version 1.52: read file bytes as plain text, for later parsing.
+% Output is comma-separated list of byte codes, decimal 0-255.
+% Returns -1 if requested start is more than file size.
+% Returns all bytes if requested number exceeds file size.
+% Does not test if file exists; error if not found.
+\DeclareDocumentCommand\novelgetbytes { m m m } {%
+  % filename, start byte number (0=beginning, e=up to end), number of bytes
+  \ifthenelse{\equal{#2}{e}}{% package xifthen
+    \long\edef\novelbytesare{%
+      \directlua{
+        inp = assert(io.open("#1", "rb"))
+        local e=inp:seek("end")
+        if #3>e+1 then
+          inp:seek("set")
+          local r=inp:read(e)
+          sep=""
+          for i,_ in string.bytes(r)
+          do
+          tex.sprint(sep)
+          sep=","
+          tex.sprint(i)
+          end
+        else
+          local b=e-2-math.min(e,#3)
+          local w=1+math.min(e,#3)
+          inp:seek("set",b)
+          local r=inp:read(w)
+          sep=""
+          for i,_ in string.bytes(r)
+          do
+          tex.sprint(sep)
+          sep=","
+          tex.sprint(i)
+          end
+        end
+      }%
+    }%
+  }{%
+    \long\edef\novelbytesare{%
+      \directlua{
+        inp = assert(io.open("#1", "rb"))
+        local e=inp:seek("end")
+        if #2>e then tex.sprint(-1) else
+          local w=math.min(#3,e-#2)
+          inp:seek("set",#2)
+          local r=inp:read(w)
+          sep=""
+          for i,_ in string.bytes(r)
+          do
+          tex.sprint(sep)
+          sep=","
+          tex.sprint(i)
+          end
+        end
+      }%
+    }%
+  }%
+} % end @novelgetbytes
 
- 
+%%
+% png bit depth is 8 for ordinary color or gray, 1 for b/w monochrome.
+% Although png allows more than 8, `novel' does not.
+\def\novelpngbitdepth#1{\novelgetbytes{#1}{24}{1}\novelbytesare}
+% png color type: 0=grayscale (incl. b/w).
+% `novel' only permits colortype 0 for non-color book interiors.
+% other: 2=rgb, 3=indexed rgb, 4=gray alpha, 6=rgb alpha.
+\def\novelpngcolortype#1{\novelgetbytes{#1}{25}{1}\novelbytesare}
+%%
+
+%%
+% Examine png or jpg image for novel-make as comment:
+% Known-good images, will not be inspected. Comma-separated list:
+\newcommand\SetKnownGoodImages[1]{
+  \gdef\@KnownGoodImages{#1}
+}
+\SetKnownGoodImages{} % default empty
+\gdef\@AllGoodImages{}
+\gdef\@UnknownImages{}
+%
+\gdef\@GatherGoodImages{% called \AtBeginDocument by `novel.cls'.
+  \let\SetKnownGoodImages\relax
+  \xdef\@AllGoodImages{\@KnownGoodImages\space \@AllGoodImages}
+  \if@pdfxSEToff
+    \xdef\@AllGoodImages{\@KnownGoodImages}
+    \xdef\@UnknownImages{}
+  \fi
+}
+% This is the (decimal) code string:
+\gdef\@novelmake{110,111,118,101,108,109,97,107,101}
+%
+\newcommand\@NovelInspectImage[1]{%
+  \StrRight{#1}{3}[\tempEXT]%
+  \ifthenelse{\equal{\tempEXT}{png} \OR \equal{\tempEXT}{PNG}}{%
+    \novelgetbytes{#1}{e}{256}%
+  }{% jpg or JPG:
+    \novelgetbytes{#1}{0}{256}%
+  }%
+  \IfSubStr{\novelbytesare}{\@novelmake}{%
+    \xdef\@AllGoodImages{\@AllGoodImages\space #1}%
+  }{%
+    \xdef\@UnknownImages{\@UnknownImages\space #1}%
+  }%
+}
+%%
+
+
+%% Called \AfterEndDocument by `novel.cls`:
+\long\gdef\@WarnUnknownImages{%
+  \@tempTFfalse%
+  \ifthenelse{\equal{\@UnknownImages}{}}{}{\@tempTFtrue}%
+  \if@pdfxSEToff\@tempTFfalse\fi%
+  \if@tempTF%
+      \typeout{^^JClass `novel' Alert: Some images not processed by scripts.^^J%
+       \space List of unprocessed images: \@UnknownImages ^^J%
+       \space Above list does not include any `known good' set by you. ^^J^^J}%
+      \ClassWarning{novel}{\@testintentional %
+      Some images may not meet PDF/X specifications. ^^J%
+      See near end of log file for `Some images not processed by scripts`. ^^J}%
+  \fi%
+}
+%%
+
 
 
 %%

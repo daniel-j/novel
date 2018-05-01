@@ -357,7 +357,7 @@ function closeall() {
     </ul>
   </li><!-- end 5 -->
 
-  <li id="l6"><span class="n"></span><a href="#h6"><b>6. Text Size, Style, Position, Notes</b></a>
+  <li id="l6"><span class="n"></span><a href="#h6"><b>6. Text Size, Style, Position</b></a>
     <ul id="u6">
       <li id="l6.1"><span class="n"></span><a href="#h6.1">6.1 Text Sizes</a>
         <ul id="u6.1">
@@ -391,21 +391,10 @@ function closeall() {
           <li><a href="#h6.4.2">6.4.2 Local Real or Fake</a></li>
         </ul>
       </li><!-- end 6.4 -->
-      <li id="l6.5"><span class="n"></span><a href="#h6.5">6.5 Footnotes, Endnotes</a>
-        <ul id="u6.5">
-          <li><a href="#h6.5.1">6.5.1 Footnotes</a></li>
-          <li id="l6.5.2"><span class="n"></span><a href="#h6.5.2">6.5.2 Endnotes</a>
-            <ul id="u6.5.2">
-              <li><a href="#h6.5.2.1">6.5.2.1 Marking the Endnote</a></li>
-              <li><a href="#h6.5.2.2">6.5.2.2 Writing the Endnote</a></li>
-            </ul>
-          </li>
-        </ul>
-      </li><!-- end 6.5 -->
     </ul>
   </li><!-- end 6 -->
 
-  <li id="l7"><span class="n"></span><a href="#h7"><b>7. Images</b></a>
+  <li id="l7"><span class="n"></span><a href="#h7"><b>7. Images, Pictures, Drawings</b></a>
     <ul id="u7">
       <li id="l7.1"><span class="n"></span><a href="#h7.1">7.1 Technical Requirements</a>
         <ul id="u7.1">
@@ -424,6 +413,31 @@ function closeall() {
       </li><!-- end 7.2 -->
     </ul>
   </li><!-- end 7 -->
+
+  <li id="l8"><span class="n"></span><a href="#h8"><b>8. Tables, Lists</b></a>
+    <ul id="u8">
+      <li id="l8.1"><span class="n"></span><a href="#h8.1">8.1 The toc Environment</a>
+        <ul id="u8.1">
+          <li><a href="#h8.1.1">8.1.1 Entries Using \tocitem</a></li>
+          <li><a href="#h8.1.2">8.1.2 Example Table</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+  <li id="l9"><span class="n"></span><a href="#h9"><b>9. Footnotes, Endnotes</b></a>
+    <ul id="u9">
+      <li id="l9.1"><span class="n" style="visibility:hidden"></span><a href="#h9.1">9.1 Footnotes</a></li>
+      <li id="l9.2"><span class="n"></span><a href="#h9.2">9.2 Endnotes</a>
+        <ul id="u9.2">
+          <li><a href="#h9.2.1">9.2.1 Placing: \endnote</a></li>
+          <li><a href="#h9.2.2">9.2.2 Writing: \endnotetext</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+
 
   <li><i>Appendices:</i></li>
 
@@ -555,7 +569,7 @@ function closeall() {
 <div id="main">
 <!-- **************************************************************************************** -->
 
-<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.50.2, 2018/04/03</span></h1>
+<h1 id="h0" style="padding-top:16px">Document class <i>novel</i> - documentation. &nbsp; <span style="font-size:75%">V. 1.52, 2018/04/26</span></h1>
 <p class="noindent"><span id="screennoscript" class="screennoscript"><b>For enhanced navigation of this file, turn on JavaScript.</b></span></p>
 <div><script>if(document.getElementById("screennoscript")){document.getElementById("screennoscript").style.display="none";}</script></div>
 
@@ -705,8 +719,10 @@ function closeall() {
 
 <h3 id="h2.2">2.2. sandbox</h3>
 <div class="d3" id="d2.2">
-<p class="noindent">This option is new in version 1.50.</p>
+<p class="noindent">New in version 1.50. You work in <code>sandbox</code> mode as a class option:</p>
+<p class="code"><code>\documentclass[sandbox]{novel}</code></p>
 <p class="item"><b>A.</b> In <code>sandbox</code> mode, you can use many packages that would otherwise be prohibited. This will allow you to create tables and diagrams using nearly any methods ordinarily available in most other document classes. Of course, you may have to load some additional packages.</p>
+<p>Also, when in <code>sandbox</code> mode, many glues and lengths are set to values that are typical of other document classes, rather than the special values ordinarily used by <i>novel</i>.
 <p class="item"><b>B.</b> The <code>sandbox</code> is limited to 4 pages of output, regardless of document length. So, you cannot use <code>sandbox</code> for your whole book. Instead, create one or more separate <code>sandbox</code> files.</p>
 <p class="item"><b>C.</b> Your <code>sandbox</code> document should have the same layout as your full document. Then it is a drawing canvas. On a per-page basis, whatever fits in <code>sandbox</code> will also fit in your main document.</p>
 <p class="item"><b>D.</b> If you also enable draft mode and shademargins, you can see the size of available space on the <code>sandbox</code> pages.</p>
@@ -1643,7 +1659,9 @@ Who could blame them? It's not like they lived in Italy.\par<br/>
 Ah, such ill fortune haunted the Withens!\par<br/>
 Unfortunately, novelists of that era had so little to write about, or they would have chosen another family to pursue.\par
 </small></code></p>
-<p class="item" style="position:relative"><b>C.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you are using <code>\scenebreak</code> and the gap occurs at the very bottom or top of a page, then manually substitute <code>\sceneline</code> or <code>\scenestars</code> there. This is a standard way to indicate that the gap is intentional. The substitution is not automatic.</p>
+<p class="item"><b>C.</b> From version 1.52, a badly-placed scene break will be detected, and a Warning message will be issued.</p>
+<p>If <code>\scenebreak</code> is positioned at the very top or bottom of a page, then the Warning will advise you to substitute it with either <code>\scenestars</code> or <code>\sceneline</code>. The substitution is not automatic.</p>
+<p>If any of <code>scenebreak</code>, <code>\sceneline</code>, or <code>\scenestars</code> appears just one line away from the top or bottom of a page, you will get a Warning.</p>
 
 <h4 id="h5.3.1">5.3.1. <code>\SetScenebreakIndent{<em>true</em> or <em>false</em>}</code></h4>
 <div class="d4" id="d5.3.1">
@@ -1770,21 +1788,23 @@ Alpha\charscale*[1.25,8em,1.3<span style="cursor:help" title="normal baseline sk
 <h4 id="h6.1.3">6.1.3. <code>\begin{parascale}[<em>scale</em>] ... \end{parascale}</code></h4>
 <div class="d4" id="d6.1.3">
 <p class="item"><b>A.</b> The <i>parascale</i> environment is used on a paragraph basis. More than one paragraph may be included. The scale is applied to the font size and to the baselineskip within.</p>
-<p class="item"><b>B.</b> Note that the scale is an <i>optional</i> argument.</p>
-<p class="item"><b>C.</b> Since the text within <i>parascale</i> generally will not occupy an integer number of normal baseline skips, the following text will be off-grid. This may not be a problem, if <i>parascale</i> is used on a <a href="#hD.3.1.1">display page</a>. It may not be a problem, if <i>parascale</i> is used inside <a href="#h5.1.2">ChapterStart</a>. But it is certainly a problem if <i>parascale</i> is used within main text.</p>
-<p class="item"><b>D.</b> To restore the main line grid, when <i>parascale</i> is used within main text, wrap <i>parascale</i> in the <a href="#h6.3.2">linegap</a> environment.</p>
-<p>The line gap is not automatic; you must compile, look at the result of <i>parascale</i>, then adjust the gap and re-compile. If your text is on more than one page, then you will need to use more than one <i>linegap</i>.</p>
+<p>Note that the scale is an optional argument. Default is <code>1</code>.</p>
+<p class="item"><b>B.</b> The <i>parascale</i> environment is allowed to cross page boundaries.</p>
+<p>Trick: If you place an ordinary paragraph in <i>parascale</i> at scale <code>1</code>, then you will know whether or not that paragraph remains on one page.</p>
+<p class="item"><b>C.</b> For scale less than or equal to <code>1</code>, the first line in <i>parascale</i> will be at the normal baseline position. The following lines will progressively depart from the normal grid (unless scale is <code>1</code>). Thus, you will usually need to add some amount of vertical space following <i>parascale</i>, in order to restore subsequent text to the line grid.</p>
+<p class="item"><b>D.</b> You will usually get a Warning message, advising you that <i>parascale</i> caused the subsequent text (after the environment closed) to be off-grid. Fix by adding the requisite <code>\vspace</code> just prior to <code>\end{parascale}</code>.</p>
+<p>If <i>parascale</i> is entirely on a single page, you may also split the <code>\vspace</code>: Place part of it prior to <code>\begin{parascale}</code>, and part of it prior to <code>\end{parascale}</code>.</p>
+<p class="item"><b>E.</b> If multiple <i>parascale</i> end on a single page, the line deficit is cumulative. For example, if the first deficit is <code>0.5\nbs</code> and the second defict is <code>0.8\nbs</code>, you would fix them by adding <code>0.5\nbs</code> and <code>0.3\nbs</code> respectively.</p>
+<p class="item"><b>E.</b> Example:</p>
 <p class="code"><code><small>
 Lord Withens sneaked out the door of the veranda, and hastily opened the letter. In it was a message that curled his jodphurs:\par<br/>
-\begin{linegap}{2} % Not always the same as the parascale line count.<br/>
 \begin{parascale}[0.87]<br/>
-\vspace{0.18<span style="cursor:help" title="normal baseline skip">\nbs</span>}<br/>
-We know where youse been goin them dark and stormy nights. We knows what you been doin out there. We got yer number, Jack.\par<br/>
+We knows where youse been a-goin all a them dark and stormy nights. We knows what you been doin out there. We got yer number, Jack. So youse better play nice or we gonna rat to the lady.\par<br/>
+\vspace{0.26\nbs} % Without this, a Warning is issued, adivisng 0.26\nbs.<br/>
 \end{parascale}<br/>
-\end{linegap}<br/>
 Even after his jodphurs had finally uncurled, Lord Withens could not master his rage. ``My name's not Jack,'' he mumbled.\par
 </small></code></p>
-<p class="centerimg"><img src="html-resources/parascale.png" width="642" height="198" title="parascale inside linegap" alt="parascale inside linegap"/></p>
+<p class="centerimg"><img src="html-resources/parascale.png" width="598" height="214" title="parascale with vspace" alt="parascale with vspace"/></p>
 </div><!-- end 6.1.3 -->
 
 <h4 id="h6.1.4">6.1.4. Open Type Scale (fontspec)</h4>
@@ -1911,7 +1931,7 @@ This text is in lightgray, until the group ends.<br/>
 <div class="d4" id="d6.3.1">
 <p class="item"><b>A.</b> The <code>\raisebox</code> command does not play well with novel. It can be used on a <a href="#hD.3.1.1">display page</a>, where line grid is less important. In main text, avoid it. Use <code><a href="#h6.1.2">\charscale</a></code> instead.</p>
 <p class="item"><b>B.</b> If you must use the <code>\vspace</code> command (or its relative, <code>\vskip</code>) be sure to measure the space in units of <code><span style="cursor:help" title="normal baseline skip">\nbs</span></code> (normal baseline skip).</p>
-<p class="item"><b>C.</b> Avoid the <i>minipage</i> and <i>parbox</i> environments. These are likely to disrupt the line grid. When that happens, restoring the grid is your own responsibility. You may find the <i>adjustwidth</i> and <i>linegap</i> environments to be useful, as described in the next section.</p>
+<p class="item"><b>C.</b> Avoid the <i>minipage</i> and <i>parbox</i> environments. These are likely to disrupt the line grid. When that happens, restoring the grid is your own responsibility. You may find the <i>adjustwidth</i> environment to be useful, as described in the next section.</p>
 <p class="item"><b>D.</b> In most cases, do not use the center environment. You may use <code>{\centering ... \par}</code> instead, for a single paragraph. The center environment may cause the text to go off-grid. That's not a problem on some <a href="#hD.3.1.1">display pages</a> where you don't care about the grid, but it is ugly in the middle of running text.</p>
 <p class="item"><b>E.</b> Avoid positioning via the <i>textblock</i> or <i>textblock*</i> environments (package <i>textpos</i>).</p>
 <p>Actually, <i>novel</i> uses that code internally. But if not handled with more care than usual, positioned text can disrupt the baseline and position of surrounding text. You may use <code><a href="#h6.1.2">\charscale</a></code> to position small amounts of text safely, but not on a paragraph basis.</p>
@@ -1926,17 +1946,12 @@ This text is in lightgray, until the group ends.<br/>
 <p class="noindent">This is not a complete list. It merely addresses a few situations that you are likely to encounter, without the need for elaborate code, and without loading additional packages.</p>
 <p style="margin-top:10pt"><code>\begin{adjustwidth}{<em>left</em>}{<em>right</em>} ... \end{adjustwidth}</code></p>
 <p>This environment, from the included <i>changepage</i> package, is the most useful way to create block indents. The included text may have multiple paragraphs and span pages. The left and right arguments are lengths, being the amount to <em>increase</em> the respective margins from their normal values.</p>
-<p id="linegap" style="margin-top:10pt"><code>\begin{linegap}{<em>integer</em>} ... \end{linegap}</code></p>
-<p>This environment creates a gap of <i>integer</i> lines. Then, the following text will be on-grid, regardless of what you place inside the environment. If the contents are small relative to the gap, there will be a lot of white space. If the contents are too large, then they will overflow the gap and overlap the following text, rather than push it down.</p>
-<p>This environment is particularly useful when it contains highly styled text, because you don't have to calculate a <code>\vspace</code> to restore the following line grid. Pick a likely gap, then make it larger or smaller as desired.</p>
-<p>The environment fails if it crosses a page boundary. There will be no error, merely an undesired result. Be sure to plan your writing so that the linegap remains on a single page.</p>
-<p>If you use a non-integer linegap, it will be processed that way, but there will be a warning in the log file. The only reason it is not an error, is that a non-integer linegap might be useful on some <a href="#hD.3.1.1">display pages</a>.</p>
 <p style="margin-top:10pt"><code>\rotatebox{<em>text</em>}</code></p>
 <p>This command is from the included <i>graphicx</i> package. It rotates the text, about an axis at the lower left of the text. If you wish to rotate the text about its center, use <code>\rotatebox[origin=c]{text}</code>.</p>
 <p>This command plays nicely with <code>\charscale</code>, so you can size, rotate, and displace a string of text (single line). It makes a difference which command goes inside the other. More likely than not, the effect you want is obtained by using <code>\charscale</code> on the outside, with <code>\rotatebox</code> inside.</p>
-<p>To avoid disturbing the line grid, <code>\rotatebox</code> is best used inside the <a href="#linegap">linegap</a> environment.</p>
+<p>To avoid disturbing the line grid, <code>\rotatebox</code> is best used with <a href="#h6.1.2">\charscale</a> and a few blank lines.</p>
 <p style="margin-top:10pt"><code>\phantom{<em>text</em>}</code></p>
-<p>Does not print the text, but leaves a horizontal gap as if the text were there.</p>
+<p>Does not print the text, but leaves a horizontal gap as if the text were there. Caution: In some locations, this command has unexpected results, such as by adding a line.</p>
 <p style="margin-top:10pt"><code>\mbox{<em>text</em>}</code></p>
 <p>Prevents a specific word from being hyphenated, or to ensure that two consecutive words always appear on the same line. The box will not be broken across lines. However, it may overhang the margin, which is undesirable.</p>
 <p style="margin-top:10pt"><code>\makebox[<em>width</em>][<em>alignment</em>]{<em>text</em>}</code></p>
@@ -1978,7 +1993,7 @@ This text is in lightgray, until the group ends.<br/>
 <div class="d4" id="d6.4.1">
 <p class="item"><b>A.</b> This command may only be used in the Preamble. It globally sets the kind of marker to be used. Default is <i>real</i> and <i>asterisk</i>.</p>
 <p class="item"><b>B.</b> The optional argument applies real or fake markers, as described above.</p>
-<p class="item"><b>C.</b> The required argument applies only to markers created by the <code>\footnote</code> command. It does not apply to endnotes, or to manually placed superscripts and subscripts.</p>
+<p class="item"><b>C.</b> The required argument applies only to markers created by the <a href="#h9.1"><code>\footnote</code></a> command. It does not apply to endnotes, or to manually placed superscripts and subscripts.</p>
 <p class="item"><b>D.</b> The available choices for marker style:</p>
 <p>&bull; <i>asterisk</i> (default) uses symbolic footnote markers. The symbols rotate in order * † ‡ § ** †† ‡‡ §§ until reset.</p>
 <p>&bull; <i>dagger</i> uses symbolic footnote markers, but without asterisks. The symbols rotate in order † ‡ § †† ‡‡ §§ until reset.</p>
@@ -1992,62 +2007,6 @@ This text is in lightgray, until the group ends.<br/>
 </div><!-- end 6.4.2 -->
 </div><!-- end 6.4 -->
 
-<h3 id="h6.5">6.5. Footnotes and Endnotes</h3>
-<div class="d3" id="d6.5">
-<p class="item"><b>A.</b> The <i>novel</i> class has <em>limited</em> support for footnotes, because they are rarely used in fiction. Nevertheless, I have seen them. The notes may be factual or imaginary.</p>
-<p class="item"><b>B.</b> If there are more than a handful of notes, then use <a href="#h6.5.2">endnotes</a> to avoid a constant disruption of the text flow. You may use both footnotes and endnotes.</p>
-<p class="item"><b>C.</b> In the running text, markers for footnotes and endnotes are superscripts. You may control their appearance using the method of <a href="#h6.4">section 6.4</a>.</p>
-<p class="item"><b>D.</b> The actual footnote (at base of page) or endnote (wherever placed) does <i>not</i> use a superscript for its marker. Instead, the marker has ordinary size and position. This is the recommended style.</p>
-
-<h4 id="h6.5.1">6.5.1. Footnotes</h4>
-<div class="d4" id="d6.5.1">
-<p class="item"><b>A.</b> Footnotes appear at the bottom of the page where they are placed. There is no option to accumulate them to another location. Very long footnotes might straddle pages, but that is automatic, and not within your control.</p>
-<p class="code"><code>\footnote[<em>option</em>]{<em>text</em>}</code></p>
-<p class="item"><b>B.</b> The <code>\footnote</code> command places a superscript "marker" at the place where the command is written. The included text is written at the bottom of the page, beneath a short line that separates it from the main text. The footnote text is at smaller size and line skip, and has the same marker placed before it (but not as superscript). All of this is automatic.</p>
-<p class="item"><b>C.</b> You may, if necessary, apply some style to the footnote text. For example, if you are referring to another work, its title might be in italics.</p>
-<p class="item"><b>D.</b> Normally, no option is used. If you use option <i>0</i> (zero) then no marker will appear in the main text, and the footnote text will also appear without a marker. The count of markers is not incremented. This applies whether the markers are numbers or symbols.</p>
-<p><b>E.</b> If you are normally using footnote <i>numbers</i>, but wish to place a particular footnote using a <i>symbol</i> instead, you can do it manually. For example:</p>
-<p class="code"><code>He blinked.*\footnote[0]{* No, he didn't.}</code></p>
-<p><b>F.</b> Avoid use of underlining or bold. It is considered bad style, due to visual distraction. If necessary, use italics.</p>
-<p class="item" style="position:relative"><b>G.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Sorry, but even though there are numerous TeX packages for custom footnote styles, they will not work in <i>novel</i>. This is intentional.</p>
-</div><!-- end 6.5.1 -->
-
-<h4 id="h6.5.2">6.5.2. Endnotes</h4>
-<div class="d4" id="d6.5.2">
-<p class="item"><b>A.</b> Endnotes are sometimes used in fiction. Often, the endnotes are also fictional.</p>
-<p class="item"><b>B.</b> You may use both footnotes and endnotes. However, if endnotes are used, then footnotes must be marked by symbols, rather than by numbers, to avoid confusion. The counts for endnotes and footnotes are independent.</p>
-<p class="item"><b>C.</b> If you gather endnotes at the rear of your book, then arabic page numbering continues. Think of the endnotes as just another chapter. If you use page headings, then the preferred style is to use something like <i>Notes to Chapters 3-4</i> in the headings, changing it on a page by page basis using <code><a href="#h4.3.4.6">\SetRectoheadText</a></code> and <code><a href="#h4.3.4.6">\SetVersoheadText</a></code>.</p>
-<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> The <i>endnotes</i> package may not be used, due to conflict with <i>novel's</i> built-in commands.</p>
-
-<h5 id="h6.5.2.1">6.5.2.1. <code>\endnote{<i>comment</i>}</code>, <code>\ResetEndnote</code></h5>
-<div class="d5" id="d6.5.2.1">
-<p class="item"><b>A.</b> The <code>\endnote</code> command inserts a numerical superscript in the text. A running count of the numbers is automatically updated.</p>
-<p class="item"><b>B.</b> Endnote numbers normally run continuously through the text. If you wish to reset the count (perhaps at new chapters), you have to do it manually, using <code>\ResetEndnote</code> at the appropriate location.</p>
-<p class="item"><b>C.</b> No argument is needed. But if you write <code style="white-space:nowrap">\endnote{<i>some comment</i>}</code>, then the comment will not print. It is merely a note to yourself, reminding you why you put an endnote there. The comment is not stored for later use, so it is not the actual content of the endnote text.</p>
-<p class="item"><b>D.</b> You may not immediately follow <code>\endnote</code> with a square bracket <code>[</code>. If you do that, an error results. If you need to follow the command with a printing square bracket, then use <code>\endnote{}[</code>.
-<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> The <i>novel</i> class does not know, and does not care, whether or not you actually write the endnotes later. The <code>\endnote</code> command merely places a marker. It does not record data for later use.</p>
-
-</div><!-- end 6.5.2.1 -->
-
-<h5 id="h6.5.2.2">6.5.2.2. <code>\endnotetext{<i>number</i>}{<i>text</i>}</code></h5>
-<div class="d5" id="d6.5.2.2">
-<p class="item"><b>A.</b> The built-in <code>\endnotetext{}{}</code> takes two mandatory arguments. No optional argument. If you follow <code>\endnotetext</code> with a square bracket <code>[</code>, then an error results.</p>
-<p class="item"><b>B.</b> The first argument is usually the endnote number. A period and following space will automatically be added. You may use <code>\emph{<em>number</em>}</code> if you prefer the number to be in italics.</p>
-<p class="item"><b>C.</b> The text will be block-indented. It is limited to one paragraph. If the note needs more than one paragraph, then continue like this, with an empty note number:</p>
-<p class="code"><code>\endnotetext{}{\indent <em>text</em>}</code></p>
-<p class="item"><b>D.</b> Example of an endnote:</p>
-<p class="code">
-<code><small>
-\endnotetext{9}{Yang Sho-Nuff was the twelfth son of the elder god of the ancient Who-Zit Clan, with power over the forces of rust.\par}<br/>
-\endnotetext{}{\indent However, since this was not yet the Iron Age, the terrible might of Yang Sho-Nuff was largely unrecognized.\par}<br/>
-\endnotetext{10}{As Professor Withens notes in his treatise, \emph{When Sho-Nuff Was Not Enough}, the ceremony of daily human sacrifice had a devastating effect on the tribal population.\par}
-</small></code></p>
-<p class="centerimg"><img src="html-resources/endnotetext.png" width="447" height="151" alt="using endnotetext"/></p>
-<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/>If you don't like the built-in <code>\endnotetext</code> style, you can change it to suit your needs, using <code>\renewcommand</code>. Coding is up to you!</p>
-</div><!-- end 6.5.2.2 -->
-</div><!-- end 6.5.2 -->
-</div><!-- end 6.5 -->
-
 
 </div><!-- end 6 -->
 </div><!-- end page06 -->
@@ -2055,16 +2014,19 @@ This text is in lightgray, until the group ends.<br/>
 <div id="page07" class="page">
 
 
-<h2 id="h7">7. Images</h2>
+<h2 id="h7">7. Images, Pictures, Drawings</h2>
 <div class="d2" id="d7">
-<p class="item"><b>A.</b> If your book consists primarily of artwork, rather than text, then you should use a page layout program designed for that purpose, instead of TeX.</p>
-<p>Bleed is only supported for cover artwork, not book interior.</p>
-<p class="item"><b>B.</b> You may only use raster images, not vector drawings. If you use a vector program (such as Inkscape), you must export your work as a raster image.</p>
-<p class="item"><b>C.</b> You cannot crop, transform, resize, or resample images within <i>novel</i>. Each image must be placed at exact size and resolution.</p>
+<p class="item"><b>A.</b> <b>Interior Bleed</b> is not supported. Only cover artwork has bleed.</p>
+<p>If your book consists primarily of artwork, rather than text, then you should use a page layout program designed for that purpose, instead of TeX.</p>
+<p class="item"><b>B.</b> The <b>picture environment</b> is not supported.</p>
+<p>If you try to use a <code>picture</code> environment, it will probably not throw an error, because pictures are used in the internal code. However, you will get unexpected layout. In any case, <b>caption</b> is not supported.</p>
+<p class="item"><b>C.</b> Most <b>vector drawings</b> (pgfplots, pstricks, TikZ) are not supported.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> You may work with the picture environment, and use vector drawings, in <code><a href="#h2.2">sandbox</a></code> mode.</p>
+<p>This requires you to create your picture or drawing in a separate document, then process the PDF to a raster image. The raster image is placed in your main document, using the commands provided in this section.</p>
+<p class="item"><b>E.</b> You cannot crop, transform, resize, or resample images within <i>novel</i>. Each image must be placed at exact size and resolution.</p>
 <p>So, if an image has print size 1.5" by 2" at 300dpi resolution, then its dimensions must be 450x600 pixels. Be sure that the image file contains its resolution.</p>
-<p class="item"><b>D.</b> If you wish to use something such as LaTeX TikZ, then create another small document using the <code><a href="#h2.2">sandbox</a></code> class option.</p>
 
-<h3 id="h7.1">7.1. Technical Requirements for Images</h3>
+<h3 id="h7.1">7.1. Technical Requirements for Raster Images</h3>
 <div class="d3" id="d7.1">
 
 <p class="noindent">Interior images may be black/white line art, or grayscale. Interior color is not supported. Color cover artwork has strong support.</p>
@@ -2079,6 +2041,10 @@ This text is in lightgray, until the group ends.<br/>
 <p class="item"><b>F.</b> Most print services require that images must be stripped of private metadata (such as EXIF), and that the color space be DeviceGray, rather than specified by a transfer profile.</p>
 <p class="item"><b>G.</b> Black/White images must be in <i>png</i> file format. Grayscale images may be in either <i>png</i> or <i>jpg</i> file format.</p>
 <p class="item" style="position:relative"><b>H.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> In the documentation <i>extras</i> folder, <i style="white-space:nowrap">novel-scripts.zip</i> will help you comply with these requirements. Complete usage information is provided there.</p>
+ <p class="item"><b>I.</b> From version 1.52, <i>novel</i> detects whether or not an interior image was pre-processed using <i>novel-scripts</i>. If yes, it is "known good". If no, it is "unknown" and may be good or bad.</p>
+<p>If your document has any "unknown" images, you will get a Warning. The list of "unknown" images is written near the bottom of the log file.</p>
+<p>If you know that an image meets specs (because you are a graphic artists who knows these things), but it wasn't processed by <i>novel-scripts</i>, you can manually add it to the list of "known good" images. In Preamble:</p>
+<p class="code"><code>\SetKnownGoodImages{somefile.png anotherfile.jpg}</code></p>
 </div><!-- end 7.1.1 -->
 
 <h4 id="h7.1.2">7.1.2. Color Cover</h4>
@@ -2176,6 +2142,143 @@ He would have taken the car, had it not been stolen. But that was why he was her
 
 </div><!-- end 7 -->
 </div><!-- end page07 -->
+<!-- ************************************************************ -->
+<div id="page08" class="page">
+
+
+<h2 id="h8">8. Tables and Lists</h2>
+<div class="d2" id="d8">
+<p class="item"><b>A.</b> <b>Lists</b> are not supported.</p>
+<p>If you attempt to use any of the well-known list environments, an error will result. This is because lists are typeset using layout incompatible with the rest of <i>novel</i></p>
+<p>If you need a list, you can use <code><a href="#h2.2">sandbox</a></code> mode in a separate document, convert the list to a raster image, then place the image in your main document.</p>
+<p class="item"><b>B.</b> <b>Tables</b> are not supported, except for the built-in <code><a href="#h8.1">toc</a></code>.</p>
+<p>If you attempt to use any of the well-known table environments, an error will result. This is because tables are typeset using layout incompatible with the rest of <i>novel</i></p>
+<p>If you need a table, you can use <code><a href="#h2.2">sandbox</a></code> mode in a separate document, convert the table to a raster image, then place the image in your main document. This is unnecessary if you use <code><a href="#h8.1">toc</a></code>.</p>
+
+<h3 id="h8.1">8.1. The <code>toc</code> Environment</h3>
+<div class="d3" id="d8.1">
+<p class="item"><b>A.</b> You may create a Table of Contents in your own style, or use the <i>toc</i> environment for <i>novel's</i> own style. The choice is yours.</p>
+<p class="item"><b>B.</b> Since <code>toc</code> is not synchronized against any other code, you may use it more than once, and you may use it for any purpose (not necessarily a Table of Contents).</p>
+<p class="item"><b>C.</b> The <code>toc</code> is an environment:</p>
+<p class="code"><code>\begin{toc}[<em>extra entry separation</em>]{<em>extra margins</em>} <em>...</em> \end{toc}</code></p>
+<p>The table is not indented, and text within it is not indented.</p>
+<p class="item"><b>D.</b> The optional argument is a number. It is the portion of normal baselineskip that will be added beneath each <code><a href="#h8.1.1">\tocitem</a></code> entry. Default is 0, meaning that there is no extra skip between items, and normal baselineskip is maintained.</p>
+<p>A value greater than 0 spreads the entries, which could be attractive if there are only a few chapters and you'd like to use more space on the page. For example, a value of <i>0.25</i> means that a gap of 0.25 normal baselineskip will be added beneath each entry.</p>
+<p>A small negative value will crowd the lines together, but there is a limit (approximately -0.1) before the lines cannot be squeezed any tighter.</p>
+<p>Note that the optional argument only applies to <code>\tocitem</code> entries, not to any other text within the environment.</p>
+<p class="item"><b>E.</b> The required argument is a length, which will be the amount of extra margin added at left and right of the table (using <i>adjustwidth</i>). A value of <i>0em</i> allows the table to occupy the full width of the textblock. A value of <i>2em</i> adds 2em to the margin on each side, so that the width of the table is 4em less than the width of the textblock.</p>
+<p> It is best to specify horizontal lengths in units of <i>em</i> or the proportional <code>\parindent</code> or <code>\textwidth</code>.</p>
+<p class="item" style="position:relative"><b>F.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Place at least one empty line above the Table's title, using <code>\null</code> or <code>\vspace*</code>. This will prevent the title (which is normally enlarged using <code>\charscale</code>) from encroaching into the top margin.</p>
+
+<h4 id="h8.1.1">8.1.1. Entries Using <code>\tocitem</code></h4>
+<div class="d4" id="d8.1.1">
+<p class="code"><code>\tocitem[<em>chapter number</em>]{<em>description</em>}{<em>page number</em>}</code> and starred</p>
+<p class="item"><b>A.</b> Use <code>\tocitem</code> for entries in <code>toc</code>. Do not use it for non-Table text on the page.</p>
+<p class="item"><b>B.</b> The optional argument is the <i>chapter number</i>, at most two digits. The number will be left-aligned, with a period automatically added. Following the period will be whatever amount of space is needed to keep the following description aligned.</p>
+<p>&bull; If the optional argument is omitted (or empty), then the <i>description</i> will align to the left of the table.</p>
+<p>&bull; If the optional argument is the tilde character <code>~</code> then no number or period is printed, but the space for <i>chapter number</i> is occupied, so that the following <i>description</i> aligns as if you had entered a <i>chapter number</i>.</p>
+<p class="item"><b>C.</b> The <i>description</i> is usually the chapter title. If it cannot easily fit on one line, then use an additional <code>\tocitem</code>, because the text cannot be wrapped. The following example shows how this can be done.</p>
+<p class="item"><b>D.</b> Without the asterisk, <code>\tocitem</code> fills the area between the description and the page number with empty space. The more popular, starred <code>\tocitem*</code> command fills with a dotted line, and is very attractive.</p>
+<p class="item"><b>E.</b> You may use ordinary style commands, such as <code>\textit</code>, in the entries.</p>
+</div><!-- end 8.1.1 -->
+
+<h4 id="h8.1.2">8.1.2. Example Table of Contents</h4>
+<div class="d3" id="d8.1.2">
+<p class="code" style="text-indent:0px; font-size:small"><img class="floatright" src="html-resources/toc.png" width="264" height="408" alt="toc example"/>
+<code>
+\cleartorecto % because ToC must start recto<br/>
+\thispagestyle{empty}<br/>
+\vspace*{4<span style="cursor:help" title="normal baseline skip">\nbs</span>}<br/>
+\begin{toc}[0.25]{5.5em}<br/>
+{\centering\charscale[1.25]{Contents}\par}<br/>
+\null\null<br/>
+\tocitem*{Prologue}{1}<br/>
+\tocitem*[1]{The Evil Weeds}{5}<br/>
+\tocitem*[2]{A Plan of Attack}{18}<br/>
+\tocitem*[3]{Lady Withens Objects}{35}<br/>
+\tocitem*[4]{Back-Hoe to the Rescue}{48}<br/>
+\tocitem*[5]{Invasion of the Dandelions}{63}<br/>
+\tocitem*[~]{\emph{Interlude}}{90}<br/>
+\tocitem*[6]{Army of the Gardeners}{94}<br/>
+\tocitem*[7]{Too Much Rain}{113}<br/>
+\tocitem*[8]{To Nuke, or Not to Nuke?}{145}<br/>
+\tocitem*[9]{Revenge of the Zucchini}{162}<br/>
+\tocitem*[10]{Lady Withens Sneezes}{180}<br/>
+\tocitem*[11]{The Concrete Lawn}{206}<br/>
+\tocitem*{Epilogue}{228}<br/>
+\end{toc}<br/>
+\clearpage 
+</code>
+</p>
+<div style="clear:both"></div>
+</div><!-- end 8.1.2 -->
+</div><!-- end 8.2 -->
+
+</div><!-- end 8 -->
+</div><!-- end page08 -->
+<!-- ************************************************************ -->
+<div id="page9" class="page">
+
+
+<h2 id="h9">9. Footnotes and Endnotes</h2>
+<div class="d2" id="d9">
+<p class="item"><b>A.</b> The <i>novel</i> class has <em>limited</em> support for <a href="#h9.1">footnotes</a>. The support is adequate for the needs of fictional works, but not academic works.</p>
+<p class="item"><b>B.</b> There is <em>em</em> limited support for <a href="#h9.2">endnotes</a>. The primary difference between <i>novel's</i> method, and the method used by other document classes, is that <i>novel</i> only places a marker. It does not remember or automate the text of endnotes. You must write the notes yourself.</p>
+<p class="item"><b>C.</b> You may use both footnotes and endnotes.</p>
+<p class="item"><b>D.</b> In the running text, markers for footnotes and endnotes are superscripts. You may control their appearance using the method of <a href="#h6.4">section 6.4</a>.</p>
+<p class="item"><b>E.</b> The actual footnote (at base of page) or endnote (wherever placed) does <i>not</i> use a superscript for its marker. Instead, the marker has ordinary size and position. This is the recommended style.</p>
+<p class="item"><b>F.</b> <b>Margin notes</b> are not supported.</p>
+
+<h3 id="h9.1">9.1. Footnotes</h3>
+<div class="d3" id="d9.1">
+<p class="item"><b>A.</b> Footnotes appear at the bottom of the page where they are placed. There is no option to accumulate them to another location. Very long footnotes might straddle pages, but that is automatic, and not within your control.</p>
+<p class="code"><code>\footnote[<em>option</em>]{<em>text</em>}</code></p>
+<p class="item"><b>B.</b> The <code>\footnote</code> command places a <a href="#h6.4">superscript</a> "marker" at the place where the command is written. The included text is written at the bottom of the page, beneath a short line that separates it from the main text. The footnote text is at smaller size and line skip, and has the same marker placed before it (but not as superscript). All of this is automatic.</p>
+<p class="item"><b>C.</b> You may, if necessary, apply some style to the footnote text. For example, if you are referring to another work, its title might be in italics.</p>
+<p class="item"><b>D.</b> Normally, no option is used. If you use option <i>0</i> (zero) then no marker will appear in the main text, and the footnote text will also appear without a marker. The count of markers is not incremented. This applies whether the markers are numbers or symbols.</p>
+<p><b>E.</b> If you are normally using footnote <i>numbers</i>, but wish to place a particular footnote using a <i>symbol</i> instead, you can do it manually. For example:</p>
+<p class="code"><code>He blinked.*\footnote[0]{* No, he didn't.}</code></p>
+<p><b>F.</b> Avoid use of underlining or bold. It is considered bad style, due to visual distraction. If necessary, use italics.</p>
+<p class="item" style="position:relative"><b>G.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> Sorry, but even though there are numerous TeX packages for custom footnote styles, they will not work in <i>novel</i>. This is intentional.</p>
+</div><!-- end 9.1 -->
+
+<h3 id="h9.2">9.2. Endnotes</h3>
+<div class="d3" id="d9.2">
+<p class="item"><b>A.</b> Endnotes are sometimes used in fiction. Often, the endnotes are also fictional.</p>
+<p class="item"><b>B.</b> You may use both footnotes and endnotes. However, if endnotes are used, then footnotes must be marked by symbols, rather than by numbers, to avoid confusion. The counts for endnotes and footnotes are independent.</p>
+<p class="item"><b>C.</b> If you gather endnotes at the rear of your book, then arabic page numbering continues. Think of the endnotes as just another chapter. If you use page headings, then the preferred style is to use something like <i>Notes to Chapters 3-4</i> in the headings, changing it on a page by page basis using <code><a href="#h4.3.4.6">\SetRectoheadText</a></code> and <code><a href="#h4.3.4.6">\SetVersoheadText</a></code>.</p>
+<p class="item" style="position:relative"><b>D.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> The <i>endnotes</i> package may not be used, due to conflict with <i>novel's</i> built-in commands.</p>
+
+<h4 id="h9.2.1">9.2.1. <code>\endnote{<i>comment</i>}</code>, <code>\ResetEndnote</code></h4>
+<div class="d4" id="d9.2.1">
+<p class="item"><b>A.</b> The <code>\endnote</code> command inserts a numerical superscript in the text. A running count of the numbers is automatically updated.</p>
+<p class="item"><b>B.</b> Endnote numbers normally run continuously through the text. If you wish to reset the count (perhaps at new chapters), you have to do it manually, using <code>\ResetEndnote</code> at the appropriate location.</p>
+<p class="item"><b>C.</b> No argument is needed. But if you write <code style="white-space:nowrap">\endnote{<i>some comment</i>}</code>, then the comment will not print. It is merely a note to yourself, reminding you why you put an endnote there. The comment is not stored for later use, so it is not the actual content of the endnote text.</p>
+<p class="item"><b>D.</b> You may not immediately follow <code>\endnote</code> with a square bracket <code>[</code>. If you do that, an error results. If you need to follow the command with a printing square bracket, then use <code>\endnote{}[</code>.
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> The <i>novel</i> class does not know, and does not care, whether or not you actually write the endnotes later. The <code>\endnote</code> command merely places a marker. It does not record data for later use.</p>
+</div><!-- end 9.2.1 -->
+
+<h4 id="h9.2.2">9.2.2. <code>\endnotetext{<i>number</i>}{<i>text</i>}</code></h4>
+<div class="d4" id="d9.2.2">
+<p class="item"><b>A.</b> The built-in <code>\endnotetext{}{}</code> takes two mandatory arguments. No optional argument. If you follow <code>\endnotetext</code> with a square bracket <code>[</code>, then an error results.</p>
+<p class="item"><b>B.</b> The first argument is usually the endnote number. A period and following space will automatically be added. You may use <code>\emph{<em>number</em>}</code> if you prefer the number to be in italics.</p>
+<p class="item"><b>C.</b> The text will be block-indented. It is limited to one paragraph. If the note needs more than one paragraph, then continue like this, with an empty note number:</p>
+<p class="code"><code>\endnotetext{}{\indent <em>text</em>}</code></p>
+<p class="item"><b>D.</b> Example of an endnote:</p>
+<p class="code">
+<code><small>
+\endnotetext{9}{Yang Sho-Nuff was the twelfth son of the elder god of the ancient Who-Zit Clan, with power over the forces of rust.\par}<br/>
+\endnotetext{}{\indent However, since this was not yet the Iron Age, the terrible might of Yang Sho-Nuff was largely unrecognized.\par}<br/>
+\endnotetext{10}{As Professor Withens notes in his treatise, \emph{When Sho-Nuff Was Not Enough}, the ceremony of daily human sacrifice had a devastating effect on the tribal population.\par}
+</small></code></p>
+<p class="centerimg"><img src="html-resources/endnotetext.png" width="447" height="151" alt="using endnotetext"/></p>
+<p class="item" style="position:relative"><b>E.</b> <img src="html-resources/info18.png" width="18" height="18" style="position:relative; bottom:-3px" title="tech info" alt="tech info"/> If you don't like the built-in <code>\endnotetext</code> style, you can change it to suit your needs, using <code>\renewcommand</code>. Coding is up to you!</p>
+</div><!-- end 9.2.2 -->
+</div><!-- end 9.2 -->
+
+
+</div><!-- end 9 -->
+</div><!-- end page09 -->
 <!-- ************************************************************ -->
 <div id="pageA" class="page">
 
@@ -2425,18 +2528,17 @@ It was a dark and stormy night, etc.<br/>
 <div class="d4" id="dD.2.2">
 <p class="noindent">Libraries rarely purchase Perfect Binding books (regardless of soft or hard cover) due to lack of durability in a library environment. The exceptions are popular books of no lasting literary value, and how-to books for evolving technologies. These may be obtained by libraries in the cheapest softcover version, because such books will be discarded long before they wear out.</p>
 <p>Unless you are sure that your book will be acquired by numerous libraries for long-term addition to their collections, there is little reason to produce a quality hardcover version. Not all P.O.D. services offer hardcover. If you do need a hardcover version, then be sure to carefully inquire regarding its manufacture, and preferably obtain a copy of someone else's book manufactured that way.</p>
-<p><img class="floatright" src="html-resources/smythsewn.png" width="177" height="141" alt="perfect binding"/> The best hardcovers, suitable for library use, are made using the <b>Smyth Sewing</b> process. A Smyth Sewn book has signatures of (typically) 12 or 16 folios. But instead of removing the creases after folding, each signature is sewn through its crease using strong thread, onto a durable spine material. The pages will remain attached, even with hard usage. If the spine material is sufficiently flexible, then the book will lie flat when opened.</p>
+<p><img class="floatright" src="html-resources/smythsewn.png" width="177" height="141" title="Smyth sewing" alt="Smyth sewing"/> The best hardcovers, suitable for library use, are made using the <b>Smyth Sewing</b> process. A Smyth Sewn book has signatures of (typically) 12 or 16 folios. But instead of removing the creases after folding, each signature is sewn through its crease using strong thread, onto a durable spine material. The pages will remain attached, even with hard usage. If the spine material is sufficiently flexible, then the book will lie flat when opened.</p>
 <p>Be sure to ask about spine flexibility. The most flexible methods have a soft, curved spine, and are best suited to thick novels. There is also a variety that has a square (flat) spine, which will not quite lie flat when opened. Square-spine Smyth Sewn books seem to be the fashion for documenting intellectual property.</p>
 <p>If a major publisher is producing a book that is sure to be ordered by many libraries, due to its author's popularity or maybe a movie tie-in, then it is likely to be released as a Smyth Sewn hardcover. That's because the production method is affordable in quantity. But on a P.O.D. basis, it is a significant expense.</p>
 <p>Different bindings must have different ISBNs, because they are different products.</p>
+<p>If you are ordering a hardcover edition, and the supplier calls it <b>casebound</b>, be careful. If a hardcover book is Smyth sewn, then it is almost certain to be casebound. But not the other way around! A book can be casebound, without being Smyth sewn.</p>
 </div><!-- end D.2.2 -->
 
 <h4 id="hD.2.3">D.2.3. Other Bindings</h4>
 <div class="d4" id="dD.2.3">
-<p class="noindent">A Perfect Bound softcover cannot be retroactively converted to a Smyth Sewn, Library Bound hardcover. However, it is possible to convert a softcover book to some other kinds of hardcover.</p>
-<p>In the simplest method, the soft cover is removed, and a hard cover is glued on. The pages may be shaved in size, so that they don't edge beyond the new cover; or the new cover may be slightly over-sized. Part of the soft cover may be pasted onto the hard cover. That won't look the same as original manufacture, but it avoids creating a dust jacket. Such a hard cover book is no more durable than the softcover, no more flexible at the spine, and perhaps no more resistant to losing pages. But it has a harder cover.</p>
-<p>A more advanced method involves adding strength to the glued spine, by sewing it <em>sideways</em>, before adding the hard cover. This results in a book that is less flexible at the spine, but less likely to lose pages. Sometimes, small (page count) books are made this way, when there are a limited number stored for archival purposes, rather than reading. In other words, it does not concern novels.</p>
-<p>I only mention this because there are services that will create a hardcover book from an existing softcover copy. That is how they do it. Not very useful to you, except possibly as a personal souvenir. If you want a "real" hardcover book, you want a Smyth Sewn Library Binding with hard cover and curved (flexible) spine. Those must be made directly from PDF, not by re-working an existing book. There are services that will do it (not cheaply), but you must remove the ISBN from wherever it appears, because it does not apply to the book in any binding but its original.</p>
+<p class="noindent">A Perfect Bound softcover cannot be retroactively converted to Smyh Sewn. However, it is possible to convert it to a glued-on casebound. Sometimes the original paper cover will be glued onto the new hard cover. Books of this type are sometimes used as souvenirs.</p>
+<p>If a book has very few copies, intended for permanent archiving (as with patents, and other large legal documents), then in addition to gluing, the pages may be sewn cross-wise at the spine, before attaching a hard cover. This techique is only used when the book must be tamper-resistant. It is not suited to casual reading.</p>
 </div><!-- end D.2.3 -->
 
 <h4 id="hD.2.4">D.2.4. Paper and Cover Materials</h4>
@@ -2580,64 +2682,11 @@ Let me tell you, there's nothing more exciting than the brouhaha at Mickey's Pub
 <div class="d5" id="dD.3.2.7">
 <p class="noindent">If you use a Table of Contents, it is a <a href="#hD.3.1.1">display page</a>, beginning recto. If a second page is needed, add <code>\thispagestyle{empty}</code> after the table completes, but before you clear that page.</p>
 <p>Most fiction does not have, and does not need, a Table of Contents. It is more useful when the story consists of discrete episodes with distinctive names, not just numbers. Or, if the book is a collection of short stories, a table of contents is suggested. If your book is a critical edition, or has sections by different authors, then a Table of Contents is mandatory.</p>
+<p><img src="html-resources/simpletoc.png" class="floatright" width="232" height="342" title="simple table of contents" alt="simple table of contents"/> A basic Table of Contents uses the <i>center</i> environment, so that the Table's title and each entry appear centered on the page, without any fancy layout. The text may be italics. So simple. So effective. However, if you prefer a more formal, rectangular table, <i>novel</i> has its own <code><a href="#h8.1">toc environment</a></code>.</p>
 <p>Avoid any of the table environments that come with TeX or its packages. These do not provide the most attractive presentation for fiction, without a lot of work on your part. But if you wish the use them, do it using <a href="#h2.2">sandbox</a> mode.</p>
 <p>A Table of Contents has no header or footer, and no printed page number. Use <code>\thispagestyle{empty}</code>. If it continues to a second page, add <code>\thispagestyle{empty}</code> at the end, if you don't know where the page breaks.</p>
 <p>Anything preceding a Table of Contents is not listed in the table. Neither is the table itself. An Epigraph is normally not listed, even if it follows the table.</p>
 <p>You may or may not list maps or other illustrations in the table. Fiction rarely has more than a map or two, easily located in front matter by the reader, so there's no need to mention them. Use your judgement. That's different from the practice in nonfiction, especially academic works, where the illustrations convey factual data rather than artistry.</p>
-<p>A basic Table of Contents uses the <i>center</i> environment, so that the Table's title and each entry appear centered on the page, without any fancy layout. So simple. So effective. However, if you prefer a more rectangular table, <i>novel</i> has commands for this purpose.</p>
-
-<h6 id="hD.3.2.7.1"><span class="n"></span>D.3.2.7.1. The <i>toc</i> Environment</h6>
-<div class="d6" id="uD.3.2.7.1">
-<p class="noindent">Unlike some other TeX document classes, <i>novel</i> will not automatically build a Table of Contents. Also, LaTeX commands related to tables are generally disabled; adding other packages does not help (and may hurt).</p>
-<p>You may create a Table of Contents in your own style, or use the <i>toc</i> environment for <i>novel's</i> own style. The choice is yours.</p>
-<p class="code"><code>\begin{toc}[<em>extra entry separation</em>]{<em>extra margins</em>} <em>...</em> \end{toc}</code></p>
-<p>The table is not indented, and text within it is not indented.</p>
-<p>The optional argument is a number. It is the portion of normal baselineskip that will be added beneath each <code>\tocitem</code> entry. Default is 0, meaning that there is no extra skip between items, and normal baselineskip is maintained. A value greater than 0 spreads the entries, which could be attractive if there are only a few chapters and you'd like to use more space on the page. For example, a value of <i>0.25</i> means that a gap of 0.25 normal baselineskip will be added beneath each entry. A small negative value will crowd the lines together, but there is a limit (approximately -0.1) before the lines cannot be squeezed any tighter.</p>
-<p>Note that the optional argument only applies to <code>\tocitem</code> entries, not to any other text within the environment.</p>
-<p>The required argument is a length, which will be the amount of extra margin added at left and right of the table (using <i>adjustwidth</i>). A value of <i>0em</i> allows the table to occupy the full width of the textblock. A value of <i>2em</i> adds 2em to the margin on each side, so that the width of the table is 4em less than the width of the textblock.</p>
-<p>It is best to specify horizontal lengths in units of <i>em</i> or the proportional <code>\parindent</code> or <code>\textwidth</code>.</p>
-<p>Place at least one empty line above the Table's title, using <code>\null</code> or <code>\vspace*</code>. This will prevent the title (which is normally enlarged using <code>\charscale</code>) from encroaching into the top margin.</p>
-<p class="code"><code>\tocitem[<em>chapter number</em>]{<em>description</em>}{<em>page number</em>}</code> and starred</p>
-<p>Use this command for entries in the Table. Do not use it for non-Table text on the page.</p>
-<p>The optional argument is the <i>chapter number</i>, at most two digits. The number will be left-aligned, with a period automatically added. Following the period will be whatever amount of space is needed to keep the following description aligned.</p>
-<p>If the optional argument is omitted (or empty), then the <i>description</i> will align to the left of the table.</p>
-<p>If the optional argument is the tilde character ~ then no number or period is printed, but the space for <i>chapter number</i> is occupied, so that the following <i>description</i> aligns as if you had entered a <i>chapter number</i>.</p>
-<p>The <i>description</i> is usually the chapter title. If it cannot easily fit on one line, then use an additional <code>\tocitem</code>, because the text cannot be wrapped. The following example shows how this can be done.</p>
-<p>Without the asterisk, <code>\tocitem</code> fills the area between the description and the page number with empty space. The more popular, starred <code>\tocitem*</code> command fills with a dotted line, and is very attractive.</p>
-<p>You may use ordinary style commands, such as <code>\textit</code>, in the entries.</p>
-</div><!-- end D.3.2.7.1 -->
-
-<h6 id="hD.3.2.7.2"><span class="n"></span>D.3.2.7.2. Example Table of Contents</h6>
-<div class="d6" id="uD.3.2.7.2">
-<p class="noindent">This content of this table is a spoiler, in that you can figure out where the story is going. Sometimes that's desirable, but usually not:</p>
-<p class="code" style="text-indent:0px; font-size:small"><img class="floatright" src="html-resources/toc.png" width="264" height="408" alt="toc example"/>
-<code>
-\cleartorecto % because ToC must start recto<br/>
-\thispagestyle{empty}<br/>
-\vspace*{4<span style="cursor:help" title="normal baseline skip">\nbs</span>}<br/>
-\begin{toc}[0.25]{5.5em}<br/>
-{\centering\charscale[1.25]{Contents}\par}<br/>
-\null\null<br/>
-\tocitem*{Prologue}{1}<br/>
-\tocitem*[1]{The Evil Weeds}{5}<br/>
-\tocitem*[2]{A Plan of Attack}{18}<br/>
-\tocitem*[3]{Lady Withens Objects}{35}<br/>
-\tocitem*[4]{Back-Hoe to the Rescue}{48}<br/>
-\tocitem*[5]{Invasion of the Dandelions}{63}<br/>
-\tocitem*[~]{\emph{Interlude}}{90}<br/>
-\tocitem*[6]{Army of the Gardeners}{94}<br/>
-\tocitem*[7]{Too Much Rain}{113}<br/>
-\tocitem*[8]{To Nuke, or Not to Nuke?}{145}<br/>
-\tocitem*[9]{Revenge of the Zucchini}{162}<br/>
-\tocitem*[10]{Lady Withens Sneezes}{180}<br/>
-\tocitem*[11]{The Concrete Lawn}{206}<br/>
-\tocitem*{Epilogue}{228}<br/>
-\end{toc}<br/>
-\clearpage 
-</code>
-</p>
-<div style="clear:both"></div>
-</div><!-- end D.3.2.7.2 -->
 </div><!-- end D.3.2.7 -->
 
 <h5 id="hD.3.2.8">D.3.2.8. Foreword, Preface, Introduction</h5>
@@ -3128,12 +3177,24 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 <div id="pageZ" class="page">
 
 
-<h2 id="hZ">Appendix Z. &nbsp; Changes in v.1.50</h2>
+<h2 id="hZ">Appendix Z. &nbsp; Changes in v.1.50 and Later</h2>
 <div class="d2" id="dZ">
 
-<p class="noindent">Version 1.50 introduces some new features, and some changes, from version 1.46.2.</p>
+<h4>Changes in version 1.52</h4>
+<div class="d4">
+<p>The <code>linegap</code> environment is deprecated. It will still be honored in code, but has been removed from the documentation. It was never very useful.</p>
+<p>The <code>parascale</code> environment now measures how much it disturbs the line grid. Although it cannot automatically correct the disturbance, it does provide a useful warning so that you can make the change yourself.</p>
+<p>Best practice avoids scene breaks too close to the top or bottom of a page, unless you place something visible there. Now, a badly-placed <code>\scenebreak</code> can be detected, and a warning will be issued.</p>
+<p>Version 1.50 already included an advanced method for PDF/X-1a color covers. In version 1.52, this is extended to non-color interior book blocks. Now, any image placed in your document will be inspected, and classified either as <i>known-compliant</i> or <i>unknown</i>. Images with <i>unknown</i> compliance will be reported in the log file, and if any were detected, there will be a warning.</p>
+<p>There have been some miscellaneous small tweaks, unlikely to be noticeable by most users.</p>
+<p>Documents that successfully compiled with version 1.50 should look the same in version 1.52, but you may see more warnings.</p>
+</div>
 
-<h4>Post-Release Reversion to Old</h4>
+<h4>Changes in Version 1.50</h4>
+<div class="d3">
+<p>Version 1.50 introduced many new features, and some changes, from version 1.46.2.</p>
+
+<p class="noindent"><b>Post-Release Reversion to Old</b></p>
 <p>If you have an existing document created with version prior to 1.50, in rare circumstances the layout will change. </p>
 <p>If the only change is the number of lines per page, then you can simply fix it manually, using the <code>\SetLinesPerPage</code> command. But if version 1.50 creates problems, you can run the old and new versions side-by-side. Be sure to keep the new version installed.</p>
 <p>In the short term, an older version of <i>novel</i> can be found <a href="https://github.com/RobtAll/novel">here</a>, in the archives folder. Be sure that the zip file is named "novel-old".</p>
@@ -3145,57 +3206,58 @@ Some text {\baskf\addfontfeature{Numbers=Monospaced} hello 123} is here.
 <p>In the long term, the older version will be removed. No particular time frame. I do not believe that many users (if any) will be affected.</p>
 <p>If your existing documents have no problem with version 1.50, then use the newer version.</p>
 
-<h4>Cover Art Methods Changed</h4>
+<p class="noindent"><b>Cover Art Methods Changed</b></p>
 <p>From version 1.50, the method used for cover art has changed. If you have existing cover artwork using the older syntax, it will still be honored, but it is no longer documented.</p>
 <p>The new cover art syntax requires you to pre-process your image using a script, included in the documentation <i>extras</i> folder. The scripts works on Windows, Linux, and Mac OSX. The processed image will be PDF, separated to CMYK, at 240% ink limit.</p>
 <p>To obtain PDF/X, you post-process the above PDF in lualatex, using a template. Complete instructions are in the zip file containing the scripts.</p>
 <p>Of course, you don't need to use TeX at all, if your print service accepts an ordinary RGB image.</p>
 
-<h4>New Class Option: sandbox</h4>
+<p class="noindent"><b>New Class Option: sandbox</b></p>
 <p><i>Novel</i> does not permit things such as TikZ diagams, tables (other than its own method), imported PDf pages, and some other TeX effects. The purpose of the prohibition is to maintain grid layout, and ensure PDF/X compliance.</p>
 <p>From version 1.50, the <code>sandbox</code> class option allows you to do nearly anything, provided that the result is no more than four pages. Then, you can create drawings or whatever, convert to raster images, and place the images in your main document.</p>
 
-<h4>\BlockImage Obsolete</h4>
+<p class="noindent"><b>\BlockImage Obsolete</b></p>
 <p>From version 1.50 the \BlockImage command is obsolete. It was never a very good macro. If you have an existing document that uses \BlockImage, it will be honored, but it is no longer documented.</p>
 <p>You may prefer the new <code>\FloatImage</code> and <code>\WrapImage</code> commands.</p>
 
-<h4>\FloatImage Added</h4>
+<p class="noindent"><b>\FloatImage Added</b></p>
 <p>Better than <code>\BlockImage</code>: Version 1.50 now has <code>\FloatImage</code>, which can place an image "here" or float it to the next page, if it doesn't immdiately fit. Full-page floats are supported. See the full documentation, above.</p>
 <p>The <code>\InlineImage</code> command remains unchanged, and will probably remain forever. It's a good macro.</p>
 
-<h4>\WrapImage Added</h4>
+<p class="noindent"><b>\WrapImage Added</b></p>
 <p>The new <code>\WrapImage</code> command provides limited support for wrapping text around an image. It is all you need in the context of fiction writing.</p>
 <p>The <i>wrapfig</i> package is automatically loaded, and provides the layout engine. However, do not directly use the commands and environments from that package (they won't work). Instead, <i>novel</i> provides macro <code>\WrapImage</code>, which will format your input so that it can be processed correctly.</p>
 
-<h4>Drop Caps Added</h4>
+<p class="noindent"><b>Drop Caps Added</b></p>
 <p>As before, you may use the <i>lettrine</i> package, if you wish. From version 1.50, <i>novel</i> now has built-in support for a certain style of drop caps, as a special interface to the <i>lettrine</i> layout engine.</p>
 <p>Since the new <code>\dropcap</code> command requires an updated version of the <i>NovelDeco.otf</i> font, be sure to update your <span style="white-space:nowrap">luatex-cache</span>.</p>
 
-<h4>\Rework Obsolete</h4>
+<p class="noindent"><b>\Rework Obsolete</b></p>
 <p>From its early days, <i>novel</i> had an exotic built-in method for preserving layout if your book's Trim Size changed. It was a complicated piece of code, and even though it worked, it was inherently incapable of addressing some layout situations.</p>
 <p>In version 1.46.1 it was quietly removed from the documentation. In the short term, existing documents that rely on <code>\Rework</code> commands will still compile. In the long term, forget it. To my knowledge, nobody is using it.</p>
 
-<h4>Class Option <i>graytext</i> Obsolete</h4>
+<p class="noindent"><b>Class Option <i>graytext</i> Obsolete</b></p>
 <p>Formerly, you could use a class option to specify whether or not the use of grayscale text (anything other than solid black) was permitted. There was never any good reason for having that choice, so it has been removed. Now, you can always use grayscale text, if you wish.</p>
 
-<h4>\SetCropmarkGap Obsolete</h4>
+<p class="noindent"><b>\SetCropmarkGap Obsolete</b></p>
 <p>Formerly, there was a minimal ability to configure crop marks. It was not very useful, and made the code more complex. Now, the size of cropmarks is fixed.</p>
 
-<h4>New Error Messages for Endnotes</h4>
-<p>Prior to version 1.50, incorrect use of <code>\endnote</code> commands would simply produce bad typesetting, without warning.</p>
-<p>New error messages have been added. If you use <code>\endnote</code>, and get error messages that did not appear before, then be sure to read the command documentation again. The most likely reason for error is that you are using the commands according to the syntax of some other package, rather than using <i>novel's</i> own syntax.</p>
+<p class="noindent"><b>New Error Messages for Endnotes</b></p>
+<p>Prior to version 1.50, incorrect use of <a href="#h9.2"><code>\endnote</code></a> commands would simply produce bad typesetting, without warning.</p>
+<p>New error messages have been added. If you use <a href="#h9.2"><code>\endnote</code></a>, and get error messages that did not appear before, then be sure to read the command documentation again. The most likely reason for error is that you are using the commands according to the syntax of some other package, rather than using <i>novel's</i> own syntax.</p>
 
-<h4>New Algorithm for Layout Calculations</h4>
+<p class="noindent"><b>New Algorithm for Layout Calculations</b></p>
 <p>Under the hood, version 1.50 uses a more accurate method for page layout. In most cases, the change is microscopic, and will not affect existing documents.</p>
 <p>Books that use widely-spaced lines are most likely to show a noticeable change for the better. In a few cases, the default number of lines per page will change. If you have an existing document using default lines per page, and it has changed, then simply specify the exact number manually.</p>
 
-<h4>Revised Documentation Format</h4>
+<p class="noindent"><b>Revised Documentation Format</b></p>
 <p>This documentation has been slightly revised. Now, long sections are broken down into items, marked A, B, etc. This is for the convenience of translators.</p>
 <p>Under the hood, in the TeX code, there has been some cleanup, for the benefit of future package maintainers.</p>
 
-<h4>What's Unchanged</h4>
+<p class="noindent"><b>What's Unchanged</b></p>
 <p>Most of <i>novel</i> is just as before, and will be...</p>
 <p>In particular, there is no support for tables (other than novel's own Table of Contents), no support for automatic divisions into sections and other kinds of partitions, no support for automatic index or bibliography, and generally no support for the "academic" structure used by other document classes.</p>
+</div>
 
 
 </div><!-- end Z -->

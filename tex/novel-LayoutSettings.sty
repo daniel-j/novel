@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-LayoutSettings.sty}%
-[2018/04/03 v1.50.2 LaTeX file (layout settings)]
+[2018/04/26 v1.52 LaTeX file (layout settings)]
 %%
 
 
@@ -209,39 +209,44 @@
 %
 \@twocolumnfalse
 \@twosidetrue
-\@mparswitchtrue
+\setlength\columnsep{12pt} % not needed, picked something at random
+\setlength\columnseprule{0pt}
 %
+\@mparswitchtrue % irrelevant
+\setlength\marginparwidth{0pt} % no marginal paragraphs allowed
+\setlength\marginparsep{0pt}
+\setlength\marginparpush{0pt}
+%
+\global\@topnum \z@
 \setlength\abovedisplayskip{0pt}
 \setlength\abovedisplayshortskip{0pt}
 \setlength\belowdisplayshortskip{0pt}
 \setlength\belowdisplayskip{0pt}
-\global\@topnum \z@
-%
 \setlength\smallskipamount{0pt}
 \setlength\medskipamount{0pt}
 \setlength\bigskipamount{0pt}
+% `novel' uses grid setting. However, to allow for roundoff errors in
+% vertical position calculations, there is a tiny amount of wiggle room:
 \setlength\topsep{0pt}
 \setlength\partopsep{0pt}
 \setlength\parsep{0pt}
-\setlength\marginparwidth{0pt}
-\setlength\marginparsep{0pt}
-\setlength\marginparpush{0pt}
+\setlength\parskip{0pt}
 \setlength\floatsep{0pt}
 \setlength\textfloatsep{0pt}
 \setlength\dbltextfloatsep{0pt}
 \setlength\intextsep{0pt}
-% \topskip will be set as normal baslineskip, which must first be calculated.
+% \topskip will be set as normal baselineskip, which must first be calculated.
 % That is done in novel-CalculateLayout.sty.
-\widowpenalty 150 % same as TeX default
-\clubpenalty 150 % same as TeX default
 \setlength\lineskip{0pt}
 \setlength\normallineskip{0pt}
+\setlength\lineskiplimit{-2pt} % allows some limited vertical clash
 \renewcommand\baselinestretch{1} % multiplier
-\setlength\parskip{0pt}
+\widowpenalty 150 % same as TeX default
+\clubpenalty 150 % same as TeX default
 \@lowpenalty   51
 \@medpenalty  151
 \@highpenalty 301
-% Floats not allowed, but just in case:
+% Floats are limited, but just in case:
 \setcounter{topnumber}{2}
 \renewcommand\topfraction{.7}
 \setcounter{bottomnumber}{1}
@@ -261,17 +266,11 @@
 \DeclareOldFontCommand{\sl}{\normalfont\slshape}{\normalfont\slshape}
 \DeclareOldFontCommand{\sc}{\normalfont\scshape}{\normalfont\scshape}
 %
-\setlength\columnsep{12pt} % usually not needed, picked something at random
-\setlength\columnseprule{0pt}
 \pagestyle{empty} % will be over-ridden by fancyhead in separate file
 \pagenumbering{arabic} % may be over-ridden in document
 \flushbottom % best for continuous text
 %
 %% End miscellaneous settings.
-
-
-
-
 
 
 
@@ -343,20 +342,24 @@
 % but would interfere with the `novel' emphasis on constant line skip.
 % You may redefine the commands using your own Preamble code (discouraged).
 %
-\gdef\null{\hbox{\strut}} % May be important!
+%%%%%\gdef\null{\hbox{\strut}} % May be important!
 %
 % Standard LaTeX font sizes are ineffective:
+\gdef\@noSizeCommand#1{\ClassWarning{novel}{%
+  Standard LaTeX font sizes are ineffective in `novel' class. ^^J%
+  Your use of command `#1' was ignored. ^^J}%
+}
 \gdef\@DisableFontSizes{% called by `novel.cls' \AtBeginDocument
-  \let\HUGE\relax
-  \let\Huge\relax
-  \let\huge\relax
-  \let\LARGE\relax
-  \let\Large\relax
-  \let\large\relax
-  \let\small\relax
-  \let\footnotesize\relax
-  \let\scriptsize\relax
-  \let\tiny\relax
+  \gdef\HUGE{\@noSizeCommand{HUGE}}
+  \gdef\Huge{\@noSizeCommand{Huge}}
+  \gdef\huge{\@noSizeCommand{huge}}
+  \gdef\LARGE{\@noSizeCommand{LARGE}}
+  \gdef\Large{\@noSizeCommand{Large}}
+  \gdef\large{\@noSizeCommand{large}}
+  \gdef\small{\@noSizeCommand{small}}
+  \gdef\footnotesize{\@noSizeCommand{footnotesize}}
+  \gdef\scriptsize{\@noSizeCommand{scriptsize}}
+  \gdef\tiny{\@noSizeCommand{tiny}}
 } %
 % In `novel' there is no academic organization.
 % All these do is echo the argument, if any:
@@ -371,24 +374,44 @@
 % In some situations, the use will be interrupted:
 \DeclareDocumentCommand\@nodocommand { O{} +m } {%
   \ClassError{novel}{No command or environment `#1' in this class}%
-   {Many academic layout commands or environments are disabled in `novel'. ^^J%
-    #2.}%
+   {Many academic layout commands or environments are disabled in `novel'.}%
+}
+\DeclareDocumentCommand\@sandboxonly { m } {%
+  \ClassError{novel}{ ^^J%
+   Command or environment `#1' only allowed in `sandbox' mode. ^^J%
+   See `novel' documentation 2.2. ^^J
+   The offending command may have been called by another macro.}%
+   {Fix your code. If you do not, then compile will fail or be unexpected.}%
 }
 % Here is the interruption list:
-\long\gdef\maketitle\@nodocommand{maketitle}
-\long\gdef\makeindex\@nodocommand{makeindex}
-\long\gdef\tableofcontents\@nodocommand{tableofcontents}
-\long\gdef\listoftables\@nodocommand{listoftables}
-\long\gdef\listoffigures\@nodocommand{listoffigures}
-\long\gdef\thebibliography\@nodocommand{thebibliography}
-\long\gdef\theindex\@nodocommand{theindex}
-\long\gdef\titlepage\@nodocommand{titlepage}
-\long\gdef\description\@nodocommand{description}
-\long\gdef\caption\@nodocommand{caption}
-\long\gdef\abstract\@nodocommand{abstract}
-\long\gdef\table\@nodocommand[Use `sandbox' mode to create an image]{table}
-\long\gdef\figure\@nodocommand[Use `sandbox' mode to create an image]{figure}
+\long\gdef\maketitle{\@nodocommand{maketitle}}
+\long\gdef\makeindex{\@nodocommand{makeindex}}
+\long\gdef\tableofcontents{\@nodocommand{tableofcontents}}
+\long\gdef\listoftables{\@nodocommand{listoftables}}
+\long\gdef\listoffigures{\@nodocommand{listoffigures}}
+\long\gdef\thebibliography{\@nodocommand{thebibliography}}
+\long\gdef\theindex{\@nodocommand{theindex}}
+\long\gdef\abstract{\@nodocommand{abstract}}
+\if@sandbox\else
+  \DeclareDocumentCommand\caption{}{\@sandboxonly{caption}}
+  \DeclareDocumentEnvironment{tabular}{s o +m}{\@sandboxonly{tabular}}{}
+  \DeclareDocumentEnvironment{table}{s o}{\@sandboxonly{table}}{}
+  \DeclareDocumentEnvironment{figure}{s o}{\@sandboxonly{figure}}{}
+  \DeclareDocumentEnvironment{itemize}{s}{\@sandboxonly{itemize}}{}
+  \DeclareDocumentEnvironment{enumerate}{s}{\@sandboxonly{enumerate}}{}
+  \DeclareDocumentEnvironment{description}{s}{\@sandboxonly{description}}{}
+  \DeclareDocumentEnvironment{labeling}{s}{\@sandboxonly{labeling}}{}
+\fi
 %
+\newif \if@OnTitlePage % not really useful
+\DeclareDocumentEnvironment{titlepage}{s}{%
+  \clearpage
+  \thispagestyle{empty}
+  \global\@OnTitlePagetrue
+}{
+  \clearpage
+  \global\@OnTitlePagefalse
+}
 %% end disable or neutralize.
 
 

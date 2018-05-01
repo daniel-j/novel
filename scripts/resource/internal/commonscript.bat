@@ -1,5 +1,5 @@
 REM commonscript.bat
-REM Supports scripts version 1.2.
+REM Supports scripts version 1.4.
 REM This file has common functions for novel-script Windows scripts.
 REM It is read by another script, using the call command. Do not use directly.
 REM %HELPMSG% and %USAGEMSG% are messages set by calling script.

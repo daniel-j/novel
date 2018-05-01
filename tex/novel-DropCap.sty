@@ -19,7 +19,7 @@
 % This file is new in `novel' version 1.50.
 %
 \ProvidesFile{novel-DropCap.sty}%
-  [2018/04/03 v1.50.2 (Drop Caps)]
+  [2018/04/26 v1.52 (Drop Caps)]
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]
 %
 %
@@ -94,7 +94,6 @@
 \newdimen\NDCboxheight
 \newdimen\NDCboxdepth
 %
-\ExplSyntaxOn
 \DeclareDocumentCommand \NDC@boxcap { m }{%
   \begingroup%
   % The model letter has no upper diacritical.
@@ -163,7 +162,7 @@
       \FPdiv{\@tempN}{\strip@pt\textwidth}{\strip@pt\@OriginalTextWidth}%
       \FPmul{\NDC@bloat}{\NDC@bloat}{\@tempN}%
     \else%
-      \if@ReworkMargins
+      \if@ReworkMargins%
         \FPdiv{\@tempN}{\strip@pt\textwidth}{\strip@pt\@OriginalTextWidth}%
         \FPmul{\NDC@bloat}{\NDC@bloat}{\@tempN}%
       \fi%
@@ -214,7 +213,6 @@
     }%
   \fi%
 }% end @NDCdropcap
-\ExplSyntaxOff
 %%
 
 

@@ -22,7 +22,8 @@ REM    http://www.latex-project.org/lppl.txt
 REM and version 1.3c or later is part of all distributions of LaTeX
 REM version 2005/12/01 or later.
 
-set VERMSG=makecmyk.bat version 1.2.
+set THISVER=1.4
+set VERMSG=makecmyk.bat version %THISVER%.
 set USAGEMSG=Usage: makecmyk [-a] filename.ext
 set HELPMSG=Help:  makecmyk -h
 set DEMOMSG=Demo:  makecmyk [-a] demo
@@ -134,7 +135,6 @@ if not exist "resource\internal\blank.xml" ( set GOTFILES=no)
 if not exist "resource\internal\dg32.xml" ( set GOTFILES=no)
 if not exist "resource\internal\dg64.xml" ( set GOTFILES=no)
 if not exist "resource\internal\template.tex" ( set GOTFILES=no)
-if not exist "resource\internal\pdfmarks" ( set GOTFILES=no)
 if not exist "resource\internal\novelscriptsdemo.jpg" ( set GOTFILES=no)
 if "%GOTFILES%"=="no" (
   echo ERROR.
@@ -183,7 +183,7 @@ if exist "resource\internal\commonscript.bat" (
 )
 
 
-REM Check input colorspace and possible embedded profile::
+REM Check input colorspace and possible embedded profile:
 <nul set /p=Inspecting the input image... 
 set ISCMYK=
 %MAGICKPATH%magick identify -verbose input\%FN%!PDFZ! >temp\temp-identify.txt
@@ -223,6 +223,8 @@ set OCN=inklimit
 
 REM Information:
 echo Converting image. This takes time...
+REM This must be done in several steps. Do not condense into fewer steps.
+REM Reason: Syntax depends upon version and platform for IM and GS.
 
 REM Strip and flatten image:
 %MAGICKPATH%magick convert -strip -units PixelsPerInch -density %IR% input\%FN%!PDFZ! -flatten -background White -alpha Background -alpha off temp\temp-%CN%-stripped.tif 2>temp\temp-identify.txt
@@ -238,16 +240,14 @@ if "!errorlevel!"=="0" (
   if exist "temp\temp-identify.txt" ( del temp\temp-identify.txt)
   exit /B 1
 )
-
-
-
 echo    ...Completed step 1 of 6.
 
 REM Convert to CMYK:
 if "!ISCMYK!"=="yes" (
+  REM CMYK to corrected CMYK:
   %MAGICKPATH%magick convert temp\temp-%CN%-stripped.tif -units PixelsPerInch -density %IR% -intent relative -depth 8 -profile !INCOLOR! -profile !OUTCOLOR! temp\temp-%CN%-cmyk.tif
 ) else (
-  REM Convert from RGB to CMYK image:
+  REM RGB to CMYK:
   %MAGICKPATH%magick convert temp\temp-%CN%-stripped.tif -units PixelsPerInch -density %IR% -intent relative -depth 8 -black-point-compensation -profile !INCOLOR! -profile !OUTCOLOR! temp\temp-%CN%-cmyk.tif
 )
 echo    ...Completed step 2 of 6.
@@ -261,18 +261,23 @@ REM This next strip step is important! Without it, the PDF color gets re-profile
 echo    ...Completed step 4 of 6.
 
 REM The intermediate tif file will become a PDF Xobject with FlateDecode:
-%MAGICKPATH%magick convert temp\temp-%CN%-cmyk.tif -units PixelsPerInch -density %IR% -compress zip temp\temp-%CN%-NOTpdfx.pdf
+%MAGICKPATH%magick convert -strip temp\temp-%CN%-cmyk.tif -units PixelsPerInch -density %IR% -compress zip temp\temp-%CN%-NOTpdfx.pdf
 echo    ...Completed step 5 of 6.
 
+REM Create pdfmarks:
+echo [ /Author ^(NOT PDF/X^) >temp\pdfmarks
+echo   /NSprocessed ^(true^) >>temp\pdfmarks
+echo   /NSversion ^(!THISVER!^) >>temp\pdfmarks
+echo   /DOCINFO pdfmark >>temp\pdfmarks
+echo. >>temp\pdfmarks
 REM Add an identifier in the PDF info dictionary:
-copy resource\internal\pdfmarks temp\pdfmarks 1>nul
 if "%MYGSVER%"=="32" (
   %MYGSPATH%gswin32c -q -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -dAutoFilterColorImages=false -dAutoFilterGrayImages=false -dColorImageFilter=/FlateEncode -dGrayImageFilter=/FlateEncode -dPDFSETTINGS=/prepress -dCompatibilityLevel=1.3 -sOutputFile=temp\%CN%-NOTpdfx.pdf temp\temp-%CN%-NOTpdfx.pdf temp\pdfmarks
 ) else (
   %MYGSPATH%gswin64c -q -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -dAutoFilterColorImages=false -dAutoFilterGrayImages=false -dColorImageFilter=/FlateEncode -dGrayImageFilter=/FlateEncode -dPDFSETTINGS=/prepress -dCompatibilityLevel=1.3 -sOutputFile=temp\%CN%-NOTpdfx.pdf temp\temp-%CN%-NOTpdfx.pdf temp\pdfmarks
 )
-if exist "temp\pdfmarks" ( del temp\pdfmarks)
 if exist "temp\temp-%CN%-NOTpdfx.pdf" ( del temp\temp-%CN%-NOTpdfx.pdf)
+if exist "temp\pdfmarks" ( del temp\pdfmarks)
 move "temp\%CN%-NOTpdfx.pdf" "output\%CN%-NOTpdfx.pdf" 1>nul
 echo    ...Completed step 6 of 6.
 

@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-ChapterScene.sty}%
-[2018/04/03 v1.50.2 LaTeX file (chapter and scene macros)]
+[2018/04/26 v1.52 LaTeX file (chapter and scene macros)]
 %%
 
 
@@ -94,18 +94,60 @@
 %   Default behavior is \noindent for following paragraph.
 %   Use \SetScenebreakIndent{true or false} in Preamble to change globally.
 %   Either way, local behavior changed using \forceindent or \backindent.
-\newcommand\scenebreak{\null}
+% \newcommand\scenebreak{\null}
+%
+\newcommand\scenebreak{% revised in version 1.52.
+  \leavevmode\getBreakpos{scenebreak}~\par
+}
 %
 \newcommand\sceneline{%
-  \noindent\hfil%
+  \noindent\getBreakpos{sceneline}\hfil%
   \raisebox{0.2em}{\rule{0.35\textwidth}{.4pt}}\hfil\par%
 }
 %
 \newcommand\scenestars{%
-  \noindent\hfil%
+  \noindent\getBreakpos{scenestars}\hfil%
   \raisebox{-.3em}{*\quad\quad*\quad\quad*}\hfil\par%
 }
-%% end scene changes
+%
+\gdef\getBreakpos#1{%
+  \begingroup%
+    \savepos%
+    \protected@write\@auxout{}{%
+      \protect\@getBreakpos{\noexpand\number\lastypos}{\thepage}{#1}%
+    }%
+  \endgroup%
+}
+%
+\newlength\CurrentBreakpos
+\gdef\@getBreakpos#1#2#3{} % nothing, when reading aux at beginning
+\gdef\@RedefineBreakpos{ % called by `novel.cls' \AtBeginDocument
+  \gdef\@getBreakpos##1##2##3{% numerical position sp, page, break type
+    \gsetlength\CurrentBreakpos{##1sp}% measured up from very bottom of page.
+    \FPsub{\@BreakLines}{\strip@pt\TotalYpos}{\strip@pt\CurrentBreakpos}
+    \FPdiv{\@BreakLines}{\@BreakLines}{\strip@pt\nbs}%
+    \FPround{\@BreakLines}{\@BreakLines}{0}% integer lines from text top
+    \ifthenelse{\equal{##3}{scenebreak}}{%
+    \xdef\thisline{\@BreakLines}%
+      \ifnum\@BreakLines=1%
+        \ClassWarning{novel}{Replace \string\scenebreak\space at top of ^^J%
+         page ##2 with \string\sceneline\space or \string\scenestars.}%
+      \fi%
+      \ifnum\@BreakLines=\@LinesPerPage%
+        \ClassWarning{novel}{Replace \string\scenebreak\space at bottom of ^^J%
+         page ##2 with \string\sceneline\space or \string\scenestars.}%
+      \fi%
+    }{}%
+    \FPsub{\@nearthebottom}{\@LinesPerPage}{1}%
+    \ifnum\@BreakLines=2%
+      \ClassWarning{novel}{\string\ ##3 too close to top of page ##2.}%
+    \fi%
+    \ifnum\@BreakLines=\@nearthebottom%
+      \ClassWarning{novel}{\string\ ##3 too close to bottom of page ##2.}%
+    \fi%
+  }%
+} % end @RedefineBreakpos
+%%
 
 
 %% Repair \FirstLine{} command from `magaz' package.
@@ -194,7 +236,7 @@
   \vspace{\@fixlines\nbs}%
   \if@DeleteCSline\else\null\fi% adjusts when dropfolioinside
   \global\@WithinChapterStartfalse%
-  \vspace{\@NovelCaulk}%
+  \vspace{0.1pt plus 0pt minus 0.2pt}% caulk
   \gsetlength\parindent{\normalparindent}% restored
   \nov@AfterGroup\NoIndentAfterThis% etextools and noindentafter
 }

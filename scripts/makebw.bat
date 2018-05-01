@@ -26,7 +26,8 @@ REM This file is distributed with the "novel" LuaLaTeX document class.
 REM https://ctan.org/pkg/novel  [get the one zip archive]
 REM But you do not need a TeX installation to use this script.
 
-set VERMSG=makebw.bat version 1.2.
+set THISVER=1.4
+set VERMSG=makebw.bat version %THISVER%.
 set USAGEMSG=Usage: makebw [-threshold] filename.ext
 set HELPMSG=Help:  makebw -h
 set DEMOMSG=Demo:  makebw [-threshold] demo
@@ -149,14 +150,20 @@ if exist "resource\internal\commonscript.bat" (
 
 
 REM Now do conversion:
+REM Requires more than one step. Do not condense to fewer steps.
+REM Reason: Syntax differences in IM versions and platforms.
 echo.
 echo Converting, this take awhile...
 set DR=-density %IR% -units PixelsPerInch
-set BK=-strip -background White -flatten -alpha off !TI!
+set BK=-background White -flatten -alpha off !TI!
+set TG=-define PNG:exclude-chunk=gAMA,bKGD,zTXt,iTXt
 set TH=-threshold !THRESH!%% -colorspace Gray -type Bilevel
-set CO=-comment "novelmakebw"
-%MAGICKPATH%magick.exe convert %DR% input\%FN%!PDFZ! %BK% %TH% output\%CN%-!THRESH!-BW.png 2>temp\temp-identify.txt
+set CO=-set comment "novelscripts-makebw-%THISVER%-w"
+%MAGICKPATH%magick.exe convert %DR% -strip input\%FN%!PDFZ! temp\temp-%CN%-!THRESH!-BW.png
+%MAGICKPATH%magick.exe convert %DR% temp\temp-%CN%-!THRESH!-BW.png %TG% %CO% %BK% %TH% output\%CN%-!THRESH!-BW.png
+
 echo. >>temp\temp-identify.txt
+if exist "temp\temp-%CN%-!THRESH!-BW.png" ( del temp\temp-%CN%-!THRESH!-BW.png)
 findstr /C:"geometry does not contain image" temp\temp-identify.txt 1>nul 2>nul
 if "!errorlevel!"=="0" (
   echo.
@@ -167,8 +174,6 @@ if "!errorlevel!"=="0" (
   if exist "temp\temp-identify.txt" ( del temp\temp-identify.txt)
   exit /B 1
 )
-REM Adding comment requires a second step:
-%MAGICKPATH%magick.exe mogrify %CO% output\%CN%-!THRESH!-BW.png
 
 REM Verify and show info on Terminal:
 echo Verifying, this takes awhile...

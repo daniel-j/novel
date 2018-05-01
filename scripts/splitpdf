@@ -16,7 +16,8 @@
 # https://ctan.org/pkg/novel  [get the one zip archive]
 # But you do not need a TeX installation to use this script.
 
-VERMSG="splitpdf version 1.1."
+THISVER="1.4"
+VERMSG="splitpdf version $THISVER."
 USAGEMSG="Usage: ./splitpdf filename.pdf"
 HELPMSG="Help:  ./splitpdf -h"
 
@@ -128,11 +129,6 @@ if [ $PDFCOUNT -gt 1 ]
 then
   echo "This pdf has $PDFCOUNT pages. The first page is always 1."
   read -p "First page to split, answer 1 to $PDFCOUNT : " BEGPAGE
-
-  if [ -z "$BEGPAGE" ]
-  then
-    BEGPAGE=1
-  fi
   if [ $BEGPAGE -lt 1 ]
   then
     echo "Cannot be less than page 1. Start over."
@@ -148,10 +144,6 @@ then
 
   read -p "Last page to split, answer $BEGPAGE to $PDFCOUNT : " ENDPAGE
 
-  if [ -z "$ENDPAGE" ]
-  then
-    ENDPAGE=$BEGPAGE
-  fi
   if [ $ENDPAGE -lt $BEGPAGE ]
   then
     echo "Cannot be less than page $BEGPAGE. Start over."

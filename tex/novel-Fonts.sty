@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Fonts.sty}%
-[2018/04/03 v1.50.2 LaTeX file (font settings and defaults)]
+[2018/04/26 v1.52 LaTeX file (font settings and defaults)]
 %%
 
 
@@ -164,7 +164,6 @@
 \gdef\@DropCapColorModel{} % until actually set, using `xcolor' syntax
 \gdef\@DropCapColorValue{black} % until actually set, using `xcolor' syntax
 \gdef\NDC@charstyle{}
-\ExplSyntaxOn
 % The argument to \SetDropCapFont is a user-defined `fontspec' font command.
 % Example syntax, using `fontspec' in LuaLaTeX:
 %   Create font command, such as: \newfontface\mynicefont[options]{fontname}
@@ -204,6 +203,7 @@
   }%
 }% end \@setdropcapcolor
 % for convenience:
+\ExplSyntaxOn
 \cs_new_eq:NN \SetDropcapFont \SetDropCapFont
 \cs_new_eq:NN \SetDropcapColor \SetDropCapColor
 \ExplSyntaxOff
@@ -274,9 +274,9 @@
 %% ----------------------------------------------------------------------------
 \gdef\@ActivateFonts{% called by `novel.cls' \AtEndPreamble
   % We begin with the parent font:
-  \if@coverart %%%%%
-    \SetParentFont{NovelDeco.otf} %%%%%
-  \fi %%%%%
+  \if@coverart
+    \SetParentFont{NovelDeco.otf}
+  \fi
   \if@ParentFontSet\else
     \ifthenelse{\equal{\rmdefault}{lmr}}{%
       % At this point, if \rmdefault is lmr, it means the user did not choose
@@ -301,12 +301,12 @@
       \if@ParentFontSet\else
         \ClassError{novel}{Wrong command used to set main font}%
         {You tried to define the main document font the wrong way. ^^J%
-        Bad: \string\renewcommand\string\rmdefault\{font\}\space ^^J%
-        Bad: \string\usepackage\{font package\}\space ^^J%
-        Bad: \string\RequirePackage\{font package\}\space ^^J%
-        Bad: \string\setmainfont[features]\{font\}\sapce ^^J%
+        Bad: \string\renewcommand\string\rmdefault{font}\space ^^J%
+        Bad: \string\usepackage{font package}\space ^^J%
+        Bad: \string\RequirePackage{font package}\space ^^J%
+        Bad: \string\setmainfont[features]{font}\sapce ^^J%
         Those are incorrect in `novel' class. ^^J%
-        Use \string\SetParentFont[features]\{font\}\space instead. ^^J%
+        Use \string\SetParentFont[features]{font}\space instead. ^^J%
         See `novel' documentation.}%
       \fi
     }%

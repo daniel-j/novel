@@ -12,7 +12,7 @@
 %% 
 %%
 \ProvidesFile{novel-CalculateLayout.sty}%
-[2018/04/03 v1.50.2 LaTeX file (layout calculations)]
+[2018/04/26 v1.52 LaTeX file (layout calculations)]
 %%
 
 %%
@@ -303,7 +303,7 @@
 % In order to fix the position, \topskip gets a non-flexible setting.
 % The best value is normal baselineskip, partly because it looks right,
 %   and also to avoid underfull vboxes on nearly every page.
-\gsetlength\topskip{\baselineskip}
+\gsetlength\topskip{\baselineskip} % absorber
 % In `novel' class, footers are done in an unusual manner, as explained above.
 % To fix the position of the virtual footer baseline:
 \gsetlength\footskip{\baselineskip}

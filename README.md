@@ -10,6 +10,14 @@ Extensive documentation is in HTML format. The "novel.pdf" file is merely a plac
 
 ## News:
 
+Version 1.52, April 26, 2018: Enhanced detection and Warnings, using Lua code.
+
+Version 1.50.5, April 11, 2018: Minor bug fix (incorrect warning message).
+
+Version 1.50.4, April 7, 2018: Enhancements to novel-scripts.
+
+Version 1.50.3, April 5, 2018: Further minor enhancements to novel-scripts.
+
 Version 1.50.2, April 3, 2018: Minor enhancements to novel-scripts.
 
 Version 1.50.1, March 29, 2018: New features pertaining to image placement. Scripts for pre-processing images. Sandbox mode. Internal drop cap capability. Reference to obsolete macros removed from documentation. General cleanup of documentation and internal code.

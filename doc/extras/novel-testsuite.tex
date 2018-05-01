@@ -21,7 +21,7 @@
 % It is grayscale png, 150x150 pixels, with resolution 300pdi.
 % 
 % The `test' class option is required. You may add others.
-\documentclass[test]{novel} % v. 1.50.2.
+\documentclass[test,shademargins,draft]{novel} % v. 1.52.
 \SetTitle{Test Suite}
 \SetSubtitle{Novel Document Class}
 \SetAuthor{Author Name}
@@ -74,14 +74,18 @@ Unless you change the head/foot style, you should see no heading. Arabic page nu
 
 % NEXT PAGE:
 
-This page tests all of the linegap environment, the \string\charscale\space command, and \string\rotatebox. The combined effect is shown below:
-\begin{linegap}{10}
-\vspace{1.5\nbs}
+This page tests the \string\charscale\space command, and \string\rotatebox. The combined effect is shown below:\par
+\vspace{1.5\nbs} % trial and error
 \charscale[2,3em,-4em]{\rotatebox[origin=c]{45}{Random Test Items}}
-\end{linegap}
-Above, you should see the phrase Random Test Items in larger than normal text, tilted 45 degrees, nicely fitting between the text above and this text.  The phrase does not begin at the left margin; this can be changed.
+\vspace{7.5\nbs} % trial and error
 
-If you change the font size or number of lines per page, then the tilted phrase might not fit nicely. That can be fixed by changing the linegap.
+Above, you should see the phrase Random Test Items in larger than normal text, tilted 45 degrees, nicely fitting between the text above and this text. Offset has been used, so it is not quite centered.
+
+If you change the font size or number of lines per page, then the tilted phrase might not fit nicely. That can be fixed by changing the amount of \string\vspace\space above and below the rotated text.
+
+The amount of \string\vspace\space is not calculated automatically. You have to determine it by trial and error (or do some math). The total amount of \string\vspace, top and bottom, must be an integer.
+
+If you use \string\rotatebox\space without \string\charscale, then it will create its own vertical gap. Unfortunately, the height of this gap is very difficult for you to calculate, so you would not be able to easily restore the line grid by adding some amount of \string\vspace. So, don't use \string\rotatebox\space without \string\charscale.
 
 \clearpage
 
@@ -112,11 +116,11 @@ This page tests \string\InlineImage\space effects. Note that the command also ha
 
 \null\null\null
 
-\noindent\InlineImage[0,b-\normaldescender]{novel-testimage.png}This paragraph is not indented. The unstarred command places an image, offset so that its bottom sits at the descender of the text. It was necessary to insert previous blank lines, or the image would overlie (and obscure) the preceding paragraph.
+\noindent\InlineImage[0,b-\normaldescender]{novel-testimage.jpg}This paragraph is not indented. The unstarred command places an image, offset so that its bottom sits at the descender of the text. It was necessary to insert previous blank lines, or the image would overlie (and obscure) the preceding paragraph.
 
 \null\null
 
-\noindent\InlineImage[0,1.5em]{novel-testimage.png}This paragraph is not indented. The unstarred command places an image, offset so that it rises above the paragraph, and also descends beneath the following text. 
+\noindent\InlineImage[0,1.5em]{novel-testscript.png}This paragraph is not indented. The unstarred command places an image, offset so that it rises above the paragraph, and also descends beneath the following text. 
 
 \null\null
 
@@ -129,27 +133,47 @@ In all of the above, the alignments will change, if you change the text size or 
 
 This page tests \string\WrapImage. The command is written following the paragraph you are now reading.
 
-\WrapImage[r]{novel-testimage.png}
+\WrapImage[r]{novel-testscript.jpg}
 
-The image will appear at right, with this text flowing around it. the first few lines will be at the left of the image. Then, as the paragraph continues, it eventually is restored to full text width, once it gets pas the bottom of the image. Note that the top of the image is aligned to the X-height of the first line of text.
+The image will appear at right, with this text flowing around it. the first few lines will be at the left of the image. Then, as the paragraph continues, it eventually is restored to full text width, once it gets past the bottom of the image. Note that the top of the image is aligned to the X-height of the first line of text.
+
+\null
+\null
 
 \clearpage
+
+% NEXT 2 PAGES:
+
+This page, combined with the following page, test the detection mechanism for \string\scenebreak, \string\sceneline, and \string\scenestars.
+
+In the source document, there is \string\vspace\space following this paragraph. To detect the effects, vary the \string\vspace.
+
+% Change this to see the effects:
+\vspace{20\nbs} % originally 20\nbs
+
+Following this paragraph is the \string\scenestars\space command. It prints a few asterisks centered in a gap. It is one way to indicate that a scenbreak is present, when the break occurs at the very top or bottom of a page (because a blank line might not be noticed there).
+
+\scenestars
+
+If you change the above \string\vspace\space to 25\string\nbs, you will get a Warning about the line being too close to the bottom. Change to 28\string\nbs, and the Warning will say that it is too close to the top (of the following page. Note that \string\scenestars\space is allowed to be at the very bottom or very top, or somewhere in the middle of the page. The same applies to \string\sceneline.
+
+If you wish, you can always use \string\scenestars\space or \string\sceneline\space to indicate a scene break. But more common practice is to use a blank line, \string\scenebreak, except for those cases where you ``must'' use one of the others.
+
+\scenebreak
+
+Above this paragraph is \string\scenebreak, which appears as a blank line. A \string\scenebreak\space cannot be located close to the top or bottom of a page. Unlike \string\sceneline\space or \string\scenestars, you cannot place \string\scenebreak\space at the very top or bottom, either. So, changing the \string\vspace\space to any of 14\string\nbs\space through 17\string\nbs\space will generate a Warning.
+
+\clearpage
+
 
 % NEXT PAGE:
 
 This page tests the footnote and endnote capabilities.\footnote{This is the first sample footnote. Unless you change the marker style, it will be marked with an asterisk.} Two footnotes have been placed.\footnote{This is the second footnote. Unless you change the marker style, it will be marked by a dagger.}
 
-\scenebreak
+\null
 
-The \string\scenebreak\space command was used above. This paragraph is not indented, unless you change the behavior using \string\SetScenebreakIndent.
+Test of \string\QuickChapter:
 
-\scenestars
-
-As above, but this time marked by three centered asterisks.
-
-\sceneline
-
-As above, but this time marked by a short, centered line.
 
 \QuickChapter[3em]{Just Before Midnight}
 
@@ -174,27 +198,34 @@ This tests the endnote capability.\endnote You will see marker 1 after the last 
 
 % NEXT PAGE:
 
-The following tests the \textit{parascale}  and \textit{linegap} environments:
+The following tests the \textit{parascale} environment:
 
-\begin{linegap}{8}
-\vspace{0.4\nbs}
 \begin{parascale}[0.8]
-This text has a different scale than normal. Both the font size and the baseline skip have been proportionately changed. As a result, the lines are not on the normal line grid.\par
-If the following normal text needs to be back on grid (usually the case), there are two possible solutions: (1) Compile, note the number of lines occupied by this text, then calculate how much vertical space must be added, to restore the grid. Manually add that space, usually splitting it top and bottom. (2) Place \textit{parascale} within a \textit{linegap} environment. This will restore the grid. You will still have to compile, and count lines\par
+But this text has a different scale than normal. Both the font size and the baseline skip have been proportionately changed. As a result, the lines are not on the normal line grid.\par
+If the following normal text needs to be back on grid (usually the case), here is what you must do: Compile, and note the number of lines occupied by the scaled text. Calculate the discrepancy, and fix with \string\vspace. Or let \textit{novel} do the thinking for you; there will be a Warning message with advice.\par
+\vspace{0.2\nbs} % based on result of Warning.
 \end{parascale}
-\end{linegap}
 
-Back to normal text. The above scaled text is wrapped in \textit{linegap}. The gap is not necessarily the number of lines in the scaled text. It is the number of normal lines that occupy that vertical space.
+Back to normal text.  At the dimensions originally used for this test, there are 9 lines of scaled text. Not counting the first scaled line, the remaining 8 scaled lines each introduce a deficit of 0.2\string\nbs. So, the cumulative deficit is 1.6\string\nbs. The integer part doesn't matter. So, \string\vspace{0.6\string\nbs} must be added prior to \string\end\{parascale\}, to restore the normal line grid.
 
-At the dimensions originally used for this test, there are 9 lines of scaled text. They occupy more or less 7 lines of normal vertical space. However, I chose an 8 line gap, then added a little \string\vspace\space above the scaled text. I think this looks nicer.
+It is also possible to split the \string\vspace, prior to \string\begin\{parascale\} and \string\end\{parascale\}, as long as the total is correct.
 
-If you change the dimensions used for this test, then the scaled text and its surrounding will probably not align properly. So, before you use \textit{parascale}, plan ahead by making your settings final.
+If the \string\vspace\space is not added, then there will be a Warning message.
 
-\null
+If the parascale spans more than one page, then the correct amount to add will depend on the lines present on the final page, not the total number of lines.
+
+\clearpage
+
+
+% NEXT PAGE
+
+This page tests the \textit{adjustwidth} environment. Changing textwidth is a useful way to create block indents, occasionally used for long quotations, or for other special text that must be visually distinguished from normal.
 
 \begin{adjustwidth}{2\normalparindent}{\normalparindent}
 \forceindent This text uses the \textit{adjustwidth} environment. It is set to block indent 2\string\normalparindent\space at left, and indent 1\string\normalparindent\space at right. The \string\forceindent\space command precedes the text, so that (within the block) it indents like an ordinary paragraph.\par
 \end{adjustwidth}
+
+This text is after the environment, so it occupies the normal amount of text width.
 
 \clearpage
 
@@ -211,7 +242,7 @@ The \string\charscale\space command scales the letter, and \string\FirstLine\spa
 
 \null\null
 
-\lettrine{H}{ere}, is placed is a drop cap, using \string\lettrine. But you will only see the drop cap if you place \string\RequirePackage\{lettrine\} in the Preamble. Otherwise, you will not see anything unusual. This behavior is specific to the test suite. Anywhere else, if you try to use \string\lettine\space without loading the package, an error will result.\par
+\dropcap{H}ere is placed is a drop cap, using \textit{novel's} \string\dropcap\space command. Alternatively, the \textit{lettrine} package could be used. There are differences in how the drop caps are specified, depending on what you do. So, be sure to read the documentation, or you will be surprised.\par
 In general, it is difficult to style drop caps so that they look good for many different letters. An alternative is to use images for the drop caps. If you use images, please read the \textit{novel} documentation, as the method is not the same as the usual methods from the \textsc{lettrine} package.\par
 Note that there is no automated way to combine a drop cap with a first line in small caps. This is discussed in \textsc{novel} documentation.
 
@@ -228,7 +259,7 @@ This line is in the main font.\par
 
 % NEXT PAGE:
 
-\thispagestyle{dropfoliobeneath}
+\thispagestyle{dropfoliobeneath} % compare to dropfolioinside
 
 This page tests drop folio. There will be no page header. If your head/foot style normally has a footer, then you will see it as usual.
 
@@ -250,15 +281,30 @@ This tests the \string\cleartoend\space command. If this page is recto (odd), th
 
 \null\null
 
-You may change the settings in the Preamble, or try additional settings.
 
-\null\null
+When you request PDF/X (default), whether or not you are in draft mode, each image placed in your document is inspected. This is one of those things that require Lua code, which is one reason why the \textit{novel} class requires LuaLaTeX only.
 
-If you have the Adobe Acrobt Pro software,  then you can also test for PDF/X compliance:
+When an image is inspected, it is added to one of two lists, either good or unknown. Each time an image is  requested, the lists are examined, so the same image file is not inspected twice. This saves time.
 
-First, add \lnum{\string\SetPDFX[CGATSTR001]\{X-1a:2001\}} to the Preamble. Then compile, and verify that the resulting PDF meets the standard, without embedded *.icc profile.
+The lists are saved in the \textit{aux} file. Then, if you re-compile, images already inspected won't be re-inspected. To re-initialize the lists, discard the \textit{aux} file.
 
-Note that if you use an image other then the included \textit{novel-testimage.png}, then your own image must be prepared according to the specification in \textit{novel} documentation. Otherwise, an incorrectly prepared image will cause PDF/X compliance to fail.
+\null
+
+Two of the images were pre-processed via \textit{novel-scripts}. These will be detected as good. They are:
+
+\makeatletter\@AllGoodImages\makeatother
+
+\null
+
+Two of the images were not pre-processed, so their compliance is unknown. They might be good or bad. They are:
+
+ \makeatletter\@UnknownImages\makeatother
+
+\null
+
+Note: If you change the document settings to \string\SetPDFX\{off\} then you will not see either of the image lists, and will not get the Warning message.
+
+Also, using \string\SetPDFX\{off\} will re-initialize the lists.
 
 
 

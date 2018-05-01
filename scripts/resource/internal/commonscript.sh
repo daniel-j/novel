@@ -1,5 +1,5 @@
 # commonscript
-# Supports scripts version 1.2.
+# Supports scripts version 1.4.
 # This file has common functions for novel-script Linux scripts.
 # It is read by another script, using the source command. Do not use directly.
 # $HELPMSG and $USAGEMSG are messages set by calling script.

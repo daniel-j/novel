@@ -18,7 +18,8 @@ REM This file is distributed with the "novel" LuaLaTeX document class.
 REM https://ctan.org/pkg/novel  [get the one zip archive]
 REM But you do not need a TeX installation to use this script.
 
-set VERMSG=splitpdf.bat version 1.1.
+set THISVER=1.4
+set VERMSG=splitpdf.bat version %THISVER%.
 set USAGEMSG=Usage: splitpdf filename.pdf
 set HELPMSG=Help:  splitpdf -h
 

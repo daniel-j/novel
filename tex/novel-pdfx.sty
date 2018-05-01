@@ -21,7 +21,7 @@
 %%
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesFile{novel-pdfx.sty}%
-[2018/04/03 v1.50.2 LaTeX file (PDF/X support for novel class)]
+[2018/04/26 v1.52 LaTeX file (PDF/X support for novel class)]
 % This package supports, and is part of, class `novel'.
 % No support for anything but LuaLaTeX.
 
@@ -41,18 +41,18 @@
   \global\@pdfxISofftrue
 \fi
 %
-\AtBeginDocument{%
+\gdef\@AlertNoPDFX{% called by `novel.cls' AtBeginDocument
   \if@pdfxSEToff\else
     \ifdraftdoc
       \typeout{^^JClass `novel' Alert: No PDF/X in draft mode. ^^J%
-       Your document was processed with \string\SetPDFX\{off\}. ^^J}%
+       Your document was processed with \string\SetPDFX{off}. ^^J}%
     \fi
     \if@sandbox
       \typeout{^^JClass `novel' Alert: No PDF/X with sandbox option. ^^J%
-       Your document was processed with \string\SetPDFX\{off\}. ^^J}%
+       Your document was processed with \string\SetPDFX{off}. ^^J}%
     \fi
   \fi
-} %
+} % end @AlertNoPDFX
 %%
 
 

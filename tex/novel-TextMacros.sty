@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-TextMacros.sty}%
-[2018/04/03 v1.50.2 LaTeX file (text macros usable within document body)]
+[2018/04/26 v1.52 LaTeX file (text macros usable within document body)]
 %%
 
 
@@ -112,10 +112,10 @@
 %%
 
 %% \smcp{} and \textsc{} small caps (Open Type) and \allsmcp{}:
-\ExplSyntaxOn
 \DeclareDocumentCommand \smcp { +m } {% lowercase to small caps
   {\addfontfeature{Letters=SmallCaps}#1}%
 }
+\ExplSyntaxOn
 \DeclareDocumentCommand \allsmcp { +m } {% lowercase+uppercase to small caps
   \fontspec_if_feature:nTF {c2sc}{%
    {\addfontfeatures{Letters=UppercaseSmallCaps, Letters=SmallCaps}#1}%
@@ -231,7 +231,6 @@
 % Do not use \\ or \par inside \charscale. Sometimes you need \par after it.
 % If the text is in a font other than usual, place the font command
 %   outside \charscale, not inside.
-\ExplSyntaxOn
 \DeclareDocumentCommand \charscale { s O{1} m } {%
   % Allows empty or blank to be used, and still provide default values:
   \ifthenelse{\equal{#2}{}\OR\equal{#2}{\space}}{%
@@ -271,47 +270,107 @@
     \smash{\phantom{\scalebox{\@myscale}{#3}}}%
   }%
  }% end \charscale
-\ExplSyntaxOff
 %%
 
-%% Environment parascale.
-% If you really must change font size and baselineskip on a paragraph basis,
-%   then use an environment. For example, the text on your Copyright page might
-%   be smaller (and less baselineskip) than normal.
-% The following environment takes an optional argument, which is the scale
-%   of font size and baselineskip, relative to normal. Note that both size
-%   and skip are scaled together. The default is 1, meaning no change.
-% To get the rough equivalent of traditional \footnotesize, use 0.83 scale.
-% Example:
-%    \begin{parascale}[0.83]
-%    This text is like old footnotesize. It can go on for many lines.\par
-%    Be sure to end with the paragraph ending.\par
-%    You may need to manipulate whether anything indents.\par
-%    \end{parascale}
-% Normally you should NOT use this environment within the main text,
-%   as it will upset the baselineskip there. If you have to do that for
-%   a special effect, then use \vspace{} before and after the environment,
-%   so that the following normalsize text is re-aligned. You'll have to
-%   do the calculations yourself.
-\newenvironment{parascale}[1][1]
-{\begingroup%
-\FPmax{\@mytempDetailsN}{#1}{0.5}% must be at least half normal.
-\FPmul{\@mytempDetailsFontN}{\@mytempDetailsN}{\strip@pt\@SetFontSize}%
-\FPround{\@mytempDetailsFontN}{\@mytempDetailsFontN}{2}%
-\FPmul{\@mytempDetailsSkipN}{\@mytempDetailsN}{\strip@pt\baselineskip}%
-\FPround{\@mytempDetailsSkipN}{\@mytempDetailsSkipN}{2}%
-\fontsize{\@mytempDetailsFontN pt}{\@mytempDetailsSkipN pt}\selectfont%
-}%
-{\endgroup}
+
+% Note that \savepos is a luatex primitive, not a macro from gridset package.
+% Length \TotalYpos is measured from the very bottom of the page,
+% upward to the baseline of non-existent "line zero" in main text.
+% The first printed main text line is line 1.
+% Neither header nor footer influence this.
+\newlength\TotalYpos
+\gdef\@GetInitialYpos{% called by `novel.cls' \AtEndPreamble
+  \begingroup%
+    \savepos%
+    \protected@write\@auxout{}{%
+      \protect\@TotalYpos{\noexpand\number\lastypos}%
+    }%
+  \endgroup%
+}
+%
+\gdef\@TotalYpos#1{\gsetlength\TotalYpos{#1sp}}
+%
+
+
 %%
+\newlength\PosTolerance % How close is close enough?
+\setlength\PosTolerance{0.0625pt} % should be good enough
+%%
+
+
+%% Environment parascale. Scales one or more paragraphs. Modified in v. 1.52.
+% Warns when (as is often the case) the line after \end{parascale}
+%   will be off grid. Then, add some \vspace just before \end{parascale}.
+\newenvironment{parascale}[1][1]{% optional argument is scale, default 1.
+  \FPmax{\@mytempDetailsN}{#1}{0.5}% must be at least half normal.
+  \FPmul{\@mytempDetailsFontN}{\@mytempDetailsN}{\strip@pt\@SetFontSize}%
+  \FPround{\@mytempDetailsFontN}{\@mytempDetailsFontN}{2}%
+  \FPmul{\@mytempDetailsSkipN}{\@mytempDetailsN}{\strip@pt\baselineskip}%
+  \FPround{\@mytempDetailsSkipN}{\@mytempDetailsSkipN}{2}%
+  \FPsub{\@mytempSkipN}{\strip@pt\baselineskip}{\@mytempDetailsSkipN}%
+  \vspace{\@mytempSkipN pt}% puts first scaled line at normal baseline
+  \begingroup%
+  \fontsize{\@mytempDetailsFontN pt}{\@mytempDetailsSkipN pt}\selectfont%
+  \ignorespaces%
+}{%
+  \par\endgroup%
+  \vspace{-\nbs}%
+  \leavevmode\getParapos\par% detects if following line will be off-grid
+  \vspace{0.002\nbs plus 0pt minus 0.2pt}% math fudge factor, in case of roundoff
+}
+%
+\gdef\getParapos{%
+  \begingroup%
+    \savepos%
+    \protected@write\@auxout{}{%
+      \protect\@getParapos{\noexpand\number\lastypos}{\thepage}%
+    }%
+  \endgroup%
+}
+%
+\newlength\CurrentParapos
+\gdef\@getParapos#1#2{} % initialized to nothing, when reading aux at beginning
+\gdef\@RedefineParapos{ % called by `novel.cls' \AtBeginDocument
+  \gdef\@getParapos##1##2{% numerical position sp, page
+    \gsetlength\CurrentParapos{##1sp}% measured up from very bottom of page.
+    % Now change it, to measure downward from "line zero" of main text:
+    \gsetlength\CurrentParapos{\TotalYpos-\CurrentParapos}% calc package.
+    \FPdiv{\ParaHowdown}{\strip@pt\CurrentParapos}{\strip@pt\nbs}% package fp
+    \FPtrunc{\ParaLinesdown}{\ParaHowdown}{0}% integer number of lines down
+    \FPsub{\ParaResidual}{\ParaHowdown}{\ParaLinesdown}% portion of line
+    \FPdiv{\@PosTolerance}{\strip@pt\PosTolerance}{\strip@pt\nbs}%
+    \gdef\ParaComplain{yes}%
+    \FPifgt{\@PosTolerance}{\ParaResidual}%
+      \gdef\ParaComplain{no}% within tolerance
+    \fi%
+    \FPsub{\ParaDeficit}{\strip@pt\nbs}{\ParaResidual}%
+    \FPifgt{\@PosTolerance}{\ParaDeficit}%
+      \gdef\ParaComplain{no}%
+    \fi%
+    \FPsub{\ParaResidual}{1}{\ParaResidual}%
+    \FPifgt{\@PosTolerance}{\ParaResidual}%
+      \gdef\ParaComplain{no}% within tolerance
+    \fi%
+    \FPifgt{\@PosTolerance}{\ParaDeficit}%
+      \gdef\ParaComplain{no}%
+    \fi%
+    \FPround{\ParaResidual}{\ParaResidual}{3}%
+    \FPclip{\ParaResidual}{\ParaResidual}%
+    \ifthenelse{\equal{\ParaComplain}{yes}}{%
+      \ClassWarning{novel}{Line after parascale may be off-grid, page ##2. ^^J%
+       Appears to be \ParaResidual\string\nbs\space higher than expected.}%
+    }{}%
+  }
+} % end @RedefineParapos
+%%
+
 
 %% Environment toc (alternative table of contents):
 % optional argument: additional vspace (\nbs) after each \tocitem entry.
 % required: LR margin increase, to narrow the table (0pt = full textwidth).
 \newlength\@tocnumwid
 \newlength\@tocskip
-\newenvironment{toc}[2][0]%
-{%
+\newenvironment{toc}[2][0]{%
   \begin{adjustwidth}{#2}{#2}%
   \begingroup%
   \setlength\parindent{0pt}% local
@@ -335,7 +394,6 @@
     }%
   }%
   #2\,%
-  %%%%%\dotfill%
   \leaders\hbox to 0.3em{\hfil.\hfil}\hfill% Thanks to user daniel-j via GitHub.
   \,#3\par\vspace{\@tocskip}%
 }%
@@ -389,43 +447,52 @@
   }{}%
   \ifthenelse{\equal{#1}{}}{}{\FPround{\@tempLengthN}{\@tempLengthN}{#1}}%
   \@tempLengthN{#3}%
-}
+} %
 %% end \showlength
 
 %% \lnum for lining numbers.
 \gdef\lnum#1{{\addfontfeature{Numbers=Lining}#1}}
 %%
 
-%% Environment linegap.
-% Allows text to be placed (potentially) off-grid, with grid resuming after.
-\newif \if@WithinLinegap % true within linegap environment
-\newcounter{currentlinegap} % 0 when not within linegap, >0 otherwise.
-\ExplSyntaxOn % absorbs line returns here:
-\DeclareDocumentEnvironment {linegap} { m } {%
-  \FPifint{#1}\else
-    \ClassError{novel}{Non-integer~linegap~on~page~\thepage}%
-     {Only~integer~>=~1~allowed~for~linegap.}%
-  \fi
-  \FPiflt{#1}{1}
-    \ClassError{novel}{Insufficient~linegap~on~page~\thepage}%
-     {Only~integer~>=~1~allowed~for~linegap.}%
-  \fi
-  \par
-  \null
-  \vspace*{-\nbs}
-  \global\@WithinLinegaptrue
-  \begin{textblock*}{\textwidth}[0,0](0pt,0pt)
-  \setcounter{currentlinegap}{#1}
-  \strut\par
-  \vspace*{-\nbs}
-}{% close the environment:
-  \end{textblock*}
-  \global\@WithinLinegapfalse
-  \par
-  \vspace*{#1\nbs}
-  \setcounter{currentlinegap}{0}
-} %
-\ExplSyntaxOff
+
+%% For developer use: prints a number of yada yada lines.
+% Starred version adds extra smashed lines above and below.
+\newcount\yadacurrentcount
+\newcount\yadaendcount
+\DeclareDocumentCommand\novelyadayada { s O{1} }{%
+  \yadacurrentcount=1%
+  \yadaendcount=#2%
+  \ifthenelse{\equal{#2}{0}}{}{%
+    \IfBooleanTF{#1}{%
+      \def\@yadadblup{\charscale*[1,\normalparindent,2\nbs]{Dbl Raised yada}}%
+      \def\@yadaup{\charscale*[1,\normalparindent,\nbs]{Raised yada}}%
+      \def\@yadadown{%
+        \ifnum\yadacurrentcount=\yadaendcount%
+          \charscale*[1,\normalparindent,-\nbs]{Dropped yada}%
+        \fi%
+      }%
+      \def\@yadadbldown{%
+        \ifnum\yadacurrentcount=\yadaendcount%
+          \charscale*[1,\normalparindent,-2\nbs]{Dropped yada}%
+        \fi%
+      }%
+    }{%
+      \def\@yadadblup{}%
+      \def\@yadaup{}%
+      \def\@yadadown{}%
+      \def\@yadadbldown{}%
+    }%
+    \loop%
+      \noindent\@yadadblup\@yadaup\@yadadown\@yadadbldown%
+      \makebox[\normalparindent][l]{\the\yadacurrentcount.}%
+      Lotta yada.\par
+      \def\@yadaup{}%
+      \def\@yadadblup{}%
+      \advance\yadacurrentcount 1%
+    \ifnum\yadacurrentcount<\yadaendcount%
+    \repeat%
+  }%
+}
 %%
 
 
@@ -498,10 +565,9 @@
     \gsetlength\normalAringheight{\heightof{Å}}
   \newlength\normaldescender % depth of lowercase gjpqy
     \gsetlength\normaldescender{\depthof{gjpqy}}
-  \newlength\@NovelCaulk % fills gaps that would cause underfull vbox
-    \gsetlength{\@NovelCaulk}{0pt plus 0.999\nbs minus 1pt}
 }% end \@ActivateTextLengths
 %%
+
 
 %% More things that must wait:
 \gdef\@ActivateTextMacros{% called by `novel.cls' \AtBeginDocument

@@ -31,7 +31,8 @@ REM This file is distributed with the "novel" LuaLaTeX document class.
 REM https://ctan.org/pkg/novel  [get the one zip archive]
 REM But you do not need a TeX installation to use this script.
 
-set VERMSG=makegray.bat version 1.2.
+set THISVER=1.4
+set VERMSG=makegray.bat version %THISVER%.
 set USAGEMSG=Usage: makegray [-digit] filename.ext
 set HELPMSG=Help:  makegray -h
 set DEMOMSG=Demo:  makegray [-digit] demo
@@ -153,40 +154,64 @@ if exist "resource\internal\commonscript.bat" (
   exit /B 1
 )
 set IE=png
-REM For png, quality 90 in ImageMagick is compression 9.
-REM However, within the final PDF, the image will not be compressed.
-set IQ=-quality 90
 if /I "%JPG%"=="yes" (
   set IE=jpg
-  REM For jpg, quality 95 is prepress.
-  REM Within the PDF, the image will also be compressed as jpeg.
-  set IQ=-quality 95
+)
+
+
+REM Check input colorspace:
+<nul set /p=Inspecting the input image... 
+set ISCMYK=
+%MAGICKPATH%magick identify -verbose input\%FN%!PDFZ! >temp\temp-identify.txt
+echo. >>temp\temp-identify.txt
+findstr /C:"Colorspace: CMYK" temp\temp-identify.txt 1>nul 2>nul
+if "!errorlevel!"=="0" (
+  set ISCMYK=yes
+  echo CMYK.
+) else (
+  echo RGB.
 )
 
 
 REM Now do conversion:
-REM Improved code suggested by user daniel-j at GitHub.
 echo Converting, this takes awhile...
-set DR=-density %IR% -units PixelsPerInch -depth 8
-set BK=-strip -background White -flatten -alpha off !TI!
+set DR=-density %IR% -units PixelsPerInch
+set BK=-background White -flatten -alpha off -depth 8
+set TG=-define PNG:exclude-chunk=gAMA,bKGD,zTXt,iTXt
 set HG=-fx "luminance" -colorspace Gray
-set CO=-comment "novelmakegray"
+set CO=-set comment "novelscripts-makegray-%THISVER%-w"
 if not "!IL!"=="0" ( set SC=-sigmoidal-contrast 4,!IL!0%%)
-%MAGICKPATH%magick.exe convert %DR% input\%FN%!PDFZ! %BK% %HG% %SC% temp\%CN%-!IL!-GRAY.tif 2>temp\temp-identify.txt
-echo. >>temp\temp-identify.txt
+
+REM Requires more than one step. Do not condense to fewer steps.
+REM Reason: Syntax differences in IM versions and platforms.
+if "%ISCMYK%"=="yes" (
+  %MAGICKPATH%magick.exe convert %DR% -strip input\%FN%!PDFZ! %BK% !TI! temp\temp-%CN%-rgb.png
+  %MAGICKPATH%magick.exe mogrify -strip temp\temp-%CN%-rgb.png
+  %MAGICKPATH%magick.exe convert %DR% temp\temp-%CN%-rgb.png %TG% %CO% %BK% %HG% %SC% temp\%CN%-!IL!-GRAY.png
+  if exist "temp\temp-%CN%-rgb.png" ( del "temp\temp-%CN%-rgb.png")
+) else (
+  %MAGICKPATH%magick.exe convert %DR% -strip input\%FN%!PDFZ! temp\temp-%CN%-!IL!-GRAY.png
+  %MAGICKPATH%magick.exe convert %DR% temp\temp-%CN%-!IL!-GRAY.png %TG% %CO% %BK% %HG% %SC% temp\%CN%-!IL!-GRAY.png
+  if exist "temp\temp-%CN%-!IL!-GRAY.png" ( del temp\temp-%CN%-!IL!-GRAY.png)
+)
+
+
 findstr /C:"geometry does not contain image" temp\temp-identify.txt 1>nul 2>nul
 if "!errorlevel!"=="0" (
   echo.
   echo The page your requested is a blank page. No output produced.
   echo Try again with a different page number.
-  if exist "temp\%CN%-!IL!-GRAY.tif" ( del temp\%CN%-!IL!-GRAY.tif)
+  if exist "temp\%CN%-!IL!-GRAY.png" ( del temp\%CN%-!IL!-GRAY.png)
   echo.
   if exist "temp\temp-identify.txt" ( del temp\temp-identify.txt)
   exit /B 1
 )
-REM Adding comment requires a second step:
-%MAGICKPATH%magick.exe convert %CO% %IQ% %DR% temp\%CN%-!IL!-GRAY.tif output\%CN%-!IL!-GRAY.%IE%
-if exist "temp\%CN%-!IL!-GRAY.tif" ( del temp\%CN%-!IL!-GRAY.tif)
+if "%IE%"=="jpg" (
+  %MAGICKPATH%magick.exe convert -quality 95 temp\%CN%-!IL!-GRAY.png output\%CN%-!IL!-GRAY.jpg
+  if exist "temp\%CN%-!IL!-GRAY.png" ( del temp\%CN%-!IL!-GRAY.png)
+) else (
+  move "temp\%CN%-!IL!-GRAY.png" "output\%CN%-!IL!-GRAY.png" 1>nul
+)
 
 REM Done:
 echo Verifying, this takes awhile...

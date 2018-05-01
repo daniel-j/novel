@@ -30,7 +30,8 @@ if [ "$JPG" == "" ]; then JPG="no"; fi
 # https://ctan.org/pkg/novel  [get the one zip archive]
 # But you do not need a TeX installation to use this script.
 
-VERMSG="makegray version 1.2."
+THISVER="1.4"
+VERMSG="makegray version $THISVER."
 USAGEMSG="Usage: ./makegray [-digit] filename.ext"
 HELPMSG="Help:  ./makegray -h"
 DEMOMSG="Demo:  ./makegray [-digit] demo"
@@ -121,47 +122,75 @@ else
   exit 1
 fi
 IE="png"
-# For png, quality 90 in ImageMagick is compression 9.
-# However, within the final PDF, the image will not be compressed.
-IQ="-quality 90"
 if [ "$JPG" == "yes" ] || [ "$JPG" == "YES" ]
 then
   IE="jpg"
-  # For jpg, quality 95 is high-quality prepress.
-  # Within the PDF, the image will also be compressed as jpeg.
-  IQ="-quality 95"
+fi
+
+
+# Check input colorspace:
+printf "Inspecting the input image... "
+ISCMYK=""
+identify -verbose input/$FN$PDFZ >temp/temp-identify.txt
+echo  >>temp/temp-identify.txt
+grep "Colorspace: CMYK" temp/temp-identify.txt 1>/dev/null 2>/dev/null
+if [ $? -eq 0 ]
+then
+  ISCMYK="yes"
+  echo "CMYK."
+else
+  echo "RGB."
 fi
 
 
 # Now do conversion:
-# Some improved code suggested by user daniel-j at GitHub.
 echo 
 echo "Converting..."
-DR="-density $IR -units PixelsPerInch -depth 8"
-BK="-strip -flatten -background White -alpha off $TI"
+DR="-density $IR -units PixelsPerInch"
+BK="-flatten -background White -alpha off -depth 8"
+TG="-define PNG:exclude-chunk=gAMA,bKGD,zTXt,iTXt"
 HG="-fx ""luminance"" -colorspace Gray"
-CO="-comment ""novelmakegray"" "
+CO="-set comment ""novelscripts-makegray-$THISVER-l"" "
 if [ ! "$IL" == "0" ]; then SC="-sigmoidal-contrast 4,$IL%"; fi
-convert $DR input/$FN$PDFZ $BK $HG $SC $IQ temp/$CN-$IL-GRAY.tif 2>temp/temp-identify.txt
-echo  >>temp/temp-identify.txt
+
+# Requires more than one step. Do not condense to fewer steps.
+# Reason: Syntax differences in IM versions and platforms.
+if [ "$ISCMYK" == "yes" ]
+then
+  convert $DR -strip input/$FN$PDFZ $BK $TI temp/temp-$CN-rgb.png
+  echo  >>temp/temp-identify.txt
+  mogrify -strip temp/temp-$CN-rgb.png
+  convert $DR temp/temp-$CN-rgb.png $TG $CO $BK $HG $SC temp/$CN-$IL-GRAY.png
+  if [ -f "temp/temp-$CN-rgb.png" ]; then rm "temp/temp-$CN-rgb.png"; fi
+else
+  convert $DR -strip input/$FN$PDFZ temp/temp-$CN-$IL-GRAY.png
+  convert $DR temp/temp-$CN-$IL-GRAY.png $TG $CO $BK $HG $SC temp/$CN-$IL-GRAY.png
+  echo  >>temp/temp-identify.txt
+  if [ -f "temp/temp-$CN-$IL-GRAY.png" ]; then rm "temp/temp-$CN-$IL-GRAY.png"; fi
+fi
+
 grep "geometry does not contain image" temp/temp-identify.txt 1>/dev/null 2>/dev/null
 if [ $? -eq 0 ]
 then
   echo 
   echo "The page your requested is a blank page. No output produced."
   echo "Try again with a different page number."
-  if [ -f "temp/$CN-$IL-GRAY.tif" ]; then rm temp/$CN-$IL-GRAY.tif; fi
+  if [ -f "temp/$CN-$IL-GRAY.png" ]; then rm temp/$CN-$IL-GRAY.png; fi
   echo 
   if [ -f "temp/temp-identify.txt" ]; then rm temp/temp-identify.txt; fi
   exit 1
 fi
-# Second step is needed for comment:
-convert $CO $IQ $DR temp/$CN-$IL-GRAY.tif output/$CN-$IL-GRAY.$IE
-if [ -f "temp/$CN-$IL-GRAY.tif" ]; then rm temp/$CN-$IL-GRAY.tif; fi
+if [ "$IE" == "jpg" ]
+then
+  convert -quality 95 temp/$CN-$IL-GRAY.png output/$CN-$IL-GRAY.jpg
+  if [ -f "temp/$CN-$IL-GRAY.png" ]; then rm temp/$CN-$IL-GRAY.png; fi
+else
+  mv "temp/$CN-$IL-GRAY.png" "output/$CN-$IL-GRAY.png" 1>/dev/null
+fi
 
 # Done:
 echo "Verifying..."
-echo 
+echo
 echo "The Grayscale image is output/$CN-$IL-GRAY.$IE."
 if [ "$IL" == "0" ]
 then
@@ -170,6 +199,7 @@ else
   echo "Contrast adjustment value $IL applied."
 fi
 identify -verbose output/$CN-$IL-GRAY.$IE >temp/temp-identify.txt
+echo  >>temp/temp-identify.txt
 grep "Colorspace" temp/temp-identify.txt 2>/dev/null
 grep "Print size" temp/temp-identify.txt 2>/dev/null
 grep "PixelsPerInch" temp/temp-identify.txt 1>/dev/null 2>/dev/null

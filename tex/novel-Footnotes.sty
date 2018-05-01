@@ -13,7 +13,7 @@
 %% 
 %%
 \ProvidesFile{novel-Footnotes.sty}%
-[2018/04/03 v1.50.2 LaTeX file (commands for footnotes and endnotes)]
+[2018/04/26 v1.52 LaTeX file (commands for footnotes and endnotes)]
 %%
 
 
@@ -189,7 +189,7 @@
   }{%
     \global\togglefalse{@usenomark}%
   }%
-  \gdef\footnoterule{\vfill\@fourem}% %%%%%
+  \gdef\footnoterule{\vfill\@fourem}%
   \begingroup%
   \def\footnotesize{% Not gdef. Local to footnote. Calculated during layout.
     \@setfontsize\footnotesize{\@myfootnotesizeN pt}{\@myfootnoteskipN pt}%

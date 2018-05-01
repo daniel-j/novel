@@ -13,8 +13,9 @@
 %% 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 % Actually needs LuaLaTeX, at least version 0.95 from TeXLive 2016.
-\ProvidesClass{novel}[2018/04/03 v1.50.2 LaTeX document class]
+\ProvidesClass{novel}[2018/04/26 v1.52 LaTeX document class]
 %%
+%% Version 1.50.n (any n) incremental minor changes from 1.50.
 %% Version 1.50: Improved image handled, sandbox, scripts.
 %% Version 1.46.2: Now called "novel-old" version.
 %% Version 1.43: General cleanup of docs and code, for improved readbaility.
@@ -238,7 +239,7 @@
 %
 % New in version 1.50: sandbox option, for artwork and tables. Max 4 pages.
 \newif \if@sandbox
-\DeclareOption{sandbox}{\@sandbox}
+\DeclareOption{sandbox}{\@sandboxtrue}
 %
 %% Note that document size and normal font size are not class options.
 %% They are set by commands in the Preamble, and have default values.
@@ -249,6 +250,12 @@
   \global\@shademarginsfalse
   \global\@cropviewfalse
   \global\@closecropfalse
+\fi
+%
+\if@testsuite
+  \gdef\@testintentional{Test suite intentionally generates this warning. ^^J}
+\else
+  \gdef\@testintentional{}
 \fi
 %
 \if@cropview
@@ -290,7 +297,6 @@
   }%
 \fi
 %% end class options
-
 
 
 \RequirePackage{noindentafter} % for unindented chapter and scene starts
@@ -459,13 +465,7 @@
   \RequirePackage{novel-CalculateLayout} % may load novel-ChangeLayout.sty
   \RequirePackage{novel-PostLayout} % calculates shademargins, cropmarks, etc.
   \RequirePackage{novel-pdfx}% also provides an \AtBeginDocument macro
-  \AtEndDocument{%
-    \if@coverart\else%
-      \if@sandbox\else%
-        \cleartoend% adds 1 or 2 blanks, for final verso blank
-      \fi%
-    \fi%
-  }
+  \@GetInitialYpos% in `novel-TextMacros.sty
 }%
 %% end AtEndPreamble
 
@@ -518,23 +518,25 @@
     }{}%
   } %
 \fi
-%% end messages.
-
-
-%% \AtBeginDocument finishes the setup
-%% ----------------------------------------------------------------------------
 %
 \gdef\@needsandboxmsg{%
   \ClassError{novel}{Need `sandbox' for picture, figure, table environments}%
    {You cannot use picture, figure, or table environments in `novel' unless ^^J%
     you use the `sandbox' document class option. See docs.}%
 }
+%% end messages.
+
+
+%% \AtBeginDocument finishes the setup
+%% ----------------------------------------------------------------------------
+%
 \AtBeginDocument{ %
-  %% Mostly involve settings defaults:
+  \@RedefineParapos % in `novel-TextMacros.sty'
   \@ActivateTextLengths % in `novel-TextMacros.sty'
   \@ActivateDropCaps % in `novel-DropCaps.sty'
   \@ActivateChapterScene % in `novel-ChapterScene.sty'
   \@ActivateHeadFootStyles % in file `novel-HeadFootStyles.sty'
+  \@AlertNoPDFX % in file `novel-pdfx.sty'
   \@ActivatePDFInfo % in file `novel-pdfx.sty'
   \@ActivateTextMacros % in `novel-TextMacros.sty'
   \@ActivateFootnotes % in `novel-Footnotes.sty'
@@ -542,8 +544,10 @@
   \@DisableLayoutSettings % in file `novel-LayoutSettings.sty'
   \@DisableFileDataSettings % in file `novel-FileData.sty'
   \@DisableChapterSceneSettings % in file `novel-ChapterScene.sty'
+  \@RedefineBreakpos % in file `novel-ChapterScene.sty'
   \@DisableHeadFootSettings % in file `novel-HeadFootStyles.sty'
-  %% List of always-blocked packages (not exhaustive, since TeX has so many):
+  \@GatherGoodImages % in file `novel-Images.sty'.
+  % List of always-blocked packages (not exhaustive, since TeX has so many):
   \really@no{geometry}{its own layout commands.}{4}
   \really@no{pdfx}{built-in PDF/X capability.}{3.4}
   \really@no{xmpincl}{built-in PDF/X capability.}{3.4}
@@ -559,13 +563,13 @@
   \really@no{endnotes}{limited, built-in endnote methods.}{6.5}
   \really@no{acronym}{focus on paper books, not e-books.}{(top of file)}
   \really@no{embedfile}{incompatible print requirements.}{(top of file)}
-  %
-  \if@sandbox%
-    \RequirePackage{novel-Sandbox}%
-  \fi%
-  %
-  %% Potential problem packages, allowed in sandbox or with unblock:
-  \if@sandbox\else
+  \really@no{makeidx}{an incompatible layout method.}{1.2.5}
+  \really@no{gridset}{a command name conflict.}{4}
+  % Potential problem packages, allowed in sandbox or with unblock:
+  \if@sandbox
+    \RequirePackage{novel-Sandbox}
+  \else
+    \gdef\mplibcode{\@OnlySandbox{mplibcode}}
     % Related to floats:
     \sorry@no{floatflt}
     \sorry@no{floatfig}
@@ -621,21 +625,14 @@
     \sorry@no{scalerel}
     \sorry@no{pmgraph}
     \sorry@no{reflectgraphics}
-  \fi % end if sandbox.
-  %
-  %% Commands and environments, only allowed in sandbox:
-  \if@sandbox\else
-    \gdef\mplibcode{\@OnlySandbox{mplibcode}}
-  \fi
-  %
-  %% Alert packages, might cause minor layout problems, not enough to block:
+  \fi % end sandbox.
+  % Alert packages, might cause minor layout problems, not enough to block:
   \alert@nodisp{nth}
   \alert@nodisp{engord}
   \alert@nodisp{ulem}
   \alert@nodisp{soul}
   % end list of Alert packages.
-  %
-  %% Package `pagegrid' interacts with `shademargins' and `draft' options:
+  % Package `pagegrid' interacts with `shademargins' and `draft' options:
   \@ifpackageloaded{pagegrid}{ % that is, if permitted by sandbox or unblock
     \ifdraftdoc
       \if@shademargins
@@ -649,6 +646,29 @@
     \fi
   }{} % end if pagegrid
 }% end \AtBeginDocument
+%%
+
+
+%% AtEndDocument adds one or two blank pages, required by printers.
+% Also writes list of inspected, good images to aux, for later use:
+\AtEndDocument{%
+  \if@coverart\else%
+    \if@sandbox\else%
+      \immediate\write\@auxout{%
+        \string\xdef\string\@AllGoodImages{\@AllGoodImages}^^J%
+        \string\xdef\string\@UnknownImages{\@UnknownImages}^^J%
+      }%
+      \cleartoend% adds 1 or 2 blanks, for final verso blank
+    \fi%
+  \fi%
+}
+%%
+
+
+%% AfterEndDocument writes final message:
+\AfterEndDocument{
+  \@WarnUnknownImages % in `novel-Images.sty'.
+}
 %%
 
 

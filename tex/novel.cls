@@ -650,14 +650,9 @@
 
 
 %% AtEndDocument adds one or two blank pages, required by printers.
-% Also writes list of inspected, good images to aux, for later use:
 \AtEndDocument{%
   \if@coverart\else%
     \if@sandbox\else%
-      \immediate\write\@auxout{%
-        \string\xdef\string\@AllGoodImages{\@AllGoodImages}^^J%
-        \string\xdef\string\@UnknownImages{\@UnknownImages}^^J%
-      }%
       \cleartoend% adds 1 or 2 blanks, for final verso blank
     \fi%
   \fi%

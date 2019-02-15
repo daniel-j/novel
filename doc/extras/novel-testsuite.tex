@@ -284,9 +284,7 @@ This tests the \string\cleartoend\space command. If this page is recto (odd), th
 
 When you request PDF/X (default), whether or not you are in draft mode, each image placed in your document is inspected. This is one of those things that require Lua code, which is one reason why the \textit{novel} class requires LuaLaTeX only.
 
-When an image is inspected, it is added to one of two lists, either good or unknown. Each time an image is  requested, the lists are examined, so the same image file is not inspected twice. This saves time.
-
-The lists are saved in the \textit{aux} file. Then, if you re-compile, images already inspected won't be re-inspected. To re-initialize the lists, discard the \textit{aux} file.
+When an image is inspected, it is added to one of two lists, either good or unknown. Each time an image is  requested, the lists are examined, so the same image file is not inspected twice. This saves some time.
 
 \null
 

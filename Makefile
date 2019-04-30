@@ -45,8 +45,8 @@ borderland:
 	@# The loop makes sure that page numbers gets correct values in toc
 	@# It has to compile twice
 	for n in {1..2}; do \
-		cd other/house-on-the-borderland/ && \
+		(cd other/house-on-the-borderland/ && \
 		OPENTYPEFONTS=../../fonts/:$(shell kpsewhich -var-value OPENTYPEFONTS) \
 		TEXINPUTS=../../tex/:$(shell kpsewhich -var-value TEXINPUTS) \
-		lualatex --output-directory=../../build ./borderland.tex; \
+		lualatex --output-directory=../../build ./borderland.tex); \
 	done

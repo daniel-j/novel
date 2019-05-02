@@ -79,7 +79,9 @@
     \gdef\@HeadFootStyle{#1}
   \fi
 }%
-\SetHeadFootStyle{1} % default, header only
+\if@coverart\else
+  \SetHeadFootStyle{1} % default, header only
+\fi
 \let\SetHeadStyle\SetHeadFootStyle\relax % deprecated
 %
 % \HeadJump is a number from 1 to 3 (may be decimal). It measures the

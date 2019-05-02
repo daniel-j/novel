@@ -30,7 +30,7 @@ DEMOMSG="Demo:  ./makecmyk [-a] demo"
 # Provides version, using -v or --v or equivalent:
 if [ "$1" == "" ] || [[ "$1" =~ ^-v.* ]] || [[ "$1" =~ ^--v.* ]] || [[ "$1" =~ ^-V.* ]] || [[ "$1" =~ ^--V.* ]]
 then
-  echo makecmyk v0.9.6.
+  echo "$VERMSG"
   echo 
   exit 0
 fi

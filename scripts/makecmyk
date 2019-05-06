@@ -232,7 +232,8 @@ mogrify -strip temp/temp-$CN-cmyk.tif
 echo "   ...Completed step 4 of 6."
 
 # The intermediate tif file will become a PDF Xobject with FlateDecode:
-convert -strip temp/temp-$CN-cmyk.tif -units PixelsPerInch -density $IR -compress zip temp/temp-$CN-NOTpdfx.pdf
+convert -strip temp/temp-$CN-cmyk.tif -units PixelsPerInch -density $IR -compress zip temp/temp-$CN-NOTpdfx.pdf || \
+gm convert -strip temp/temp-$CN-cmyk.tif -units PixelsPerInch -density $IR -compress zip temp/temp-$CN-NOTpdfx.pdf || exit 1
 echo "   ...Completed step 5 of 6."
 
 # Create pdfmarks:

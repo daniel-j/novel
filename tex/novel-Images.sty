@@ -110,13 +110,15 @@ end
     end
   end
   function check_pdf_info(name, field, expected)
-    local doc = epdf.open(name);
+    local doc = pdfe.open(name)
     if doc == nil then
       tex.sprint(luatexbase.catcodetables['latex-package'],
           "\\errmessage{Could not open " .. name .. "}{}{}\\@gobbletwo")
     else
-      local producer = doc:getDocInfo():dictLookup(field)
-      if not producer:isNull() and normalize_string(producer:getString()) == expected then
+      local docinfo = pdfe.getinfo(doc)
+      pdfe.close(doc)
+      local producer = pdfe.getstring(docinfo, field)
+      if producer and normalize_string(producer) == expected then
         tex.sprint(luatexbase.catcodetables['latex-package'], '\\@firstoftwo')
       else
         tex.sprint(luatexbase.catcodetables['latex-package'], '\\@secondoftwo')

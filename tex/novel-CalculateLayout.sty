@@ -155,7 +155,7 @@
 %
 % Error if \baselineSkip is too tight, in relation to normal em size:
 \ifdimcomp{\baselineskip}{<}{1.2\@SetFontSize}{%
-  \ClassError{novel}{Calculated baselineskip is too small}%
+  \ClassError{novel}{Calculated baselineskip is too small: \strip@pt\dimexpr 1pt * \baselineskip / \@SetFontSize \relax}%
    {Default baselineskip is calculated from normal em size, ^^J%
      available text height, and lines per page. Result is too small. ^^J%
     Change something, then try again.}%
